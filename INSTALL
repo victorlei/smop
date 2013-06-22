@@ -1,0 +1,30 @@
+smop -- matlab to python compiler
+
+Installation with easy_install
+==============================
+
+This is the preferred option, because easy_install takes care of
+everything -- finding the dowinload site, and installing the dependences
+(numpy and networkx).  If you don't have easy_install, this is the
+perfect time to install it.  It is a part of setuptools package located
+at http://pypi.python.org/pypi/setuptools.
+
+$ easy_install smop
+
+Binary Windows installer
+========================
+
+Download it from github then run it, but you must make sure you have
+installed the dependences -- numpy and networkx.
+
+Installation from sources 
+=========================
+
+$ tar zxvf m2py.tar.gz
+$ cd m2py
+$ python setup.py install [--user]
+$ python setup.py test
+
+If you use the --user option, don't forget to put
+your .local/bin into the search path (unix only).
+
