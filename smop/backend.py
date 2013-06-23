@@ -411,9 +411,9 @@ def _backend(self,level=0):
 
 @extend(node.exist)
 def _backend(self,level=0):
-    if self.args[1].value == "file":
+    if self.args[1].__class__ is node.string and self.args[1].value == "file":
         return "os.path.exists(%s)" % self.args[0]._backend()
-    if self.args[1].value == "var":
+    if self.args[1].__class__ is node.string and self.args[1].value == "var":
         return "%s in globals()" % self.args[0]._backend()
     raise NotImplementedError("Not implemented: exist")
 
