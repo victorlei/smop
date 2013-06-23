@@ -570,7 +570,7 @@ def p_transpose_expr(p):
     # p[2] contains the exact combination of plain and conjugate
     # transpose operators, such as "'.''.''''".
     "expr : expr TRANSPOSE"
-    p[0] = node.transpose(p[1],p[2])
+    p[0] = node.transpose(p[1],node.string(p[2]))
 
 def p_cellarrayref(p):
     """expr : expr LBRACE expr_list RBRACE
