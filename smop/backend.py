@@ -245,11 +245,23 @@ def _backend(self,level=0):
     return "%s%s" %  (s,t)
         
 
-# Sometimes variable names collide with _backend reserved
-# words.  We handle this in the _backend rather than in
+# Sometimes variable names collide with _python reserved
+# words and constants.  We handle this in the _backend rather than in
 # the lexer, to keep the target language separate from
 # the lexer code.
-reserved = set(["is","lambda","map","global","return","range","type"])
+reserved = set(
+    """
+    abs all and any apply as assert basestring bin bool break buffer bytearray
+    callable chr class classmethod cmp coerce compile complex continue copyright
+    credits def del delattr dict dir divmod elif Ellipsis else enumerate eval
+    except exec execfile exit False file filter finally float for format from
+    frozenset getattr global globals hasattr hash help hex id if import __import__
+    in input int intern is isinstance issubclass iter lambda len license list
+    locals long map max memoryview min next None not not NotImplemented object oct
+    open or ord pass pow print property quit raise range raw_input reduce reload
+    repr return reversed round set setattr slice sorted staticmethod str sum super
+    True try tuple type unichr unicode vars while with xrange yield zip
+    """.split())
 
 @extend(node.ident)
 def _backend(self,level=0):
