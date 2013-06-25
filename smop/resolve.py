@@ -28,11 +28,18 @@ from node import extend
 import backend
 
 def resolve(t, symtab={}):
-    logger.info("started")
     do_resolve(t,symtab)
-    logger.info("done")
-    #logger.info(pprint.pformat(symtab))
-    
+    if 0:
+        tab = []
+        for u in node.postorder(t):
+            if u.__class__ is node.ident:
+                tab.append( (u.name,
+                             u.lineno,
+                             None if u.defs is None else
+                             [v.lineno for v in u.defs]) )
+        pprint.pprint(sorted(tab))
+        print "*" * 70
+
 def do_resolve(t,symtab):
     """
     Array references
