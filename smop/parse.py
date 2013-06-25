@@ -121,15 +121,15 @@ def p_command(p):
     """
     command : ident args SEMI
     """
-    if p[1].name == "load":
-        # "load filename x" ==> "x=load(filename)"
-        # "load filename x y z" ==> "(x,y,z)=load(filename)"
-        ret=node.expr_list([node.ident(t.value) for t in p[2][1:]])
-        p[0] = node.funcall(func_expr=p[1],
-                            args=node.expr_list(p[2]),
-                            ret=ret)
-    else:
-        p[0] = node.funcall(p[1],p[2])
+#    if p[1].name == "load":
+#        # "load filename x" ==> "x=load(filename)"
+#        # "load filename x y z" ==> "(x,y,z)=load(filename)"
+#        ret=node.expr_list([node.ident(t.value) for t in p[2][1:]])
+#        p[0] = node.funcall(func_expr=p[1],
+#                            args=node.expr_list(p[2]),
+#                            ret=ret)
+#    else:
+    p[0] = node.funcall(p[1],p[2])
 
 ####################
 def p_global_list(p):

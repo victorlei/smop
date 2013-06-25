@@ -17,5 +17,5 @@ setup(
     #package_dir = {'':'src'},
     #test_suite = "smop.testsuite.test_lexer",
     #include_package_data = True,
-    install_requires = ['numpy'],
+    install_requires = ['numpy', 'scipy'],
 )

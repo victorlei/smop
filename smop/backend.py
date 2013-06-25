@@ -425,3 +425,11 @@ def _backend(self,level=0):
                                            self.args[0]._backend())
     else:
         return "np.flatnonzero(%s)" % self.args[0]._backend()
+
+@extend(node.load)
+def load(self,level=0):
+    return "loadmat(%s,matlab_compatible=True)" % self.args._backend()
+
+@extend(node.save)
+def save(self,level=0):
+    return "savemat(%s)" % self.args._backend()

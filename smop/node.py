@@ -322,6 +322,7 @@ builtins_list = [
     "isinf",
     "isnan",
     "length",
+    "load",
     "lower",
     "max",
     "min",
@@ -332,6 +333,7 @@ builtins_list = [
     "range",   # synthetic opcode
     "ravel",   # synthetic opcode
     "rem",
+    "save",
     "setfield",
     "sign",
     "size",

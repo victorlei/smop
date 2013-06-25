@@ -66,6 +66,7 @@ def main():
     print >> fp, "# " + " ".join(sys.argv)
     print >> fp, "from __future__ import division"
     print >> fp, "import numpy as np"
+    print >> fp, "from scipy.io import loadmat,savemat"
     print >> fp, "import os\n"
 
     #print >> fp, "from copy import copy as _copy"
