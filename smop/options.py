@@ -19,3 +19,5 @@ has_char_constants = 0
 do_allocate = 0
 do_resolve = 1
 do_rewrite = 1
+
+debug = False

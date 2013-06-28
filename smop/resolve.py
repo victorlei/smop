@@ -182,7 +182,8 @@ def _resolve(self,symtab):
         self.body._resolve(symtab)
         self.head.ret._resolve(symtab)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.global_list)
@@ -193,8 +194,8 @@ def _resolve(self,symtab):
         for expr in self:
             expr._resolve(symtab)
     except Exception as ex:
-        import pdb; pdb.set_trace()
-        
+        if options.debug:
+            import pdb; pdb.set_trace()
 
 @extend(node.global_list)
 @extend(node.concat_list)
@@ -204,7 +205,8 @@ def _lhs_resolve(self,symtab):
         for expr in self:
             expr._lhs_resolve(symtab)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.stmt_list)
@@ -213,7 +215,8 @@ def _resolve(self,symtab):
         for stmt in self:
             stmt._resolve(symtab)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.number)
@@ -222,7 +225,8 @@ def _resolve(self,symtab):
     try:
         pass
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 # @extend(node.call_stmt)
@@ -240,7 +244,8 @@ def _resolve(self,symtab):
         self.args._resolve(symtab)
         self.ret._lhs_resolve(symtab)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.func_decl)
@@ -251,7 +256,8 @@ def _resolve(self,symtab):
         self.args._lhs_resolve(symtab)
         self.ret._resolve(symtab)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.for_stmt)
@@ -266,7 +272,8 @@ def _resolve(self,symtab):
         for k,v in symtab_copy.items():
             symtab.setdefault(k,set()).update(v)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.if_stmt)
@@ -280,7 +287,8 @@ def _resolve(self,symtab):
         for k,v in symtab_copy.items():
             symtab.setdefault(k,set()).update(v)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.continue_stmt)  # FIXME
@@ -289,7 +297,8 @@ def _resolve(self,symtab):
     try:
         pass
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 
@@ -298,20 +307,26 @@ def _resolve(self,symtab):
     try:
         self.global_list._lhs_resolve(symtab)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.return_stmt)
 def _resolve(self,symtab):
-    self.ret._resolve(symtab)
-    #symtab.clear()
+    try:
+        self.ret._resolve(symtab)
+        #symtab.clear()
+    except Exception as ex:
+        if options.debug:
+            import pdb; pdb.set_trace()
 
 @extend(node.expr_stmt)
 def _resolve(self,symtab):
     try:
         self.expr._resolve(symtab)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.where_stmt) # FIXME where_stmt ???
@@ -327,7 +342,8 @@ def _resolve(self,symtab):
         for k,v in symtab_copy.items():
             symtab.setdefault(k,set()).update(v)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.try_catch)
@@ -336,7 +352,8 @@ def _resolve(self,symtab):
         self.try_stmt._resolve(symtab)
         self.catch_stmt._resolve(symtab) # ???
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.ident)
@@ -348,7 +365,8 @@ def _lhs_resolve(self,symtab):
         symtab[self.name] = set([self])
         # defs is None means definition
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.ident)
@@ -362,7 +380,8 @@ def _resolve(self,symtab):
             # defs == set() means name used, but not defined
             pass
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.arrayref)
@@ -378,7 +397,8 @@ def _resolve(self,symtab):
         if self.ret:
             self.ret._lhs_resolve(symtab)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.setfield) # a subclass of funcall
@@ -388,7 +408,8 @@ def _resolve(self,symtab):
         self.args._resolve(symtab)
         self.args[0]._lhs_resolve(symtab) 
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.arrayref)
@@ -403,7 +424,8 @@ def _lhs_resolve(self,symtab):
         self.args._resolve(symtab)      # B
         self.func_expr._lhs_resolve(symtab)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.expr)
@@ -412,7 +434,8 @@ def _resolve(self,symtab):
         for expr in self.args:
             expr._resolve(symtab)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
 @extend(node.expr)
@@ -425,6 +448,7 @@ def _lhs_resolve(self,symtab):
             for arg in self.args:
                 arg._lhs_resolve(symtab)
     except Exception as ex:
-        import pdb; pdb.set_trace()
+        if options.debug:
+            import pdb; pdb.set_trace()
         
 
