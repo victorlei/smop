@@ -6,7 +6,7 @@ supposed to help those who attempt migration from Matlab to Python.
 Despite the similarities between the two languages, there are enough
 differences to make manual translation too time consuming.
 
-SMOP is not a polished product, and it's not a replacement to
+SMOP is not a polished product, nor a replacement to Octave and
 Matlab. Taking into account its size (less than 3000 lines), this is
 not surprizing.  There are no toolboxes.  Small everyday functions
 (max, length, etc.) are recognized and supported, but that's all.
@@ -32,7 +32,7 @@ Each time a function is translated, its name is written.
 
 .. code:: sh
 
-    lei@fuji:~/smop/smop$ smop fastsolver.m 
+    lei@fuji:~/smop/smop$ python main.py fastsolver.m 
     fastsolver.m
 	    solver
 	    cbest
@@ -67,7 +67,7 @@ Each time a function is translated, its name is written.
     lei@fuji:~/smop/smop$ 
 
 The entire submission contains 2093 lines, and it is automatically
-translated to Python by smop. This are the good news.  The bad news
+translated to Python by smop. These are the good news.  The bad news
 are that generating the code is not enough to run the program, so
 there are no performance numbers yet.
 
@@ -130,30 +130,29 @@ becomes
 
 Now some random notes.
 
-#. Functions vs. arrays ambiguity is correctly resolved: at
-   line 03 for example, where `sum` is a function, but `w0` and
-   `moves` are arrays.  
+#. Line 03. Functions vs. arrays ambiguity is correctly resolved: 
+   for example, `sum` is a function, but `w0` and `moves` are
+   arrays.
 
-#. At line 09, Matlab function `length` is
-   correctly inlined as `max(w0.shape)` -- that is the maximum of the
-   array dimensions.  
+#. Line 09, Matlab function `length` is correctly inlined as
+   `max(w0.shape)` --- that is the maximum of the array dimensions.
 
 #. For some functions, such as `abs`, `max`, and others, there are
    both a builtin version and a different numpy version, and it is
    important to use the right one.  In line 03 `np.sum` is used, but
    in line 09 builtin `max`.  This is correct.
 
-#. Functions rand and sort (line 10) are not yet implemented.  
+#. Line 10. Functions rand and sort are not yet implemented.  
 
-#. There is some support to boolean indexing (lines 15,16).  
+#. Lines 15-16. There is some support to boolean indexing.
 
-#. Arrays are remapped to start with zero index (line 15,16), and
-   especially line 17. Note that if all subscripts were decremented
-   boolean indexing would be broken.
+#. Lines 15-17. Array subscripts are modified to start with zero
+   index.  Note that if all subscripts were decremented, it would
+   break boolean indexing.
 
 #. Line 13. Range specification in Matlab includes the upper bound.
    In Python, it doesn't.  So `for i=1:lenw` becomes `for i in
-   range(1,(lenw+1))`.  Extra parentheses is known as bug #1.
+   range(1,(lenw+1))`.  Extra parentheses are known as issue #1.
 
 -----------------------------------------------------------
 
