@@ -20,25 +20,22 @@ It is used in if_stmt, for_stmt, and while_stmt.
 
 import copy,sys,pprint
 
-import logging
-logger = logging.getLogger(__name__)
-
 import node
-from node import extend
+from node import extend,exceptions
 import backend
 
 def resolve(t, symtab={}):
     do_resolve(t,symtab)
     if 0:
-        tab = []
+        tab = {}
         for u in node.postorder(t):
             if u.__class__ is node.ident:
-                tab.append( (u.name,
-                             u.lineno,
-                             None if u.defs is None else
-                             [v.lineno for v in u.defs]) )
-        pprint.pprint(sorted(tab))
-        print "*" * 70
+                tab[u.name,u.lineno] = (None if u.defs is None 
+                                        else [v.lineno for v in u.defs])
+        for key in sorted(tab.keys()):
+            print key, tab[key]
+
+        print "*" * 50
 
 def do_resolve(t,symtab):
     """
@@ -69,25 +66,34 @@ def do_resolve(t,symtab):
     t._resolve(symtab)
     #pprint.pprint(symtab)
     for u in node.postorder(t):
-        if (u.__class__ == node.funcall and 
-              u.func_expr.__class__ == node.ident):
-            # Both node.arrayref and node.builtins are
-            # subclasses of node.funcall, so we are
-            # allowed to assign to its __class__ field.
+        if (u.__class__ is node.funcall and 
+            u.func_expr.__class__ is node.ident):
             if u.func_expr.defs:
-                # Convert funcall nodes to array references.
+                # Both node.arrayref and node.builtins are subclasses
+                # of node.funcall, so we are allowed to assign to its
+                # __class__ field.  Convert funcall nodes to array
+                # references.
                 u.__class__ = node.arrayref
             elif u.func_expr.defs == set():
-                # Convert recognized builtin functions to builtin
-                # nodes.
+                # Function used, but there is no definition. It's
+                # either a builtin function, or a call to user-def
+                # function, which is defined later.
                 cls = getattr(node,u.func_expr.name,None)
-                if cls and issubclass(cls,node.builtins) and u.__class__ != cls:
-                    logger.debug("%s ==> %s" % (u.__class__, cls))
+                if not cls:
+                    # This is the first time we met u.func_expr.name
+                    cls = type(u.func_expr.name,
+                               (node.funcall,),
+                               { 'code' : None })
+                    setattr(node,u.func_expr.name,cls)
+                assert cls
+                if issubclass(cls,node.builtins) and u.__class__ != cls:
                     u.func_expr = None # same in builtins ctor
-                    u.__class__ = cls
+                u.__class__ = cls
             else:
                 # Only if we have A(B) where A.defs is None
                 assert 0
+
+
 
         if u.__class__ in (node.arrayref,node.cellarrayref):
             # if (len(u.args) == 1
@@ -176,58 +182,39 @@ def copy_symtab(symtab):
     return new_symtab
 
 @extend(node.function)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        self.head._resolve(symtab)
-        self.body._resolve(symtab)
-        self.head.ret._resolve(symtab)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
+    self.head._resolve(symtab)
+    self.body._resolve(symtab)
+    self.head.ret._resolve(symtab)
         
-
 @extend(node.global_list)
 @extend(node.concat_list)
 @extend(node.expr_list)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        for expr in self:
-            expr._resolve(symtab)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
+    for expr in self:
+        expr._resolve(symtab)
 
 @extend(node.global_list)
 @extend(node.concat_list)
 @extend(node.expr_list)
+@exceptions
 def _lhs_resolve(self,symtab):
-    try:
-        for expr in self:
-            expr._lhs_resolve(symtab)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
+    for expr in self:
+        expr._lhs_resolve(symtab)
         
-
 @extend(node.stmt_list)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        for stmt in self:
-            stmt._resolve(symtab)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
+    for stmt in self:
+        stmt._resolve(symtab)
         
-
 @extend(node.number)
 @extend(node.string)
+@exceptions
 def _resolve(self,symtab):
-    try:
         pass
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
-        
 
 # @extend(node.call_stmt)
 # def _resolve(self,symtab):
@@ -239,216 +226,150 @@ def _resolve(self,symtab):
 #     self.ret._lhs_resolve(symtab)
 
 @extend(node.let)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        self.args._resolve(symtab)
-        self.ret._lhs_resolve(symtab)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
-        
+    self.args._resolve(symtab)
+    self.ret._lhs_resolve(symtab)
 
 @extend(node.func_decl)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        if self.ident:
-            self.ident._resolve(symtab)
-        self.args._lhs_resolve(symtab)
-        self.ret._resolve(symtab)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
-        
+    if self.ident:
+        self.ident._resolve(symtab)
+    self.args._lhs_resolve(symtab)
+    self.ret._resolve(symtab)
 
 @extend(node.for_stmt)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        symtab_copy = copy_symtab(symtab)
-        self.ident._lhs_resolve(symtab)
-        self.expr._resolve(symtab)
-        self.stmt_list._resolve(symtab)
-        self.stmt_list._resolve(symtab) # 2nd time, intentionally
-        # Handle the case where FOR loop is not executed
-        for k,v in symtab_copy.items():
-            symtab.setdefault(k,set()).update(v)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
-        
+    symtab_copy = copy_symtab(symtab)
+    self.ident._lhs_resolve(symtab)
+    self.expr._resolve(symtab)
+    self.stmt_list._resolve(symtab)
+    self.stmt_list._resolve(symtab) # 2nd time, intentionally
+    # Handle the case where FOR loop is not executed
+    for k,v in symtab_copy.items():
+        symtab.setdefault(k,set()).update(v)
 
 @extend(node.if_stmt)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        symtab_copy = copy_symtab(symtab)
-        self.cond_expr._resolve(symtab)
-        self.then_stmt._resolve(symtab)
-        if self.else_stmt:
-            self.else_stmt._resolve(symtab_copy)
-        for k,v in symtab_copy.items():
-            symtab.setdefault(k,set()).update(v)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
+    symtab_copy = copy_symtab(symtab)
+    self.cond_expr._resolve(symtab)
+    self.then_stmt._resolve(symtab)
+    if self.else_stmt:
+        self.else_stmt._resolve(symtab_copy)
+    for k,v in symtab_copy.items():
+        symtab.setdefault(k,set()).update(v)
         
-
 @extend(node.continue_stmt)  # FIXME
 @extend(node.break_stmt)     # FIXME
+@exceptions
 def _resolve(self,symtab):
-    try:
-        pass
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
-        
-
+    pass
 
 @extend(node.global_stmt)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        self.global_list._lhs_resolve(symtab)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
+    self.global_list._lhs_resolve(symtab)
         
-
 @extend(node.return_stmt)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        self.ret._resolve(symtab)
+    self.ret._resolve(symtab)
         #symtab.clear()
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
 
 @extend(node.expr_stmt)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        self.expr._resolve(symtab)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
+    self.expr._resolve(symtab)
         
-
 @extend(node.where_stmt) # FIXME where_stmt ???
 @extend(node.while_stmt)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        symtab_copy = copy_symtab(symtab)
-        self.cond_expr._resolve(symtab)
-        self.stmt_list._resolve(symtab)
-        self.cond_expr._resolve(symtab)
-        self.stmt_list._resolve(symtab)
-        # Handle the case where WHILE loop is not executed
-        for k,v in symtab_copy.items():
-            symtab.setdefault(k,set()).update(v)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
-        
+    symtab_copy = copy_symtab(symtab)
+    self.cond_expr._resolve(symtab)
+    self.stmt_list._resolve(symtab)
+    self.cond_expr._resolve(symtab)
+    self.stmt_list._resolve(symtab)
+    # Handle the case where WHILE loop is not executed
+    for k,v in symtab_copy.items():
+        symtab.setdefault(k,set()).update(v)
 
 @extend(node.try_catch)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        self.try_stmt._resolve(symtab)
-        self.catch_stmt._resolve(symtab) # ???
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
-        
+    self.try_stmt._resolve(symtab)
+    self.catch_stmt._resolve(symtab) # ???
 
 @extend(node.ident)
+@exceptions
 def _lhs_resolve(self,symtab):
-    try:
-        # try:
-        #     symtab[self.name].add(self)
-        # except:
-        symtab[self.name] = set([self])
-        # defs is None means definition
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
+    # try:
+    #     symtab[self.name].add(self)
+    # except:
+    symtab[self.name] = set([self])
+    # defs is None means definition
         
-
 @extend(node.ident)
+@exceptions
 def _resolve(self,symtab):
+    if self.defs is None:
+        self.defs = set()
     try:
-        if self.defs is None:
-            self.defs = set()
-        try:
-            self.defs |= symtab[self.name]
-        except KeyError:
-            # defs == set() means name used, but not defined
-            pass
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
+        self.defs |= symtab[self.name]
+    except KeyError:
+        # defs == set() means name used, but not defined
+        pass
         
-
 @extend(node.arrayref)
 @extend(node.cellarrayref)
 @extend(node.funcall)
+@exceptions
 def _resolve(self,symtab):
     # Matlab does not allow foo(bar)(bzz), so func_expr is usually
     # an ident, though it may be a field or a dot expression.
-    try:
-        if self.func_expr:
-            self.func_expr._resolve(symtab)
-        self.args._resolve(symtab)
-        if self.ret:
-            self.ret._lhs_resolve(symtab)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
-        
+    if self.func_expr:
+        self.func_expr._resolve(symtab)
+    self.args._resolve(symtab)
+    if self.ret:
+        self.ret._lhs_resolve(symtab)
 
 @extend(node.setfield) # a subclass of funcall
+@exceptions
 def _resolve(self,symtab):
-    try:
-        self.func_expr._resolve(symtab)
-        self.args._resolve(symtab)
-        self.args[0]._lhs_resolve(symtab) 
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
-        
+    self.func_expr._resolve(symtab)
+    self.args._resolve(symtab)
+    self.args[0]._lhs_resolve(symtab) 
 
 @extend(node.arrayref)
 @extend(node.cellarrayref)
 @extend(node.funcall)    
+@exceptions
 def _lhs_resolve(self,symtab):
-    try:
-        # Definitely lhs array indexing.  It's both a ref and a def.
-        # Must properly handle cases such as foo(foo(17))=42
-        # Does the order of A and B matter?
-        self.func_expr._resolve(symtab) # A
-        self.args._resolve(symtab)      # B
-        self.func_expr._lhs_resolve(symtab)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
+    # Definitely lhs array indexing.  It's both a ref and a def.
+    # Must properly handle cases such as foo(foo(17))=42
+    # Does the order of A and B matter?
+    self.func_expr._resolve(symtab) # A
+    self.args._resolve(symtab)      # B
+    self.func_expr._lhs_resolve(symtab)
         
-
 @extend(node.expr)
+@exceptions
 def _resolve(self,symtab):
-    try:
-        for expr in self.args:
-            expr._resolve(symtab)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
-        
+    for expr in self.args:
+        expr._resolve(symtab)
 
 @extend(node.expr)
+@exceptions
 def _lhs_resolve(self,symtab):
-    try:
-        if self.op == ".": # see setfield
-            self.args._resolve(symtab)
-            self.args[0]._lhs_resolve(symtab)
-        elif self.op == "[]":
-            for arg in self.args:
-                arg._lhs_resolve(symtab)
-    except Exception as ex:
-        if options.debug:
-            import pdb; pdb.set_trace()
+    if self.op == ".": # see setfield
+        self.args._resolve(symtab)
+        self.args[0]._lhs_resolve(symtab)
+    elif self.op == "[]":
+        for arg in self.args:
+            arg._lhs_resolve(symtab)
+
         
 

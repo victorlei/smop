@@ -3,7 +3,7 @@ function moves=solver(A,B,w0)
 curscore=sum(w0(moves(:,1)));
 lots=1;
 if length(moves)-optmove<20||curscore/optscore<1.05
-    lots=2;%return
+    lots=2; return
 else
     lenw=length(w0);
     [xx,nseq]=sort(rand(1,lenw));
@@ -137,7 +137,7 @@ for leaveout=ceil(2*log(n)):(n-1)
         small=find(cumsum(w.*(~mmask & mask))>=rand*sum(w.*(~mmask & mask)));
         [trymov,ok]=imoves(small(1),partialmov,Ap,B,mmask);
         if ok
-            mmask(small(1))=true;
+	mmask(small(1))=true;
             if isequal(mmask,mask)
                 ok=1;
                 mov=trymov;
@@ -315,8 +315,8 @@ ind1=ind(:,1:end-1);
 ind2=ind(:,2:end);
 dp=diff(sortpos,1,2)==0;
 for i=1:npos
-    A(i,ind1(i,dp(i,:)))=true;
-    A(i,ind2(i,dp(i,:)))=true;
+	A(i,ind1(i,dp(i,:)))=true;
+A(i,ind2(i,dp(i,:)))=true;
 end
 overlaps=zeros(npos,n);
 overlaps(:,cols)=A;
@@ -1049,6 +1049,7 @@ while nmv0<nmv&&nNOK
             end
             iNOK1=pNOK(find(sPCol(pNOK)==1));
             for i=iNOK1'
+
                 j=find(PCol(i,:));
                 jj=iP(j);
                 p=iP(i);
@@ -1657,7 +1658,7 @@ while ~isequal(af,a)
     [tmp,wwbi]=sort(-w(wwb));
     wwb=wwb(wwbi);
     if (success==0)
-        fiter=true;
+      fiter=true;
     else
         fiter=false;
     end

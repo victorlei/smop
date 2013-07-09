@@ -3,7 +3,7 @@
 
 from collections import namedtuple
 from recipes import recordtype
-import copy
+import copy,sys,inspect
 
 # def preorder(u):
 #     if isinstance(u,traversable):
@@ -22,6 +22,15 @@ def postorder(u):
 def extend(cls):
     return lambda f: (setattr(cls,f.__name__,f) or f)
 
+def exceptions(f):
+    def wrapper(self,*args,**kwargs):
+        try:
+            return f(self,*args,**kwargs)
+        except:
+            print "%s.%s()" % (self.__class__.__name__, f.__name__)
+            raise
+    wrapper.__name__ = f.__name__
+    return wrapper
 
 class node(object):
     def become(self,other):
@@ -347,9 +356,8 @@ builtins_list = [
     "zeros",
 ]
 
-symtab = {}
 for name in builtins_list:
-    globals()[name] = symtab[name] = type(name, (builtins,), {})
+    globals()[name] = type(name, (builtins,), {})
 
 #class cellarrayref(node,recordtype("cellarrayref","ident args")):
 class cellarrayref(funcall):
