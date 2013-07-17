@@ -222,8 +222,13 @@ def _backend(self,level=0):
 @extend(node.let)
 @exceptions
 def _backend(self,level=0):
-    return "%s=%s" % (self.ret._backend(), 
-                      self.args._backend())
+    if options.line_numbering:
+        s = "# %d\n" % self.lineno + level*indent
+    else:
+        s = ''
+    return "%s%s=%s" % (s,
+                        self.ret._backend(), 
+                        self.args._backend())
 
 @extend(node.expr_list)
 @exceptions
@@ -289,8 +294,6 @@ reserved = set(
 @extend(node.ident)
 @exceptions
 def _backend(self,level=0):
-#    return str(self)
-#   s = self.name if self.name[0] != "." else self.name[1:]
     return self.name if self.name not in reserved else self.name+"_"
 
 @extend(node.stmt_list)

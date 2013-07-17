@@ -22,20 +22,24 @@ import copy,sys,pprint
 
 import node
 from node import extend,exceptions
-import backend
+import backend,options
 
+@exceptions
+def rename(t):
+    for u in node.postorder(t):
+        if u.__class__ in (node.ident,node.param):
+            if u.name[-1] == "_":
+                continue
+            if u.defs is None:
+                u.name += "_%d_" % u.lineno
+            else:
+                u.name += "_"+"_".join(sorted(str(v.lineno) for v in u.defs))+"_"
+
+@exceptions
 def resolve(t, symtab={}):
     do_resolve(t,symtab)
-    if 0:
-        tab = {}
-        for u in node.postorder(t):
-            if u.__class__ is node.ident:
-                tab[u.name,u.lineno] = (None if u.defs is None 
-                                        else [v.lineno for v in u.defs])
-        for key in sorted(tab.keys()):
-            print key, tab[key]
-
-        print "*" * 50
+    if options.do_rename:
+        rename(t)
 
 def do_resolve(t,symtab):
     """
@@ -79,16 +83,19 @@ def do_resolve(t,symtab):
                 # either a builtin function, or a call to user-def
                 # function, which is defined later.
                 cls = getattr(node,u.func_expr.name,None)
-                if not cls:
-                    # This is the first time we met u.func_expr.name
-                    cls = type(u.func_expr.name,
-                               (node.funcall,),
-                               { 'code' : None })
-                    setattr(node,u.func_expr.name,cls)
-                assert cls
-                if issubclass(cls,node.builtins) and u.__class__ != cls:
-                    u.func_expr = None # same in builtins ctor
-                u.__class__ = cls
+                # """
+                # if not cls:
+                #     # This is the first time we met u.func_expr.name
+                #     cls = type(u.func_expr.name,
+                #                (node.funcall,),
+                #                { 'code' : None })
+                #     setattr(node,u.func_expr.name,cls)
+                # assert cls
+                # if issubclass(cls,node.builtins) and u.__class__ != cls:
+                #     u.func_expr = None # same in builtins ctor
+
+                if cls:
+                    u.__class__ = cls
             else:
                 # Only if we have A(B) where A.defs is None
                 assert 0

@@ -4,6 +4,7 @@
 from collections import namedtuple
 from recipes import recordtype
 import copy,sys,inspect
+import options
 
 # def preorder(u):
 #     if isinstance(u,traversable):
@@ -11,6 +12,21 @@ import copy,sys,inspect
 #         for n in u:
 #             for t in preorder(n):
 #                 yield t
+
+def decode(self):
+    r = ""
+    s = self.name
+    while s:
+        if len(s) >= 2 and s[0] == "_":
+            r += s[1].upper()
+            s = s[2:]
+        else:
+            r += s[0].lower()
+            s = s[1:]
+    return r
+
+def encode(s):
+    return "".join(c+"_" if c.isupper() or c=="_" else c.upper() for c in s)
 
 def postorder(u):
     if isinstance(u,node):
@@ -28,6 +44,7 @@ def exceptions(f):
             return f(self,*args,**kwargs)
         except:
             print "%s.%s()" % (self.__class__.__name__, f.__name__)
+            #import pdb; pdb.set_trace()
             raise
     wrapper.__name__ = f.__name__
     return wrapper
@@ -99,41 +116,9 @@ class number(atom,recordtype("number","value lineno lexpos",default=None)):
     def __str__(self):
         return str(self.value)
 
-class ident(atom,recordtype("ident","name uid lineno lexpos defs",default=None)):
-    def rename(self,uid=None):
-        #self.encode()
-        if uid is None:
-            self.uid = self.lineno
-        else:
-            self.uid = uid
-        return self.uid
-
-    def encode(self):
-        self.name = "".join("_"+c if c.isupper() or c=="_" else c
-                           for c in self.name)
-
-    def decode(self):
-        r = ""
-        s = self.name
-        while s:
-            if len(s) >= 2 and s[0] == "_":
-                r += s[1].upper()
-                s = s[2:]
-            else:
-                r += s[0].lower()
-                s = s[1:]
-        return r
-
+class ident(atom,recordtype("ident","name lineno lexpos defs",default=None)):
     def __str__(self):
-        if self.uid:
-            return "%s_%s" % (self.name,self.uid)
-        else:
-            return self.name
-            
-    @classmethod
-    def new(cls,prefix,**kwargs):
-        cls.counter += 1
-        return cls("%s%d" % (prefix,cls.counter), **kwargs)
+        return self.name
 
 class param(ident):
     pass
@@ -336,6 +321,7 @@ builtins_list = [
     "max",
     "min",
     "mod",
+    "nnz",
     "numel",
     "ones",
     "rand",

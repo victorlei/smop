@@ -8,27 +8,21 @@ import sys
 import node
 from node import extend
 
-import logging
-logger = logging.getLogger(__name__)
-
 import options,parse
 
 ZERO = node.number(0)
 
 def rewrite(t):
-    logger.info("started")
     global modified; modified = []
     while do_rewrite(t) or modified:
-        logger.info([k for k in set(modified)])
         modified = []
-    logger.info("done")
 
 def do_rewrite(t):
     for u in node.postorder(t):
         try:
             u._rewrite()
         except:
-            logger.exception(u)
+            assert 0
 
 def lineno():
     """Returns the current line number in our program."""

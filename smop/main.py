@@ -3,7 +3,7 @@
 
 import sys,cPickle,glob,os
 import getopt
-import lexer,parse,resolve,backend,options,rewrite,node,typerank
+import lexer,parse,resolve,backend,options,rewrite,node,typeof
 
 def usage():
     print "SMOP compiler version 0.22"
@@ -85,9 +85,11 @@ def main():
             func_list = parse.parse(buf if buf[-1]=='\n' else buf+'\n')
 
             try:
+                symtab = {}
                 for func_obj in func_list: 
                     try:
                         func_name = func_obj.head.ident.name
+                        options.functab[func_name] = func_obj
                         print "\t",func_name
                     except AttributeError:
                         if verbose:
@@ -97,14 +99,15 @@ def main():
                         continue
                     if options.do_resolve:
                         resolve.resolve(func_obj)
-                        cls = getattr(node,func_obj.head.ident.name,None)
-                        if not cls:
-                            cls = type(func_obj.head.ident.name,
-                                       (node.funcall,),
-                                       { 'code' : func_obj })
-                            setattr(node,func_obj.head.ident.name,cls)
-                        assert issubclass(cls,node.funcall)
-                        #typerank.typerank(func_obj)
+
+                if options.do_typeof:
+                    t = func_obj.apply(**symtab)
+
+                if options.do_listing:
+                    for key in sorted(options.functab.keys()):
+                        print key, options.functab[key].head.ident
+
+                    print "*" * 50
 
                 # end for
                     if options.do_rewrite:

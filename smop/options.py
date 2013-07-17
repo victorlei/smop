@@ -17,7 +17,18 @@ rank_backward_propagate=1
 has_char_constants = 0
 
 do_allocate = 0
-do_resolve = 1
-do_rewrite = 1
+do_resolve  = 1
+do_rewrite  = 1
+do_rename   = 0 # SSA
+do_typeof   = 0
+do_listing  = 0
 
 debug = False
+
+uppercase=True # active only with f90
+
+line_numbering=True #True # uses either # or ! or %
+
+""" Map func name (str) to node.function instance
+"""
+functab = {}
