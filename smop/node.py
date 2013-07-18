@@ -44,7 +44,7 @@ def exceptions(f):
             return f(self,*args,**kwargs)
         except:
             print "%s.%s()" % (self.__class__.__name__, f.__name__)
-            #import pdb; pdb.set_trace()
+            import pdb; pdb.set_trace()
             raise
     wrapper.__name__ = f.__name__
     return wrapper
@@ -297,8 +297,10 @@ builtins_list = [
     "add", # synthetic opcode
     "all",
     "any",
+    "cellfun",
     "ceil",
     "clazz",
+    "cumprod",
     "cumsum",
     "diff",
     "dot",      # Exists in numpy. Implements matlab .*

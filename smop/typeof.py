@@ -7,15 +7,22 @@ and return the result.
 import node,options
 from node import extend,exceptions
 
+callstack = set()
+
 @extend(node.function)
 @exceptions
 def apply(self,*args,**symtab):
-    print "%%%", self.head.ident.name
+    name = self.head.ident.name 
+    if name in callstack:
+        return
+    #print "%%%", self.head.ident.name
+    callstack.add(name)
+
     params = [(u.name,u.lineno) for u in self.head.args]
     symtab.update(map(None,params,args))
     self.body._typeof(symtab)
     #return [symtab[u.name,u.lineno] for u in self.ret] 
-    return [u._typeof(symtab) for u in self.head.ret]
+    return "".join([u._typeof(symtab) for u in self.head.ret])
 
 @extend(node.node)
 @exceptions
@@ -47,6 +54,7 @@ def _typeof(self,symtab):
         symtab[self.ret.name,self.ret.lineno] = self.args._typeof(symtab)
 
 @extend(node.param)
+@extend(node.cellfun)  # FIXME
 @exceptions
 def _typeof(self,symtab):
     return ''
@@ -54,11 +62,15 @@ def _typeof(self,symtab):
 @extend(node.ident)
 @exceptions
 def _typeof(self,symtab):
+    """
+    symtab maps pairs (name,lineno) to string
+    encoding of type.
+    """
     if self.defs is None:
         try:
             return symtab[self.name,self.lineno]
         except:
-            print '+++ Missing type for',self.name
+            #print '+++ Missing type for',self.name
             return '' 
     ts = set([u._typeof(symtab) for u in self.defs if u.defs is None])
     if '' in ts:
@@ -91,6 +103,7 @@ def _typeof(self,symtab):
 #    return ''
 
 @extend(node.arrayref) 
+@extend(node.cellarrayref) 
 @exceptions
 def _typeof(self,symtab):
     return self.func_expr._typeof(symtab)
@@ -154,6 +167,8 @@ def _typeof(self,symtab):
 # sum is different from similar funcs.
 # re-check this
 @extend(node.sum)
+@extend(node.cumsum)
+@extend(node.cumprod)
 @exceptions
 def _typeof(self,symtab):
     if self.args[0]._typeof(symtab) == 'l':
@@ -171,6 +186,7 @@ def _typeof(self,symtab):
 @extend(node.inf)
 @extend(node.dot)
 @extend(node.nnz)
+@extend(node.mod)
 @exceptions
 def _typeof(self,symtab):
     return 'd'
@@ -206,6 +222,7 @@ def _typeof(self,symtab):
 @extend(node.true)
 @extend(node.isequal)
 @extend(node.isnan)
+@extend(node.isinf)
 @extend(node.isempty)
 @extend(node.all)
 @extend(node.any)
