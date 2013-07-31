@@ -396,36 +396,17 @@ def p_let(p):
         p[0] = node.setfield(p[1].args[0],
                              p[1].args[1],
                              p[3])
-    elif isinstance(p[1],node.matrix):
-        assert len(p[1].args) > 0
-        ret = p[1].args
-        # p[3] may be a single ident, hiding a funcall w/o the arguments
-        if isinstance(p[3],node.ident):
-            # [a b] = foo
-            p[0] = node.funcall(func_expr=p[3],
-                                args=node.expr_list(),
-                                ret=ret)
-        elif isinstance(p[3],node.funcall):
-            # [a b] = foo(x,y)
-            p[0] = node.funcall(func_expr=p[3].func_expr,
-                                args=p[3].args,
-                                ret=ret)
-        else:
-            # In MATLAB, there is yet another way to assign simultaneously 
-            # several values, by using struct arrays as follows:
-            # >>> foo(1).x=100
-            # >>> foo(2).x=200
-            # >>> [a b] = foo.x
-            # There is no attempt to support struct arrays which are not
-            # scalars, that is whose size is other than 1,1
-            assert 0
     else:
-        #if p[3].is_const():
-        #    p[1].value = p[3]
-        p[0] = node.let(ret=p[1],
-                        args=p[3],
-                        lineno=p.lineno(2),
-                        lexpos=p.lexpos(2))
+         #assert len(p[1].args) > 0
+         ret = p[1].args if isinstance(p[1],node.matrix) else p[1]
+         p[0] = node.let(ret=ret,
+                         args=p[3],
+                         lineno=p.lineno(2),
+                         lexpos=p.lexpos(2))
+         if isinstance(p[1],node.matrix):
+             p[0].nargout = len(p[1].args)
+         else:
+             p[0].nargout = 0
 
 def p_for_stmt(p):
     """

@@ -44,7 +44,6 @@ def exceptions(f):
             return f(self,*args,**kwargs)
         except:
             print "%s.%s()" % (self.__class__.__name__, f.__name__)
-            import pdb; pdb.set_trace()
             raise
     wrapper.__name__ = f.__name__
     return wrapper
@@ -142,7 +141,7 @@ class stmt(node): pass
 #                               str(self.args))
 
 class let(stmt,recordtype("let",
-                          "ret args lineno lexpos",
+                          "ret args lineno lexpos nargout",
                           default=None)):
     """Assignment statement, except [x,y]=foo(x,y,z),
     which is handled by call_stmt."""
@@ -209,7 +208,7 @@ class allocate_stmt(stmt,recordtype("allocate_stmt",
 #
 # FUNCALL
 
-class funcall(node,recordtype("funcall","func_expr args ret",default=None)):
+class funcall(node,recordtype("funcall","func_expr args",default=None)):
     """Funcall instances represent 
     (a) Array references, both lhs and rhs
     (b) Function call expressions

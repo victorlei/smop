@@ -211,13 +211,13 @@ def _backend(self,level=0):
     #     func_name = self.func_expr.name
     # else:
     #     func_name = self.__class__.__name__
-    if self.ret is None:
+    #if self.ret is None:
         return "%s(%s)" % (self.func_expr._backend(),
                            self.args._backend())
-    else:
-        return ("%s = %s(%s)" % (self.ret._backend(),
-                                 self.func_expr._backend(),
-                                 self.args._backend()))
+    #else:
+    #    return ("%s = %s(%s)" % (self.ret._backend(),
+    #                             self.func_expr._backend(),
+    #                             self.args._backend()))
 
 @extend(node.let)
 @exceptions
@@ -226,9 +226,14 @@ def _backend(self,level=0):
         s = "# %d\n" % self.lineno + level*indent
     else:
         s = ''
-    return "%s%s=%s" % (s,
-                        self.ret._backend(), 
-                        self.args._backend())
+    if self.nargout > 1:
+        return "%s=%s # nargout=%d" % (self.ret._backend(), 
+                                       self.args._backend(),
+                                       self.nargout)
+    else:
+        return "%s=%s" % (self.ret._backend(),
+                          self.args._backend())
+
 
 @extend(node.expr_list)
 @exceptions
@@ -371,13 +376,13 @@ def _backend(self,level=0):
 @extend(node.builtins)
 @exceptions
 def _backend(self,level=0):
-    if not self.ret:
+    #if not self.ret:
         return "%s(%s)" % (self.__class__.__name__,
                            self.args._backend())
-    else:
-        return ("%s=%s(%s)" % (self.ret._backend(),
-                               self.__class__.__name__,
-                               self.args._backend()))
+    # else:
+    #     return ("%s=%s(%s)" % (self.ret._backend(),
+    #                            self.__class__.__name__,
+    #                            self.args._backend()))
 
 @extend(node.strcmp)
 @exceptions
@@ -409,11 +414,11 @@ def _backend(self,level=0):
 @exceptions
 def _backend(self,level=0):
     if len(self.args) == 1:
-        if self.ret:
-            return "%s = %s.shape" % (self.ret,
-                                      self.args[0]._backend())
-        else:
-            return "%s.shape" % self.args[0]._backend()
+        # if self.ret:
+        #     return "%s = %s.shape" % (self.ret,
+        #                               self.args[0]._backend())
+        # else:
+        return "%s.shape" % self.args[0]._backend()
             
     if self.args[1].__class__ is node.number:
         return "%s.shape[%s]" % (self.args[0]._backend(),
@@ -473,12 +478,13 @@ def _backend(self,level=0):
 @extend(node.find)
 @exceptions
 def _backend(self,level=0):
-    if self.ret and len(self.ret) == 2:
-        return "%s,%s = np.nonzero(%s)" % (self.ret[0]._backend(),
-                                           self.ret[1]._backend(),
-                                           self.args[0]._backend())
-    else:
-        return "np.flatnonzero(%s)" % self.args[0]._backend()
+    return "np.flatnonzero(%s)" % self.args[0]._backend()
+    # if self.ret and len(self.ret) == 2:
+    #     return "%s,%s = np.nonzero(%s)" % (self.ret[0]._backend(),
+    #                                        self.ret[1]._backend(),
+    #                                        self.args[0]._backend())
+    # else:
+    #     return "np.flatnonzero(%s)" % self.args[0]._backend()
 
 @extend(node.load)
 @exceptions

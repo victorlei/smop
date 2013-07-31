@@ -340,8 +340,8 @@ def _resolve(self,symtab):
     if self.func_expr:
         self.func_expr._resolve(symtab)
     self.args._resolve(symtab)
-    if self.ret:
-        self.ret._lhs_resolve(symtab)
+    #if self.ret:
+    #    self.ret._lhs_resolve(symtab)
 
 @extend(node.setfield) # a subclass of funcall
 @exceptions

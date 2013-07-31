@@ -873,8 +873,8 @@ if curpos(newpos(1),newpos(2))>0
         end;
     end;
     newitem=curpos(newpos(1),newpos(2));
-    pfin2 = 123
-    %[pfin2(1) pfin2(2)]=find(finpos==newitem);
+    pfin2 = []
+    [pfin2(1) pfin2(2)]=find(finpos==newitem);
     dirx2=sign(pfin2(1)-newpos(1));
     diry2=sign(pfin2(2)-newpos(2));
     wt(newitem)=wt(newitem)+20000;

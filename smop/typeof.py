@@ -11,18 +11,26 @@ callstack = set()
 
 @extend(node.function)
 @exceptions
-def apply(self,*args,**symtab):
+def apply(self,args,symtab):
     name = self.head.ident.name 
     if name in callstack:
         return
-    #print "%%%", self.head.ident.name
+    print "%%%", self.head.ident.name
     callstack.add(name)
 
     params = [(u.name,u.lineno) for u in self.head.args]
-    symtab.update(map(None,params,args))
+    if len(args) < len(self.head.args): # head.args are formal params
+        args += [''] * (len(self.head.args)-len(args))
+    symtab.update(zip(params,args))
     self.body._typeof(symtab)
     #return [symtab[u.name,u.lineno] for u in self.ret] 
-    return "".join([u._typeof(symtab) for u in self.head.ret])
+#    for u in node.postorder(self):
+#        if u.__class__ is node.ident:
+#            try:
+#                print u.name,u.lineno,symtab[u.name,u.lineno]
+#            except:
+#                print u.name,u.lineno,'?'
+    return '' #[u._typeof(symtab) for u in self.head.ret]
 
 @extend(node.node)
 @exceptions
@@ -35,12 +43,6 @@ def _typeof(self,symtab):
 def _typeof(self,symtab):
     symtab[self.ident.name,self.ident.lineno] = 'i'
     self.stmt_list._typeof(symtab)
-
-# @extend(node.function)
-# @exceptions
-# def _typeof(self,symtab):
-#     self.head._typeof(symtab)
-#     self.body._typeof(symtab)
 
 @extend(node.func_decl)
 @exceptions
@@ -70,7 +72,7 @@ def _typeof(self,symtab):
         try:
             return symtab[self.name,self.lineno]
         except:
-            #print '+++ Missing type for',self.name
+            print '+++ Missing type for',self.name
             return '' 
     ts = set([u._typeof(symtab) for u in self.defs if u.defs is None])
     if '' in ts:
@@ -203,12 +205,9 @@ def _typeof(self,symtab):
 @extend(node.sort)
 @exceptions
 def _typeof(self,symtab):
-    if not self.ret:
-        return self.args[0]._typeof(symtab)
-    if len(self.ret) == 1:
-        return self.args[0]._typeof(symtab)
-    if len(self.ret) == 2:
-        return self.args[0]._typeof(symtab) + 'i'
+    return self.args[0]._typeof(symtab)
+    #if len(self.ret) == 2:
+    #    return self.args[0]._typeof(symtab) + 'i'
 
 @extend(node.numel)
 @extend(node.floor)
@@ -230,12 +229,13 @@ def _typeof(self,symtab):
 def _typeof(self,symtab):
     return 'l'
 
-@extend(node.funcall) # func_expr,args,ret
+@extend(node.funcall) # func_expr,args
 @exceptions
 def _typeof(self,symtab):
-    #func = symtab[self.func_expr.name,self.func_expr.lineno]
-    func = options.functab[self.func_expr.name]
-    return func.apply(self.args)
+    func_obj = symtab[self.func_expr.name]
+    #if not self.ret:
+    return func_obj.apply(self.args,symtab)
+    #return ['' for i in self.ret]
 
 @extend(node.ravel)
 @exceptions
