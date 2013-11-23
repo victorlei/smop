@@ -14,7 +14,7 @@ tokens = [
     "END_STMT", "EQ", "EXP", "FIELD", "GE", "GT", "HANDLE", "IDENT",
     "LBRACE", "LBRACKET", "LE", "LPAREN", "LT", "MINUS", "MUL", "NE",
     "NEG", "NUMBER", "OR" , "OROR", "PLUS", "RBRACE", "RBRACKET",
-    "RPAREN", "SEMI", "STRING", "TRANSPOSE",
+    "RPAREN", "SEMI", "STRING", "TRANSPOSE", "COMMENT"
 ]
 
 reserved = {
@@ -197,9 +197,11 @@ def new():
         t.type = "SEMI"
         return t
 
-    def t_comment(t):
+    def t_COMMENT(t):
         r"%.*"
-        pass
+        t.lexer.lineno += 1
+        t.value = '#' +t.value[1:]
+        return t
 
 
 #    @TOKEN(ws+r"(?=[-+]\S)")    

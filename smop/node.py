@@ -140,6 +140,10 @@ class stmt(node): pass
 #                               str(self.func_expr),
 #                               str(self.args))
 
+class comment(stmt,recordtype("string", "comment_stmt")):
+    def __str__(self):
+        return str(self.comment_stmt)
+
 class let(stmt,recordtype("let",
                           "ret args lineno lexpos nargout",
                           default=None)):

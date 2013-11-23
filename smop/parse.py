@@ -86,6 +86,7 @@ def p_stmt(p):
          | switch_stmt
          | try_catch
          | while_stmt
+         | comment_stmt
     """
     # END_STMT is intentionally left out
     p[0] = p[1]
@@ -208,7 +209,13 @@ def p_null_stmt(p):
               | COMMA
     """
     p[0] = None
-    
+
+def p_comment_stmt(p):
+    """
+    comment_stmt : COMMENT
+    """
+    p[0] = node.comment(p[1])
+
 def p_func_decl(p):
     """func_decl : FUNCTION ident args_opt SEMI 
                  | FUNCTION ret '=' ident args_opt SEMI 

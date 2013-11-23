@@ -495,3 +495,8 @@ def _backend(self,level=0):
 @exceptions
 def _backend(self,level=0):
     return "savemat(%s)" % self.args._backend()
+
+@extend(node.comment)
+@exceptions
+def _backend(self,level=0):
+    return "%s" % self
