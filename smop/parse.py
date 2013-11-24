@@ -210,12 +210,6 @@ def p_null_stmt(p):
     """
     p[0] = None
 
-def p_comment_stmt(p):
-    """
-    comment_stmt : COMMENT
-    """
-    p[0] = node.comment(p[1])
-
 def p_func_decl(p):
     """func_decl : FUNCTION ident args_opt SEMI 
                  | FUNCTION ret '=' ident args_opt SEMI 
@@ -631,9 +625,23 @@ def p_error(p):
     #print "Ignored:",p
     return p
 
+with_comments = True
+def p_comment_stmt(p):
+    """
+    comment_stmt : COMMENT
+    """
+    if with_comments:
+        p[0] = node.comment(p[1])
+    else:
+        p[0] = None
+
 parser = yacc.yacc(start="top")
 
-def parse(buf):
+def parse(buf, use_comments=True):
+    # strip comments or not in p_comment_stmt
+    global with_comments
+    with_comments = use_comments
+    
     try:
         p = parser.parse(buf,tracking=1,debug=0,lexer=lexer.new())
         return p
