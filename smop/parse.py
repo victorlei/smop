@@ -631,6 +631,7 @@ def p_comment_stmt(p):
     comment_stmt : COMMENT
     """
     if with_comments:
+        p[1] = re.sub(r"\r", r"", p[1])
         p[0] = node.comment(p[1])
     else:
         p[0] = None
