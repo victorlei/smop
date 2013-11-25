@@ -2,6 +2,7 @@
 # Copyright 2011-2013 Victor Leikehman
 
 import sys,cPickle,glob,os
+import re
 import getopt
 import lexer,parse,resolve,backend,options,rewrite,node,typeof
 
@@ -87,6 +88,12 @@ def main():
                 continue
             print filename
             buf = open(filename).read()
+            
+            # move each comment alone on a line
+            # to avoid errors by trailing comment
+            # and minimally change parsing rules
+            buf = re.sub("%", "\n %", buf)
+            
             func_list = parse.parse(buf if buf[-1]=='\n' else buf+'\n',
                                     with_comments)
 

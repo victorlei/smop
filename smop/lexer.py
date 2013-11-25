@@ -66,7 +66,7 @@ def new():
               ("afterkeyword","exclusive"))
 
     #ws1 = r"(\s|\.\.\..*\n|%.*)+"
-    ws0 = r"(\s|%.*\n|\.\.\..*\n)*"
+    ws0 = r"(\s|\.\.\..*\n)*"
     
     def t_afterkeyword_STRING(t):
         r"'([^']|(''))*'"
