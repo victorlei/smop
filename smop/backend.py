@@ -33,7 +33,7 @@ def _backend(self,level=0):
     elif any(a.__class__ is node.string for a in self.args):
         return " + ".join(a._backend() for a in self.args)
     else:
-        return "np.array([%s]).reshape(1,-1)" % self.args._backend()
+        return "np.array([%s]).reshape(1, -1)" % self.args._backend()
 
 @extend(node.cellarrayref)
 @exceptions
@@ -125,13 +125,13 @@ def _backend(self,level=0):
         return node.number(self.args[0].value +
                            self.args[1].value)._backend()
     else:
-        return "(%s+%s)" % (self.args[0]._backend(),
+        return "(%s +%s)" % (self.args[0]._backend(),
                             self.args[1]._backend())
 
 @extend(node.sub)
 @exceptions
 def _backend(self,level=0):
-    return "(%s-%s)" %  (self.args[0]._backend(),
+    return "(%s -%s)" %  (self.args[0]._backend(),
                          self.args[1]._backend())
 
 @extend(node.expr)
@@ -141,7 +141,7 @@ def _backend(self,level=0):
         return self.args[0]._backend()
 
     if self.op == "\\":
-        return "numpy.linalg.solve(%s,%s)" % (self.args[0]._backend(),
+        return "numpy.linalg.solve(%s, %s)" % (self.args[0]._backend(),
                                               self.args[1]._backend())
     if self.op == "::":
         if not self.args:
@@ -227,23 +227,23 @@ def _backend(self,level=0):
     else:
         s = ''
     if self.nargout > 1:
-        return "%s=%s # nargout=%d" % (self.ret._backend(), 
+        return "%s = %s # nargout=%d" % (self.ret._backend(), 
                                        self.args._backend(),
                                        self.nargout)
     else:
-        return "%s=%s" % (self.ret._backend(),
+        return "%s = %s" % (self.ret._backend(),
                           self.args._backend())
 
 
 @extend(node.expr_list)
 @exceptions
 def _backend(self,level=0):
-    return ",".join([t._backend() for t in self])
+    return ", ".join([t._backend() for t in self])
 
 @extend(node.concat_list)
 @exceptions
 def _backend(self,level=0):
-    return ",".join(["[%s]"%t._backend() for t in self])
+    return ", ".join(["[%s]"%t._backend() for t in self])
 
 # @extend(node.call_stmt)
 # def _backend(self,level=0):
@@ -387,12 +387,12 @@ def _backend(self,level=0):
 @extend(node.strcmp)
 @exceptions
 def _backend(self,level=0):
-    return "%s==%s" % (self.args[0]._backend(),
+    return "%s == %s" % (self.args[0]._backend(),
                        self.args[1]._backend())
 @extend(node.strcmpi)
 @exceptions
 def _backend(self,level=0):
-    return "%s.lower()==%s.lower()" % (self.args[0]._backend(),
+    return "%s.lower() == %s.lower()" % (self.args[0]._backend(),
                                        self.args[1]._backend())
                        
 @extend(node.isequal)
@@ -495,3 +495,8 @@ def _backend(self,level=0):
 @exceptions
 def _backend(self,level=0):
     return "savemat(%s)" % self.args._backend()
+
+@extend(node.comment)
+@exceptions
+def _backend(self,level=0):
+    return "%s" % self

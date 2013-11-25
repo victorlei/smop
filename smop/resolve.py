@@ -219,6 +219,7 @@ def _resolve(self,symtab):
         
 @extend(node.number)
 @extend(node.string)
+@extend(node.comment)
 @exceptions
 def _resolve(self,symtab):
         pass

@@ -2,6 +2,7 @@
 # Copyright 2011-2013 Victor Leikehman
 
 import sys,cPickle,glob,os
+import re
 import getopt
 import lexer,parse,resolve,backend,options,rewrite,node,typeof
 
@@ -15,18 +16,20 @@ def usage():
     -o --output=FILENAME    By default create file named a.py
     -o- --output=-          Use standard output
     -s --strict             Stop on the first error
+    -n --no-comments        Strip comments
     -v --verbose
 """
 
 def main():
     try:
         opts, args = getopt.gnu_getopt(sys.argv[1:],
-                                       "ho:vVsX:", 
+                                       "ho:vVsX:n", 
                                        [
                                         "exclude",
                                         "help",
                                         "output=",
                                         "strict",
+                                        "no-comments",
                                         "verbose",
                                         "version",
                                        ])
@@ -40,6 +43,7 @@ def main():
     output = None
     verbose = 0
     strict = 0
+    with_comments = True
 
     for o, a in opts:
         if o in ("-s", "--strict"):
@@ -56,6 +60,8 @@ def main():
             sys.exit()
         elif o in ("-o", "--output"):
             output = a
+        elif o in ("-n", "--no-comments"):
+            with_comments = False
         else:
             assert False, "unhandled option"
 
@@ -82,7 +88,14 @@ def main():
                 continue
             print filename
             buf = open(filename).read()
-            func_list = parse.parse(buf if buf[-1]=='\n' else buf+'\n')
+            
+            # move each comment alone on a line
+            # to avoid errors by trailing comment
+            # and minimally change parsing rules
+            buf = re.sub("%", "\n %", buf)
+            
+            func_list = parse.parse(buf if buf[-1]=='\n' else buf+'\n',
+                                    with_comments)
 
             try:
                 symtab = {}
