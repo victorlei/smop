@@ -92,7 +92,7 @@ def main():
             # move each comment alone on a line
             # to avoid errors by trailing comment
             # and minimally change parsing rules
-            buf = re.sub("%", "\n %", buf)
+            buf = re.sub("%+", "\n %", buf)
             
             func_list = parse.parse(buf if buf[-1]=='\n' else buf+'\n',
                                     with_comments)
