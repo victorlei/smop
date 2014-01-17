@@ -394,7 +394,18 @@ def _backend(self,level=0):
 def _backend(self,level=0):
     return "%s.lower() == %s.lower()" % (self.args[0]._backend(),
                                        self.args[1]._backend())
-                       
+
+@extend(node.struct)
+@exceptions
+def _backend(self,level=0):
+    return "type('struct', (), {})()"
+
+@extend(node.isfield)
+@exceptions
+def _backend(self,level=0):
+    return "hasattr(%s, %s)" % (self.args[0]._backend(),
+                                self.args[1]._backend())
+
 @extend(node.isequal)
 @exceptions
 def _backend(self,level=0):

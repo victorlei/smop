@@ -319,6 +319,7 @@ builtins_list = [
     "isempty",
     "isequal",
     "isinf",
+    "isfield",
     "isnan",
     "length",
     "load",
@@ -340,6 +341,7 @@ builtins_list = [
     "sort",
     "strcmp",
     "strcmpi",
+    "struct",
     "sub", # synthetic opcode
     "sum",
     "transpose",
