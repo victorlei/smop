@@ -500,3 +500,8 @@ def _backend(self,level=0):
 @exceptions
 def _backend(self,level=0):
     return "%s" % self
+
+@extend(node.Inf)
+@exceptions
+def _backend(self,level=0):
+    return "np.inf"
