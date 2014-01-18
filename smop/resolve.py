@@ -194,7 +194,11 @@ def _resolve(self,symtab):
     self.head._resolve(symtab)
     self.body._resolve(symtab)
     self.head.ret._resolve(symtab)
-        
+    docstring = []
+    while type(self.body[0]) is node.comment:
+        docstring.append(str(self.body.pop(0))[1:])
+    self.head.docstring = docstring
+
 @extend(node.global_list)
 @extend(node.concat_list)
 @extend(node.expr_list)

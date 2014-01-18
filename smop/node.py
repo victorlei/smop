@@ -152,7 +152,7 @@ class let(stmt,recordtype("let",
     def __str__(self):
         return "%s=%s" % (str(self.ret), str(self.args))
     
-class func_decl(stmt,recordtype("func_decl","ident ret args decl_list use_nargin",default=None)):
+class func_decl(stmt,recordtype("func_decl","ident ret args decl_list use_nargin docstring",default=None)):
     pass
 
 class lambda_expr(func_decl):

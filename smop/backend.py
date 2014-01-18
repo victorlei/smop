@@ -314,10 +314,19 @@ def _backend(self,level=0):
 @exceptions
 def _backend(self,level=0):
     if not self.use_nargin:
-        s = "def %s(%s):" %  (self.ident._backend(),
-                              self.args._backend())
+        s = "def %s(%s):" % (self.ident._backend(),
+                             self.args._backend())
     else:
         s = "def %s(*varargin):" % self.ident._backend()
+    if self.docstring:
+        s += '\n    """' + self.docstring[0].lstrip()
+        for d in self.docstring[1:]:
+            if d.strip():
+                s += '\n    ' + d
+            else:
+                s += '\n'
+        s += '\n    """'
+    if self.use_nargin:
         s += "\n    nargin = len(varargin)"
         for i in range(len(self.args)):
             s += "\n    if nargin > %d:" % i
