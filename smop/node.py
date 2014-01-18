@@ -316,6 +316,7 @@ builtins_list = [
     "fopen",
     "getfield",
     "inf", "inf0",
+    "Inf",
     "isempty",
     "isequal",
     "isinf",
