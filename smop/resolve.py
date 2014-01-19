@@ -122,11 +122,16 @@ def do_resolve(t,symtab):
                     # see below).
                     u.args[i].op = "::" # slice marked with op=::
                     if u.args[i].args:
-                        u.args[i].args[0] = node.sub(u.args[i].args[0],
-                                                     node.number(1))
-                    # for s in node.postorder(u.args[i]):
-                    #    if s.__class__==node.expr and s.op=="end" and not s.args:
-                    #        s.args = node.expr_list([u.func_expr,node.number(i)])
+                        if type(u.args[i].args[0]) is node.number:
+                            u.args[i].args[0].value -= 1
+                        else:
+                            u.args[i].args[0] = node.sub(u.args[i].args[0],
+                                                         node.number(1))
+                    for s in node.postorder(u.args[i]):
+                        if s.__class__==node.expr and s.op=="end" and not s.args:
+                            s.args = node.expr_list([u.func_expr,node.number(i)])
+                elif cls is node.expr and u.args[i].op == "end":
+                    u.args[i] = node.number(-1)
                 else:
                     u.args[i] = node.sub(u.args[i],node.number(1))
 
