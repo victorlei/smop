@@ -480,11 +480,22 @@ def _backend(self,level=0):
 @extend(node.min)
 @extend(node.max)
 @extend(node.sum)
-@extend(node.zeros)
 @exceptions
 def _backend(self,level=0):
     cls_name = self.__class__.__name__
     return ("np." + cls_name  + "(%s)") % self.args._backend()
+
+@extend(node.zeros)
+@extend(node.ones)
+@extend(node.inf)
+@exceptions
+def _backend(self,level=0):
+    cls_name = self.__class__.__name__
+    # TODO: handle the case where the last arg is a dtype string
+    if len(self.args) > 1:
+        # give shape arguments as a tuple if there's more than one
+        return "np.%s(shape=(%s))" % (cls_name, self.args._backend())
+    return "np.%s(%s)" % (cls_name, self.args._backend())
 
 @extend(node.exist)
 @exceptions
