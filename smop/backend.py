@@ -330,7 +330,7 @@ def _backend(self,level=0):
         s += "\n    nargin = len(varargin)"
         for i in range(len(self.args)):
             s += "\n    if nargin > %d:" % i
-            s += "\n        %s = varargin[%d]" % (self.args[i], i)
+            s += "\n        %s = varargin[%d]" % (self.args[i]._backend(), i)
     return s
 
 """
