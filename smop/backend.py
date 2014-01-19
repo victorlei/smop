@@ -491,11 +491,18 @@ def _backend(self,level=0):
 @exceptions
 def _backend(self,level=0):
     cls_name = self.__class__.__name__
-    # TODO: handle the case where the last arg is a dtype string
-    if len(self.args) > 1:
-        # give shape arguments as a tuple if there's more than one
-        return "np.%s(shape=(%s))" % (cls_name, self.args._backend())
-    return "np.%s(%s)" % (cls_name, self.args._backend())
+    # The last arg might be a dtype string
+    if type(self.args[-1]) is node.string:
+        dtype_name = self.args.pop()._backend()
+    else:
+        dtype_name = "'float64'"  # default case
+    # If only one shape argument is given, make a square matrix.
+    if len(self.args) == 1:
+        self.args.append(self.args[0])
+    # There's not a direct equivalent for inf, but we can fake it.
+    if cls_name == 'inf':
+        return "(np.zeros(shape=(%s), dtype=%s) + np.inf)" % (self.args._backend(), dtype_name)
+    return "np.%s(shape=(%s), dtype=%s)" % (cls_name, self.args._backend(), dtype_name)
 
 @extend(node.exist)
 @exceptions
