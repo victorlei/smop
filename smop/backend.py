@@ -480,11 +480,29 @@ def _backend(self,level=0):
 @extend(node.min)
 @extend(node.max)
 @extend(node.sum)
-@extend(node.zeros)
 @exceptions
 def _backend(self,level=0):
     cls_name = self.__class__.__name__
     return ("np." + cls_name  + "(%s)") % self.args._backend()
+
+@extend(node.zeros)
+@extend(node.ones)
+@extend(node.inf)
+@exceptions
+def _backend(self,level=0):
+    cls_name = self.__class__.__name__
+    # The last arg might be a dtype string
+    if type(self.args[-1]) is node.string:
+        dtype_name = self.args.pop()._backend()
+    else:
+        dtype_name = "'float64'"  # default case
+    # If only one shape argument is given, make a square matrix.
+    if len(self.args) == 1:
+        self.args.append(self.args[0])
+    # There's not a direct equivalent for inf, but we can fake it.
+    if cls_name == 'inf':
+        return "(np.zeros(shape=(%s), dtype=%s) + np.inf)" % (self.args._backend(), dtype_name)
+    return "np.%s(shape=(%s), dtype=%s)" % (cls_name, self.args._backend(), dtype_name)
 
 @extend(node.exist)
 @exceptions
