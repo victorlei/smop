@@ -600,9 +600,7 @@ def p_expr2(p):
              | expr OROR expr
              | expr PLUS expr
     """
-    if p[2] == ".*":
-        p[0] = node.dot(p[1],p[3])
-    elif p[2] == "." and isinstance(p[3],node.expr) and p[3].op=="parens":
+    if p[2] == "." and isinstance(p[3],node.expr) and p[3].op=="parens":
         p[0] = node.getfield(p[1],p[3].args[0])
     elif p[2] == ":" and isinstance(p[1],node.expr) and p[1].op==":":
         # Colon expression means different things depending on the
