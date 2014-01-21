@@ -11,7 +11,7 @@ setup(
     #url = 'http://chiselapp.com/user/victorlei/repository/smop-dev/index',
     #download_url = 'http://code.google.com/p/smop-dev/downloads/list',
     name = 'smop',
-    version = '0.23',
+    version = '0.24',
     entry_points = { 'console_scripts': [ 'smop = smop.main:main', ], },
     packages = ['smop'],
     #package_dir = {'':'src'},
