@@ -50,7 +50,12 @@ def p_top(p):
     if len(p) == 1:
         p[0] = node.stmt_list()
     elif len(p) == 2:
-        p[0] = p[1]
+        # just a script, so we wrap it in a __main__ function
+        p[0] = node.stmt_list()
+        f = node.func_decl(ident=node.ident(name='__main__'),
+                           ret=node.expr_list(),
+                           args=node.expr_list())
+        p[0].append(node.function(head=f,body=p[1]))
     else:
         # we backpatch the func_decl node
         assert p[2].__class__ is node.func_decl
