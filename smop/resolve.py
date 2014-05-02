@@ -71,6 +71,9 @@ def do_resolve(t,symtab):
     #pprint.pprint(symtab)
     for u in node.postorder(t):
         if (u.__class__ is node.funcall and 
+            u.func_expr.__class__ is node.expr and u.func_expr.op == "."):
+            u.__class__ = node.arrayref
+        elif (u.__class__ is node.funcall and 
             u.func_expr.__class__ is node.ident):
             if u.func_expr.defs:
                 # Both node.arrayref and node.builtins are subclasses
