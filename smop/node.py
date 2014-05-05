@@ -326,7 +326,7 @@ builtins_list = [
     "numel",
     "ones",
     "rand",
-    "range",   # synthetic opcode
+    "range_",   # synthetic opcode
     "ravel",   # synthetic opcode
     "rem",
     "save",

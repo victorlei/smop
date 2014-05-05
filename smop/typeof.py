@@ -212,7 +212,7 @@ def _typeof(self,symtab):
 @extend(node.numel)
 @extend(node.floor)
 @extend(node.length)
-@extend(node.range)
+@extend(node.range_)
 @exceptions
 def _typeof(self,symtab):
     return 'i'
