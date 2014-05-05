@@ -348,6 +348,14 @@ builtins_list = [
     "transpose",
     "true",
     "zeros",
+    "interp1",
+    "round",
+    "filter",
+    "butter",
+    "std",
+    "mean",
+    "floor",
+    "sqrt",
 ]
 
 for name in builtins_list:

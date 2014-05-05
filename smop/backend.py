@@ -22,6 +22,72 @@ optable = {
 def backend(t,*args):
     return t._backend(*args)
 
+@extend(node.interp1)
+@exceptions
+def _backend(self,level=0):
+    return "np.interp(%s,%s,%s)" % (self.args[2]._backend(),
+                                    self.args[0]._backend(),
+                                    self.args[1]._backend())
+
+@extend(node.round)
+@exceptions
+def _backend(self,level=0):
+    return "np.round(%s)" % (self.args[0]._backend())
+
+@extend(node.butter)
+@exceptions
+def _backend(self, level=0):
+    if len(self.args) == 2:
+        return "scipy.signal.butter(%s, %s)" % (self.args[0]._backend(),
+                                                self.args[1].backend())
+    elif len(self.args) == 3:
+        return "scipy.signal.butter(%s, %s, %s)" % (self.args[0]._backend(),
+                                                    self.args[1]._backend(),
+                                                    self.args[2]._backend())
+
+@extend(node.filter)
+@exceptions
+def _backend(self, level=0):
+    if len(self.args) == 3:
+        return "scipy.signal.lfilter(%s, %s, %s)" % (self.args[0]._backend(),
+                                                     self.args[1]._backend(),
+                                                     self.args[2]._backend())
+
+@extend(node.std)
+@exceptions
+def _backend(self, level=0):
+    if len(self.args) == 1:
+        flag = 1
+        return "np.std(%s, ddof=%s)" % (self.args[0]._backend(),
+                                        str(flag))
+    elif len(self.args) == 2:
+        flag = int(self.args[1]._backend())
+        return "np.std(%s, ddof=%s)" % (self.args[0]._backend(),
+                                        str(1 if flag==0 else 0))
+    elif len(self.args) == 3:
+        flag = int(self.args[1]._backend())
+        return "np.std(%s, ddof=%s, dim=%s)" % (self.args[0]._backend(),
+                                                str(1 if flag==0 else 0),
+                                                self.args[2]._backend())
+
+@extend(node.mean)
+@exceptions
+def _backend(self, level=0):
+    if len(self.args) == 1:
+        return "np.mean(%s)" % (self.args[0]._backend())
+
+@extend(node.floor)
+@exceptions
+def _backend(self, level=0):
+    if len(self.args) == 1:
+        return "np.floor(%s)" % (self.args[0]._backend())
+
+@extend(node.sqrt)
+@exceptions
+def _backend(self, level=0):
+    if len(self.args) == 1:
+        return "np.sqrt(%s)" % (self.args[0]._backend())
+
 @extend(node.matrix)
 @exceptions
 def _backend(self,level=0):

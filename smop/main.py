@@ -73,6 +73,7 @@ def main():
     print >> fp, "from __future__ import division"
     print >> fp, "import numpy as np"
     print >> fp, "from scipy.io import loadmat,savemat"
+    print >> fp, "import scipy.signal"
     print >> fp, "import os\n"
 
     #print >> fp, "from copy import copy as _copy"
