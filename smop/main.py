@@ -110,12 +110,12 @@ def main():
                         if strict:
                             return
                         continue
-                    fp0 = open("parse_"+func_name+".dot","w") if dot.match(func_name) else None
+                    fp0 = open("parse_"+func_name+".dot","w") if dot and dot.match(func_name) else None
                     if fp0:
                         graphviz.graphviz(func_obj,fp0)
                     if options.do_resolve:
                         resolve.resolve(func_obj)
-                        fp0 = open("resolve_"+func_name+".dot","w") if dot.match(func_name) else None
+                        fp0 = open("resolve_"+func_name+".dot","w") if dot and dot.match(func_name) else None
                         if fp0:
                             graphviz.resolve(func_obj,fp0,func_name)
 
