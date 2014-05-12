@@ -2,6 +2,20 @@ import parse,sys
 import node
 from node import extend
 
+def resolve(t,fp,func_name):
+    fp.write("digraph %s {\n" % func_name)
+    fp.write('graph [rankdir="LR"];\n')
+    for u in node.postorder(t):
+        if u.__class__ in (node.ident,node.param):
+            fp.write("%s [label=%s_%s_%s];\n" % (u.lexpos,u.name,u.lineno,u.lexpos))
+            if u.defs:
+                for v in u.defs:
+                    fp.write("%s -> %s" % (u.lexpos,v.lexpos))
+                    if u.lexpos < v.lexpos:
+                        fp.write('[color=red]')
+                    fp.write(';\n')
+    fp.write("}\n")
+
 @extend(node.node)
 def _graphviz(self,fp):
     if getattr(self,"__slots__",False):

@@ -2,8 +2,8 @@
 # Copyright 2011-2013 Victor Leikehman
 
 import sys,cPickle,glob,os
-import getopt
-import lexer,parse,resolve,backend,options,rewrite,node,typeof,graphviz
+import getopt,re
+import lexer,parse,resolve,backend,options,node,graphviz
 
 def usage():
     print "SMOP compiler version 0.25"
@@ -54,7 +54,7 @@ def main():
         if o in ("-s", "--strict"):
             strict = 1
         elif o in ("-d", "--dot"):
-            dot = a
+            dot = re.compile(a)
         elif o in ("-X", "--exclude"):
             exclude_list += a.split(",")
         elif o in ("-v", "--verbose"):
@@ -91,11 +91,10 @@ def main():
             if os.path.basename(filename) in exclude_list:
                 print "\tExcluded file: '%s'" % filename
                 continue
-            print filename
+            if verbose:
+                print filename
             buf = open(filename).read()
             func_list = parse.parse(buf if buf[-1]=='\n' else buf+'\n')
-            if dot:
-                graphviz.graphviz(func_list,open(dot,"w"))
 
             try:
                 symtab = {}
@@ -103,23 +102,22 @@ def main():
                     try:
                         func_name = func_obj.head.ident.name
                         symtab[func_name] = func_obj
-                        print "\t",func_name
+                        if verbose:
+                            print "\t",func_name
                     except AttributeError:
                         if verbose:
                             print "\tJunk ignored"
                         if strict:
                             return
                         continue
+                    fp0 = open("parse_"+func_name+".dot","w") if dot.match(func_name) else None
+                    if fp0:
+                        graphviz.graphviz(func_obj,fp0)
                     if options.do_resolve:
                         resolve.resolve(func_obj)
-
-                if options.do_typeof:
-                    for func_obj in func_list:
-                        t = func_obj.apply([],symtab)
-
-                if options.do_rewrite:
-                    for func_obj in func_list:
-                        rewrite.rewrite(func_obj)
+                        fp0 = open("resolve_"+func_name+".dot","w") if dot.match(func_name) else None
+                        if fp0:
+                            graphviz.resolve(func_obj,fp0,func_name)
 
                 for func_obj in func_list:
                     s = backend.backend(func_obj)
