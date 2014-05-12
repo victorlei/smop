@@ -11,13 +11,13 @@ def usage():
     Options:
     -V --version
     -X --exclude=FILES      Ignore files listed in comma-separated list FILES
-    -d --dot=FILENAME       After parsing, write the parse tree to FILENAME in
-                            "dot" format (explained on www.graphviz.org).
+    -d --dot=REGEX          For functions whose names match REGEX, save debugging
+                            information in "dot" format (see www.graphviz.org).
                             You need an installation of graphviz to use --dot
                             option.  Use "dot" utility to create a pdf file.
                             For example: 
-                                $ python main.py solver.m -d solver.dot
-                                $ dot -Tpdf -o solver.pdf solver.dot
+                                $ python main.py fastsolver.m -d "solver|cbest"
+                                $ dot -Tpdf -o resolve_solver.pdf resolve_solver.dot
     -h --help
     -o --output=FILENAME    By default create file named a.py
     -o- --output=-          Use standard output
