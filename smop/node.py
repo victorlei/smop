@@ -63,6 +63,9 @@ class node(object):
             def __iter__(self):
                 other = object.__getattribute__(self,"other")
                 return iter(other)
+            #def __hash__(self):
+            #    other = object.__getattribute__(self,"other")
+            #    return id(other)
             def __repr__(self):
                 other = object.__getattribute__(self,"other")
                 return repr(other)
@@ -208,7 +211,7 @@ class allocate_stmt(stmt,recordtype("allocate_stmt",
 #
 # FUNCALL
 
-class funcall(node,recordtype("funcall","func_expr args",default=None)):
+class funcall(node,recordtype("funcall","func_expr args nargout",default=None)):
     """Funcall instances represent 
     (a) Array references, both lhs and rhs
     (b) Function call expressions
@@ -238,6 +241,7 @@ class builtins(funcall):
              func_expr=None,
              args=expr_list(args),
              **kwargs)
+        #import pdb; pdb.set_trace()
         #self.func_expr.defs = set(self.func_expr)
 
     def __repr__(self):
@@ -292,55 +296,55 @@ builtins_list = [
     "SIZE",
     "SUM",
 
-    "abs",
+    #"abs",
     "add", # synthetic opcode
-    "all",
-    "any",
+    #"all",
+    #"any",
     "cellfun",
-    "ceil",
+    #"ceil",
     "clazz",
-    "cumprod",
-    "cumsum",
-    "diff",
+    #"cumprod",
+    #"cumsum",
+    #"diff",
     "dot",      # Exists in numpy. Implements matlab .*
-    "exist",
+    #"exist",
     "false",
-    "fclose",
-    "find",
+    #"fclose",
+    #"find",
     #"findone",  # same as find, but returns ONE result
-    "floor",
-    "fopen",
+    #"floor",
+    #"fopen",
     "getfield",
     "inf", "inf0",
-    "isempty",
-    "isequal",
+    #"isempty",
+    #"isequal",
     "isinf",
     "isnan",
-    "length",
-    "load",
-    "lower",
-    "max",
-    "min",
-    "mod",
-    "nnz",
-    "numel",
-    "ones",
-    "rand",
-    "range_",   # synthetic opcode
+    #"length",
+    #"load",
+    #"lower",
+    #"max",
+    #"min",
+    #"mod",
+    #"nnz",
+    #"numel",
+    #"ones",
+    #"rand",
+    #"range_",   # synthetic opcode
     "ravel",   # synthetic opcode
-    "rem",
-    "save",
+    #"rem",
+    #"save",
     "setfield",
-    "sign",
-    "size",
-    "sort",
-    "strcmp",
-    "strcmpi",
+    #"sign",
+    #"size",
+    #"sort",
+    #"strcmp",
+    #"strcmpi",
     "sub", # synthetic opcode
-    "sum",
+    #"sum",
     "transpose",
     "true",
-    "zeros",
+    #"zeros",
 ]
 
 for name in builtins_list:

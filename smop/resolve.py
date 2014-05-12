@@ -36,7 +36,7 @@ def rename(t):
                 u.name += "_"+"_".join(sorted(str(v.lineno) for v in u.defs))+"_"
 
 @exceptions
-def resolve(t, symtab={}):
+def resolve(t, symtab={}, fp=None, func_name=None):
     do_resolve(t,symtab)
     if options.do_rename:
         rename(t)
@@ -81,28 +81,6 @@ def do_resolve(t,symtab):
                 # __class__ field.  Convert funcall nodes to array
                 # references.
                 u.__class__ = node.arrayref
-            elif u.func_expr.defs == set():
-                # Function used, but there is no definition. It's
-                # either a builtin function, or a call to user-def
-                # function, which is defined later.
-                cls = getattr(node,u.func_expr.name,None)
-                # """
-                # if not cls:
-                #     # This is the first time we met u.func_expr.name
-                #     cls = type(u.func_expr.name,
-                #                (node.funcall,),
-                #                { 'code' : None })
-                #     setattr(node,u.func_expr.name,cls)
-                # assert cls
-                # if issubclass(cls,node.builtins) and u.__class__ != cls:
-                #     u.func_expr = None # same in builtins ctor
-
-                if cls:
-                    u.__class__ = cls
-            else:
-                # Only if we have A(B) where A.defs is None
-                assert 0
-
 
 
         if u.__class__ in (node.arrayref,node.cellarrayref):
@@ -134,19 +112,20 @@ def do_resolve(t,symtab):
                     u.args[i] = node.sub(u.args[i],node.number(1))
 
     for u in node.postorder(t):
-        if u.__class__ == node.ident and u.defs == set():
-            cls = getattr(node,u.name,None)
-            if cls and issubclass(cls,node.builtins):
-                u.become(cls())
-
-        elif u.__class__ == node.expr and u.op == ":" and u.args:
+###         if u.__class__ == node.ident and u.defs == set():
+###             cls = getattr(node,u.name,None)
+###             if cls and issubclass(cls,node.builtins):
+###                 u.become(cls())
+        if u.__class__ == node.expr and u.op == ":" and u.args:
             if len(u.args) == 2:
-                u.become(node.range(u.args[0],
-                                    node.add(u.args[1],node.number(1))))
-            else:
-                u.become(node.range(u.args[0],
-                                    node.add(u.args[1],node.number(1)),
-                                    u.args[2]))
+                w = node.funcall(node.ident("range"),
+                                 node.expr_list([u.args[0],
+                                                node.add(u.args[1],node.number(1))]))
+                u.become(w)
+###             else:
+###                 u.become(node.range_(u.args[0],
+###                                     node.add(u.args[1],node.number(1)),
+###                                     u.args[2]))
 
 #def _fix(tree):
 #    for s in node.postorder(tree):

@@ -1,6 +1,15 @@
 # smop -- Simple Matlab to Python compiler
 # Copyright 2011-2013 Victor Leikehman
 
+"""
+Calling conventions:
+
+call site:  nargsout=N is passed if and only if N > 1
+func decl:  nargsout=1 must be declared if function may return
+            more than one return value.  Otherwise optional.
+return value:  return (x,y,z)[:nargsout] or return x
+"""
+
 import logging
 logger = logging.getLogger(__name__)
 import node,options
@@ -207,17 +216,13 @@ def _backend(self,level=0):
 @extend(node.funcall)
 @exceptions
 def _backend(self,level=0):
-    # if self.func_expr:
-    #     func_name = self.func_expr.name
-    # else:
-    #     func_name = self.__class__.__name__
-    #if self.ret is None:
+    if self.nargout is None or self.nargout == 1:
         return "%s(%s)" % (self.func_expr._backend(),
                            self.args._backend())
-    #else:
-    #    return ("%s = %s(%s)" % (self.ret._backend(),
-    #                             self.func_expr._backend(),
-    #                             self.args._backend()))
+    else:
+        return "%s(%s,nargout=%s)" % (self.func_expr._backend(),
+                                      self.args._backend(),
+                                      self.nargout)
 
 @extend(node.let)
 @exceptions
@@ -226,14 +231,10 @@ def _backend(self,level=0):
         s = "# %d\n" % self.lineno + level*indent
     else:
         s = ''
-    if self.nargout > 1:
-        return "%s=%s # nargout=%d" % (self.ret._backend(), 
-                                       self.args._backend(),
-                                       self.nargout)
-    else:
-        return "%s=%s" % (self.ret._backend(),
-                          self.args._backend())
-
+    if self.args.__class__ is node.funcall:
+        self.args.nargout = self.nargout
+    return "%s=%s" % (self.ret._backend(), 
+                      self.args._backend())
 
 @extend(node.expr_list)
 @exceptions
@@ -299,7 +300,8 @@ reserved = set(
 @extend(node.ident)
 @exceptions
 def _backend(self,level=0):
-    return self.name if self.name not in reserved else self.name+"_"
+    #return self.name if self.name not in reserved else self.name+"_"
+    return self.name
 
 @extend(node.stmt_list)
 @exceptions
@@ -314,8 +316,8 @@ def _backend(self,level=0):
 @exceptions
 def _backend(self,level=0):
     if not self.use_nargin:
-        s = "def %s(%s):" %  (self.ident._backend(),
-                              self.args._backend())
+        s = "def %s(%s,nargout=1):" %  (self.ident._backend(),
+                                        self.args._backend())
     else:
         s = "def %s(*varargin):" % self.ident._backend()
         s += "\n    nargin = len(varargin)"
@@ -384,101 +386,101 @@ def _backend(self,level=0):
     #                            self.__class__.__name__,
     #                            self.args._backend()))
 
-@extend(node.strcmp)
-@exceptions
-def _backend(self,level=0):
-    return "%s==%s" % (self.args[0]._backend(),
-                       self.args[1]._backend())
-@extend(node.strcmpi)
-@exceptions
-def _backend(self,level=0):
-    return "%s.lower()==%s.lower()" % (self.args[0]._backend(),
-                                       self.args[1]._backend())
+### @extend(node.strcmp)
+### @exceptions
+### def _backend(self,level=0):
+###     return "%s==%s" % (self.args[0]._backend(),
+###                        self.args[1]._backend())
+### @extend(node.strcmpi)
+### @exceptions
+### def _backend(self,level=0):
+###     return "%s.lower()==%s.lower()" % (self.args[0]._backend(),
+###                                        self.args[1]._backend())
                        
-@extend(node.isequal)
-@exceptions
-def _backend(self,level=0):
-    return "np.array_equal(%s)" % self.args._backend()
+### @extend(node.isequal)
+### @exceptions
+### def _backend(self,level=0):
+###     return "np.array_equal(%s)" % self.args._backend()
 
-@extend(node.isempty)
-@exceptions
-def _backend(self,level=0):
-    return "(0 in %s.shape)" % self.args[0]._backend()
+### @extend(node.isempty)
+### @exceptions
+### def _backend(self,level=0):
+###     return "(0 in %s.shape)" % self.args[0]._backend()
 
-@extend(node.numel)
-@exceptions
-def _backend(self,level=0):
-    return "%s.size" % self.args[0]._backend()
+### @extend(node.numel)
+### @exceptions
+### def _backend(self,level=0):
+###     return "%s.size" % self.args[0]._backend()
 
-@extend(node.size)
-@exceptions
-def _backend(self,level=0):
-    if len(self.args) == 1:
-        # if self.ret:
-        #     return "%s = %s.shape" % (self.ret,
-        #                               self.args[0]._backend())
-        # else:
-        return "%s.shape" % self.args[0]._backend()
-            
-    if self.args[1].__class__ is node.number:
-        return "%s.shape[%s]" % (self.args[0]._backend(),
-                                 self.args[1].value-1)
-    return "%s.shape[%s-1]" % (self.args[0]._backend(),
-                               self.args[1]._backend())
+### @extend(node.size)
+### @exceptions
+### def _backend(self,level=0):
+###     if len(self.args) == 1:
+###         # if self.ret:
+###         #     return "%s = %s.shape" % (self.ret,
+###         #                               self.args[0]._backend())
+###         # else:
+###         return "%s.shape" % self.args[0]._backend()
+###             
+###     if self.args[1].__class__ is node.number:
+###         return "%s.shape[%s]" % (self.args[0]._backend(),
+###                                  self.args[1].value-1)
+###     return "%s.shape[%s-1]" % (self.args[0]._backend(),
+###                                self.args[1]._backend())
 
-@extend(node.cumsum)
-@exceptions
-def _backend(self,level=0):
-    if len(self.args) == 1:
-        return "np.cumsum(%s,0)" % self.args[0]._backend()
-    if self.args[1].__class__ is node.number:
-        return "np.cumsum(%s,%s)" % (self.args[0]._backend(),
-                                     self.args[1].value-1)
-    return "np.cumsum(%s,%s-1)" % (self.args[0]._backend(),
-                                   self.args[1]._backend())
+### @extend(node.cumsum)
+### @exceptions
+### def _backend(self,level=0):
+###     if len(self.args) == 1:
+###         return "np.cumsum(%s,0)" % self.args[0]._backend()
+###     if self.args[1].__class__ is node.number:
+###         return "np.cumsum(%s,%s)" % (self.args[0]._backend(),
+###                                      self.args[1].value-1)
+###     return "np.cumsum(%s,%s-1)" % (self.args[0]._backend(),
+###                                    self.args[1]._backend())
     
 @extend(node.dot)
 @exceptions
 def _backend(self,level=0):
     return "%s.dot(%s)" % (self.args[0]._backend(),
                            self.args[1]._backend())
-@extend(node.length)
-@exceptions
-def _backend(self,level=0):
-    return "max(%s.shape)" % self.args[0]._backend()
+### @extend(node.length)
+### @exceptions
+### def _backend(self,level=0):
+###     return "max(%s.shape)" % self.args[0]._backend()
 
-@extend(node.fopen)
-@exceptions
-def _backend(self,level=0):
-    return "open(%s)" % self.args._backend()
+### @extend(node.fopen)
+### @exceptions
+### def _backend(self,level=0):
+###     return "open(%s)" % self.args._backend()
+### 
+### @extend(node.fclose)
+### @exceptions
+### def _backend(self,level=0):
+###     return "%s.close()" % self.args._backend()
+### 
+### @extend(node.min)
+### @extend(node.max)
+### @extend(node.sum)
+### @extend(node.zeros)
+### @exceptions
+### def _backend(self,level=0):
+###     cls_name = self.__class__.__name__
+###     return ("np." + cls_name  + "(%s)") % self.args._backend()
+### 
+### @extend(node.exist)
+### @exceptions
+### def _backend(self,level=0):
+###     if self.args[1].__class__ is node.string and self.args[1].value == "file":
+###         return "os.path.exists(%s)" % self.args[0]._backend()
+###     if self.args[1].__class__ is node.string and self.args[1].value == "var":
+###         return "%s in globals()" % self.args[0]._backend()
+###     raise NotImplementedError("Not implemented: exist")
 
-@extend(node.fclose)
-@exceptions
-def _backend(self,level=0):
-    return "%s.close()" % self.args._backend()
-
-@extend(node.min)
-@extend(node.max)
-@extend(node.sum)
-@extend(node.zeros)
-@exceptions
-def _backend(self,level=0):
-    cls_name = self.__class__.__name__
-    return ("np." + cls_name  + "(%s)") % self.args._backend()
-
-@extend(node.exist)
-@exceptions
-def _backend(self,level=0):
-    if self.args[1].__class__ is node.string and self.args[1].value == "file":
-        return "os.path.exists(%s)" % self.args[0]._backend()
-    if self.args[1].__class__ is node.string and self.args[1].value == "var":
-        return "%s in globals()" % self.args[0]._backend()
-    raise NotImplementedError("Not implemented: exist")
-
-@extend(node.find)
-@exceptions
-def _backend(self,level=0):
-    return "np.flatnonzero(%s)" % self.args[0]._backend()
+### @extend(node.find)
+### @exceptions
+### def _backend(self,level=0):
+###     return "np.flatnonzero(%s)" % self.args[0]._backend()
     # if self.ret and len(self.ret) == 2:
     #     return "%s,%s = np.nonzero(%s)" % (self.ret[0]._backend(),
     #                                        self.ret[1]._backend(),
@@ -486,12 +488,12 @@ def _backend(self,level=0):
     # else:
     #     return "np.flatnonzero(%s)" % self.args[0]._backend()
 
-@extend(node.load)
-@exceptions
-def _backend(self,level=0):
-    return "loadmat(%s,matlab_compatible=True)" % self.args._backend()
-
-@extend(node.save)
-@exceptions
-def _backend(self,level=0):
-    return "savemat(%s)" % self.args._backend()
+### @extend(node.load)
+### @exceptions
+### def _backend(self,level=0):
+###     return "loadmat(%s,matlab_compatible=True)" % self.args._backend()
+### 
+### @extend(node.save)
+### @exceptions
+### def _backend(self,level=0):
+###     return "savemat(%s)" % self.args._backend()

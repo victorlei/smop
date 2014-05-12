@@ -406,7 +406,7 @@ def p_let(p):
          if isinstance(p[1],node.matrix):
              p[0].nargout = len(p[1].args)
          else:
-             p[0].nargout = 0
+             p[0].nargout = 1
 
 def p_for_stmt(p):
     """
