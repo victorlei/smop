@@ -5,7 +5,18 @@
 
 import numpy
 
+def ceil_(t):
+    '''
+    >>> ceil_(-1.1)
+    -1.0
+    '''
+    return numpy.ceil(t)
+
 def floor_(t):
+    '''
+    >>> floor_(-0.1)
+    -1.0
+    '''
     return numpy.floor(t)
 
 def length_(t):
@@ -18,6 +29,45 @@ def length_(t):
     3
     '''
     return max(numpy.shape(t) or (1,))
+
+def max_(t, d=0, nargout=0):
+    '''
+    >>> max_(123)
+    123
+    >>> max_(range(10))
+    9
+    >>> max_(numpy.arange(10))
+    9
+    '''
+    if d or nargout:
+        raise ErrorNotImplemented
+    return numpy.amax(t)
+
+def min_(t, d=0, nargout=0):
+    '''
+    >>> min_(123)
+    123
+    >>> min_(range(10))
+    0
+    >>> min_(numpy.arange(10))
+    0
+    '''
+    if d or nargout:
+        raise ErrorNotImplemented
+    return numpy.amin(t)
+
+def rand_(*args):
+    '''
+    >>> size_(rand_())
+    (1, 1)
+    >>> size_(rand_(2))
+    (2, 2)
+    >>> size_(rand_(2,3))
+    (2, 3)
+    '''
+    if len(args) == 1:
+        args += args
+    return numpy.random.rand(*args)
 
 def round_(t):
     '''
@@ -53,8 +103,14 @@ def size_(a, b=0, nargout=2):
     return s[b-1] if b else s
 
 def zeros_(*args,**kwargs):
+    '''
+    >>> size_(zeros_(2,3))
+    (2, 3)
+    '''
     return numpy.zeros(args,**kwargs)
 
 if __name__ == "__main__":
     import doctest
     doctest.testmod() 
+
+# vim:et:sw=4:si:
