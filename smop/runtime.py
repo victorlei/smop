@@ -69,6 +69,15 @@ def rand_(*args):
         args += args
     return numpy.random.rand(*args)
 
+def ravel_(t):
+    '''
+    >>> size_(ravel_(3))
+    (1, 1)
+    >>> size_(ravel_(zeros_(3,3)))
+    (9, 1)
+    '''
+    return numpy.reshape(t,[-1,1])
+
 def round_(t):
     '''
     >>> round_(0.5)

@@ -570,7 +570,8 @@ def p_funcall_expr(p):
         p[3][0].__class__ is node.expr and
         p[3][0].op == ":" and not p[3][0].args):
         # foo(:)
-        p[0] = node.arrayref(p[1],p[3])
+        p[0] = node.funcall(func_expr=node.ident("ravel_"),
+                            args=node.expr_list([p[1]]))
     else:
         args = node.expr_list() if len(p) == 4 else p[3]
         assert isinstance(args,node.expr_list)
