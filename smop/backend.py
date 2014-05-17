@@ -42,7 +42,7 @@ def _backend(self,level=0):
     elif any(a.__class__ is node.string for a in self.args):
         return " + ".join(a._backend() for a in self.args)
     else:
-        return "np.array([%s]).reshape(1,-1)" % self.args._backend()
+        return "np.array([%s])" % self.args._backend()
 
 @extend(node.cellarrayref)
 @exceptions
@@ -233,8 +233,12 @@ def _backend(self,level=0):
         s = ''
     if self.args.__class__ is node.funcall:
         self.args.nargout = self.nargout
-    return "%s=%s" % (self.ret._backend(), 
-                      self.args._backend())
+    s += "%s=%s" % (self.ret._backend(), 
+                    self.args._backend())
+    if (self.ret.__class__ is node.ident and
+        self.args.__class__ is node.ident):
+        s += ".copy()"
+    return s
 
 @extend(node.expr_list)
 @exceptions

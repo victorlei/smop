@@ -69,6 +69,13 @@ def do_resolve(t,symtab):
     """
     t._resolve(symtab)
     #pprint.pprint(symtab)
+
+    # Two-pass algorithm to convert referenced-but-undefined names
+    # (such as rand) to function calls.
+    # 1.  Iterate over funcall nodes and mark their func_expr field
+    # 2.  Iterate over ident nodes.  Referenced, but undefined nodes
+    #     become funcall nodes.
+    # 3.  Function declaration require special handling
     for u in node.postorder(t):
         if (u.__class__ is node.funcall and 
             u.func_expr.__class__ is node.expr and u.func_expr.op == "."):
@@ -76,20 +83,23 @@ def do_resolve(t,symtab):
         elif (u.__class__ is node.funcall and 
             u.func_expr.__class__ is node.ident):
             if u.func_expr.defs:
-                # Both node.arrayref and node.builtins are subclasses
-                # of node.funcall, so we are allowed to assign to its
-                # __class__ field.  Convert funcall nodes to array
-                # references.
+                # Convert funcall node to arrayref node
                 u.__class__ = node.arrayref
+            else:
+                u.func_expr.name += "_"
 
+    for u in node.postorder(t.body):
+        if (u.__class__ is node.ident and u.name[0] != "." and u.defs == set() and u.name[-1] != "_"):
+            u.become(node.funcall(func_expr=node.ident(u.name+"_"),
+                                  args=node.expr_list()))
 
+    try:
+        t.head.ident.name += "_"
+    except:
+        pass
+
+    for u in node.postorder(t):
         if u.__class__ in (node.arrayref,node.cellarrayref):
-            # if (len(u.args) == 1
-            #     and isinstance(u.args[0],node.expr)
-            #     and u.args[0].op == ":"):
-            #     # FOO(:) becomes ravel(FOO)
-            #     u.become(node.ravel(u.func_expr))
-            # else:
             for i in range(len(u.args)):
                 cls = u.args[i].__class__
                 if cls is node.number:

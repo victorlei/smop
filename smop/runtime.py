@@ -12,12 +12,29 @@ def ceil_(t):
     '''
     return numpy.ceil(t)
 
+def false_(*args):
+    return numpy.zeros(args,dtype=bool)
+
+def find_(a,nargout=2):
+    i,j = a.nonzero()
+    return (i+1),(j+1)
+
 def floor_(t):
     '''
     >>> floor_(-0.1)
     -1.0
     '''
     return numpy.floor(t)
+
+def inf_(*args):
+    t = numpy.empty(numpy.prod(args))
+    t[:] = numpy.inf
+    return t.reshape(args)
+
+Inf_ = inf_
+
+def isequal_(a,b):
+    return numpy.array_equal(a,b)
 
 def length_(t):
     '''
@@ -55,6 +72,9 @@ def min_(t, d=0, nargout=0):
     if d or nargout:
         raise ErrorNotImplemented
     return numpy.amin(t)
+
+def ones_(*args):
+        return numpy.ones(args)
 
 def rand_(*args):
     '''
@@ -110,6 +130,9 @@ def size_(a, b=0, nargout=2):
         return 1 if b else (1,)*nargout
     # a is not a scalar
     return s[b-1] if b else s
+
+def true_(*args):
+    return numpy.ones(args,dtype=bool)
 
 def zeros_(*args,**kwargs):
     '''
