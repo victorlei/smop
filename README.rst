@@ -107,51 +107,8 @@ becomes
 
 .. code:: python
 
-    01  def solver(A,B,w0):
-    02	moves,optmove,optscore = cbest(A,B,w0)
-    03	curscore=np.sum(w0[(moves[:,0]-1)])
-    04	lots=1
-    05	if max(moves.shape) - optmove < 20 or curscore / optscore < 1.05:
-    06	    lots=2
-    07	    return moves
-    08	else:
-    09	    lenw=max(w0.shape)
-    10	    xx,nseq=sort(rand(1,lenw))
-    11	    A1=A
-    12	    B1=B
-    13	    w01=w0
-    14	    for i in range(1,(lenw+1)):
-    15		A1[A == i]=nseq[(i-1)]
-    16		B1[B == i]=nseq[(i-1)]
-    17		w01[(nseq[(i-1)]-1)]=w0[(i-1)]
-    18	    moves2,optmove,optscore = cbest(A1,B1,w01)
-
-Now some random notes.
-
-#. Line 03. Functions vs. arrays ambiguity is correctly resolved: 
-   for example, `sum` is a function, but `w0` and `moves` are
-   arrays.
-
-#. Line 09, Matlab function `length` is correctly inlined as
-   `max(w0.shape)` --- that is the maximum of the array dimensions.
-
-#. For some functions, such as `abs`, `max`, and others, there are
-   both a builtin version and a different numpy version, and it is
-   important to use the right one.  In line 03 `np.sum` is used, but
-   in line 09 builtin `max`.  This is correct.
-
-#. Line 10. Functions rand and sort are not yet implemented.  
-
-#. Lines 15-16. There is some support to boolean indexing.
-
-#. Lines 15-17. Array subscripts are modified to start with zero
-   index.  Note that if all subscripts were decremented, it would
-   break boolean indexing.
-
-#. Line 13. Range specification in Matlab includes the upper bound.
-   In Python, it doesn't.  So `for i=1:lenw` becomes `for i in
-   range(1,(lenw+1))`.  Extra parentheses are known as issue #1.
-
+   TBD 
+   
 -----------------------------------------------------------
 
 The table below tries to summarize various features.
