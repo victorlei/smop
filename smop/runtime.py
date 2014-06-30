@@ -2,147 +2,229 @@
 # Copyright 2014 Victor Leikehman
 
 # MIT license
+import numpy as np
+import os
+from scipy.io import loadmat
 
-import numpy
+# abs sort find1 numel rand('seed') sum(a,d) log dot cumsum any(a,d) sqrt proda isinf sign mod
 
-def ceil_(t):
-    '''
-    >>> ceil_(-1.1)
-    -1.0
-    '''
-    return numpy.ceil(t)
+class matlabarray(np.ndarray):
+    def __new__(cls,input_array=[],**kwargs):
+        #obj = np.array(input_array,ndmin=2,order="F",copy=None).view(cls)
+        obj = np.asarray(input_array,order="F").view(cls)
+        return obj
+
+    def __array_finalize__(self,obj):
+        self.delegate = obj
+        
+    def compute_indices(self,index):
+        if not isinstance(index,tuple):
+           index = index,
+        if len(index) != 1 and len(index) != self.delegate.ndim:
+            raise IndexError()
+        indices = []
+        for i,ix in enumerate(index):
+            if ix.__class__ is slice:
+                if len(index) == 1:
+                    n = self.delegate.size
+                else:
+                    n = self.delegate.shape[i]
+                start,stop,step = ix.indices(n)
+                indices.append(slice(start-1 if start else 0,
+                                     stop,
+                                     step))
+            else:        
+                try:
+                    indices.append(ix-1)
+                except TypeError:
+                    indices.append(np.asarray(ix)-1)
+        return tuple(indices)
+
+    def __getslice__(self,i,j):
+        return self.__getitem__(slice(i,j,None))
+
+    def __getitem__(self,index):
+        if index  == slice(None):
+            return self.delegate.reshape(-1,1,order="F")
+        indices = self.compute_indices(index)
+        if len(indices) == 1:
+            return self.delegate.reshape(-1,order="F").__getitem__(indices)
+        else:
+            return self.delegate.__getitem__(indices)
+
+    def __setitem__(self,index,value):
+        indices = self.compute_indices(index)
+        for j in (1,2):
+            try:
+                if isinstance(index,tuple):
+                    np.ndarray.__setitem__(self.delegate,indices,value)
+                else:
+                    np.ndarray.__setitem__(self.delegate.reshape(-1,order="F"),indices,value)
+                break
+            except IndexError:
+                if isinstance(index,tuple):
+                    new_shape = [max(self.delegate.shape[d], i+1) for d,i in enumerate(indices)]
+                    # new_shape = [self.new_size(i) for i in indices]
+                else:
+                    raise NotImplementedError("Expanding arrays not implemented yet")
+                #self.delegate = np.resize(self.delegate,new_shape)
+                self.delegate = self.delegate.copy()
+                self.delegate.resize(new_shape)
+
+    def reshape_(self,*args):
+        return self.delegate.reshape(*args,order="F")
+
+#    def __copy__(self):
+#        obj = matlabarray()
+#        obj.delegate = self.delegate.copy()
+#        return obj
+
+    def __repr__(self):
+        return self.delegate.__repr__()
+
+    def __str__(self):
+        return self.delegate.__str__()
+
+    def __add__(self,other):
+        return np.ndarray.__add__(self,other)
+
+    def __neg__(self):
+        return matlabarray(self.delegate.__neg__())
+
+def asarray(a):
+    return a.delegate if isinstance(a,matlabarray) else np.asarray(a,order="F")
+
+def abs_(a):
+    return np.abs(asarray(a))
+
+def arange_(*args):
+#    if args is ():
+#        return slice(None,None,None)
+#    if len(args) == 1:
+#        return np.arange(1,args[0]+1).reshape(-1,1)
+#   if len(args) == 2:
+        return np.arange(args[0],args[1]+1).reshape(-1,1)
+#   if len(args) == 3:
+#       return np.arange(args[0],args[1]+1,args[2]).reshape(-1,1)
+#   assert 0
+
+def ceil_(a):
+    return np.ceil(asarray(a))
+
+def disp_(*args):
+    print (args)
 
 def false_(*args):
-    return numpy.zeros(args,dtype=bool)
-
-def find_(a,nargout=2):
-    i,j = a.nonzero()
-    return (i+1),(j+1)
-
-def floor_(t):
-    '''
-    >>> floor_(-0.1)
-    -1.0
-    '''
-    return numpy.floor(t)
-
-def inf_(*args):
-    t = numpy.empty(numpy.prod(args))
-    t[:] = numpy.inf
-    return t.reshape(args)
-
-Inf_ = inf_
-
-def isequal_(a,b):
-    return numpy.array_equal(a,b)
-
-def length_(t):
-    '''
-    >>> length_(zeros_(3,4,5))
-    5
-    >>> length_(12345)
-    1
-    >>> length_([3,4,5])
-    3
-    '''
-    return max(numpy.shape(t) or (1,))
-
-def max_(t, d=0, nargout=0):
-    '''
-    >>> max_(123)
-    123
-    >>> max_(range(10))
-    9
-    >>> max_(numpy.arange(10))
-    9
-    '''
-    if d or nargout:
-        raise ErrorNotImplemented
-    return numpy.amax(t)
-
-def min_(t, d=0, nargout=0):
-    '''
-    >>> min_(123)
-    123
-    >>> min_(range(10))
-    0
-    >>> min_(numpy.arange(10))
-    0
-    '''
-    if d or nargout:
-        raise ErrorNotImplemented
-    return numpy.amin(t)
-
-def ones_(*args):
-        return numpy.ones(args)
-
-def rand_(*args):
-    '''
-    >>> size_(rand_())
-    (1, 1)
-    >>> size_(rand_(2))
-    (2, 2)
-    >>> size_(rand_(2,3))
-    (2, 3)
-    '''
     if len(args) == 1:
         args += args
-    return numpy.random.rand(*args)
+    return np.zeros(args,dtype=bool,order="F")
 
-def ravel_(t):
-    '''
-    >>> size_(ravel_(3))
-    (1, 1)
-    >>> size_(ravel_(zeros_(3,3)))
-    (9, 1)
-    '''
-    return numpy.reshape(t,[-1,1])
+def find_(a,nargout=2):
+    i,j = asarray(a).nonzero()
+    return (i+1),(j+1)
 
-def round_(t):
-    '''
-    >>> round_(0.5)
-    0.0
-    >>> round_(0.6)
-    1.0
-    '''
-    return numpy.round(t)
+def floor_(a):
+    return np.floor_(asarray(a))
+
+def fullfile_(*args):
+    return os.path.join(*args)
+
+def intersect_(a,b,nargout=1):
+    if nargout == 1:
+        c = sorted(set(a) & set(b))
+        if isinstance(a,str):
+            return "".join(c)
+        elif isinstance(a,list):
+            return c
+        else:
+            # FIXME: the result is a column vector if
+            # both args are column vectors; otherwise row vector
+            return np.array(c)
+    raise ErrorNotImplemented    
+
+#def inf_(*args):
+#    t = np.empty(np.prod(args))
+#    t[:] = np.inf
+#    return t.reshape(args)
+#
+#Inf_ = inf_
+#
+#def int_(t):
+#    return np.int(t)
+#
+#def int32_(t):
+#    return np.int(t)
+#
+def isempty_(a):
+    try:
+        return 0 in asarray(a).shape
+    except AttributeError:
+        return False
+
+def isequal_(a,b):
+    return np.array_equal(asarray(a),
+                          asarray(b))
+                          
+
+def length_(a):
+    try:
+        return max(asarray(a).shape)
+    except ValueError:
+        return 1
+
+def load_(a):
+    return loadmat(a) # FIXME
+
+def max_(a, d=0, nargout=0):
+    if d or nargout:
+        raise ErrorNotImplemented()
+    return asarray(a).amax()
+
+def min_(a, d=0, nargout=0):
+    if d or nargout:
+        raise ErrorNotImplemented()
+    return asarray(a).amin()
+
+def numel_(a):
+    return asarray(a).size
+
+def ones_(*args,**kwargs):
+        return matlabarray(np.ones(args,dtype="int",**kwargs))
+
+def rand_(*args):
+    if len(args) == 1:
+        args += args
+    return np.rand(args,order="F")
+
+def ravel_(a):
+    return asarray(a).reshape(-1,1)
+
+def round_(a):
+    return np.round(asarray(a))
 
 def size_(a, b=0, nargout=2):
-    '''
-    >>> size_(123, 100)
-    1
-    >>> size_(123)
-    (1, 1)
-    >>> (p,q,r) = size_(123,nargout=3)
-    >>> (p,q,r)
-    (1, 1, 1)
-    >>> z = zeros_(2,3,4)
-    >>> a = size_(z)
-    >>> a
-    (2, 3, 4)
-    >>> b = zeros_(2,3)
-    >>> (m,n) = size_(b,nargout=2)
-    >>> (m,n)
-    (2, 3)
-    '''
-    s = numpy.shape(a)
+    s = asarray(a).shape
     if s is ():
         return 1 if b else (1,)*nargout
     # a is not a scalar
-    return s[b-1] if b else s
+    try:
+        return s[b-1] if b else s
+    except IndexError:
+        return 1
+
+def sum_(a):
+    return asarray(a).sum()
 
 def true_(*args):
-    return numpy.ones(args,dtype=bool)
+    if len(args) == 1:
+        args += args
+    return np.ones(args,dtype=bool,order="F")
 
-def zeros_(*args,**kwargs):
-    '''
-    >>> size_(zeros_(2,3))
-    (2, 3)
-    '''
-    return numpy.zeros(args,**kwargs)
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod() 
+def zeros_(*args):
+    if not args:
+        return 0.0
+    if len(args) == 1:
+        args += args
+    return np.zeros(args,order="F")
 
 # vim:et:sw=4:si:
