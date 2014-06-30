@@ -2,9 +2,7 @@ Summary
 -------
 
 SMOP stands for Small Matlab/Octave to Python compiler.  It is
-supposed to help those who attempt migration from Matlab to Python.
-Despite the similarities between the two languages, there are enough
-differences to make manual translation too time consuming.
+used to convert Matlab programs to Python.
 
 SMOP is not a polished product, nor a replacement to Octave and
 Matlab. Taking into account its size (less than 3000 lines), this is
