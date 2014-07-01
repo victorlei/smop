@@ -76,6 +76,8 @@ def do_resolve(t,symtab):
     # 2.  Iterate over ident nodes.  Referenced, but undefined nodes
     #     become funcall nodes.
     # 3.  Function declaration require special handling
+    
+    # 1. pass I
     for u in node.postorder(t):
         if (u.__class__ is node.funcall and 
             u.func_expr.__class__ is node.expr and u.func_expr.op == "."):
@@ -88,55 +90,50 @@ def do_resolve(t,symtab):
             else:
                 u.func_expr.name += "_"
 
+    # 2. pass II
     for u in node.postorder(t.body):
         if (u.__class__ is node.ident and u.name[0] != "." and u.defs == set() and u.name[-1] != "_"):
             u.become(node.funcall(func_expr=node.ident(u.name+"_"),
                                   args=node.expr_list()))
 
+    # 3. special handling for func decl
     try:
         t.head.ident.name += "_"
     except:
         pass
+    # Done. Referenced, but undefined name references
+    # converted to funcall objects.  For example,
+    # rand+1 converted to rand()+1
 
-    for u in node.postorder(t):
-        if u.__class__ in (node.arrayref,node.cellarrayref):
-            for i in range(len(u.args)):
-                cls = u.args[i].__class__
-                if cls is node.number:
-                    u.args[i].value -= 1
-                elif cls is node.expr and u.args[i].op in ("==","!=","~=","<","=<",">",">="):
-                    pass
-                elif cls is node.expr and u.args[i].op == ":":
-                    # Colon expression as a subscript becomes a
-                    # slice.  Everywhere else it becomes a call to
-                    # the "range" function (done in a separate pass,
-                    # see below).
-                    u.args[i].op = "::" # slice marked with op=::
-                    if u.args[i].args:
-                        u.args[i].args[0] = node.sub(u.args[i].args[0],
-                                                     node.number(1))
-                    # for s in node.postorder(u.args[i]):
-                    #    if s.__class__==node.expr and s.op=="end" and not s.args:
-                    #        s.args = node.expr_list([u.func_expr,node.number(i)])
+    if 1:
+        for u in node.postorder(t):
+            if u.__class__ in (node.arrayref,node.cellarrayref):
+                for i in range(len(u.args)):
+                    cls = u.args[i].__class__
+                    if cls is node.expr and u.args[i].op == ":":
+                        # Colon expression as a subscript becomes a
+                        # slice.  Everywhere else it becomes a call to
+                        # the "range" function (done in a separate pass,
+                        # see below).
+                        u.args[i].op = "::" # slice marked with op=::
+                        for s in node.postorder(u.args[i]):
+                            if s.__class__==node.expr and s.op=="end" and not s.args:
+                                s.args = node.expr_list([u.func_expr,node.number(i)])
+
+    if 1:
+        # These range nodes are appended after appending _ to funcall
+        # objects. HACK use range_
+        for u in node.postorder(t):
+            if u.__class__ == node.expr and u.op == ":" and u.args:
+                if len(u.args) == 2:
+                    w = node.funcall(node.ident("range_"),
+                                     node.expr_list([u.args[0],
+                                                     u.args[1]]))
                 else:
-                    u.args[i] = node.sub(u.args[i],node.number(1))
-
-    for u in node.postorder(t):
-###         if u.__class__ == node.ident and u.defs == set():
-###             cls = getattr(node,u.name,None)
-###             if cls and issubclass(cls,node.builtins):
-###                 u.become(cls())
-        if u.__class__ == node.expr and u.op == ":" and u.args:
-            if len(u.args) == 2:
-                w = node.funcall(node.ident("range"),
-                                 node.expr_list([u.args[0],
-                                                node.add(u.args[1],node.number(1))]))
-                u.become(w)
-###             else:
-###                 u.become(node.range_(u.args[0],
-###                                     node.add(u.args[1],node.number(1)),
-###                                     u.args[2]))
-
+                    w = node.funcall(node.ident("range_"),
+                                     node.expr_list([u.args[0],
+                                                     u.args[1],
+                                                     u.args[2]]))
 #def _fix(tree):
 #    for s in node.postorder(tree):
 #        try:

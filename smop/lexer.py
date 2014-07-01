@@ -56,8 +56,8 @@ def new():
     t_LT     = r"\<"
     t_MINUS  = r"\-"
     t_MUL    = r"\*"
-    t_NE     = r"~="
-    t_NEG    = r"\~"
+    t_NE     = r"(~=)|(!=)"
+    t_NEG    = r"\~|!"
     t_OR     = r"\|"
     t_OROR   = r"\|\|"
     t_PLUS   = r"\+"
@@ -93,8 +93,11 @@ def new():
         return t
 
     def t_STRING(t):
-        r"'([^']|(''))*'"
-        t.value = t.value[1:-1].replace("''","'")
+        """('([^']|(''))*')|("([^"]|(""))*")"""
+        if t.value[0] == "'":
+            t.value = t.value[1:-1].replace("''","'")
+        else:
+            t.value = t.value[1:-1].replace('""','"')
         return t
 
     def t_IDENT(t):
@@ -104,6 +107,9 @@ def new():
             # Reserved words are not reserved when used as fields.
             # So return=1 is illegal, but foo.return=1 is fine.
             t.type = "FIELD"
+            return t
+        if t.value in ("endfunction","endif","endfor"): # octave
+            t.type = "END_STMT"
             return t
         if t.value == "end":
             if t.lexer.parens > 0 or t.lexer.brackets > 0 or t.lexer.braces > 0:
@@ -198,7 +204,7 @@ def new():
         return t
 
     def t_comment(t):
-        r"%.*"
+        r"(%|\#).*"
         pass
 
 

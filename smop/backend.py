@@ -38,11 +38,11 @@ def _backend(self,level=0):
     # size([])
     # 0 0
     if not self.args:
-        return "np.array([])"
+        return "matlabarray()"
     elif any(a.__class__ is node.string for a in self.args):
         return " + ".join(a._backend() for a in self.args)
     else:
-        return "np.array([%s])" % self.args._backend()
+        return "matlabarray([%s])" % self.args._backend()
 
 @extend(node.cellarrayref)
 @exceptions
@@ -163,11 +163,7 @@ def _backend(self,level=0):
                                  self.args[2]._backend(),
                                  self.args[1]._backend())
     if self.op == ":":
-        #return "arange(%s)" % self.args._backend()
-        if not self.args:
-            return ":"
-        else:
-            return "%s:%s" % (self.args[0],self.args[1])
+        return "range_(%s)" % self.args._backend()
     
     if self.op == "end":
         if self.args:
@@ -193,6 +189,7 @@ def _backend(self,level=0):
         return "%s %s %s" % (self.args[0]._backend(),
                            optable.get(self.op,self.op),
                            self.args[1]._backend())
+    import pdb;pdb.set_trace()
     ret = "%s=" % self.ret._backend() if self.ret else ""
     return ret+"%s(%s)" % (self.op,
                            ",".join([t._backend() for t in self.args]))
@@ -227,17 +224,19 @@ def _backend(self,level=0):
 @extend(node.let)
 @exceptions
 def _backend(self,level=0):
-    if options.line_numbering:
-        s = "# %d\n" % self.lineno + level*indent
-    else:
-        s = ''
+#    if options.line_numbering:
+#        s = "# %d\n" % self.lineno + level*indent
+#    else:
+#        s = ''
     if self.args.__class__ is node.funcall:
         self.args.nargout = self.nargout
-    s += "%s=%s" % (self.ret._backend(), 
-                    self.args._backend())
     if (self.ret.__class__ is node.ident and
         self.args.__class__ is node.ident):
-        s += ".copy()"
+        s = "%s=%s.copy()" % (self.ret._backend(),
+                              self.args._backend())
+    else:
+        s = "%s=%s" % (self.ret._backend(), 
+                       self.args._backend())
     return s
 
 @extend(node.expr_list)
@@ -304,8 +303,7 @@ reserved = set(
 @extend(node.ident)
 @exceptions
 def _backend(self,level=0):
-    #return self.name if self.name not in reserved else self.name+"_"
-    return self.name
+    return self.name if self.name not in reserved else "_"+self.name
 
 @extend(node.stmt_list)
 @exceptions

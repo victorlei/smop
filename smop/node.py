@@ -340,10 +340,10 @@ builtins_list = [
     #"sort",
     #"strcmp",
     #"strcmpi",
-    "sub", # synthetic opcode
+    "sub", # synthetic opcode for subtract
     #"sum",
     "transpose",
-    "true",
+    #"true",
     #"zeros",
 ]
 

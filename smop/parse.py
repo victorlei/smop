@@ -392,6 +392,14 @@ def p_let(p):
     """
     assert (isinstance(p[1],(node.ident,node.funcall,node.cellarrayref)) or
             (isinstance(p[1],node.expr) and p[1].op in (("{}","DOT","."))))
+    try:
+        # a(:) = ...
+        # ravel(a) = ...
+        # a[:] =
+        if p[1].func_expr.name == "ravel":
+            p[1] = node.arrayref(p[1].args[0],node.expr(":",node.expr_list()))
+    except:
+        pass
     if isinstance(p[1],node.getfield):
         p[0] = node.setfield(p[1].args[0],
                              p[1].args[1],
@@ -569,7 +577,7 @@ def p_funcall_expr(p):
         len(p[3])==1 and 
         p[3][0].__class__ is node.expr and
         p[3][0].op == ":" and not p[3][0].args):
-        # foo(:)
+        # foo(:) => ravel(foo)
         p[0] = node.funcall(func_expr=node.ident("ravel"),
                             args=node.expr_list([p[1]]))
     else:
