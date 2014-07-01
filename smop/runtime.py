@@ -212,6 +212,12 @@ def size_(a, b=0, nargout=2):
     except IndexError:
         return 1
 
+def strread(s, format="", nargout=1):
+    if format == "":
+        a = [float(x) for x in s.split()]
+        return tuple(a) if nargout > 1 else np.asarray([a])
+    raise ErrorNotImplemented
+
 def sum_(a):
     return asarray(a).sum()
 
