@@ -218,6 +218,11 @@ def strread(s, format="", nargout=1):
         return tuple(a) if nargout > 1 else np.asarray([a])
     raise ErrorNotImplemented
 
+def strrep(a,b,c):
+    if isinstance(a,str):
+        return a.replace(b,c)
+    raise ErrorNotImplemented # cell arrays
+
 def sum_(a):
     return asarray(a).sum()
 
