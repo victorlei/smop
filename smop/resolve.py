@@ -36,7 +36,9 @@ def rename(t):
                 u.name += "_"+"_".join(sorted(str(v.lineno) for v in u.defs))+"_"
 
 @exceptions
-def resolve(t, symtab={}, fp=None, func_name=None):
+def resolve(t, symtab=None, fp=None, func_name=None):
+    if symtab is None:
+        symtab = {}
     do_resolve(t,symtab)
     if options.do_rename:
         rename(t)
