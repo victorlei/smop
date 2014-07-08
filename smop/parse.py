@@ -489,9 +489,11 @@ def p_expr_ident(p):
     if p[1] == "nargin":
         global use_nargin
         use_nargin += 1
+    #import pdb; pdb.set_trace()
     p[0] = node.ident(name=p[1],
                       lineno=p.lineno(1),
-                      lexpos=p.lexpos(1))
+                      lexpos=p.lexpos(1),
+                      column=p.lexpos(1) - p.lexer.lexdata.rfind("\n",0,p.lexpos(1)))
 
 def p_expr_number(p):
     "number : NUMBER"
