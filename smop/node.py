@@ -118,7 +118,8 @@ class number(atom,recordtype("number","value lineno lexpos",default=None)):
     def __str__(self):
         return str(self.value)
 
-class ident(atom,recordtype("ident","name lineno column lexpos defs",default=None)):
+class ident(atom,recordtype("ident","name lineno column lexpos defs props",
+        default=None,field_defaults={"props": set() } )):
     def __str__(self):
         return self.name
 
