@@ -6,7 +6,7 @@ import re
 from zlib import adler32
 import lex
 from lex import TOKEN
-
+import readline
 
 tokens = [
     "AND", "ANDAND", "BACKSLASH", "COLON", "COMMA", 

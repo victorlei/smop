@@ -1,6 +1,9 @@
 import parse,sys
 import node
 from node import extend
+import networkx as nx
+ 
+                
 
 def resolve(t,fp,func_name):
     fp.write("digraph %s {\n" % func_name)
@@ -13,8 +16,8 @@ def resolve(t,fp,func_name):
                     fp.write("%s -> %s" % (u.lexpos,v.lexpos))
                     if u.lexpos < v.lexpos:
                         fp.write('[color=red]')
-                    else:
-                        fp.write('[label=%s.%s]' % (v.lineno,v.column))
+                    #else:
+                    #    fp.write('[label=%s.%s]' % (v.lineno,v.column))
                     fp.write(';\n')
     fp.write("}\n")
 

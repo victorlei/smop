@@ -18,6 +18,19 @@ import node
 #from node import *
 import resolve
 
+# ident properties (set in parse.py)
+# ----------------------------------
+# G global
+# A function argument
+# R function return value
+# I for-loop iteration index
+# 
+# ident properties (set in resolve.py)
+# ------------------------------------
+# U use    =...a  or  =...a(b) 
+# D def    a=...  or   [a,b,c]=...
+# P update a(b)=...  or  [a(b) c(d)]=...
+
 class error(Exception):
     pass
 
@@ -145,6 +158,8 @@ def p_global_list(p):
 def p_global_stmt(p):
     "global_stmt : GLOBAL global_list SEMI"
     p[0] = node.global_stmt(p[2])
+    for ident in p[0]:
+        ident.props="G"  # G=global
 
 def p_return_stmt(p):
     "return_stmt : RETURN SEMI"
@@ -263,6 +278,8 @@ def p_arg_list(p):
     else:
         assert 0
     assert isinstance(p[0],node.expr_list)
+    for ident in p[0]:
+        ident.props="A"
 
 def p_ret(p):
     """
@@ -279,7 +296,8 @@ def p_ret(p):
         p[0] = p[2]
     else:
         assert 0
-
+    for ident in p[0]:
+        ident.props="R"
 # end func_decl
 
 def p_stmt_list_opt(p):
@@ -392,6 +410,7 @@ def p_let(p):
     """
     assert (isinstance(p[1],(node.ident,node.funcall,node.cellarrayref)) or
             (isinstance(p[1],node.expr) and p[1].op in (("{}","DOT","."))))
+    """
     try:
         # a(:) = ...
         # ravel(a) = ...
@@ -400,6 +419,7 @@ def p_let(p):
             p[1] = node.arrayref(p[1].args[0],node.expr(":",node.expr_list()))
     except:
         pass
+    """
     if isinstance(p[1],node.getfield):
         p[0] = node.setfield(p[1].args[0],
                              p[1].args[1],
@@ -422,6 +442,7 @@ def p_for_stmt(p):
              | FOR LPAREN ident '=' expr RPAREN SEMI stmt_list END_STMT
     """
     if len(p) == 8:
+        p[2].props="I" # I= for-loop iteration variable
         p[0] = node.for_stmt(ident=p[2],
                              expr=p[4],
                              stmt_list=p[6])
@@ -501,7 +522,8 @@ def p_expr_number(p):
 
 def p_expr_end(p):
     "end : END_EXPR"
-    p[0] = node.expr(op="end",args=node.expr_list())
+    p[0] = node.expr(op="end",args=node.expr_list([node.number(0),
+                                                   node.number(0)]))
     
 def p_expr_string(p):
     "string : STRING"
@@ -539,7 +561,7 @@ def p_matrix(p):
     if len(p) == 3:
         p[0] = node.matrix()
     else:
-        p[0] = node.matrix(*p[2])
+        p[0] = node.matrix(p[2])
     
 def p_paren_expr(p):
     """
@@ -575,7 +597,7 @@ def p_funcall_expr(p):
     """expr : expr LPAREN expr_list RPAREN 
             | expr LPAREN RPAREN
     """
-    if (len(p)==5 and
+    if (0 and len(p)==5 and
         len(p[3])==1 and 
         p[3][0].__class__ is node.expr and
         p[3][0].op == ":" and not p[3][0].args):

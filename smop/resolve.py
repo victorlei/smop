@@ -23,155 +23,107 @@ import copy,sys,pprint
 import node
 from node import extend,exceptions
 import backend,options
+import networkx as nx
 
-@exceptions
-def rename(t):
+def graphviz(t,fp,func_name):
+    fp.write("digraph %s {\n" % func_name)
+    fp.write('graph [rankdir="LR"];\n')
     for u in node.postorder(t):
         if u.__class__ in (node.ident,node.param):
-            if u.name[-1] == "_":
-                continue
-            if u.defs is None:
-                u.name += "_%d_" % u.lineno
-            else:
-                u.name += "_"+"_".join(sorted(str(v.lineno) for v in u.defs))+"_"
+            fp.write("%s [label=%s_%s_%s];\n" % (u.lexpos,u.name,u.lineno,u.column))
+            if u.defs:
+                for v in u.defs:
+                    fp.write("%s -> %s" % (u.lexpos,v.lexpos))
+                    if u.lexpos < v.lexpos:
+                        fp.write('[color=red]')
+                    #else:
+                    #    fp.write('[label=%s.%s]' % (v.lineno,v.column))
+                    fp.write(';\n')
+    fp.write("}\n")
 
-@exceptions
+def as_networkx(t):
+    G = nx.DiGraph()
+    for u in node.postorder(t):
+        if u.__class__ in (node.ident,node.param):
+            uu = "%s_%s_%s" % (u.name,u.lineno,u.column)
+            #label = "%s\\n%s" % (uu, u.props if u.props else "")
+            G.add_node(uu, ident=u) # label=label)
+            if u.defs:
+                for v in u.defs:
+                    vv = "%s_%s_%s" % (v.name,v.lineno,v.column)
+                    if u.lexpos < v.lexpos:
+                        G.add_edge(uu,vv,color="red")
+                    else:
+                        G.add_edge(uu,vv,color="black")
+    return G
+
 def resolve(t, symtab=None, fp=None, func_name=None):
     if symtab is None:
         symtab = {}
     do_resolve(t,symtab)
-    if options.do_rename:
-        rename(t)
+    G = as_networkx(t)
+    #import pdb;pdb.set_trace()
+    for n in G.nodes():
+        u = G.node[n]["ident"]
+        if u.props:
+            pass
+        elif G.out_edges(n) and G.in_edges(n):
+            u.props = "P"
+            #print u.name, u.lineno, u.column
+        elif G.in_edges(n):
+            u.props = "D"
+        elif G.out_edges(n):
+            u.props = "U"
+        else:
+            u.props = "F"
+        G.node[n]["label"] = "%s\\n%s" % (n, u.props)
+
+    for u in node.postorder(t):
+        if u.__class__ is node.func_decl:
+            u.ident.name += "_"
+        elif u.__class__ is node.funcall:
+            try:
+                if u.func_expr.props in "UP":
+                    u.__class__ = node.arrayref
+                else:
+                    u.func_expr.name += "_"
+            except:
+                pass
+
+    for u in node.postorder(t):
+        if u.__class__ is node.arrayref:
+            for i,v in enumerate(u.args):
+                if v.__class__ is node.expr and v.op == ":":
+                    v.op = "::"
+                for w in node.postorder(v):
+                    if w.__class__ is node.expr and w.op == "end":
+                        w.args[0] = u.func_expr
+                        w.args[1] = node.number(i)
+
+    for u in node.postorder(t):
+        if u.__class__ is node.let:
+            if (u.ret.__class__ is node.ident and
+                u.args.__class__ is node.matrix):
+                u.args = node.funcall(func_expr=node.ident("matlabarray"),
+                                      args=node.expr_list([u.args]))
+
+    H = nx.connected_components(G.to_undirected())
+    for i,component in enumerate(H):
+        for nodename in component:
+            if G.node[nodename]["ident"].props == "U":
+                has_update = 1
+                break
+        else:
+            has_update = 0
+        if has_update:
+            for nodename in component:
+                G.node[nodename]["ident"].props += "S"  # sparse
+        #S = G.subgraph(nbunch)
+        #print S.edges()
+    return G
 
 def do_resolve(t,symtab):
-    """
-    Array references
-    ----------------
-
-    a(x)         --> a[x-1]         if rank(a) == 1
-                 --> a.flat[x-1]    otherwise
-
-    a(:)         --> a              if rank(a) == 1
-                 --> a.flat[-1,1]   otherwise
-
-    a(x,y,z)     --> a[x-1,y-1,z-1]
-
-    a(x:y)       --> a[x-1:y]
-    a(x:y:z)     --> a[x-1,z,y]
-
-    a(...end...) --> a[... a.shape[i]...]
-    a(x==y)      --> ???
-
-    Function calls
-    --------------
-
-    start:stop          --> np.arange(start,stop+1)
-    start:step:stop     --> np.arange(start,stop+1,step)
-
-    """
     t._resolve(symtab)
-    #pprint.pprint(symtab)
-
-    # Two-pass algorithm to convert referenced-but-undefined names
-    # (such as rand) to function calls.
-    # 1.  Iterate over funcall nodes and mark their func_expr field
-    # 2.  Iterate over ident nodes.  Referenced, but undefined nodes
-    #     become funcall nodes.
-    # 3.  Function declaration require special handling
-    
-    # 1. pass I
-    for u in node.postorder(t):
-        if (u.__class__ is node.funcall and 
-            u.func_expr.__class__ is node.expr and u.func_expr.op == "."):
-            u.__class__ = node.arrayref
-        elif (u.__class__ is node.funcall and 
-            u.func_expr.__class__ is node.ident):
-            if u.func_expr.defs:
-                # Convert funcall node to arrayref node
-                u.__class__ = node.arrayref
-            else:
-                u.func_expr.name += "_"
-
-    # 2. pass II
-    for u in node.postorder(t.body):
-        if (u.__class__ is node.ident and u.name[0] != "." and u.defs == set() and u.name[-1] != "_"):
-            u.become(node.funcall(func_expr=node.ident(u.name+"_"),
-                                  args=node.expr_list()))
-
-    # 3. special handling for func decl
-    try:
-        t.head.ident.name += "_"
-    except:
-        pass
-    # Done. Referenced, but undefined name references
-    # converted to funcall objects.  For example,
-    # rand+1 converted to rand()+1
-
-    if 1:
-        for u in node.postorder(t):
-            if u.__class__ in (node.arrayref,node.cellarrayref):
-                for i in range(len(u.args)):
-                    cls = u.args[i].__class__
-                    if cls is node.expr and u.args[i].op == ":":
-                        # Colon expression as a subscript becomes a
-                        # slice.  Everywhere else it becomes a call to
-                        # the "range" function (done in a separate pass,
-                        # see below).
-                        u.args[i].op = "::" # slice marked with op=::
-                        for s in node.postorder(u.args[i]):
-                            if s.__class__==node.expr and s.op=="end" and not s.args:
-                                s.args = node.expr_list([u.func_expr,node.number(i)])
-
-    if 1:
-        # These range nodes are appended after appending _ to funcall
-        # objects. HACK use range_
-        for u in node.postorder(t):
-            if u.__class__ == node.expr and u.op == ":" and u.args:
-                if len(u.args) == 2:
-                    w = node.funcall(node.ident("range_"),
-                                     node.expr_list([u.args[0],
-                                                     u.args[1]]))
-                else:
-                    w = node.funcall(node.ident("range_"),
-                                     node.expr_list([u.args[0],
-                                                     u.args[1],
-                                                     u.args[2]]))
-#def _fix(tree):
-#    for s in node.postorder(tree):
-#        try:
-#            if s.func_expr.name == "ai":
-#                import pdb; pdb.set_trace()
-#        except:
-#            pass
-#        # What looks like a referenced, but undefined variable is
-#        # actually a function call without the arguments, except in
-#        # the beginning of funcall, call_stmt, and func_decl.
-#        for i,t in enumerate(s):
-#            if i==0 and isinstance(s,node.expr) and s.op==".":
-#                continue
-#            if i==0 and isinstance(s,(node.funcall,
-#                                      node.func_decl)):
-#                continue
-#            try:
-#                # name appears to be a variable reference, but not
-#                # defined, such as x=rand
-#                if t.name[0] != "." and t.defs == set():
-#                    s[i] = node.funcall(t,node.expr_list())
-#            except:
-#                pass
-#
-#        if s.__class__ == node.funcall:
-#            if isinstance(s.func_expr, node.ident):
-#                if s.func_expr.defs:
-#                    s.__class__ = node.arrayref
-#            else:
-#                # Here go field references, such as foo.bar(bzz),
-#                # const string indexing, such as 'helloworld'(3),
-#                # and (in octave only, forbidden in matlab
-#                # expressions such as
-#                #   size(foo)(1)  and  [10 20 30](1)
-#                s.__class__ = node.arrayref
-#
 
 def copy_symtab(symtab):
     new_symtab = copy.copy(symtab)
@@ -308,11 +260,17 @@ def _lhs_resolve(self,symtab):
     #     symtab[self.name].add(self)
     # except:
     symtab[self.name] = set([self])
+    #if self.props == "F":
+    #    self.props="P" # P=update
+    #else:
+    #    self.props="D" # D=def
     # defs is None means definition
         
 @extend(node.ident)
 @exceptions
 def _resolve(self,symtab):
+    #if not self.props:
+    #    self.props = "U"
     if self.defs is None:
         self.defs = set()
     try:
