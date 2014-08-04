@@ -668,9 +668,12 @@ def parse(buf,filename=""):
         p = parser.parse(buf,tracking=1,debug=0,lexer=new_lexer)
         return p
     except syntax_error as e:
-        #import pdb;pdb.set_trace()
-        column=e[0].lexpos - new_lexer.lexdata.rfind("\n",0,e[0].lexpos)
-        print >> sys.stderr, '%s:%s.%s:syntax error' % (filename,e[0].lineno,column)
+        try:
+            #import pdb;pdb.set_trace()
+            column=e[0].lexpos - new_lexer.lexdata.rfind("\n",0,e[0].lexpos)
+            print >> sys.stderr, '%s:%s.%s:syntax error' % (filename,e[0].lineno,column)
+        except:
+            print >> sys.stderr, "%s:syntax error" % filename
         return []
 
 # def fparse(filename):

@@ -19,6 +19,12 @@ class matlabarray(np.ndarray):
 
     o Arrays auto-expand on out-of-bound lhs indexing.
 
+    o In matlab, arrays can be updated before they are created:
+
+          a(17) = 42
+
+      is legal in matlab, but not in numpy
+
     o Array data is not shared by copying or slice indexing. Instead there
       is copy-on-write.
 
