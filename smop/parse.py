@@ -73,7 +73,7 @@ def p_top(p):
             if p[3][-1].__class__ is not node.return_stmt:
                 p[3].append(node.return_stmt(ret_expr))
         except:
-            raise syntax_error
+            raise syntax_error(p)
 
         p[0] = p[1]
         p[0].append(node.function(head=p[2],body=p[3]))
@@ -662,12 +662,15 @@ def p_error(p):
 
 parser = yacc.yacc(start="top")
 
-def parse(buf):
+def parse(buf,filename=""):
     try:
-        p = parser.parse(buf,tracking=1,debug=0,lexer=lexer.new())
+        new_lexer = lexer.new()
+        p = parser.parse(buf,tracking=1,debug=0,lexer=new_lexer)
         return p
     except syntax_error as e:
-        print >> sys.stderr, 'Syntax error at %s' % e
+        #import pdb;pdb.set_trace()
+        column=e[0].lexpos - new_lexer.lexdata.rfind("\n",0,e[0].lexpos)
+        print >> sys.stderr, '%s:%s.%s:syntax error' % (filename,e[0].lineno,column)
         return []
 
 # def fparse(filename):

@@ -116,7 +116,7 @@ def main():
             if verbose:
                 print filename
             buf = open(filename).read()
-            func_list = parse.parse(buf if buf[-1]=='\n' else buf+'\n')
+            func_list = parse.parse(buf if buf[-1]=='\n' else buf+'\n',filename)
 
             for func_obj in func_list: 
                 try:
