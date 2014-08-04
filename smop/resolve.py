@@ -21,7 +21,7 @@ It is used in if_stmt, for_stmt, and while_stmt.
 import copy,sys,pprint
 
 import node
-from node import extend,exceptions
+from node import extend
 import backend,options
 import networkx as nx
 
@@ -51,6 +51,7 @@ def as_networkx(t):
             if u.defs:
                 for v in u.defs:
                     vv = "%s_%s_%s" % (v.name,v.lineno,v.column)
+                    G.add_node(vv, ident=v)
                     if u.lexpos < v.lexpos:
                         G.add_edge(uu,vv,color="red")
                     else:
@@ -132,7 +133,6 @@ def copy_symtab(symtab):
     return new_symtab
 
 @extend(node.function)
-@exceptions
 def _resolve(self,symtab):
     self.head._resolve(symtab)
     self.body._resolve(symtab)
@@ -141,7 +141,6 @@ def _resolve(self,symtab):
 @extend(node.global_list)
 @extend(node.concat_list)
 @extend(node.expr_list)
-@exceptions
 def _resolve(self,symtab):
     for expr in self:
         expr._resolve(symtab)
@@ -149,20 +148,17 @@ def _resolve(self,symtab):
 @extend(node.global_list)
 @extend(node.concat_list)
 @extend(node.expr_list)
-@exceptions
 def _lhs_resolve(self,symtab):
     for expr in self:
         expr._lhs_resolve(symtab)
         
 @extend(node.stmt_list)
-@exceptions
 def _resolve(self,symtab):
     for stmt in self:
         stmt._resolve(symtab)
         
 @extend(node.number)
 @extend(node.string)
-@exceptions
 def _resolve(self,symtab):
         pass
 
@@ -176,13 +172,11 @@ def _resolve(self,symtab):
 #     self.ret._lhs_resolve(symtab)
 
 @extend(node.let)
-@exceptions
 def _resolve(self,symtab):
     self.args._resolve(symtab)
     self.ret._lhs_resolve(symtab)
 
 @extend(node.func_decl)
-@exceptions
 def _resolve(self,symtab):
     if self.ident:
         self.ident._resolve(symtab)
@@ -190,7 +184,6 @@ def _resolve(self,symtab):
     self.ret._resolve(symtab)
 
 @extend(node.for_stmt)
-@exceptions
 def _resolve(self,symtab):
     symtab_copy = copy_symtab(symtab)
     self.ident._lhs_resolve(symtab)
@@ -202,7 +195,6 @@ def _resolve(self,symtab):
         symtab.setdefault(k,set()).update(v)
 
 @extend(node.if_stmt)
-@exceptions
 def _resolve(self,symtab):
     symtab_copy = copy_symtab(symtab)
     self.cond_expr._resolve(symtab)
@@ -214,29 +206,24 @@ def _resolve(self,symtab):
         
 @extend(node.continue_stmt)  # FIXME
 @extend(node.break_stmt)     # FIXME
-@exceptions
 def _resolve(self,symtab):
     pass
 
 @extend(node.global_stmt)
-@exceptions
 def _resolve(self,symtab):
     self.global_list._lhs_resolve(symtab)
         
 @extend(node.return_stmt)
-@exceptions
 def _resolve(self,symtab):
     self.ret._resolve(symtab)
         #symtab.clear()
 
 @extend(node.expr_stmt)
-@exceptions
 def _resolve(self,symtab):
     self.expr._resolve(symtab)
         
 @extend(node.where_stmt) # FIXME where_stmt ???
 @extend(node.while_stmt)
-@exceptions
 def _resolve(self,symtab):
     symtab_copy = copy_symtab(symtab)
     self.cond_expr._resolve(symtab)
@@ -248,13 +235,11 @@ def _resolve(self,symtab):
         symtab.setdefault(k,set()).update(v)
 
 @extend(node.try_catch)
-@exceptions
 def _resolve(self,symtab):
     self.try_stmt._resolve(symtab)
     self.catch_stmt._resolve(symtab) # ???
 
 @extend(node.ident)
-@exceptions
 def _lhs_resolve(self,symtab):
     # try:
     #     symtab[self.name].add(self)
@@ -267,7 +252,6 @@ def _lhs_resolve(self,symtab):
     # defs is None means definition
         
 @extend(node.ident)
-@exceptions
 def _resolve(self,symtab):
     #if not self.props:
     #    self.props = "U"
@@ -282,7 +266,6 @@ def _resolve(self,symtab):
 @extend(node.arrayref)
 @extend(node.cellarrayref)
 @extend(node.funcall)
-@exceptions
 def _resolve(self,symtab):
     # Matlab does not allow foo(bar)(bzz), so func_expr is usually
     # an ident, though it may be a field or a dot expression.
@@ -293,7 +276,6 @@ def _resolve(self,symtab):
     #    self.ret._lhs_resolve(symtab)
 
 @extend(node.setfield) # a subclass of funcall
-@exceptions
 def _resolve(self,symtab):
     self.func_expr._resolve(symtab)
     self.args._resolve(symtab)
@@ -302,7 +284,6 @@ def _resolve(self,symtab):
 @extend(node.arrayref)
 @extend(node.cellarrayref)
 @extend(node.funcall)    
-@exceptions
 def _lhs_resolve(self,symtab):
     # Definitely lhs array indexing.  It's both a ref and a def.
     # Must properly handle cases such as foo(foo(17))=42
@@ -312,13 +293,11 @@ def _lhs_resolve(self,symtab):
     self.func_expr._lhs_resolve(symtab)
         
 @extend(node.expr)
-@exceptions
 def _resolve(self,symtab):
     for expr in self.args:
         expr._resolve(symtab)
 
 @extend(node.expr)
-@exceptions
 def _lhs_resolve(self,symtab):
     if self.op == ".": # see setfield
         self.args._resolve(symtab)

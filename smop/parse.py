@@ -69,8 +69,11 @@ def p_top(p):
         assert p[2].__class__ is node.func_decl
         p[2].use_nargin = use_nargin
 
-        if p[3][-1].__class__ is not node.return_stmt:
-            p[3].append(node.return_stmt(ret_expr))
+        try:
+            if p[3][-1].__class__ is not node.return_stmt:
+                p[3].append(node.return_stmt(ret_expr))
+        except:
+            raise syntax_error
 
         p[0] = p[1]
         p[0].append(node.function(head=p[2],body=p[3]))
