@@ -73,6 +73,10 @@ def main():
             assert False, "unhandled option"
 
     if not args:
+        usage()
+        sys.exit()
+    """
+    if not args:
         symtab = {}
         while 1:
             try:
@@ -92,7 +96,7 @@ def main():
                 return
             resolve.resolve(t,symtab)
             print backend.backend(t)
-
+        """
     if not output:
         output = "a.py"
     fp = open(output,"w") if output != "-" else sys.stdout
