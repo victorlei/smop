@@ -1,5 +1,5 @@
 # SMOP compiler -- Simple Matlab/Octave to Python compiler
-# Copyright 2011-2013 Victor Leikehman
+# Copyright 2011-2014 Victor Leikehman
 
 import copy
 import pprint
@@ -21,15 +21,16 @@ import resolve
 # ident properties (set in parse.py)
 # ----------------------------------
 # G global
+# P persistent
 # A function argument
-# R function return value
+# F function return value
 # I for-loop iteration index
 # 
 # ident properties (set in resolve.py)
 # ------------------------------------
-# U use    =...a  or  =...a(b) 
+# R ref    =...a  or  =...a(b) 
 # D def    a=...  or   [a,b,c]=...
-# P update a(b)=...  or  [a(b) c(d)]=...
+# U update a(b)=...  or  [a(b) c(d)]=...
 
 class error(Exception):
     pass
@@ -38,11 +39,12 @@ class syntax_error(error):
     pass
 
 precedence = (
+    ("right","DOTMULEQ","EQ","MULEQ","MINUSEQ","DIVEQ","PLUSEQ","OREQ","ANDEQ"),
     ("nonassoc","HANDLE"),
     ("left", "COMMA"),
     ("left", "COLON"),
     ("left", "ANDAND", "OROR"),
-    ("left", "EQ", "NE", "GE", "LE", "GT", "LT"),
+    ("left", "EQEQ", "NE", "GE", "LE", "GT", "LT"),
     ("left", "OR", "AND"),
     ("left", "PLUS", "MINUS"),
     ("left", "MUL","DIV","DOTMUL","DOTDIV","BACKSLASH"),
@@ -50,7 +52,7 @@ precedence = (
     ("right","TRANSPOSE"),
     ("right","EXP", "DOTEXP"),
     ("nonassoc","LPAREN","RPAREN","RBRACE","LBRACE"),
-    ("left", "FIELD","DOT"),
+    ("left", "FIELD","DOT","PLUSPLUS","MINUSMINUS"),
     )
 
 def p_top(p):
@@ -89,11 +91,11 @@ def p_semi_opt(p):
 
 def p_stmt(p):
     """
-    stmt : let
-         | continue_stmt
+    stmt : continue_stmt
          | break_stmt
          | expr_stmt
          | global_stmt
+         | persistent_stmt
          | command
          | for_stmt
          | if_stmt
@@ -102,13 +104,18 @@ def p_stmt(p):
          | switch_stmt
          | try_catch
          | while_stmt
+         | unwind
     """
     # END_STMT is intentionally left out
     p[0] = p[1]
 
-# FIXME: order statements by ABC
-
-### command
+def p_unwind(p):
+    """
+    unwind : UNWIND_PROTECT stmt_list UNWIND_PROTECT_CLEANUP stmt_list END_UNWIND_PROTECT
+    """
+    p[0] = node.try_catch(try_stmt=p[2],
+                          catch_stmt=node.expr_list(),
+                          finally_stmt=p[4])
 
 def p_arg1(p):
     """
@@ -164,6 +171,20 @@ def p_global_stmt(p):
     for ident in p[0]:
         ident.props="G"  # G=global
 
+def p_persistent_stmt(p):
+    #"""persistent_stmt :  PERSISTENT global_list SEMI
+    """persistent_stmt :  PERSISTENT expr SEMI
+    """
+#    if len(p) == 4:
+#        p[0] = node.global_stmt(p[2])
+#        for ident in p[0]:
+#            ident.props="G"  # G=global
+#    else:
+    assert p[2].__class__ in (node.let,node.ident), p[2].__class__
+    p[0] = p[2]
+    #print p[2]
+
+
 def p_return_stmt(p):
     "return_stmt : RETURN SEMI"
     p[0] = node.return_stmt(ret=ret_expr)
@@ -214,11 +235,13 @@ def p_case_list(p):
 def p_try_catch(p):
     """
     try_catch : TRY stmt_list CATCH stmt_list END_STMT
+              | TRY stmt_list END_STMT
     """
     assert isinstance(p[2],node.stmt_list)
-    assert isinstance(p[4],node.stmt_list)
+    #assert isinstance(p[4],node.stmt_list)
     p[0] = node.try_catch(try_stmt=p[2],
-                          catch_stmt=p[4])
+                          catch_stmt=node.stmt_list(), # FIXME
+                          finally_stmt=node.stmt_list())
 
 def p_null_stmt(p):
     """
@@ -229,7 +252,7 @@ def p_null_stmt(p):
     
 def p_func_decl(p):
     """func_decl : FUNCTION ident args_opt SEMI 
-                 | FUNCTION ret '=' ident args_opt SEMI 
+                 | FUNCTION ret EQ ident args_opt SEMI 
     """
     global ret_expr,use_nargin
     use_nargin = 0
@@ -254,7 +277,7 @@ def p_args_opt(p):
     """
     args_opt :
              | LPAREN RPAREN
-             | LPAREN arg_list RPAREN
+             | LPAREN expr_list RPAREN
     """
     if len(p) == 1:
         p[0] = node.expr_list()
@@ -300,7 +323,7 @@ def p_ret(p):
     else:
         assert 0
     for ident in p[0]:
-        ident.props="R"
+        ident.props="F"
 # end func_decl
 
 def p_stmt_list_opt(p):
@@ -407,76 +430,20 @@ def p_elseif_stmt(p):
     else:
         assert 0
 
-def p_let(p):
-    """
-    let : expr '=' expr SEMI
-    """
-    assert (isinstance(p[1],(node.ident,node.funcall,node.cellarrayref)) or
-            (isinstance(p[1],node.expr) and p[1].op in (("{}","DOT","."))))
-    """
-    try:
-        # a(:) = ...
-        # ravel(a) = ...
-        # a[:] =
-        if p[1].func_expr.name == "ravel":
-            p[1] = node.arrayref(p[1].args[0],node.expr(":",node.expr_list()))
-    except:
-        pass
-    """
-    if isinstance(p[1],node.getfield):
-        p[0] = node.setfield(p[1].args[0],
-                             p[1].args[1],
-                             p[3])
-    else:
-         #assert len(p[1].args) > 0
-         ret = p[1].args if isinstance(p[1],node.matrix) else p[1]
-         p[0] = node.let(ret=ret,
-                         args=p[3],
-                         lineno=p.lineno(2),
-                         lexpos=p.lexpos(2))
-         if isinstance(p[1],node.matrix):
-             p[0].nargout = len(p[1].args)
-         else:
-             p[0].nargout = 1
 
 def p_for_stmt(p):
     """
-    for_stmt : FOR ident '=' expr SEMI stmt_list END_STMT
-             | FOR LPAREN ident '=' expr RPAREN SEMI stmt_list END_STMT
+    for_stmt : FOR ident EQ expr SEMI stmt_list END_STMT
+             | FOR LPAREN ident EQ expr RPAREN SEMI stmt_list END_STMT
+             | FOR matrix EQ expr SEMI stmt_list END_STMT
     """
     if len(p) == 8:
+        if not isinstance(p[2],node.ident):
+            raise NotImplementedError("for loop")
         p[2].props="I" # I= for-loop iteration variable
         p[0] = node.for_stmt(ident=p[2],
                              expr=p[4],
                              stmt_list=p[6])
-
-            # # lexpos used to be unique per ident
-            # # this rare case breaks that assumption
-            # new_index = node.ident.new("I",
-            #                            lineno=p.lineno(2),
-            #                            lexpos=p.lexpos(2))
-            # new_data = node.ident.new("D",
-            #                            lineno=p.lineno(2),
-            #                            lexpos=p.lexpos(2))
-            # stmt1 = node.let(new_data, p[4])
-            # stmt2 = node.let(p[2],node.arrayref(new_data,new_index))
-            # stmt3 = node.for_stmt(ident=new_index,
-            #                       expr=node.expr_list([node.number(1),
-            #                                            node.SIZE(new_data)]),
-            #                       stmt_list=p[6])
-            # stmt3.stmt_list.insert(0,stmt2)
-            # p[0] = node.stmt_list([stmt1,stmt3])
-            # #p[0] = stmt3
-                                  
-    # if len(p) == 8:
-    #     assert isinstance(p[6],stmt_list)
-    #     p[0] = for_stmt(ident=p[2],
-    #                     expr=p[4],
-    #                     stmt_list=p[6])
-    # else:
-    #     p[0] = for_stmt(ident=p[3],
-    #                     expr=p[5],
-    #                     stmt_list=p[8])
 ################  expr  ################
 
 def p_expr(p):
@@ -491,7 +458,11 @@ def p_expr(p):
             | expr2
             | expr1
             | lambda_expr
+            | ident PLUSPLUS
+            | ident MINUSMINUS
     """
+    #        | PLUSPLUS ident
+    #        | MINUSMINUS ident
     if p[1]=="~":
         p[0] = node.ident(name="__")
     else:
@@ -541,6 +512,8 @@ def p_expr1(p):
              | PLUS expr %prec UMINUS
              | NEG expr
              | HANDLE ident
+             | PLUSPLUS ident
+             | MINUSMINUS ident
     """
     p[0] = node.expr(op=p[1],args=node.expr_list([p[2]]))
 
@@ -622,7 +595,8 @@ def p_expr2(p):
              | expr DOTDIV expr
              | expr DOTEXP expr
              | expr DOTMUL expr
-             | expr EQ expr
+             | expr DOTMULEQ expr
+             | expr EQEQ expr
              | expr EXP expr
              | expr GE expr
              | expr GT expr 
@@ -634,11 +608,72 @@ def p_expr2(p):
              | expr OR expr
              | expr OROR expr
              | expr PLUS expr
+             | expr EQ expr
+             | expr MULEQ expr
+             | expr DIVEQ expr
+             | expr MINUSEQ expr
+             | expr PLUSEQ expr
+             | expr OREQ expr
+             | expr ANDEQ expr
     """
-    if p[2] == ".*":
+    if p[2] == "=":
+        if p[1].__class__ is node.let:
+            raise NotImplementedError("assignment "
+                                      "as expression")
+
+        # The algorithm, which decides if an
+        # expression F(X)
+        # is arrayref or funcall, is implemented in
+        # resolve.py, except the following lines up
+        # to XXX. These lines handle the case where
+        # an undefined array is updated:
+        #    >>> clear a
+        #    >>> a[1:10]=123
+        # Though legal in matlab, these lines
+        # confuse the algorithm, which thinks that
+        # the undefined variable is a function name.
+        # To prevent the confusion, we mark these
+        # nodes arrayref as early as during the parse
+        # phase.
+        if p[1].__class__ is node.funcall:
+            # A(B) = C
+            p[1].__class__ = node.arrayref
+        elif p[1].__class__ is node.matrix:
+            # [A1(B1) A2(B2) ...] = C
+            for e in p[1].args:
+                if e.__class__ is node.funcall:
+                    e.__class__ = node.arrayref
+        # XXX   
+
+        if isinstance(p[1],node.getfield):
+            #import pdb;pdb.set_trace()
+            # A.B=C  setfield(A,B,C)
+            p[0] = node.setfield(p[1].args[0],
+                                 p[1].args[1],
+                                 p[3])
+        else:
+            #assert len(p[1].args) > 0
+            ret = p[1].args if isinstance(p[1],node.matrix) else p[1]
+            p[0] = node.let(ret=ret,
+                            args=p[3],
+                            lineno=p.lineno(2),
+                            lexpos=p.lexpos(2))
+
+            if isinstance(p[1],node.matrix):
+                # TBD: mark idents as "P" - persistent
+                assert p[3].__class__ in (node.ident,node.funcall), p[3].__class__
+                if p[3].__class__ is node.ident:
+                    # [A1(B1) A2(B2) ...] = F     implied F()
+                    # import pdb; pdb.set_trace()
+                    p[3] = node.funcall(func_expr=p[3],
+                                        args=node.expr_list())
+                # [A1(B1) A2(B2) ...] = F(X)
+                p[3].nargout = len(p[1].args[0])
+    elif p[2] == ".*":
         p[0] = node.dot(p[1],p[3])
     elif p[2] == "." and isinstance(p[3],node.expr) and p[3].op=="parens":
         p[0] = node.getfield(p[1],p[3].args[0])
+        raise NotImplementedError(p[3],p.lineno(3),p.lexpos(3))
     elif p[2] == ":" and isinstance(p[1],node.expr) and p[1].op==":":
         # Colon expression means different things depending on the
         # context.  As an array subscript, it is a slice; otherwise,
@@ -667,13 +702,24 @@ def parse(buf,filename=""):
         new_lexer = lexer.new()
         p = parser.parse(buf,tracking=1,debug=0,lexer=new_lexer)
         return p
+    except lexer.IllegalCharacterError as (lineno,column,c):
+        #import pdb; pdb.set_trace()
+        print 'Error:%s:%s.%s:illegal character:%s' % (filename,lineno,column,c)
+        return []
+    except NotImplementedError as e:
+        print 'Error:%s:%s:not implemented:%s' % (filename,e[1],e[0])
+        return []
     except syntax_error as e:
         try:
             #import pdb;pdb.set_trace()
             column=e[0].lexpos - new_lexer.lexdata.rfind("\n",0,e[0].lexpos)
-            print >> sys.stderr, '%s:%s.%s:syntax error' % (filename,e[0].lineno,column)
+            print '%s:%s.%s:syntax error %s=<%s>' % (filename,
+                                                     e[0].lineno,
+                                                     column,
+                                                     e[0].type,
+                                                     e[0].value)
         except:
-            print >> sys.stderr, "%s:syntax error" % filename
+            print "%s:unexpected EOF" % filename
         return []
 
 # def fparse(filename):

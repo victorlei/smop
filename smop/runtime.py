@@ -2,6 +2,66 @@
 # Copyright 2014 Victor Leikehman
 
 # MIT license
+
+"""
+Main differences between Matlab matrices and numpy arrays
+=========================================================
+
+#. Array indices start with one, not with zero.  Accordingly, the last
+   element of an N-element array is N, not N-1 as in C.
+
+#. Matrix elements are ordered column-first, aka "Fortran" order.
+
+#. Arrays auto-expand on out-of-bound lhs indexing.
+
+#. In matlab, arrays can be updated before they are created::
+
+      clear a
+      a(17) = 42
+
+   is legal in matlab, but not in numpy
+
+#. Array data is not shared by copying or slice indexing. Instead there
+   is copy-on-write.
+
+#. There are no zero or one-dimensional arrays. Scalars are
+   two-dimensional rather than zero=dimensional as in numpy.
+
+#. Single subscript implies ravel.
+
+#. Boadcasting rules are different
+
+Coexistence of matlab matrices and numpy arrays
+===============================================
+
+#. Empty vector::
+
+        []                  matlabarray()
+
+#. Scalars are 1x1 matrices::
+
+        17                  [[ 17 ]]
+
+#. Rectangular char arrays::
+
+        'hello world'       char('hello world')
+
+#. Row vector::
+
+        [1 2 3]             [[1, 2, 3]]
+
+#. Column vector::
+
+        [1;2;3]             [[1], [2], [3]]
+
+#. Cell strings::
+
+        cellstr('abc','hello',[97 98 99])       
+
+
+(*) Such expressions _are_ legal in Octave.  TBD
+
+"""
 from numpy import inf
 import numpy as np
 import os,sys,copy
@@ -10,44 +70,28 @@ import unittest
 
 class matlabarray(np.ndarray):
     """
-    Matlab matrices differ from numpy arrays:
-
-    o Array indices start with one, not with zero.  Accordingly, the last
-      element of an N-element array is N, not N-1 as in C.
-
-    o Matrix elements are ordered column-first, aka "Fortran" order.
-
-    o Arrays auto-expand on out-of-bound lhs indexing.
-
-    o In matlab, arrays can be updated before they are created:
-
-          a(17) = 42
-
-      is legal in matlab, but not in numpy
-
-    o Array data is not shared by copying or slice indexing. Instead there
-      is copy-on-write.
-
-    o There are no zero or one-dimensional arrays. Scalars are
-      two-dimensional rather than zero=dimensional as in numpy.
-
-    o Single subscript implies ravel.
-
-    o Broadcasting rules are different
-
-    o Strings are not yet supported.
+    >>> matlabarray()
+    array([], shape=(0, 0), dtype=float64)
     """
-    def __new__(cls,input_array=[],**kwargs):
-        obj = np.asarray(input_array,order="F").view(cls).copy(order="F")
+
+    def __new__(cls,a=[],dtype="float64"):
+        obj = np.array(a,
+                       dtype=dtype,
+                       copy=False,
+                       order="F",
+                       ndmin=2).view(cls).copy(order="F")
         if obj.size == 0:
             obj.shape = (0,0)
         return obj
 
     #def __array_finalize__(self,obj):
-    #    self.delegate = obj
 
     def __copy__(self):
         return np.ndarray.copy(self,order="F")
+
+    def __iter__(self):
+        """ must define iter or char won't work"""
+        return np.asarray(self).__iter__()
 
     def compute_indices(self,index):
         if not isinstance(index,tuple):
@@ -114,29 +158,39 @@ class matlabarray(np.ndarray):
         indices = self.compute_indices(index)
         try:
             if len(indices) == 1:
-                foo= np.asarray(self).reshape(-1,order="F")
-                foo.__setitem__(indices,value)
+                np.asarray(self).reshape(-1,order="F").__setitem__(indices,value)
             else:
                 np.asarray(self).__setitem__(indices,value)
         except (ValueError,IndexError):
             #import pdb; pdb.set_trace()
-            if len(indices) == 1:
-                if self.shape.count(1) < self.ndim-1:
+            if not self.size:
+                new_shape = [self.sizeof(s) for s in indices]
+                self.resize(new_shape,refcheck=0)
+                np.asarray(self).__setitem__(indices,value)
+            elif len(indices) == 1:
+                # One-dimensional resize is only implemented for
+                # two cases:
+                #
+                # a. empty matrices having shape [0 0]. These
+                #    matries may be resized to any shape.  A[B]=C
+                #    where A=[], and B is specific -- A[1:10]=C
+                #    rather than A[:]=C or A[1:end]=C
+                #
+                # b. row and column vectors, and their generalizations
+                #    having shape [1 1 ... N ... 1 1 1] may be resized along
+                #    their only non-degenerated dimension
+                if self.size and self.ndim-self.shape.count(1) != 1:
                     raise IndexError
-                # self.shape has at most one non-degenerated dimension
                 n = self.sizeof(indices[0]) # zero-based
                 new_shape = [(1 if s==1 else n) for s in self.shape]
                 self.resize(new_shape,refcheck=0)
                 np.asarray(self).reshape(-1,order="F").__setitem__(indices,value)
             else:
-                if 0 in self.shape:
-                    new_shape = [self.sizeof(s) for s in indices]
-                else:
-                    new_shape = list(self.shape)
-                    if self.flags["C_CONTIGUOUS"]:
-                        new_shape[0] = self.sizeof(indices[0])
-                    elif self.flags["F_CONTIGUOUS"]:
-                        new_shape[-1] = self.sizeof(indices[-1])
+                new_shape = list(self.shape)
+                if self.flags["C_CONTIGUOUS"]:
+                    new_shape[0] = self.sizeof(indices[0])
+                elif self.flags["F_CONTIGUOUS"]:
+                    new_shape[-1] = self.sizeof(indices[-1])
                 self.resize(new_shape,refcheck=0)
                 np.asarray(self).__setitem__(indices,value)
 
@@ -152,143 +206,143 @@ class matlabarray(np.ndarray):
     def __neg__(self):
         return np.ndarray.__neg__(self)
 
-class test_matlabarray(unittest.TestCase):
-    """Expanding matlabarray"""
-    def test01(self):
-        a = matlabarray()
-        a[a.shape[0]+1,[1,2,3]] = [123,456,789]
-        a[a.shape[0]+1,[1,2,3]] = [123,456,789]
-        a[a.shape[0]+1,[1,2,3]] = [123,456,789]
-        self.assertTrue(isequal_(a, [[123,456,789],
-                                     [123,456,789],
-                                     [123,456,789]]))
-    def test02(self):
-        """Expand, use list [1,2,3] for indexing"""
-        a = matlabarray()
-        a[a.shape[0]+1,[1,2,3]] = 123
-        a[a.shape[0]+1,[1,2,3]] = 123
-        a[a.shape[0]+1,[1,2,3]] = 123
-        self.assertTrue(isequal_(a, [[123,123,123],
-                                     [123,123,123],
-                                     [123,123,123]]))
+####
+class cellarray(matlabarray):
+    """
+    Cell array corresponds to matlab ``{}``
 
-    def test03(self):
-        """Expand, use slice 1:3 for indexing"""
-        a = matlabarray()
-        #import pdb; pdb.set_trace()
-        a[a.shape[0]+1,1:3] = 123
-        a[a.shape[0]+1,1:3] = 123
-        a[a.shape[0]+1,1:3] = 123
-        #print a.shape
-        self.assertTrue(isequal_(a, [[123,123,123],
-                                     [123,123,123],
-                                     [123,123,123]]))
-    @unittest.skip("")
-    def test04(self):
-        a = matlabarray()
-        a[a.shape[0]+1,:] = 123
-        a[a.shape[0]+1,:] = 123
-        a[a.shape[0]+1,:] = 123
-        self.assertTrue(isequal_(a, [[123],
-                                     [123],
-                                     [123]]))
-    @unittest.skip("wonders of matlab")
-    def test05(self):
+
+    """
+
+    def __new__(cls, a=[]):
         """
-        octave:48> a=[]
-        a = [](0x0)
-        octave:49> a(:,:)=99
-        a =  99
-        octave:50> a
-        a =  99
-        octave:51> size(a)
-        ans =
+        Create a cell array and initialize it with a.
+        Without the arguments, create an empty cell array.
 
-        1   1
+        Parameters:
+        a : list, ndarray, matlabarray, etc.
+
+        >>> a=cellarray([123,"hello"])
+        >>> print a.shape
+        (1, 2)
+
+        >>> print a[1]
+        123
+
+        >>> print a[2]
+        hello
         """
-        a = matlabarray()
-        a[:,:] = 99
-        self.assertTrue(isequal_(a.item(0), 99))
+        obj = np.array(a,
+                       dtype=object,
+                       order="F",
+                       ndmin=2).view(cls).copy(order="F")
+        if obj.size == 0:
+            obj.shape = (0,0)
+        return obj
+ 
+#    def __str__(self):
+#        if self.ndim == 0:
+#            return ""
+#        if self.ndim == 1:
+#            return "".join(s for s in self)
+#        if self.ndim == 2:
+#            return "\n".join("".join(s) for s in self)
+#        raise NotImplementedError
 
-    @unittest.skip("wonders of matlab")
-    def test06(self):
+
+class cellstr(matlabarray):
+    """
+    >>> s=cellstr(char('helloworldkitty').reshape(3,5))
+    >>> s
+    array([['hello', 'world', 'kitty']], dtype=object)
+    >>> print s
+    hello
+    world
+    kitty
+    >>> s.shape
+    (1, 3)
+    """
+
+    def __new__(cls, a):
         """
-        octave:52> a=[]
-        a = [](0x0)
-        octave:53> a(:)=99
-        a = [](0x0)
-        octave:54> a
-        a = [](0x0)
-
+        Given a two-dimensional char object,
+        create a cell array where each cell contains
+        a line.
         """
+        obj = np.array(["".join(s) for s in a], 
+                       dtype=object,
+                       copy=False,
+                       order="C",
+                       ndmin=2).view(cls).copy(order="F")
+        if obj.size == 0:
+            obj.shape = (0,0)
+        return obj
 
-    @unittest.skip("wonders of matlab")
-    def test07(self):
-        """
-        octave:38> c=[]
-        c = [](0x0)
-        octave:39> c(:)=[2 3 5]
-        error: A(I) = X: X must have the same size as I
-        """
-        a = matlabarray()
-        a[:] = arange_(1,3).T
-        self.assertTrue(isequal_(a,arange_(1,3)))
+    def __str__(self):
+        return "\n".join("".join(s) for s in self.reshape(-1))
 
-    @unittest.skip("wonders of matlab")
-    def test08(self):
-        """
-        octave:44> a=[]
-        a = [](0x0)
-        octave:45> a(1:end,5) = 5
-        a = [](0x5)        % notice 0x5
-        octave:46> a=[]
-        a = [](0x0)
-        octave:47> a(:,5) = 5
-        a =
+class char(matlabarray):
+    """
+    class char is a rectangular string matrix, which
+    inherits from matlabarray all its features except
+    dtype.
 
-        0   0   0   0   5
-        """
+    >>> s=char()
+    >>> s.shape
+    (0, 0)
 
-    def test09(self):
-        a = matlabarray([[11,22,33]])
-        a[4] = 44
-        self.assertTrue(isequal_(a,[[11,22,33,44]]))
+    >>> s=char('helloworld').reshape(2,5)
+    >>> print s
+    hello
+    world
 
-    def test09a(self):
-        a = matlabarray([[11,22,33,44]])
-        a[5:7] = [55,66,77]
-        self.assertTrue(isequal_(a,[[11,22,33,44,55,66,77]]))
+    >>> s.shape
+    (2, 5)
+    """
 
-    def test09b9(self):
-        a = matlabarray([[11,22,33,44,55,66,77]])
-        a[[8,9]] = [88,99]
-        self.assertTrue(isequal_(a,[[11,22,33,44,55,66,77,88,99]]))
+    def __new__(cls, a=""):
+        if not isinstance(a,str):
+            raise NotImplementedError
+        obj = np.array(list(a),
+                       dtype='|S1',
+                       copy=False,
+                       order="F",
+                       ndmin=2).view(cls).copy(order="F")
+        if obj.size == 0:
+            obj.shape = (0,0)
+        return obj
 
-    def test10(self):
-        a = matlabarray([[1,3],
-                         [2,4]])
-        #a[: , a.shape[1]+1] = [5,6]
-        a[: , 3] = [5,6]
-        self.assertTrue(isequal_(a,[[1,3,5],
-                                    [2,4,6]]))
+    def __str__(self):
+        if self.ndim == 0:
+            return ""
+        if self.ndim == 1:
+            return "".join(s for s in self)
+        if self.ndim == 2:
+            return "\n".join("".join(s) for s in self)
+        raise NotImplementedError
 
-    def test11(self):
-        a = zeros_(4,4,dtype=int)
-        a[2:3,2:3] = 1
-        #print a
-        self.assertTrue(isequal_(a,[[0,0,0,0],
-                                    [0,1,1,0],
-                                    [0,1,1,0],
-                                    [0,0,0,0]]))
 
 def abs_(a):
+    """
+    Unless the argument is already as subclass of ndarray,
+    convert the argument to ndarray, then apply numpy.abs
+    """
     return np.abs(np.asanyarray(a))
 
 def arange_(start,stop,step=1,**kwargs):
-    return np.arange(start,stop+1,step,**kwargs).reshape(1,-1)
+    return matlabarray(np.arange(start,stop+1,step,**kwargs).reshape(1,-1))
 
 def ceil_(a):
+    """
+    Unless the argument is already as subclass of ndarray,
+    convert the argument to ndarray, then apply numpy.ceil
+    """
     return np.ceil(np.asanyarray(a))
+
+def cell_(*args):
+    if len(args) == 1:
+        args += args
+    return cellarray(np.zeros(args,dtype=object,order="F"))
 
 def copy_(a):
     return np.asanyarray(a).copy(order="F")
@@ -303,9 +357,27 @@ def false_(*args):
         args += args
     return np.zeros(args,dtype=bool,order="F")
 
-def find_(a,nargout=2):
-    i,j = np.asanyarray(a).nonzero()
-    return (i+1),(j+1)
+def find_(a,n=None,d=None,nargout=1):
+    if d:
+        raise NotImplementedError
+
+    # there is no promise that nonzero or flatnonzero
+    # use or will use indexing of the argument without
+    # converting it to array first.  So we use asarray
+    # instead of asanyarray
+    if nargout == 1:
+        i = np.flatnonzero(np.asarray(a)).reshape(1,-1)+1
+        if n is not None:
+            i = i.take(n)
+        return matlabarray(i)
+    if nargout == 2:
+        i,j = np.nonzero(np.asarray(a))
+        if n is not None:
+            i = i.take(n)
+            j = j.take(n)
+        return (matlabarray((i+1).reshape(-1,1)),
+                matlabarray((j+1).reshape(-1,1)))
+    raise NotImplementedError
 
 def floor_(a):
     return np.floor_(np.asanyarray(a))
@@ -324,7 +396,7 @@ def intersect_(a,b,nargout=1):
             # FIXME: the result is a column vector if
             # both args are column vectors; otherwise row vector
             return np.array(c)
-    raise ErrorNotImplemented    
+    raise NotImplementedError
 
 #def inf_(*args):
 #    t = np.empty(np.prod(args))
@@ -339,6 +411,13 @@ def intersect_(a,b,nargout=1):
 #def int32_(t):
 #    return np.int(t)
 #
+
+def iscellstr_(a):
+    return isinstance(a,cellarray) and all(isinstance(t,str) for t in a)
+
+def ischar_(a):
+    return a.dtype == "|S1"
+
 def isempty_(a):
     try:
         return 0 in np.asarray(a).shape
@@ -361,13 +440,16 @@ def load_(a):
 
 def max_(a, d=0, nargout=0):
     if d or nargout:
-        raise ErrorNotImplemented()
+        raise NotImplementedError
     return np.amax(a)
 
 def min_(a, d=0, nargout=0):
     if d or nargout:
-        raise ErrorNotImplemented()
+        raise NotImplementedError
     return np.amin(a)
+
+def ndims_(a):
+    return np.asarray(a).ndim
 
 def numel_(a):
     return np.asarray(a).size
@@ -387,6 +469,9 @@ def ravel_(a):
 
 def round_(a):
     return np.round(np.asanyarray(a))
+
+def rows_(a):
+    return np.asarray(a).shape[0]
 
 def size_(a, b=0, nargout=2):
     s = np.asarray(a).shape
@@ -412,6 +497,8 @@ def strrep_(a,b,c):
 def sum_(a):
     return np.asanyarray(a).sum()
 
+true = True
+
 def true_(*args):
     if len(args) == 1:
         args += args
@@ -425,13 +512,7 @@ def zeros_(*args,**kwargs):
     return matlabarray(np.zeros(args,order="F",**kwargs))
 
 if __name__ == "__main__":
-    """
-    a = matlabarray()
-    import pdb; pdb.set_trace()
-    a[a.shape[0]+1,1:3] = 123
-    a[a.shape[0]+1,1:3] = 123
-    print(a)
-    """
-    unittest.main()
+    import doctest
+    doctest.testmod()
 
-# vim:et:sw=4:si:
+# vim:et:sw=4:si:tw=70

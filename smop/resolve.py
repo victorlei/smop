@@ -69,14 +69,14 @@ def resolve(t, symtab=None, fp=None, func_name=None):
         if u.props:
             pass
         elif G.out_edges(n) and G.in_edges(n):
-            u.props = "P"
+            u.props = "U" # upd
             #print u.name, u.lineno, u.column
         elif G.in_edges(n):
-            u.props = "D"
+            u.props = "D" # def
         elif G.out_edges(n):
-            u.props = "U"
+            u.props = "R" # ref
         else:
-            u.props = "F"
+            u.props = "F" # ???
         G.node[n]["label"] = "%s\\n%s" % (n, u.props)
 
     for u in node.postorder(t):
@@ -84,7 +84,7 @@ def resolve(t, symtab=None, fp=None, func_name=None):
             u.ident.name += "_"
         elif u.__class__ is node.funcall:
             try:
-                if u.func_expr.props in "UP":
+                if u.func_expr.props in "UR": # upd,ref
                     u.__class__ = node.arrayref
                 else:
                     u.func_expr.name += "_"
@@ -92,7 +92,7 @@ def resolve(t, symtab=None, fp=None, func_name=None):
                 pass
 
     for u in node.postorder(t):
-        if u.__class__ is node.arrayref:
+        if u.__class__ in (node.arrayref,node.cellarrayref):
             for i,v in enumerate(u.args):
                 if v.__class__ is node.expr and v.op == ":":
                     v.op = "::"
@@ -111,7 +111,7 @@ def resolve(t, symtab=None, fp=None, func_name=None):
     H = nx.connected_components(G.to_undirected())
     for i,component in enumerate(H):
         for nodename in component:
-            if G.node[nodename]["ident"].props == "U":
+            if G.node[nodename]["ident"].props == "R":
                 has_update = 1
                 break
         else:
@@ -170,6 +170,11 @@ def _resolve(self,symtab):
 #     self.func_expr._resolve(symtab) # A
 #     self.args._resolve(symtab)      # B
 #     self.ret._lhs_resolve(symtab)
+
+@extend(node.let)
+def _lhs_resolve(self,symtab):
+    self.args._resolve(symtab)
+    self.ret._lhs_resolve(symtab)
 
 @extend(node.let)
 def _resolve(self,symtab):
@@ -241,20 +246,10 @@ def _resolve(self,symtab):
 
 @extend(node.ident)
 def _lhs_resolve(self,symtab):
-    # try:
-    #     symtab[self.name].add(self)
-    # except:
     symtab[self.name] = set([self])
-    #if self.props == "F":
-    #    self.props="P" # P=update
-    #else:
-    #    self.props="D" # D=def
-    # defs is None means definition
-        
+ 
 @extend(node.ident)
 def _resolve(self,symtab):
-    #if not self.props:
-    #    self.props = "U"
     if self.defs is None:
         self.defs = set()
     try:

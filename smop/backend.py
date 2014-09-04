@@ -1,13 +1,13 @@
 # smop -- Simple Matlab to Python compiler
-# Copyright 2011-2013 Victor Leikehman
+# Copyright 2011-2014 Victor Leikehman
 
 """
 Calling conventions:
 
-call site:  nargsout=N is passed if and only if N > 1
-func decl:  nargsout=1 must be declared if function may return
+call site:  nargout=N is passed if and only if N > 1
+func decl:  nargout=1 must be declared if function may return
             more than one return value.  Otherwise optional.
-return value:  return (x,y,z)[:nargsout] or return x
+return value:  return (x,y,z)[:nargout] or return x
 """
 
 import logging
@@ -18,8 +18,11 @@ from node import extend
 indent = " "*4
 
 optable = {
-    "~" : "not ",
+    "!" : "not",
+    "~" : "not",
     "~=": "!=",
+    "|" : "or",
+    "&" : "and",
     "||": "or",
     "&&": "and",
     "^" : "**",
@@ -195,9 +198,13 @@ def _backend(self,level=0):
 
 @extend(node.funcall)
 def _backend(self,level=0):
-    if self.nargout is None or self.nargout == 1:
+    #import pdb; pdb.set_trace()
+    if not self.nargout or self.nargout == 1:
         return "%s(%s)" % (self.func_expr._backend(),
                            self.args._backend())
+    elif not self.args:
+        return "%s(nargout=%s)" % (self.func_expr._backend(),
+                                   self.nargout)
     else:
         return "%s(%s,nargout=%s)" % (self.func_expr._backend(),
                                       self.args._backend(),
@@ -209,8 +216,8 @@ def _backend(self,level=0):
 #        s = "# %d\n" % self.lineno + level*indent
 #    else:
 #        s = ''
-    if self.args.__class__ is node.funcall:
-        self.args.nargout = self.nargout
+    #if self.args.__class__ is node.funcall:
+    #    self.args.nargout = self.nargout
     if (self.ret.__class__ is node.ident and
         self.args.__class__ is node.ident):
         s = "%s=copy_(%s)" % (self.ret._backend(),
@@ -294,14 +301,20 @@ def _backend(self,level=0):
 @extend(node.func_decl)
 def _backend(self,level=0):
     if not self.use_nargin:
-        s = "def %s(%s,nargout=1):" %  (self.ident._backend(),
-                                        self.args._backend())
+        if self.args:
+            s = "def %s(%s,nargout=1):" %  (self.ident._backend(),
+                                            self.args._backend())
+        else:
+            s = "def %s(nargout=1):" %  self.ident._backend()
     else:
-        s = "def %s(*varargin):" % self.ident._backend()
-        s += "\n    nargin = len(varargin)"
-        for i in range(len(self.args)):
-            s += "\n    if nargin > %d:" % i
-            s += "\n        %s = varargin[%d]" % (self.args[i], i)
+        if not self.args:
+            s = "def %s(*args,**kwargs):\n" % self.ident._backend()
+        else:        
+            s = "def %s(%s,*args,**kwargs):\n" % (self.ident._backend(),
+                                                  self.args._backend())
+        s += '''    varargin = cellarray(args)
+    nargin = len(args)+%d''' % len(self.args)
+
     return s
 
 """
@@ -343,10 +356,10 @@ def _backend(self,level=0):
 
 @extend(node.try_catch)
 def _backend(self,level=0):
-    fmt = "try: %s\n%sexcept: %s"
-    return fmt % (self.try_stmt._backend(),
-                  "",
-                  self.catch_stmt._backend())
+    fmt = "try:%s\n%sfinally:%s"
+    return fmt % (self.try_stmt._backend(level+1),
+                  indent*level,
+                  self.finally_stmt._backend(level+1))
 
 @extend(node.builtins)
 def _backend(self,level=0):
