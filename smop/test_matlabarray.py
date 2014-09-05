@@ -35,15 +35,16 @@ class test_matlabarray(unittest.TestCase):
         self.assertTrue(isequal_(a, [[123,123,123],
                                      [123,123,123],
                                      [123,123,123]]))
-    @unittest.skip("FIXME")
+    #@unittest.skip("FIXME")
     def test040(self):
         a = matlabarray()
-        a[a.shape[0]+1,:] = 123
-        a[a.shape[0]+1,:] = 123
-        a[a.shape[0]+1,:] = 123
-        self.assertTrue(isequal_(a, [[123],
-                                     [123],
-                                     [123]]))
+        with self.assertRaises(IndexError):
+            a[a.shape[0]+1,:] = 123
+            a[a.shape[0]+1,:] = 123
+            a[a.shape[0]+1,:] = 123
+            self.assertTrue(isequal_(a, [[123],
+                                         [123],
+                                         [123]]))
     @unittest.skip("wonders of matlab")
     def test050(self):
         """

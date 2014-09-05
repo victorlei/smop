@@ -151,7 +151,9 @@ class matlabarray(np.ndarray):
             n = max(ix)+1
         else:
             assert 0,ix
-        return n
+        if not isinstance(n,int):
+            raise IndexError
+        return n 
 
     def __setitem__(self,index,value):
         #import pdb; pdb.set_trace()

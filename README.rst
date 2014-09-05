@@ -15,36 +15,37 @@ right is ``a.py`` -- its SMOP translation to python.
 
 .. code:: matlab
                                                                                                         
-  01   function mv = solver(ai,af,w)                01 def solver_(ai,af,w,nargout=1):                  
-  02   nBlocks = max(ai(:));                        02     nBlocks=max_(ai[:])                          
-  03   [m,n] = size(ai);                            03     m,n=size_(ai,nargout=2)                      
-  04   I = [0  1  0 -1];                            04     I=matlabarray([0,1,0,- 1])                   
-  05   J = [1  0 -1  0];                            05     J=matlabarray([1,0,- 1,0])                   
-  06   a = ai;                                      06     a=copy_(ai)                                  
-  07   mv = [];                                     07     mv=matlabarray([])                           
-  08   while ~isequal(af,a)                         08     while not isequal_(af,a):                    
-  09     bid = ceil(rand()*nBlocks);                09         bid=ceil_(rand_() * nBlocks)             
-  10     [i,j] = find(a==bid);                      10         i,j=find_(a == bid,nargout=2)            
-  11     r = ceil(rand()*4);                        11         r=ceil_(rand_() * 4)                     
-  12     ni = i + I(r);                             12         ni=i + I[r]                              
-  13     nj = j + J(r);                             13         nj=j + J[r]                              
-  14     if (ni<1) || (ni>m) || (nj<1) || (nj>n)    14         if (ni < 1) or (ni > m) or (nj < 1) or (nj > n):
-  15         continue                               15             continue                             
-  16     end                                        16                                                  
-  17     if a(ni,nj)>0                              17         if a[ni,nj] > 0:                         
-  18         continue                               18           continue                               
-  19     end                                        19                                                  
-  20     [ti,tj] = find(af==bid);                   20         ti,tj=find_(af == bid,nargout=2)         
-  21     d = (ti-i)^2 + (tj-j)^2;                   21         d=(ti - i) ** 2 + (tj - j) ** 2          
-  22     dn = (ti-ni)^2 + (tj-nj)^2;                22         dn=(ti - ni) ** 2 + (tj - nj) ** 2       
-  23     if (d<dn) && (rand()>0.05)                 23         if (d < dn) and (rand_() > 0.05):        
-  24         continue                               24             continue                             
-  25     end                                        25                                                  
-  26     a(ni,nj) = bid;                            26         a[ni,nj]=bid                             
-  27     a(i,j) = 0;                                27         a[i,j]=0                                 
-  28     mv(end+1,[1 2]) = [bid r];                 28         mv[mv.shape[0] + 1,[1,2]]=[bid,r]        
-  29  end                                           29                                                  
-  30                                                30     return mv                                    
+  01   function mv = solver(ai,af,w)  01 def solver_(ai,af,w,nargout=1):                  
+  02   nBlocks = max(ai(:));          02     nBlocks=max_(ai[:])                          
+  03   [m,n] = size(ai);              03     m,n=size_(ai,nargout=2)                      
+  04   I = [0  1  0 -1];              04     I=matlabarray([0,1,0,- 1])                   
+  05   J = [1  0 -1  0];              05     J=matlabarray([1,0,- 1,0])                   
+  06   a = ai;                        06     a=copy_(ai)                                  
+  07   mv = [];                       07     mv=matlabarray([])                           
+  08   while ~isequal(af,a)           08     while not isequal_(af,a):                    
+  09     bid = ceil(rand()*nBlocks);  09         bid=ceil_(rand_() * nBlocks)             
+  10     [i,j] = find(a==bid);        10         i,j=find_(a == bid,nargout=2)            
+  11     r = ceil(rand()*4);          11         r=ceil_(rand_() * 4)                     
+  12     ni = i + I(r);               12         ni=i + I[r]                              
+  13     nj = j + J(r);               13         nj=j + J[r]                              
+  14     if (ni<1) || (ni>m) ||       14         if (ni < 1) or (ni > m) or
+                 (nj<1) || (nj>n)                            (nj < 1) or (nj > n):
+  15         continue                 15             continue                             
+  16     end                          16                                                  
+  17     if a(ni,nj)>0                17         if a[ni,nj] > 0:                         
+  18         continue                 18           continue                               
+  19     end                          19                                                  
+  20     [ti,tj] = find(af==bid);     20         ti,tj=find_(af == bid,nargout=2)         
+  21     d = (ti-i)^2 + (tj-j)^2;     21         d=(ti - i) ** 2 + (tj - j) ** 2          
+  22     dn = (ti-ni)^2 + (tj-nj)^2;  22         dn=(ti - ni) ** 2 + (tj - nj) ** 2       
+  23     if (d<dn) && (rand()>0.05)   23         if (d < dn) and (rand_() > 0.05):        
+  24         continue                 24             continue                             
+  25     end                          25                                                  
+  26     a(ni,nj) = bid;              26         a[ni,nj]=bid                             
+  27     a(i,j) = 0;                  27         a[i,j]=0                                 
+  28     mv(end+1,[1 2]) = [bid r];   28         mv[mv.shape[0] + 1,[1,2]]=[bid,r]        
+  29  end                             29                                                  
+  30                                  30     return mv                                    
 
 
 Though only 30 lines long, this example shows many of 
