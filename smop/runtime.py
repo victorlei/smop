@@ -116,10 +116,10 @@ class matlabarray(np.ndarray):
                     indices.append(int(ix)-1)
                 except:
                     indices.append(np.asarray(ix)-1)
-        try:
-            indices[0] = indices[0].reshape(-1,1)
-        except:
-            pass
+        #try:
+        #    indices[0] = indices[0].reshape(-1,1)
+        #except:
+        #    pass
         return tuple(indices)
 
     def __getslice__(self,i,j):
