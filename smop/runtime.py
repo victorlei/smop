@@ -100,9 +100,9 @@ class matlabarray(np.ndarray):
             raise IndexError
         indices = []
         for i,ix in enumerate(index):
-            if ix == slice(None,None):
-                indices.append(ix)
-            elif ix.__class__ is slice:
+            if ix.__class__ is slice:
+                if self.size == 0 and ix.stop is None:
+                    raise IndexError
                 if len(index) == 1:
                     n = self.size
                 else:

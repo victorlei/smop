@@ -76,8 +76,9 @@ class test_matlabarray(unittest.TestCase):
         a = []
         """
         a = matlabarray()
-        a[:] = 99
-        self.assertTrue(isempty_(a))
+        with self.assertRaises(IndexError):
+            a[:] = 99
+            self.assertTrue(isempty_(a))
 
     #@unittest.skip("wonders of matlab")
     def test062(self):
