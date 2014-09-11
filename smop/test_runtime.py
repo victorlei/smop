@@ -32,11 +32,16 @@ class Getitem(unittest.TestCase):
              [11,22,33,44],
              [11,22,33,44],
              [11,22,33,44]]
-        a = matlabarray([11,22,33,44])
+        a = matlabarray([11,22,33,44], dtype=int)
         self.assertTrue(isequal_(a[  [1,1,1,1] , 1:4], matlabarray(z)))
         self.assertTrue(isequal_(a[  [1,1,1,1],   : ], matlabarray(z)))
-        self.assertTrue(isequal_(a[ [[1,1,1,1]], 1:4], matlabarray([z])))
+        #self.assertTrue(isequal_(a[ [[1,1,1,1]], 1:4], matlabarray([z])))
             
+    def test06(self):
+        a=copy_(0)
+        a[6]=666
+        self.assertTrue(isequal_(a, [[0.,0.,0.,0.,0.,666.]]))
+
 class Expand(unittest.TestCase):
     """
     Expand on index error  

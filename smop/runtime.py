@@ -68,6 +68,31 @@ import os,sys,copy
 from scipy.io import loadmat
 import unittest
 
+def isvector_or_scalar(a):
+    """
+    one-dimensional arrays having shape [N],
+    row and column matrices having shape [1 N] and
+    [N 1] correspondingly, and their generalizations
+    having shape [1 1 ... N ... 1 1 1].
+    Scalars have shape [1 1 ... 1].
+    Empty arrays dont count
+    """
+    try:
+        return a.size and a.ndim-a.shape.count(1) <= 1
+    except:
+        return False
+def isvector(a):
+    """
+    one-dimensional arrays having shape [N],
+    row and column matrices having shape [1 N] and
+    [N 1] correspondingly, and their generalizations
+    having shape [1 1 ... N ... 1 1 1]
+    """
+    try:
+        return a.ndim-a.shape.count(1) == 1
+    except:
+        return False
+
 class matlabarray(np.ndarray):
     """
     >>> matlabarray()
@@ -107,19 +132,18 @@ class matlabarray(np.ndarray):
                     n = self.size
                 else:
                     n = self.shape[i]
-                #start,stop,step = ix.indices(n)
-                indices.append(slice((ix.start or 1)-1,
-                                     ix.stop   or n,
-                                     ix.step   or 1))
+                indices.append(np.arange((ix.start or 1)-1,
+                                          ix.stop  or n,
+                                          ix.step  or 1,
+                                          dtype=int))
             else:
                 try:
                     indices.append(int(ix)-1)
                 except:
-                    indices.append(np.asarray(ix)-1)
-        #try:
-        #    indices[0] = indices[0].reshape(-1,1)
-        #except:
-        #    pass
+                    indices.append(np.asarray(ix).astype("int32")-1)
+        if len(indices) == 2 and isvector(indices[0]) and isvector(indices[1]):
+            indices[0].shape = (-1,1)
+            indices[1].shape = (-1,)
         return tuple(indices)
 
     def __getslice__(self,i,j):
@@ -177,14 +201,20 @@ class matlabarray(np.ndarray):
                 #    matries may be resized to any shape.  A[B]=C
                 #    where A=[], and B is specific -- A[1:10]=C
                 #    rather than A[:]=C or A[1:end]=C
-                #
-                # b. row and column vectors, and their generalizations
-                #    having shape [1 1 ... N ... 1 1 1] may be resized along
-                #    their only non-degenerated dimension
-                if self.size and self.ndim-self.shape.count(1) != 1:
-                    raise IndexError
+                if self.size and not isvector_or_scalar(self):
+                    raise IndexError("One-dimensional resize "
+                                     "works only on vectors, and "
+                                     "row and column matrices")
+                # One dimensional resize of scalars creates row matrices
+                # ai = 3
+                # a(4) = 1
+                # 3 0 0 1
                 n = self.sizeof(indices[0]) # zero-based
-                new_shape = [(1 if s==1 else n) for s in self.shape]
+                if max(self.shape) == 1:
+                    new_shape = list(self.shape)
+                    new_shape[-1] = n
+                else:
+                    new_shape = [(1 if s==1 else n) for s in self.shape]
                 self.resize(new_shape,refcheck=0)
                 np.asarray(self).reshape(-1,order="F").__setitem__(indices,value)
             else:
@@ -206,7 +236,7 @@ class matlabarray(np.ndarray):
         return np.ndarray.__add__(self,other)
 
     def __neg__(self):
-        return np.ndarray.__neg__(self)
+        return matlabarray(np.asarray(self).__neg__())
 
 ####
 class cellarray(matlabarray):
@@ -219,7 +249,7 @@ class cellarray(matlabarray):
     def __new__(cls, a=[]):
         """
         Create a cell array and initialize it with a.
-        Without the arguments, create an empty cell array.
+        Without arguments, create an empty cell array.
 
         Parameters:
         a : list, ndarray, matlabarray, etc.
@@ -332,7 +362,15 @@ def abs_(a):
     return np.abs(np.asanyarray(a))
 
 def arange_(start,stop,step=1,**kwargs):
-    return matlabarray(np.arange(start,stop+1,step,**kwargs).reshape(1,-1))
+    """
+    >>> a=arange_(1,10) # 1:10
+    >>> size_(a)
+    (1, 10)
+    """
+    return matlabarray(np.arange(start,
+                                 stop+1,
+                                 step,
+                                 **kwargs).reshape(1,-1),**kwargs)
 
 def ceil_(a):
     """
@@ -347,7 +385,7 @@ def cell_(*args):
     return cellarray(np.zeros(args,dtype=object,order="F"))
 
 def copy_(a):
-    return np.asanyarray(a).copy(order="F")
+    return matlabarray(np.asanyarray(a).copy(order="F"))
 
 def disp_(*args):
     print (args)
@@ -457,7 +495,11 @@ def numel_(a):
     return np.asarray(a).size
 
 def ones_(*args,**kwargs):
-        return matlabarray(np.ones(args,dtype="int",**kwargs))
+    if not args:
+        return 1.0
+    if len(args) == 1:
+        args += args
+    return matlabarray(np.ones(args,order="F",**kwargs))
 
 def rand_(*args,**kwargs):
     if not args:
@@ -511,10 +553,10 @@ def zeros_(*args,**kwargs):
         return 0.0
     if len(args) == 1:
         args += args
-    return matlabarray(np.zeros(args,order="F",**kwargs))
+    return matlabarray(np.zeros(args,**kwargs))
 
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
 
-# vim:et:sw=4:si:tw=70
+# vim:et:sw=4:si:
