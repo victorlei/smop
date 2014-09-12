@@ -365,7 +365,7 @@ def arange_(start,stop,step=1,**kwargs):
     """
     >>> a=arange_(1,10) # 1:10
     >>> size_(a)
-    (1, 10)
+    array([[  1.,  10.]])
     """
     return matlabarray(np.arange(start,
                                  stop+1,
@@ -517,13 +517,20 @@ def round_(a):
 def rows_(a):
     return np.asarray(a).shape[0]
 
-def size_(a, b=0, nargout=2):
+def size_(a, b=0, nargout=1):
+    """
+    >>> size_(zeros_(3,3)) + 1
+    array([[ 4.,  4.]])
+    """
     s = np.asarray(a).shape
     if s is ():
         return 1 if b else (1,)*nargout
     # a is not a scalar
     try:
-        return s[b-1] if b else s
+        if b:
+            return s[b-1]
+        else:
+            return matlabarray(s) if nargout <= 1 else s
     except IndexError:
         return 1
 
@@ -538,8 +545,11 @@ def strrep_(a,b,c):
         return a.replace(b,c)
     raise ErrorNotImplemented # cell arrays
 
-def sum_(a):
-    return np.asanyarray(a).sum()
+def sum_(a, dim=None):
+    if dim is None:
+        return np.asanyarray(a).sum()
+    else:
+        return np.asanyarray(a).sum(dim-1)
 
 true = True
 

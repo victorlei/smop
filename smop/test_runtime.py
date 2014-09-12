@@ -105,7 +105,7 @@ class Core(unittest.TestCase):
 
     def test03(self):
         b = false_(2,3)
-        self.assertEqual(size_(b), (2,3))
+        self.assertTrue(isequal_(size_(b), [[2,3]]))
 
     def test_zeros(self):
         self.assertEqual(zeros_(), 0.0)
