@@ -96,7 +96,7 @@ def isvector(a):
 class matlabarray(np.ndarray):
     """
     >>> matlabarray()
-    array([], shape=(0, 0), dtype=float64)
+    matlabarray([], shape=(0, 0), dtype=float64)
     """
 
     def __new__(cls,a=[],dtype="float64"):
@@ -227,12 +227,13 @@ class matlabarray(np.ndarray):
                 np.asarray(self).__setitem__(indices,value)
 
     def __repr__(self):
-        return repr(np.asarray(self))
+        return self.__class__.__name__ + repr(np.asarray(self))[5:]
 
     def __str__(self):
         return str(np.asarray(self))
  
     def __add__(self,other):
+        return np.asarray(self)+np.asarray(other)
         return np.ndarray.__add__(self,other)
 
     def __neg__(self):
@@ -286,7 +287,7 @@ class cellstr(matlabarray):
     """
     >>> s=cellstr(char('helloworldkitty').reshape(3,5))
     >>> s
-    array([['hello', 'world', 'kitty']], dtype=object)
+    cellstr([['hello', 'world', 'kitty']], dtype=object)
     >>> print s
     hello
     world
@@ -365,7 +366,7 @@ def arange_(start,stop,step=1,**kwargs):
     """
     >>> a=arange_(1,10) # 1:10
     >>> size_(a)
-    array([[  1.,  10.]])
+    matlabarray([[  1.,  10.]])
     """
     return matlabarray(np.arange(start,
                                  stop+1,
