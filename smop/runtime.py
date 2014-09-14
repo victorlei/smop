@@ -152,6 +152,9 @@ class matlabarray(np.ndarray):
         return self.__getitem__(slice(i,j))
 
     def __getitem__(self,index):
+        return matlabarray(self.get(index))
+
+    def get(self,index):
         #import pdb; pdb.set_trace()
         indices = self.compute_indices(index)
         if len(indices) == 1:
@@ -272,7 +275,10 @@ class cellarray(matlabarray):
         if obj.size == 0:
             obj.shape = (0,0)
         return obj
- 
+
+    def __getitem__(self,index): 
+        return self.get(index)
+
 #    def __str__(self):
 #        if self.ndim == 0:
 #            return ""
@@ -314,6 +320,10 @@ class cellstr(matlabarray):
     def __str__(self):
         return "\n".join("".join(s) for s in self.reshape(-1))
 
+    def __getitem__(self,index): 
+        return self.get(index)
+
+
 class char(matlabarray):
     """
     class char is a rectangular string matrix, which
@@ -344,6 +354,9 @@ class char(matlabarray):
         if obj.size == 0:
             obj.shape = (0,0)
         return obj
+
+    def __getitem__(self,index): 
+        return self.get(index)
 
     def __str__(self):
         if self.ndim == 0:
