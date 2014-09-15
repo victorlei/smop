@@ -236,8 +236,7 @@ class matlabarray(np.ndarray):
         return str(np.asarray(self))
  
     def __add__(self,other):
-        return np.asarray(self)+np.asarray(other)
-        return np.ndarray.__add__(self,other)
+        return matlabarray(np.asarray(self)+np.asarray(other))
 
     def __neg__(self):
         return matlabarray(np.asarray(self).__neg__())
@@ -520,7 +519,10 @@ def rand_(*args,**kwargs):
         return np.random.rand()
     if len(args) == 1:
         args += args
-    return np.random.rand(np.prod(args)).reshape(args,order="F")
+    try:
+        return np.random.rand(np.prod(args)).reshape(args,order="F")
+    except:
+        pass
 
 def ravel_(a):
     return np.asanyarray(a).reshape(-1,1)
