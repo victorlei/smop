@@ -2,3 +2,5 @@
 *.pyc
 *.swp
 a.py
+*.egg-info
+

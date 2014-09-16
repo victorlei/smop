@@ -123,22 +123,25 @@ def _backend(self,level=0):
         return node.number(self.args[0].value +
                            self.args[1].value)._backend()
     else:
-        return "(%s+%s)" % (self.args[0]._backend(),
+        return "(%s +%s)" % (self.args[0]._backend(),
                             self.args[1]._backend())
 
 @extend(node.sub)
 def _backend(self,level=0):
-    return "(%s-%s)" %  (self.args[0]._backend(),
+    return "(%s -%s)" %  (self.args[0]._backend(),
                          self.args[1]._backend())
 
 @extend(node.expr)
 def _backend(self,level=0):
+    if self.op == '*':
+        return "np.dot(%s, %s)" % (self.args[0]._backend(),
+                                   self.args[1]._backend())
     if self.op == '@': # FIXME
         return self.args[0]._backend()
 
     if self.op == "\\":
-        return "numpy.linalg.solve(%s,%s)" % (self.args[0]._backend(),
-                                              self.args[1]._backend())
+        return "np.linalg.solve(%s, %s)" % (self.args[0]._backend(),
+                                            self.args[1]._backend())
     if self.op == "::":
         if not self.args:
             return ":"
@@ -229,7 +232,7 @@ def _backend(self,level=0):
 
 @extend(node.expr_list)
 def _backend(self,level=0):
-    return ",".join([t._backend() for t in self])
+    return ", ".join([t._backend() for t in self])
 
 @extend(node.concat_list)
 def _backend(self,level=0):
