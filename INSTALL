@@ -20,10 +20,9 @@ installed the dependences -- numpy and networkx.
 Installation from sources 
 =========================
 
-$ tar zxvf m2py.tar.gz
-$ cd m2py
+$ tar zxvf smop.tar.gz
+$ cd smop
 $ python setup.py install [--user]
-$ python setup.py test
 
 If you use the --user option, don't forget to put
 your .local/bin into the search path (unix only).

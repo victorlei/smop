@@ -1,17 +1,15 @@
 from setuptools import setup
 
-#open('version.txt')
-
 setup(
     author = 'Victor Leikehman',
     author_email = 'victorlei@gmail.com',
-    description = 'Matlab to Python compiler',
+    description = 'Matlab to Python converter',
     license = 'MIT',
     keywords = 'convert translate matlab octave python',
     url = 'https://github.com/victorlei/smop',
-    download_url = 'https://github.com/victorlei/smop/archive/smop-0.25.1.zip',
+    download_url = 'https://github.com/victorlei/smop/archive/master.zip',
     name = 'smop',
-    version = '0.25.1',
+    version = '0.25.4',
     entry_points = { 'console_scripts': [ 'smop = smop.main:main', ], },
     packages = ['smop'],
     #package_dir = {'':'src'},
