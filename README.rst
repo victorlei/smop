@@ -1,5 +1,5 @@
 SMOP is Small Matlab and Octave to Python compiler
-    It is used to translate to python libraries containing
+    It is used to translate legacy libraries containing
     algorithmic matlab code, but not using toolboxes or
     graphics.  Despite the obvious similarities between
     matlab and numeric python, there are enough differences
@@ -186,10 +186,27 @@ Work in progress below this line
 |   P. Strings are arrays of chars        |  yes  | no    |  yes  |
 +-----------------------------------------+-------+-------+-------+
 
-C. Auto-expanding arrays
-  Matlab arrays are auto-magically resized on out-of-bounds
-  update.  Deprecated, this feature is widely used in legacy code.
-  Supporting this feature is hard both in python and in fortran.  
+
+Base-one indexing
+   Following fortran tradition, matlab starts array indexing with one,
+   not zero.  Correspondingly, the last element of a N-element array is
+   N, not N-1.
+
+C_CONTIGUOUS and F_CONTIGUOUS data layout
+  Matlab matrix elements are ordered in columns-first, aka
+  F_CONTIGUOUS order.  Numpy arrays are C_CONTIGUOUS by default, with
+  some support for F_CONTIGUOUS arrays.  Instances of matlabarray are
+  F_CONTIGUOUS except if created empty, in which case they are
+  C_CONTIGUOUS.
+
+Auto-expanding arrays
+  Matlab arrays are auto-magically resized on out-of-bounds update.
+  Though deprecated, this feature is widely used in legacy code.
+  Supporting this feature is one of the main reasons behind creation
+  of the dedicated ``matlabarray`` class.  If we chose the `pythonic`
+  option --- smop arrays directly mapped to ndarrays --- any array
+  update that could not be proven to be safe, should have been
+  enclosed in try-except-resize-retry.  It would not look any better.
   
   In fortran, the pattern should be somehow (how exactly?) detected in
   compile-time.  In python ``__setitem__`` hides ``try-catch``, with
