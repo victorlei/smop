@@ -435,6 +435,14 @@ def find_(a,n=None,d=None,nargout=1):
 def floor_(a):
     return np.floor_(np.asanyarray(a))
 
+def fopen_(*args):
+    try:
+        fp = open(*args)
+        assert fp != -1
+        return fp
+    except:
+        return -1
+
 def fullfile_(*args):
     return os.path.join(*args)
 

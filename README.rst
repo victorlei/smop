@@ -10,15 +10,21 @@ SMOP is Small Matlab and Octave to Python compiler
     maintainer must be fluent in both languages, and the old
     development environment must be kept around.  For matlab
     this means paying for the license.
-        
 
-Example: ``solver.m``
-    The matlab program ``solver.m`` was taken from the  matlab
-    programming competition in 2004 (Moving Furniture).  To the
-    right is ``a.py`` -- its SMOP translation to python.
-    Though only 30 lines long, this example shows many of 
-    the complexities of converting matlab code to python.
+Running the example: ``solver.m``
+    This program was taken from the  matlab programming competition in
+    2004 (Moving Furniture). For the impatient, it is possible to
+    compile and run the example without installing smop::
 
+        $ tar zxvf smop-0.25.4.tar.gz
+        $ cd smop-0.25.4/smop
+        $ python main.py solver.m
+        $ python go.py
+
+    To the left is ``solver.m``.  To the right is ``a.py`` --- its
+    smop translation to python.  Though only 30 lines long, this
+    example shows many of the complexities of converting matlab code
+    to python.
 
 .. code:: matlab
                                                                                                         
@@ -110,6 +116,11 @@ Example: ``solver.m``
   28     mv(end+1,[1 2]) = [bid r];   28         mv[mv.shape[0] + 1,[1,2]]=[bid,r]        
   29  end                             29                                                  
   30                                  30     return mv                                    
+
+---------------------------------------------------------------------
+
+Running the test suite::
+     $ make check
 
 Command-line options
 --------------------
@@ -208,6 +219,17 @@ Auto-expanding arrays
   update that could not be proven to be safe, should have been
   enclosed in try-except-resize-retry.  It would not look any better.
   
+  In fact, I beleive now that some matlabic accent is unavoidable
+  in the generated python sources.  Imagine matlab program is using
+  regular expressions, matlab style.  We are not going to translate
+  them to python style, and that code will remain forever as a
+  reminder of the program's matlab origin.
+
+  Another example.  Matlab code opens a file; fopen returns -1 on
+  error.  Pythonic code would raise exception, but we are not going to
+  do `that`.   Instead, we will live with the accent, and smop takes
+  this to the extreme --- the matlab program remains mostly unchanged.
+
   In fortran, the pattern should be somehow (how exactly?) detected in
   compile-time.  In python ``__setitem__`` hides ``try-catch``, with
   ``resize`` called inside ``catch``.  Is try-catch in fortran?
@@ -244,4 +266,3 @@ D. Update to create
 -------------------------------------
 
 .. vim:tw=70
-.. vim: tw=60
