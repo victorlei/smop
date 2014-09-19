@@ -2,4 +2,5 @@
 # Copyright 2011-2014 Victor Leikehman
 
 import parse,resolve,backend,main
+from version import __version__
 __version__ = main.__version__

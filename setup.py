@@ -1,4 +1,11 @@
+import os
 from setuptools import setup
+
+try:
+    versionstring = os.popen("git describe").read().strip()
+    open("smop/version.py","w").write("__version__ = '%s'\n" % versionstring)
+except:
+    versionstring = ""
 
 setup(
     author = 'Victor Leikehman',
@@ -9,7 +16,7 @@ setup(
     url = 'https://github.com/victorlei/smop',
     download_url = 'https://github.com/victorlei/smop/archive/master.zip',
     name = 'smop',
-    version = '0.25.5',
+    version = versionstring,
     entry_points = { 'console_scripts': [ 'smop = smop.main:main', ], },
     packages = ['smop'],
     #package_dir = {'':'src'},

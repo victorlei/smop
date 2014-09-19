@@ -7,7 +7,7 @@ import lexer,parse,resolve,backend,options,node,graphviz
 import networkx as nx
 import readline
 
-__version__ = "0.25.5"
+from version import __version__
 
 def usage():
     print "SMOP compiler version " + __version__
