@@ -51,7 +51,7 @@ Coexistence of matlab matrices and numpy arrays
         [1 2 3]             [[1, 2, 3]]
 
 #. Column vector::
-
+ 
         [1;2;3]             [[1], [2], [3]]
 
 #. Cell strings::
@@ -67,6 +67,7 @@ import numpy as np
 import os,sys,copy
 from scipy.io import loadmat
 import unittest
+from version import __version__
 
 def isvector_or_scalar(a):
     """
