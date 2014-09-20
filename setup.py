@@ -5,7 +5,7 @@ try:
     versionstring = os.popen("git describe").read().strip()
     open("smop/version.py","w").write("__version__ = '%s'\n" % versionstring)
 except:
-    versionstring = ""
+    versionstring = "''"
 
 setup(
     author = 'Victor Leikehman',
@@ -21,7 +21,7 @@ setup(
     packages = ['smop'],
     #package_dir = {'':'src'},
     #test_suite = "smop.testsuite.test_lexer",
-    include_package_data = True,
-    package_data = { '': ['README.rst', '*.m', 'Makefile'], },
+    #include_package_data = True,
+    #package_data = { 'smop': ['*.m', 'Makefile'], },
     install_requires = ['numpy', 'scipy', 'networkx'],
 )
