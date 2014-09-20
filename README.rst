@@ -1,30 +1,76 @@
-SMOP is Small Matlab and Octave to Python compiler
-    It is used to translate legacy libraries containing
-    algorithmic matlab code, but not using toolboxes or
-    graphics.  Despite the obvious similarities between
-    matlab and numeric python, there are enough differences
-    to make the manual translation of these libraries
-    infeasible in real life.  SMOP generates human-readable
-    python, at a price --- the generated sources are
-    `matlabish`, rather than `pythonic`, the library
-    maintainer must be fluent in both languages, and the old
-    development environment must be kept around.  For matlab
-    this means paying for the license.
+``SMOP`` is Small Matlab and Octave to Python compiler.
+    ``SMOP`` is used to translate to python legacy libraries
+    containing algorithmic matlab code.  Despite the obvious
+    similarities between matlab and numeric python, there
+    are enough differences to make the manual translation of
+    these libraries infeasible in real life.  ``SMOP``
+    generates human-readable python, at a price --- the
+    generated sources are `matlabic`, rather than
+    `pythonic`, library maintainers must be fluent in both
+    languages, and the old development environment must be
+    kept around. 
 
-Running the example: ``solver.m``
-    This program was taken from the  matlab programming competition in
-    2004 (Moving Furniture). For the impatient, it is possible to
-    compile and run the example without installing smop::
+    The python package ``smop`` consists of two parts:
+    compiler (``smop.main``) and runtime library
+    (``smop.runtime``). The compiler parses the matlab code,
+    builds an intermediate representation, alalyzes the
+    code, and finally converts the intermediate code to
+    python, which incidentally looks very much like the
+    original matlab code.
 
-        $ tar zxvf smop-0.25.4.tar.gz
-        $ cd smop-0.25.4/smop
-        $ python main.py solver.m
-        $ python go.py
+.. describe runtime
 
-    To the left is ``solver.m``.  To the right is ``a.py`` --- its
-    smop translation to python.  Though only 30 lines long, this
-    example shows many of the complexities of converting matlab code
-    to python.
+    With less than five thousands lines of python code
+    ``smop`` does not pretend to compete with such polished
+    products as matlab or octave.  Yet, it is not a toy.
+    There is an attempt to follow the original matlab
+    semantics as close as possible.  Matlab language
+    definition (never published afaik) is full of dark
+    corners, and smop tries to follow matlab as precisely as
+    possible.
+
+Should the generated program be `pythonic` or `matlabic`? 
+    For example should array indexing start with zero
+    (`pythonic`) or with one (`matlabic`)?
+
+    I beleive now that some matlabic accent is unavoidable
+    in the generated python sources.  Imagine matlab program
+    is using regular expressions, matlab style.  We are not
+    going to translate them to python style, and that code
+    will remain forever as a reminder of the program's
+    matlab origin.
+
+    Another example.  Matlab code opens a file; fopen
+    returns -1 on error.  Pythonic code would raise
+    exception, but we are not going to do `that`.   Instead,
+    we will live with the accent, and smop takes this to the
+    extreme --- the matlab program remains mostly unchanged.
+
+    It turns out that generating `matlabic`` allows for
+    moving much of the project complexity out of the
+    compiler (which is already complicated enough) and into
+    the runtime library, where there is almost no
+    interaction between the library parts.
+
+.. missing standard library and toolboxes
+.. missing grapphics library
+
+Working example: ``solver.m``
+    We will translate ``solver.m`` to present a sample of
+    smop features.  The program was borrowed from the
+    matlab programming competition in 2004 (Moving
+    Furniture). For the impatient, it is possible to compile
+    and run the example without installing smop::
+
+    $ tar zxvf smop-0.25.4.tar.gz
+    $ cd smop-0.25.4/smop
+    $ python main.py solver.m
+    $ python go.py
+
+To the left is ``solver.m``.  To the right is ``a.py`` --- its
+smop translation to python.  Though only 30 lines long, this
+example shows many of the complexities of converting matlab code
+to python.
 
 .. code:: matlab
                                                                                                         
@@ -119,7 +165,13 @@ Running the example: ``solver.m``
 
 ---------------------------------------------------------------------
 
+Work in progress below this line
+================================
+
+
 Running the test suite::
+
+     $ cd smop
      $ make check
 
 Command-line options
@@ -148,8 +200,6 @@ Command-line options
 
 ---------------------------------------------------------------------
 
-Work in progress below this line
-================================
 
 +-----------------------------------------+-------+-------+-------+
 |                                         |matlab |fortran|python |
@@ -219,17 +269,6 @@ Auto-expanding arrays
   update that could not be proven to be safe, should have been
   enclosed in try-except-resize-retry.  It would not look any better.
   
-  In fact, I beleive now that some matlabic accent is unavoidable
-  in the generated python sources.  Imagine matlab program is using
-  regular expressions, matlab style.  We are not going to translate
-  them to python style, and that code will remain forever as a
-  reminder of the program's matlab origin.
-
-  Another example.  Matlab code opens a file; fopen returns -1 on
-  error.  Pythonic code would raise exception, but we are not going to
-  do `that`.   Instead, we will live with the accent, and smop takes
-  this to the extreme --- the matlab program remains mostly unchanged.
-
   In fortran, the pattern should be somehow (how exactly?) detected in
   compile-time.  In python ``__setitem__`` hides ``try-catch``, with
   ``resize`` called inside ``catch``.  Is try-catch in fortran?
@@ -250,7 +289,7 @@ Auto-expanding arrays
 
   can be resized along any dimension.
 
-D. Update to create
+Update to create
   In matlab, arrays may be created by  updating a non existent array,
   as in the example::
 
@@ -265,4 +304,17 @@ D. Update to create
 
 -------------------------------------
 
-.. vim:tw=70
+SMOP assumes that the input is syntactically correct  and
+passes some test suite. 
+
+.. code:: matlab
+ 
+  01   ok = 0                         01 def solver_(c):                  
+  02   if c                           02     if c:
+  03      ok = f00                    03         ok = f00()
+    
+    .. code:: matlab
+
+     
+
+.. vim: tw=60
