@@ -62,6 +62,7 @@ Coexistence of matlab matrices and numpy arrays
 (*) Such expressions _are_ legal in Octave.  TBD
 
 """
+import version
 from numpy import inf
 import numpy as np
 import os,sys,copy

@@ -1,13 +1,15 @@
 # SMOP compiler -- Simple Matlab/Octave to Python compiler
 # Copyright 2011-2013 Victor Leikehman
 
+import version
 import sys,cPickle,glob,os
 import getopt,re
 import lexer,parse,resolve,backend,options,node,graphviz
 import networkx as nx
 import readline
 
-from version import __version__
+#from version import __version__
+__version__ = version.__version__
 
 def usage():
     print "SMOP compiler version " + __version__
