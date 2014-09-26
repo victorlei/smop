@@ -300,20 +300,21 @@ def _backend(self,level=0):
 
 @extend(node.func_decl)
 def _backend(self,level=0):
-    if not self.use_nargin:
+    if not self.use_varargin:
         if self.args:
             s = "def %s(%s,nargout=1):" %  (self.ident._backend(),
                                             self.args._backend())
         else:
             s = "def %s(nargout=1):" %  self.ident._backend()
     else:
-        if not self.args:
+        assert self.args[-1].name == "varargin"
+        if not self.args[:-1]:
             s = "def %s(*args,**kwargs):\n" % self.ident._backend()
         else:        
             s = "def %s(%s,*args,**kwargs):\n" % (self.ident._backend(),
-                                                  self.args._backend())
-        s += '''    varargin = cellarray(args)
-    nargin = len(args)+%d''' % len(self.args)
+                                                  self.args[:-1]._backend())
+        s += '    varargin = cellarray(args)\n'
+        s += '    nargin = len(args)+%d\n' % (len(self.args)-1)
 
     return s
 

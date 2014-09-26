@@ -70,6 +70,7 @@ def p_top(p):
         # we backpatch the func_decl node
         assert p[2].__class__ is node.func_decl
         p[2].use_nargin = use_nargin
+        p[2].use_varargin = use_varargin
 
         try:
             if p[3][-1].__class__ is not node.return_stmt:
@@ -254,8 +255,8 @@ def p_func_decl(p):
     """func_decl : FUNCTION ident args_opt SEMI 
                  | FUNCTION ret EQ ident args_opt SEMI 
     """
-    global ret_expr,use_nargin
-    use_nargin = 0
+    global ret_expr,use_nargin,use_varargin
+    use_varargin = use_nargin = 0
 
     if len(p) == 5:
         assert isinstance(p[3],node.expr_list)
@@ -481,8 +482,10 @@ def p_lambda_expr(p):
 
 def p_expr_ident(p):
     "ident : IDENT"
+    global use_nargin,use_varargin
+    if p[1] == "varargin":
+        use_varargin += 1
     if p[1] == "nargin":
-        global use_nargin
         use_nargin += 1
     #import pdb; pdb.set_trace()
     p[0] = node.ident(name=p[1],
