@@ -511,6 +511,11 @@ def min_(a, d=0, nargout=0):
         raise NotImplementedError
     return np.amin(a)
 
+def mod_(a,b):
+    try:
+        return a % b
+    except ZeroDivisionError:
+        return a
 def ndims_(a):
     return np.asarray(a).ndim
 

@@ -1,4 +1,5 @@
 function mv = solver(ai,af,w)
+rand(1,2,3);
 %
 % Copyright 2004 The MathWorks, Inc.
 
@@ -50,6 +51,18 @@ while ~isequal(af,a)
 
     % Record the move
     mv(end+1,[1 2]) = [bid r];
+    end
+end
 
+function r = rand(varargin)
+    global s1 s2 s3
+    if nargin != 0
+        r=0;
+        s1=varargin{1};
+        s2=varargin{2};
+        s3=varargin{3};
+    else
+        [r,s1,s2,s3] = r8_random(s1,s2,s3);
+    end
 end
 
