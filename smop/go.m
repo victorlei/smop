@@ -14,7 +14,7 @@ af(6,6)=4;
 af(10,10)=5;
 
 tic;
-mv = fastsolver(ai,af,0);
-toc;
+mv = solver(ai,af,0);
+toc
 
-disp( size(mv) );
+disp(mv);

@@ -6,5 +6,5 @@ check:
 	python test_matlabarray.py $(FLAGS)
 	python test_sparsearray.py $(FLAGS)
 	python test_lexer.py $(FLAGS)
-	python main.py solver.m && python go.py | wc
-	python main.py fastsolver.m && python go.py
+	python main.py solver.m r8_random.m && python go.py | tail
+	#python main.py fastsolver.m && python go.py
