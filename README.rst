@@ -4,11 +4,13 @@
     similarities between matlab and numeric python, there
     are enough differences to make the manual translation of
     these libraries infeasible in real life.  ``SMOP``
-    generates human-readable python, at a price --- the
-    generated sources are `matlabic`, rather than
-    `pythonic`, library maintainers must be fluent in both
-    languages, and the old development environment must be
-    kept around. 
+    generates human-readable python, which also appears to
+    be about twice as fast as octave (see below).
+    
+    There is a price, too. The generated sources are
+    `matlabic`, rather than `pythonic`, which means that
+    library maintainers must be fluent in both languages,
+    and the old development environment must be kept around. 
 
     The python package ``smop`` consists of two parts:
     compiler (``smop.main``) and runtime library
@@ -68,15 +70,15 @@ Working example: ``solver.m``
     $ python go.py
 
 To the left is ``solver.m``.  To the right is ``a.py`` --- its
-smop translation to python.  Though only 30 lines long, this
+translation to python.  Though only 30 lines long, this
 example shows many of the complexities of converting matlab code
 to python.
 
 .. code:: matlab
-                                                                                                        
-  01   function mv = solver(ai,af,w)  01 def solver_(ai,af,w,nargout=1):                  
-  02   nBlocks = max(ai(:));          02     nBlocks=max_(ai[:])                          
-  03   [m,n] = size(ai);              03     m,n=size_(ai,nargout=2)                      
+
+  01   function mv = solver(ai,af,w)  01 def solver_(ai,af,w,nargout=1): 
+  02   nBlocks = max(ai(:));          02     nBlocks=max_(ai[:]) 
+  03   [m,n] = size(ai);              03     m,n=size_(ai,nargout=2)
 
 ====  ========================================================
   02  Matlab uses round brackets both for array indexing and
@@ -94,10 +96,10 @@ to python.
 
 .. code:: matlab
                                                                                                         
-  04   I = [0  1  0 -1];              04     I=matlabarray([0,1,0,- 1])                   
-  05   J = [1  0 -1  0];              05     J=matlabarray([1,0,- 1,0])                   
-  06   a = ai;                        06     a=copy_(ai)                                  
-  07   mv = [];                       07     mv=matlabarray([])                           
+  04   I = [0  1  0 -1];              04     I=matlabarray([0,1,0,- 1])
+  05   J = [1  0 -1  0];              05     J=matlabarray([1,0,- 1,0])
+  06   a = ai;                        06     a=copy_(ai)
+  07   mv = [];                       07     mv=matlabarray([])
 
 ====  ========================================================
   04  Matlab array indexing starts with one; python indexing
@@ -121,12 +123,12 @@ to python.
 
 .. code:: matlab
                                                                                                         
-  08   while ~isequal(af,a)           08     while not isequal_(af,a):                    
-  09     bid = ceil(rand*nBlocks);    09         bid=ceil_(rand_() * nBlocks)             
-  10     [i,j] = find(a==bid);        10         i,j=find_(a == bid,nargout=2)            
-  11     r = ceil(rand*4);            11         r=ceil_(rand_() * 4)                     
-  12     ni = i + I(r);               12         ni=i + I[r]                              
-  13     nj = j + J(r);               13         nj=j + J[r]                              
+  08   while ~isequal(af,a)           08     while not isequal_(af,a):
+  09     bid = ceil(rand*nBlocks);    09         bid=ceil_(rand_() * nBlocks)
+  10     [i,j] = find(a==bid);        10         i,j=find_(a == bid,nargout=2)
+  11     r = ceil(rand*4);            11         r=ceil_(rand_() * 4)
+  12     ni = i + I(r);               12         ni=i + I[r]
+  13     nj = j + J(r);               13         nj=j + J[r]
 
 ====  ========================================================
   09  Matlab functions of zero arguments, such as
@@ -146,23 +148,52 @@ to python.
 
   14     if (ni<1) || (ni>m) ||       14         if (ni < 1) or (ni > m) or
                  (nj<1) || (nj>n)                            (nj < 1) or (nj > n):
-  15         continue                 15             continue                             
-  16     end                          16                                                  
-  17     if a(ni,nj)>0                17         if a[ni,nj] > 0:                         
-  18         continue                 18           continue                               
-  19     end                          19                                                  
-  20     [ti,tj] = find(af==bid);     20         ti,tj=find_(af == bid,nargout=2)         
-  21     d = (ti-i)^2 + (tj-j)^2;     21         d=(ti - i) ** 2 + (tj - j) ** 2          
-  22     dn = (ti-ni)^2 + (tj-nj)^2;  22         dn=(ti - ni) ** 2 + (tj - nj) ** 2       
-  23     if (d<dn) && (rand>0.05)     23         if (d < dn) and (rand_() > 0.05):        
-  24         continue                 24             continue                             
-  25     end                          25                                                  
-  26     a(ni,nj) = bid;              26         a[ni,nj]=bid                             
-  27     a(i,j) = 0;                  27         a[i,j]=0                                 
-  28     mv(end+1,[1 2]) = [bid r];   28         mv[mv.shape[0] + 1,[1,2]]=[bid,r]        
-  29  end                             29                                                  
-  30                                  30     return mv                                    
+  15         continue                 15             continue
+  16     end                          16
+  17     if a(ni,nj)>0                17         if a[ni,nj] > 0:
+  18         continue                 18           continue
+  19     end                          19
+  20     [ti,tj] = find(af==bid);     20         ti,tj=find_(af == bid,nargout=2)
+  21     d = (ti-i)^2 + (tj-j)^2;     21         d=(ti - i) ** 2 + (tj - j) ** 2
+  22     dn = (ti-ni)^2 + (tj-nj)^2;  22         dn=(ti - ni) ** 2 + (tj - nj) ** 2
+  23     if (d<dn) && (rand>0.05)     23         if (d < dn) and (rand_() > 0.05):
+  24         continue                 24             continue
+  25     end                          25
+  26     a(ni,nj) = bid;              26         a[ni,nj]=bid
+  27     a(i,j) = 0;                  27         a[i,j]=0
+  28     mv(end+1,[1 2]) = [bid r];   28         mv[mv.shape[0] + 1,[1,2]]=[bid,r]
+  29  end                             29
+  30                                  30     return mv
 
+Which one is faster --- python or octave?  I don't know.  
+  Doing reliable performance measurements is notoriously
+  hard, and is of low priority for me now.  Instead, I wrote
+  a simple driver ``go.m`` and ``go.py`` and rewrote `rand`
+  so that python and octave versions run the same code.
+  Then I ran the above example on my laptop.  The results
+  are twice as fast for the python version.   What does it
+  mean?  Probably nothing. YMMV.
+
+.. code:: matlab
+
+    ai = zeros(10,10);
+    af = ai;
+
+    ai(1,1)=2;
+    ai(2,2)=3;
+    ai(3,3)=4;
+    ai(4,4)=5;
+    ai(5,5)=1;
+
+    af(9,9)=1;
+    af(8,8)=2;
+    af(7,7)=3;
+    af(6,6)=4;
+    af(10,10)=5;
+
+    tic;
+    mv = solver(ai,af,0);
+    toc
 ---------------------------------------------------------------------
 
 Work in progress below this line
