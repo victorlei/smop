@@ -4,15 +4,15 @@
     similarities between matlab and numeric python, there
     are enough differences to make the manual translation of
     these libraries infeasible in real life.  ``SMOP``
-    generates human-readable python, which also appears to
-    be about twice as fast as octave (see below).
+    generates human-readable python, which also `appears to
+    be about twice as fast as octave`.
     
     There is a price, too. The generated sources are
     `matlabic`, rather than `pythonic`, which means that
     library maintainers must be fluent in both languages,
     and the old development environment must be kept around. 
 
-    The python package ``smop`` consists of two parts:
+..    The python package ``smop`` consists of two parts:
     compiler (``smop.main``) and runtime library
     (``smop.runtime``). The compiler parses the matlab code,
     builds an intermediate representation, alalyzes the
