@@ -569,12 +569,12 @@ def strread_(s, format="", nargout=1):
     if format == "":
         a = [float(x) for x in s.split()]
         return tuple(a) if nargout > 1 else np.asanyarray([a])
-    raise ErrorNotImplemented
+    raise NotImplementedError
 
 def strrep_(a,b,c):
     if isinstance(a,str):
         return a.replace(b,c)
-    raise ErrorNotImplemented # cell arrays
+    raise NotImplementedError # cell arrays
 
 def sum_(a, dim=None):
     if dim is None:

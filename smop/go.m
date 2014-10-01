@@ -17,4 +17,4 @@ tic;
 mv = solver(ai,af,0);
 toc
 
-disp(mv);
+%disp(mv);
