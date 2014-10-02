@@ -1,5 +1,5 @@
 import numpy,time
-import a
+import solver as a
 from runtime import *
 
 def main():
