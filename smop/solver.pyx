@@ -1,3 +1,4 @@
+# cython: profile=True
 from __future__ import division
 import numpy as np
 cimport numpy as np
@@ -5,7 +6,7 @@ from runtime import *
 def solver_(np.ndarray ai,np.ndarray af,int w,int nargout=1):
     cdef int nBlocks,m,n,i,j,r,bid,ni,nj,ti,tj,d,dn
     cdef np.ndarray a,I,J,mv
-    rand_(1,2,3)
+    #rand_(1,2,3)
     nBlocks=max_(ai[:])
     m,n=size_(ai,nargout=2)
     I=matlabarray([0,1,0,- 1])
@@ -33,19 +34,15 @@ def solver_(np.ndarray ai,np.ndarray af,int w,int nargout=1):
         mv[mv.shape[0] + 1,[1,2]]=[bid,r]
 
     return mv
-def rand_(*args,**kwargs):
-    varargin = cellarray(args)
-    nargin = len(args)+0
 
+s1=1
+s2=2
+s3=3
+cdef double rand_():
     global s1,s2,s3
-    if nargin != 0:
-        r=0
-        s1=varargin[1]
-        s2=varargin[2]
-        s3=varargin[3]
-    else:
-        r,s1,s2,s3=r8_random_(s1,s2,s3,nargout=4)
+    r,s1,s2,s3=r8_random_(s1,s2,s3,nargout=4)
     return r
+
 def r8_random_(double s1,double s2,double s3,nargout=1):
     cdef double r
     s1=171 * s1 % 30269

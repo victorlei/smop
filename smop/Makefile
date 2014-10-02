@@ -1,17 +1,18 @@
 FLAGS=
 
-timer_so: a.so
-	rm -f a.py a.pyc
+timer_so: solver.so
+	rm -f solver.py solver.pyc
 	python go.py	
 
-timer_py: a.py
+timer_py: solver.py
+	rm -f solver.so
 	python go.py
 
 clean:
 	rm -f a.* *.pyc
 
-a.py: solver.m r8_random.m 
-	python main.py $^
+solver.py: solver.m r8_random.m 
+	python main.py $^ -o $@
 
 check:
 	python runtime.py $(FLAGS)

@@ -1,3 +1,4 @@
+import pstats,cProfile
 import numpy,time
 import solver as a
 from runtime import *
@@ -23,4 +24,7 @@ def main():
     t1 = time.clock()
     print t1-t0
 if __name__ == '__main__':
-    main()
+    #main()
+    cProfile.runctx('main()',globals(),locals(),"Profile.prof")
+    s = pstats.Stats("Profile.prof")
+    s.strip_dirs().sort_stats("time").print_stats()
