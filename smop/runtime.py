@@ -66,7 +66,10 @@ import version
 from numpy import inf
 import numpy as np
 import os,sys,copy
-from scipy.io import loadmat
+try:
+    from scipy.io import loadmat
+except:
+    pass
 import unittest
 from version import __version__
 
@@ -105,8 +108,8 @@ class matlabarray(np.ndarray):
         obj = np.array(a,
                        dtype=dtype,
                        copy=False,
-                       order="F",
-                       ndmin=2).view(cls).copy(order="F")
+                       #order="F",
+                       ndmin=2).view(cls).copy() #order="F")
         if obj.size == 0:
             obj.shape = (0,0)
         return obj
@@ -114,7 +117,7 @@ class matlabarray(np.ndarray):
     #def __array_finalize__(self,obj):
 
     def __copy__(self):
-        return np.ndarray.copy(self,order="F")
+        return np.ndarray.copy(self) #order="F")
 
     def __iter__(self):
         """ must define iter or char won't work"""
@@ -150,7 +153,7 @@ class matlabarray(np.ndarray):
 
     def __getslice__(self,i,j):
         if i == 0 and j == sys.maxsize:
-            return self.reshape(-1,1,order="F")
+            return self.reshape(-1,1) #order="F")
         return self.__getitem__(slice(i,j))
 
     def __getitem__(self,index):
@@ -160,7 +163,8 @@ class matlabarray(np.ndarray):
         #import pdb; pdb.set_trace()
         indices = self.compute_indices(index)
         if len(indices) == 1:
-            return np.ndarray.__getitem__(self.reshape(-1,order="F"),indices)
+            return np.ndarray.__getitem__(self.reshape(-1),#order="F"),
+                                          indices)
         else:
             return np.ndarray.__getitem__(self,indices)
 
@@ -189,7 +193,7 @@ class matlabarray(np.ndarray):
         indices = self.compute_indices(index)
         try:
             if len(indices) == 1:
-                np.asarray(self).reshape(-1,order="F").__setitem__(indices,value)
+                np.asarray(self).reshape(-1).__setitem__(indices,value)
             else:
                 np.asarray(self).__setitem__(indices,value)
         except (ValueError,IndexError):
@@ -221,7 +225,7 @@ class matlabarray(np.ndarray):
                 else:
                     new_shape = [(1 if s==1 else n) for s in self.shape]
                 self.resize(new_shape,refcheck=0)
-                np.asarray(self).reshape(-1,order="F").__setitem__(indices,value)
+                np.asarray(self).reshape(-1).__setitem__(indices,value)
             else:
                 new_shape = list(self.shape)
                 if self.flags["C_CONTIGUOUS"]:
@@ -498,8 +502,11 @@ def length_(a):
     except ValueError:
         return 1
 
-def load_(a):
-    return loadmat(a) # FIXME
+try:
+    def load_(a):
+        return loadmat(a) # FIXME
+except:
+    pass
 
 def max_(a, d=0, nargout=0):
     if d or nargout:

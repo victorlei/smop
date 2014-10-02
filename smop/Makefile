@@ -1,26 +1,27 @@
 FLAGS=
+PYTHON=/home/lei/pypy-2.4.0-linux/bin/pypy
 
 timer_so: a.so
 	rm -f a.py a.pyc
-	python go.py	
+	$(PYTHON) go.py	
 
 timer_py: a.py
-	python go.py
+	$(PYTHON) go.py
 
 clean:
 	rm -f a.* *.pyc
 
 a.py: solver.m r8_random.m 
-	python main.py $^
+	$(PYTHON) main.py $^
 
 check:
-	python runtime.py $(FLAGS)
-	python test_runtime.py $(FLAGS)
-	python test_matlabarray.py $(FLAGS)
-	python test_sparsearray.py $(FLAGS)
-	python test_lexer.py $(FLAGS)
-	python main.py solver.m r8_random.m && python go.py | tail
-	#python main.py fastsolver.m && python go.py
+	$(PYTHON) runtime.py $(FLAGS)
+	$(PYTHON) test_runtime.py $(FLAGS)
+	$(PYTHON) test_matlabarray.py $(FLAGS)
+	$(PYTHON) test_sparsearray.py $(FLAGS)
+	$(PYTHON) test_lexer.py $(FLAGS)
+	$(PYTHON) main.py solver.m r8_random.m && $(PYTHON) go.py | tail
+	#$(PYTHON) main.py fastsolver.m && python go.py
 
 %.c: %.pyx
 	cython -a $^
