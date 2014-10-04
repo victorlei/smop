@@ -101,7 +101,7 @@ class matlabarray(np.ndarray):
     matlabarray([], shape=(0, 0), dtype=float64)
     """
 
-    def __new__(cls,a=[],dtype="float64"):
+    def __new__(cls,a=[],dtype=None):
         obj = np.array(a,
                        dtype=dtype,
                        copy=False,
@@ -380,7 +380,7 @@ def arange_(start,stop,step=1,**kwargs):
     """
     >>> a=arange_(1,10) # 1:10
     >>> size_(a)
-    matlabarray([[  1.,  10.]])
+    matlabarray([[ 1, 10]])
     """
     return matlabarray(np.arange(start,
                                  stop+1,
@@ -551,7 +551,7 @@ def rows_(a):
 def size_(a, b=0, nargout=1):
     """
     >>> size_(zeros_(3,3)) + 1
-    matlabarray([[ 4.,  4.]])
+    matlabarray([[4, 4]])
     """
     s = np.asarray(a).shape
     if s is ():
