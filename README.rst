@@ -5,45 +5,36 @@
     are enough differences to make the manual translation of
     these libraries infeasible in real life.  ``SMOP``
     generates human-readable python, which also appears to
-    be faster than octave.  Timing results for the "working
-    example" below are impressive, but may or may not be
-    purely accidential.  Compiling run-time library
-    ``runtime.py`` "as-is" using cython brings additional
-    speedup (smaller is better):
+    be faster than octave.  How much faster?  Timing results
+    for the "working example" below are summarized in
+    Table 1. Additionally,
+    compiling run-time library ``runtime.py``
+    "as-is" with cython brings additional speedup.
 
-        +-----------------------------------------+--------+
-        | octave-3.8.1                            | 190 ms |  
-	+-----------------------------------------+--------+
-	| smop+python-2.7                         |  80 ms |
-	+-----------------------------------------+--------+
-	| smop+cython-0.20.1                      |  40 ms |
-	+-----------------------------------------+--------+
-        | Measured on fujitsu AH552 running linux 3.8.0-19 |
-	+--------------------------------------------------+
+        +-------------------------------------+--------+
+        | octave-3.8.1                        | 190 ms |  
+	+-------------------------------------+--------+
+	| smop+python-2.7                     |  80 ms |
+	+-------------------------------------+--------+
+	| smop+cython-0.20.1                  |  40 ms |
+	+-------------------------------------+--------+
+        | Table 1. ``SMOP`` performance, measured on   |
+        | fujitsu AH552 running linux 3.8.0-19         |
+	+----------------------------------------------+
 
     There is a price, too. The generated sources are
     `matlabic`, rather than `pythonic`, which means that
     library maintainers must be fluent in both languages,
     and the old development environment must be kept around. 
 
-..    The python package ``smop`` consists of two parts:
-    compiler (``smop.main``) and runtime library
-    (``smop.runtime``). The compiler parses the matlab code,
-    builds an intermediate representation, alalyzes the
-    code, and finally converts the intermediate code to
-    python, which incidentally looks very much like the
-    original matlab code.
-
-.. describe runtime
-
     With less than five thousands lines of python code
-    ``smop`` does not pretend to compete with such polished
+    ``SMOP`` does not pretend to compete with such polished
     products as matlab or octave.  Yet, it is not a toy.
     There is an attempt to follow the original matlab
     semantics as close as possible.  Matlab language
     definition (never published afaik) is full of dark
-    corners, and smop tries to follow matlab as precisely as
-    possible.
+    corners, and ``SMOP`` tries to follow matlab as
+    precisely as possible.
 
 Should the generated program be `pythonic` or `matlabic`? 
     For example should array indexing start with zero
