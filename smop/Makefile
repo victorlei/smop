@@ -16,7 +16,7 @@ solver.py: solver.m r8_random.m
 	python main.py $^ -o $@
 
 check:
-	python runtime.py $(FLAGS)
+	#python runtime.py $(FLAGS)
 	python test_runtime.py $(FLAGS)
 	python test_matlabarray.py $(FLAGS)
 	python test_sparsearray.py $(FLAGS)
