@@ -1,9 +1,10 @@
+import pstats,cProfile
 import numpy,time
 import solver as a
 from runtime import *
 
 def main():
-    ai = matlabarray(zeros_(10,10,dtype=int))
+    ai = matlabarray(zeros_(10,10,dtype=int),dtype=int)
     af = copy_(ai)
 
     ai[1,1]=2
@@ -23,5 +24,12 @@ def main():
     t1 = time.clock()
     print mv
     print t1-t0
+    print mv.shape
+
 if __name__ == '__main__':
     main()
+    """
+    cProfile.runctx('main()',globals(),locals(),"Profile.prof")
+    s = pstats.Stats("Profile.prof")
+    s.strip_dirs().sort_stats("time").print_stats()
+    """

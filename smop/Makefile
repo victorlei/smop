@@ -1,31 +1,33 @@
 FLAGS=
 PYTHON=/home/lei/pypy-2.4.0-linux/bin/pypy
 
-timer_so: a.so
-	rm -f a.py a.pyc
-	$(PYTHON) go.py	
+go_so: solver.so
+	python go.py	
 
-timer_py: a.py
-	$(PYTHON) go.py
+go_py: solver.py
+	python go.py
+
+go_m: solver.m
+	octave -q go.m
 
 clean:
-	rm -f a.* *.pyc
+	rm -f a.* *.pyc solver.so solver.py
 
-a.py: solver.m r8_random.m 
-	$(PYTHON) main.py $^
+solver.py: solver.m r8_random.m 
+	python main.py $^ -o $@
 
 check:
-	$(PYTHON) runtime.py $(FLAGS)
-	$(PYTHON) test_runtime.py $(FLAGS)
-	$(PYTHON) test_matlabarray.py $(FLAGS)
-	$(PYTHON) test_sparsearray.py $(FLAGS)
-	$(PYTHON) test_lexer.py $(FLAGS)
-	$(PYTHON) main.py solver.m r8_random.m && $(PYTHON) go.py | tail
-	#$(PYTHON) main.py fastsolver.m && python go.py
+	#python runtime.py $(FLAGS)
+	python test_runtime.py $(FLAGS)
+	python test_matlabarray.py $(FLAGS)
+	python test_sparsearray.py $(FLAGS)
+	python test_lexer.py $(FLAGS)
+	python main.py solver.m r8_random.m -o solver.py && python go.py
+	#python main.py fastsolver.m && python go.py
 
 %.c: %.pyx
 	cython -a $^
 
 %.so: %.c
-	gcc -I /usr/include/python2.7 -O2 -shared -o $@ $^
+	gcc -Wno-cpp -I /usr/include/python2.7 -O2 -shared -o $@ $^
 

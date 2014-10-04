@@ -4,9 +4,23 @@
     similarities between matlab and numeric python, there
     are enough differences to make the manual translation of
     these libraries infeasible in real life.  ``SMOP``
-    generates human-readable python, which also `appears to
-    be about twice as fast as octave`.
-    
+    generates human-readable python, which also appears to
+    be faster than octave.  Timing results for the "working
+    example" below are impressive, but may or may not be
+    purely accidential.  Compiling run-time library
+    ``runtime.py`` "as-is" using cython brings additional
+    speedup (smaller is better):
+
+        +-----------------------------------------+--------+
+        | octave-3.8.1                            | 190 ms |  
+	+-----------------------------------------+--------+
+	| smop+python-2.7                         |  80 ms |
+	+-----------------------------------------+--------+
+	| smop+cython-0.20.1                      |  40 ms |
+	+-----------------------------------------+--------+
+        | Measured on fujitsu AH552 running linux 3.8.0-19 |
+	+--------------------------------------------------+
+
     There is a price, too. The generated sources are
     `matlabic`, rather than `pythonic`, which means that
     library maintainers must be fluent in both languages,
