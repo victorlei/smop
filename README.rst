@@ -1,15 +1,13 @@
 ``SMOP`` is Small Matlab and Octave to Python compiler.
-    ``SMOP`` is used to translate to python legacy libraries
-    containing algorithmic matlab code.  Despite the obvious
+    ``SMOP`` translates matlab to python. Despite obvious
     similarities between matlab and numeric python, there
-    are enough differences to make the manual translation of
-    these libraries infeasible in real life.  ``SMOP``
-    generates human-readable python, which also appears to
-    be faster than octave.  How much faster?  Timing results
-    for the "working example" below are summarized in
-    Table 1. Additionally,
-    compiling run-time library ``runtime.py``
-    "as-is" with cython brings additional speedup.
+    are enough differences to make manual translation
+    infeasible in real life.  ``SMOP`` generates
+    human-readable python, which also appears to be faster
+    than octave.  How much faster?  Timing results for the
+    "working example" below are summarized in Table 1, and
+    additional speedup is achieved by compiling ``SMOP``
+    run-time library ``runtime.py`` to C, using `cython`.
 
         +-------------------------------------+--------+
         | octave-3.8.1                        | 190 ms |  
