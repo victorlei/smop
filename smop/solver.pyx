@@ -3,50 +3,85 @@ from __future__ import division
 import numpy as np
 cimport numpy as np
 from runtime import *
-def solver_(np.ndarray ai,np.ndarray af,int w,int nargout=1):
-    cdef int nBlocks,m,n,i,j,r,bid,ni,nj,ti,tj,d,dn
-    cdef np.ndarray a,I,J,mv
+
+cdef extern from "math.h":
+    double ceil(double a)
+
+cdef double s1 = 1.0
+cdef double s2 = 2.0
+cdef double s3 = 3.0
+
+cdef double r8_random():
+    global s1, s2, s3
+    s1 = 171 * s1 % 30269
+    s2 = 172 * s2 % 30307
+    s3 = 170 * s3 % 30323
+    return (s1 / 30269.0 + s2 / 30307.0 + s3 / 30323.0) % 1.0
+
+"""
+def find(np.ndarray a):
+    cdef int i,j
+    cdef int m = a.shape[0]
+    cdef int n = a.shape[1]
+    
+    for i in range(m):
+        for j in range(n):
+            if a[i,j]:
+                return i+1,j+1
+    else:
+        raise ValueError
+"""
+cdef tuple find(np.ndarray a): # 38
+    cdef int i,j,k
+    cdef char* p = a.data
+    for k in range(a.size):
+        if p[k]:
+            i,j = np.unravel_index(k, (a.shape[0],a.shape[1]), order="F")
+            return i+1,j+1
+    raise ValueError
+"""
+cdef tuple find(np.ndarray a): # 50
+    cdef int k=0
+    s = (a.shape[0],a.shape[1])
+    for x in np.nditer(a):
+        if x:
+            i,j = np.unravel_index(k,s,order="F")
+            return i+1,j+1
+        k = k+1
+    raise ValueError
+"""
+def solver_(np.ndarray ai,
+            np.ndarray af,
+            int w,
+            int nargout=1):
+    cdef int nBlocks,m,n,i,j,r,ni,nj,ti,tj,d,dn
+    cdef np.ndarray mv
+    cdef int bid
     #rand_(1,2,3)
     nBlocks=max_(ai[:])
     m,n=size_(ai,nargout=2)
-    I=matlabarray([0,1,0,- 1])
-    J=matlabarray([1,0,- 1,0])
-    a=copy_(ai)
+    cdef np.ndarray I = matlabarray([0,1,0,- 1])
+    cdef np.ndarray J = matlabarray([1,0,- 1,0])
+    cdef np.ndarray a = copy_(ai)
     mv=matlabarray([])
     while not isequal_(af,a):
 
-        bid=ceil_(rand_() * nBlocks)
-        i,j=find_(a == bid,nargout=2)
-        r=ceil_(rand_() * 4)
+        bid = int(ceil(r8_random() * nBlocks))
+        i,j=find(a == bid)
+        r=int(ceil(r8_random() * 4))
         ni=i + I[r]
         nj=j + J[r]
         if (ni < 1) or (ni > m) or (nj < 1) or (nj > n):
             continue
         if a[ni,nj] > 0:
             continue
-        ti,tj=find_(af == bid,nargout=2)
+        ti,tj=find(af == bid)
         d=(ti - i) ** 2 + (tj - j) ** 2
         dn=(ti - ni) ** 2 + (tj - nj) ** 2
-        if (d < dn) and (rand_() > 0.05):
+        if (d < dn) and (r8_random() > 0.05):
             continue
         a[ni,nj]=bid
         a[i,j]=0
         mv[mv.shape[0] + 1,[1,2]]=[bid,r]
 
     return mv
-
-s1=1
-s2=2
-s3=3
-cdef double rand_():
-    global s1,s2,s3
-    r,s1,s2,s3=r8_random_(s1,s2,s3,nargout=4)
-    return r
-
-def r8_random_(double s1,double s2,double s3,nargout=1):
-    cdef double r
-    s1=171 * s1 % 30269
-    s2=172 * s2 % 30307
-    s3=170 * s3 % 30323
-    r=(s1 / 30269.0 + s2 / 30307.0 + s3 / 30323.0) % 1.0
-    return r,s1,s2,s3
