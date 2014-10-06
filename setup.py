@@ -5,7 +5,7 @@ try:
     versionstring = os.popen("git describe").read().strip()
     open("smop/version.py","w").write("__version__ = '%s'\n" % versionstring)
 except:
-    versionstring = "''"
+    versionstring = "'0.26'"
 
 setup(
     author = 'Victor Leikehman',
