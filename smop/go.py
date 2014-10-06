@@ -22,7 +22,6 @@ def main():
     t0 = time.clock()
     mv = a.solver_(ai,af,0)
     t1 = time.clock()
-    print mv
     print t1-t0
     print mv.shape
 

@@ -1,5 +1,4 @@
 FLAGS=
-PYTHON=/home/lei/pypy-2.4.0-linux/bin/pypy
 
 go_so: solver.so
 	python go.py	

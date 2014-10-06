@@ -18,4 +18,3 @@ mv = solver(ai,af,0);
 toc
 
 disp(size(mv));
-
