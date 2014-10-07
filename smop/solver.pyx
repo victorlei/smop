@@ -18,20 +18,20 @@ cdef double r8_random():
     s3 = 170 * s3 % 30323
     return (s1 / 30269.0 + s2 / 30307.0 + s3 / 30323.0) % 1.0
 
-"""
-def find(np.ndarray a):
-    cdef int i,j
-    cdef int m = a.shape[0]
-    cdef int n = a.shape[1]
-    
-    for i in range(m):
-        for j in range(n):
-            if a[i,j]:
-                return i+1,j+1
-    else:
-        raise ValueError
-"""
-cdef tuple find(np.ndarray a): # 38
+
+#def find(np.ndarray a):
+#    cdef int i,j
+#    cdef int m = a.shape[0]
+#    cdef int n = a.shape[1]
+#    
+#    for i in range(m):
+#        for j in range(n):
+#            if a[i,j]:
+#                return i+1,j+1
+#    else:
+#        raise ValueError
+
+cdef tuple find(np.ndarray[char,ndim=2,cast=True] a): # 38
     cdef int i,j,k
     cdef char* p = a.data
     for k in range(a.size):
@@ -39,17 +39,17 @@ cdef tuple find(np.ndarray a): # 38
             i,j = np.unravel_index(k, (a.shape[0],a.shape[1]), order="F")
             return i+1,j+1
     raise ValueError
-"""
-cdef tuple find(np.ndarray a): # 50
-    cdef int k=0
-    s = (a.shape[0],a.shape[1])
-    for x in np.nditer(a):
-        if x:
-            i,j = np.unravel_index(k,s,order="F")
-            return i+1,j+1
-        k = k+1
-    raise ValueError
-"""
+
+#cdef tuple find(np.ndarray a): # 50
+#    cdef int k=0
+#    s = (a.shape[0],a.shape[1])
+#    for x in np.nditer(a):
+#        if x:
+#            i,j = np.unravel_index(k,s,order="F")
+#            return i+1,j+1
+#        k = k+1
+#    raise ValueError
+
 def solver_(np.ndarray ai,
             np.ndarray af,
             int w,

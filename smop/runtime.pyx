@@ -1,70 +1,14 @@
 # SMOP compiler runtime support library
 # Copyright 2014 Victor Leikehman
+# cython: profile=True
 
 # MIT license
-
-"""
-Main differences between Matlab matrices and numpy arrays
-=========================================================
-
-#. Array indices start with one, not with zero.  Accordingly, the last
-   element of an N-element array is N, not N-1 as in C.
-
-#. Matrix elements are ordered column-first, aka "Fortran" order.
-
-#. Arrays auto-expand on out-of-bound lhs indexing.
-
-#. In matlab, arrays can be updated before they are created::
-
-      clear a
-      a(17) = 42
-
-   is legal in matlab, but not in numpy
-
-#. Array data is not shared by copying or slice indexing. Instead there
-   is copy-on-write.
-
-#. There are no zero or one-dimensional arrays. Scalars are
-   two-dimensional rather than zero=dimensional as in numpy.
-
-#. Single subscript implies ravel.
-
-#. Boadcasting rules are different
-
-Coexistence of matlab matrices and numpy arrays
-===============================================
-
-#. Empty vector::
-
-        []                  matlabarray()
-
-#. Scalars are 1x1 matrices::
-
-        17                  [[ 17 ]]
-
-#. Rectangular char arrays::
-
-        'hello world'       char('hello world')
-
-#. Row vector::
-
-        [1 2 3]             [[1, 2, 3]]
-
-#. Column vector::
- 
-        [1;2;3]             [[1], [2], [3]]
-
-#. Cell strings::
-
-        cellstr('abc','hello',[97 98 99])       
-
-
-(*) Such expressions _are_ legal in Octave.  TBD
-
-"""
+from __future__ import division
+import numpy as np
+cimport numpy as np
 import version
 from numpy import inf
-import numpy as np
+
 import os,sys,copy
 from scipy.io import loadmat
 import unittest
@@ -244,6 +188,10 @@ class matlabarray(np.ndarray):
         return matlabarray(np.asarray(self).__neg__())
 
 ####
+#cdef class Foo(np.ndarray):
+#    pass
+
+
 class cellarray(matlabarray):
     """
     Cell array corresponds to matlab ``{}``
