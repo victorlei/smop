@@ -7,7 +7,9 @@
 |   human-readable python, which also appears to be faster|   0.26.1 is                  |
 |   than octave.  Just how fast?    Timing results for    |   available for              |
 |   "Moving furniture" are shown           in Table 1.    |   beta testing.              |
-|   Additional speedup is achieved by compiling ``SMOP``  |                              |
+|   It seems that for this program, translation to python |                              |
+|   resulted in about two times speedup, and additional   |                              |
+|   two times  speedup was achieved by compiling ``SMOP`` |                              |
 |   run-time library ``runtime.py`` to C, using `cython`. |                              |   
 |   This pseudo-benchmark measures the scalar performance,|                              |
 |   and my interpretation is that scalar computations are |                              |
