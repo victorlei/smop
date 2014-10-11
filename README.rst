@@ -1,31 +1,30 @@
-``SMOP`` is Small Matlab and Octave to Python compiler.
-    ``SMOP`` translates matlab to python. Despite obvious
-    similarities between matlab and numeric python, there
-    are enough differences to make manual translation
-    infeasible in real life.  ``SMOP`` generates
-    human-readable python, which also appears to be faster
-    than octave.  How much faster?  Timing results for the
-    "working example" below are summarized in Table 1, and
-    additional speedup is achieved by compiling ``SMOP``
-    run-time library ``runtime.py`` to C, using `cython`.
++---------------------------------------------------------+-------------------+
+|``SMOP`` is Small Matlab and Octave to Python compiler.  | + October 11, 2014|
+|   ``SMOP`` translates matlab to python. Despite obvious |                   |
+|   similarities between matlab and numeric python, there |                   |
+|   are enough differences to make manual translation     |                   |
+|   infeasible in real life.  ``SMOP`` generates          |   Current version |
+|   human-readable python, which also appears to be faster|   0.26.1 is       |
+|   than octave.  Just how fast?    Timing results for    |   available for   |
+|   "Moving furniture" are shown           in Table 1.    |   beta testing.   |
+|   Additional speedup is achieved by compiling ``SMOP``  |                   |
+|   run-time library ``runtime.py`` to C, using `cython`. |                   |   
+|   This pseudo-benchmark measures the scalar performance,|                   |
+|   and my interpretation is that scalar computations are |                   |
+|   of less interest to the octave team.                  |                   |
++---------------------------------------------+-----------+   Next version    |
+|   octave-3.8.1                              | 190 ms    |   0.27 will       |
++---------------------------------------------+-----------+   compile octave  |
+|   smop+python-2.7                           |  80 ms    |   ``scripts``     |
++---------------------------------------------+-----------+   library         |
+|   smop+python-2.7+cython-0.20.1             |  40 ms    |                   |
++---------------------------------------------+-----------+                   |
+|         Table 1. ``SMOP`` performance, measured on      |                   |
+|         fujitsu AH552 running linux 3.8.0-19            |                   |
++---------------------------------------------------------+-------------------+
 
-        +-------------------------------------+--------+
-        | octave-3.8.1                        | 190 ms |  
-        +-------------------------------------+--------+
-        | smop+python-2.7                     |  80 ms |
-        +-------------------------------------+--------+
-        | smop+cython-0.20.1                  |  40 ms |
-        +-------------------------------------+--------+
-        | Table 1. ``SMOP`` performance, measured on   |
-        | fujitsu AH552 running linux 3.8.0-19         |
-        +----------------------------------------------+
 
-    There is a price, too. The generated sources are
-    `matlabic`, rather than `pythonic`, which means that
-    library maintainers must be fluent in both languages,
-    and the old development environment must be kept around. 
-
-    With less than five thousands lines of python code
+With less than five thousands lines of python code
     ``SMOP`` does not pretend to compete with such polished
     products as matlab or octave.  Yet, it is not a toy.
     There is an attempt to follow the original matlab
@@ -33,6 +32,12 @@
     definition (never published afaik) is full of dark
     corners, and ``SMOP`` tries to follow matlab as
     precisely as possible.
+
+There is a price, too.
+    The generated sources are
+    `matlabic`, rather than `pythonic`, which means that
+    library maintainers must be fluent in both languages,
+    and the old development environment must be kept around. 
 
 Should the generated program be `pythonic` or `matlabic`? 
     For example should array indexing start with zero
@@ -83,19 +88,19 @@ to python.
   02   nBlocks = max(ai(:));          02     nBlocks=max_(ai[:]) 
   03   [m,n] = size(ai);              03     m,n=size_(ai,nargout=2)
 
-====  ========================================================
+====  =========================================================================
   02  Matlab uses round brackets both for array indexing and
       for function calls. To figure out which is which,
       SMOP computes local use-def information, and then
       applies the following rule: undefined names are
       functions, while defined are arrays.
-----  --------------------------------------------------------
+----  -------------------------------------------------------------------------
   03  Matlab function ``size`` returns variable number of
       return values, which corresponds to returning a tuple
       in python.  Since python functions are unaware of the
       expected number of return values, their number must be
       explicitly passed in ``nargout``.
-====  ========================================================
+====  =========================================================================
 
 .. code:: matlab
                                                                                                         
@@ -104,17 +109,17 @@ to python.
   06   a = ai;                        06     a=copy_(ai)
   07   mv = [];                       07     mv=matlabarray([])
 
-====  ========================================================
+====  =========================================================================
   04  Matlab array indexing starts with one; python indexing
       starts with zero.  New class ``matlabarray`` derives from
       ``ndarray``, but exposes matlab array behaviour.  For
       example, ``matlabarray`` instances always have at least
       two dimensions -- the shape of ``I`` and ``J`` is [1 4].
-----  --------------------------------------------------------
+----  -------------------------------------------------------------------------
   06  Matlab array assignment implies copying; python
       assignment implies data sharing.  We use explicit copy
       here.
-----  --------------------------------------------------------
+----  -------------------------------------------------------------------------
   07  Empty ``matlabarray`` object is created, and then
       extended at line 28.  Extending arrays by
       out-of-bounds assignment is deprecated in matlab, but
@@ -122,7 +127,7 @@ to python.
       can't be resized except in some special cases.
       Instances of ``matlabarray`` can be resized except
       where it is too expensive.
-====  ========================================================
+====  =========================================================================
 
 .. code:: matlab
                                                                                                         
@@ -133,19 +138,19 @@ to python.
   12     ni = i + I(r);               12         ni=i + I[r]
   13     nj = j + J(r);               13         nj=j + J[r]
 
-====  ========================================================
+====  =========================================================================
   09  Matlab functions of zero arguments, such as
       ``rand``, can be used without parentheses.  In python,
       parentheses are required.  To detect such cases, used
       but undefined variables are assumed to be functions.
-----  --------------------------------------------------------
+----  -------------------------------------------------------------------------
   10  The expected number of return values from the matlab
       function ``find`` is explicitly passed in ``nargout``.
-----  --------------------------------------------------------
+----  -------------------------------------------------------------------------
   12  Variables I and J contain instances of the new class
       ``matlabarray``, which among other features uses one
       based array indexing.
-====  ========================================================
+====  =========================================================================
 
 .. code:: matlab
 
@@ -197,6 +202,7 @@ Which one is faster --- python or octave?  I don't know.
     tic;
     mv = solver(ai,af,0);
     toc
+
 ---------------------------------------------------------------------
 
 Work in progress below this line
@@ -351,4 +357,4 @@ passes some test suite.
 
      
 
-.. vim: tw=60
+.. vim: tw=80
