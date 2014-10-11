@@ -1,27 +1,27 @@
-+---------------------------------------------------------+-------------------+
-|``SMOP`` is Small Matlab and Octave to Python compiler.  | + October 11, 2014|
-|   ``SMOP`` translates matlab to python. Despite obvious |                   |
-|   similarities between matlab and numeric python, there |                   |
-|   are enough differences to make manual translation     |                   |
-|   infeasible in real life.  ``SMOP`` generates          |   Current version |
-|   human-readable python, which also appears to be faster|   0.26.1 is       |
-|   than octave.  Just how fast?    Timing results for    |   available for   |
-|   "Moving furniture" are shown           in Table 1.    |   beta testing.   |
-|   Additional speedup is achieved by compiling ``SMOP``  |                   |
-|   run-time library ``runtime.py`` to C, using `cython`. |                   |   
-|   This pseudo-benchmark measures the scalar performance,|                   |
-|   and my interpretation is that scalar computations are |                   |
-|   of less interest to the octave team.                  |                   |
-+---------------------------------------------+-----------+   Next version    |
-|   octave-3.8.1                              | 190 ms    |   0.27 will       |
-+---------------------------------------------+-----------+   compile octave  |
-|   smop+python-2.7                           |  80 ms    |   ``scripts``     |
-+---------------------------------------------+-----------+   library         |
-|   smop+python-2.7+cython-0.20.1             |  40 ms    |                   |
-+---------------------------------------------+-----------+                   |
-|         Table 1. ``SMOP`` performance, measured on      |                   |
-|         fujitsu AH552 running linux 3.8.0-19            |                   |
-+---------------------------------------------------------+-------------------+
++---------------------------------------------------------+------------------------------+
+|``SMOP`` is Small Matlab and Octave to Python compiler.  | + October 11, 2014           |
+|   ``SMOP`` translates matlab to python. Despite obvious |                              |
+|   similarities between matlab and numeric python, there |                              |
+|   are enough differences to make manual translation     |                              |
+|   infeasible in real life.  ``SMOP`` generates          |   Current version            |
+|   human-readable python, which also appears to be faster|   0.26.1 is                  |
+|   than octave.  Just how fast?    Timing results for    |   available for              |
+|   "Moving furniture" are shown           in Table 1.    |   beta testing.              |
+|   Additional speedup is achieved by compiling ``SMOP``  |                              |
+|   run-time library ``runtime.py`` to C, using `cython`. |                              |   
+|   This pseudo-benchmark measures the scalar performance,|                              |
+|   and my interpretation is that scalar computations are |                              |
+|   of less interest to the octave team.                  |                              |
++---------------------------------------------+-----------+   Next version               |
+|   octave-3.8.1                              | 190 ms    |   0.27 will                  |
++---------------------------------------------+-----------+   compile octave             |
+|   smop+python-2.7                           |  80 ms    |   ``scripts``                |
++---------------------------------------------+-----------+   library                    |
+|   smop+python-2.7+cython-0.20.1             |  40 ms    |                              |
++---------------------------------------------+-----------+                              |
+|         Table 1. ``SMOP`` performance, measured on      |                              |
+|         fujitsu AH552 running linux 3.8.0-19            |                              |
++---------------------------------------------------------+------------------------------+
 
 
 With less than five thousands lines of python code
