@@ -300,25 +300,15 @@ def _backend(self,level=0):
 
 @extend(node.func_decl)
 def _backend(self,level=0):
-    if not self.use_varargin:
-        if self.args:
-            s = "def %s(%s,nargout=1):" %  (self.ident._backend(),
-                                            self.args._backend())
-        else:
-            s = "def %s(nargout=1):" %  self.ident._backend()
-    else:
-        assert self.args[-1].name == "varargin"
-        if not self.args[:-1]:
-            s = "def %s(*args,**kwargs):\n" % self.ident._backend()
-        else:        
-            s = "def %s(%s,*args,**kwargs):\n" % (self.ident._backend(),
-                                                  node.expr_list(self.args[:-1])._backend())
-        s += '    varargin = cellarray(args)\n'
-        #s += '    nargin = len(args)+%d\n' % (len(self.args)-1)
-    if self.use_nargin:
-        s += '\n    nargin = %s.__code__.co_argcount\n' % self.ident._backend()
+    if isinstance(self.args[-1],node.ident) and self.args[-1].name == "varargin":
+        del self.args[-1]
+    s = ",".join(["%s=None" % a for a in self.args if isinstance(a,node.ident)]+["*args,**kwargs"])
+    s = "def %s(%s):\n" % (self.ident._backend(), s)
+    s += '    varargin = cellarray(args)\n'
+    s += "    nargin = %d-[%s].count(None)+len(args)\n" % (len(self.args),
+                       ",".join([(a._backend() if isinstance(a,node.ident) else a.ret._backend())
+                       for a in self.args])) # sic: a.name
     return s
-
 """
 @extend(node.allocate_stmt)
 def _backend(self,level=0):
