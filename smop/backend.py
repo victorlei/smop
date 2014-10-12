@@ -312,10 +312,11 @@ def _backend(self,level=0):
             s = "def %s(*args,**kwargs):\n" % self.ident._backend()
         else:        
             s = "def %s(%s,*args,**kwargs):\n" % (self.ident._backend(),
-                                                  self.args[:-1]._backend())
+                                                  node.expr_list(self.args[:-1])._backend())
         s += '    varargin = cellarray(args)\n'
-        s += '    nargin = len(args)+%d\n' % (len(self.args)-1)
-
+        #s += '    nargin = len(args)+%d\n' % (len(self.args)-1)
+    if self.use_nargin:
+        s += '\n    nargin = %s.__code__.co_argcount\n' % self.ident._backend()
     return s
 
 """
