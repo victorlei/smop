@@ -482,7 +482,10 @@ def iscellstr_(a):
     return isinstance(a,cellarray) and all(isinstance(t,str) for t in a)
 
 def ischar_(a):
-    return a.dtype == "|S1"
+    try:
+        return a.dtype == "|S1"
+    except AttributeError:
+        return False
 
 def isempty_(a):
     try:
