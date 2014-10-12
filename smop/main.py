@@ -7,7 +7,6 @@ import getopt,re
 import lexer,parse,resolve,backend,options,node,graphviz
 import networkx as nx
 import readline
-
 #from version import __version__
 __version__ = version.__version__
 
@@ -32,6 +31,16 @@ def usage():
 """
 
 def main():
+    """
+    !a="def f(): \\n\\treturn 123"
+    !exec a
+    !print f
+    !print f()
+    !reload(backend)
+    =>> function t=foo(a) \\
+    ... t=123
+    !exec foo(3)
+    """
     try:
         opts, args = getopt.gnu_getopt(sys.argv[1:],
                                        "d:ho:vVsX:", 
@@ -91,32 +100,25 @@ def main():
                     continue
                 while buf[-1] == "\\":
                     buf = buf[:-1] + "\n" + raw_input("... ")
-                #print buf
                 if buf[0] == '?':
-                    print '!a="def f(): \\n\\treturn 123"'
-                    print "!exec a"
-                    print "!print f"
-                    print "!print f()"
-                    print "!reload(backend)"
-                    print "=>> function t=foo(a) \\"
-                    print "... t=123"
-                    print "!exec foo(3)"
-
+                    print main.__doc__
                     continue
-                if buf[0] == '!':
+                if buf[0] == "!":
                     try:
                         exec buf[1:]
-                    except:
-                        print "eh?"
+                    except Exception as ex:
+                        print ex
                     continue
                 t = parse.parse(buf if buf[-1]=='\n' else buf+'\n')
                 if not t:
                     continue
+                resolve.resolve(t,symtab)
+                _ = backend.backend(t)
+                exec _
             except EOFError:
                 return
-            resolve.resolve(t,symtab)
-            _ = backend.backend(t)
-            print _
+            except Exception as ex:
+                print ex
 
     if not output:
         output = "a.py"
