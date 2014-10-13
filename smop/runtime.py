@@ -497,6 +497,14 @@ def isequal_(a,b):
     return np.array_equal(np.asanyarray(a),
                           np.asanyarray(b))
                           
+def isscalar_(a)
+    """np.isscalar returns True if a.__class__ is a scalar
+    type (i.e., int, and also immutable containers str and
+    tuple, but not list.) Our requirements are different"""
+    try:
+        return a.size == 1
+    except AttributeError:
+        return np.isscalar(a)
 
 def length_(a):
     try:
@@ -609,4 +617,4 @@ if __name__ == "__main__":
     import doctest
     doctest.testmod()
 
-# vim:et:sw=4:si:
+# vim:et:sw=4:si:tw=60
