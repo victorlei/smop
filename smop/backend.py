@@ -153,11 +153,11 @@ def _backend(self,level=0):
         return "arange_(%s)" % self.args._backend()
     
     if self.op == "end":
-        if self.args:
-            return "%s.shape[%s]" % (self.args[0]._backend(),
-                                     self.args[1]._backend())
-        else:
-            return "end"
+#        if self.args:
+#            return "%s.shape[%s]" % (self.args[0]._backend(),
+#                                     self.args[1]._backend())
+#        else:
+            return "end()"
     if self.op == ".":
         return "%s%s" % (self.args[0]._backend(),
                          self.args[1]._backend())

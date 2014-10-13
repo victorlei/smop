@@ -96,10 +96,10 @@ def resolve(t, symtab=None, fp=None, func_name=None):
             for i,v in enumerate(u.args):
                 if v.__class__ is node.expr and v.op == ":":
                     v.op = "::"
-                for w in node.postorder(v):
-                    if w.__class__ is node.expr and w.op == "end":
-                        w.args[0] = u.func_expr
-                        w.args[1] = node.number(i)
+#                for w in node.postorder(v):
+#                    if w.__class__ is node.expr and w.op == "end":
+#                        w.args[0] = u.func_expr
+#                        w.args[1] = node.number(i)
 
     for u in node.postorder(t):
         if u.__class__ is node.let:

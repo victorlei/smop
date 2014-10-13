@@ -130,7 +130,9 @@ class matlabarray(np.ndarray):
             raise IndexError
         indices = []
         for i,ix in enumerate(index):
-            if ix.__class__ is slice:
+            if ix.__class__ is end:
+                indices.append(self.shape[i]-1+ix.n)
+            elif ix.__class__ is slice:
                 if self.size == 0 and ix.stop is None:
                     raise IndexError
                 if len(index) == 1:
@@ -246,6 +248,13 @@ class matlabarray(np.ndarray):
     def __neg__(self):
         return matlabarray(np.asarray(self).__neg__())
 
+class end(object):
+    def __add__(self,n):
+        self.n = n
+        return self
+    def __sub__(self,n):
+        self.n = -n
+        return self
 ####
 class cellarray(matlabarray):
     """
