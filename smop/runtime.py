@@ -608,6 +608,9 @@ def sum_(a, dim=None):
     else:
         return np.asanyarray(a).sum(dim-1)
 
+def toupper_(a):
+    return char(str(a.data).upper())
+
 true = True
 
 def true_(*args):
