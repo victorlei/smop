@@ -1,5 +1,6 @@
 # for py3: make PYTHON=python3 CYTHON="cython -3" V=3.4
 
+OCTAVE = ~/octave-3.8.2/scripts
 CYTHON = cython
 PYTHON = python
 FLAGS =
@@ -27,7 +28,7 @@ check:
 	$(PYTHON) test_sparsearray.py $(FLAGS)
 	$(PYTHON) test_lexer.py $(FLAGS)
 	$(PYTHON) main.py solver.m r8_random.m -o solver.py && python go.py
-	find octave-3.8.2/scripts/ -name \*.m | xargs python main.py -X legend.m | wc
+	find $(OCTAVE) -name \*.m | xargs python main.py -X legend.m | wc
 
 
 %.c: %.pyx

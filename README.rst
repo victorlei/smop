@@ -18,11 +18,11 @@
 |   octave-3.8.1                              | 190 ms    |   0.27 will                  |
 +---------------------------------------------+-----------+   compile octave             |
 |   smop+python-2.7                           |  80 ms    |   ``scripts``                |
-+---------------------------------------------+-----------+   library                    |
-|   smop+python-2.7+cython-0.20.1             |  40 ms    |                              |
-+---------------------------------------------+-----------+                              |
-|         Table 1. ``SMOP`` performance, measured on      |                              |
-|         fujitsu AH552 running linux 3.8.0-19            |                              |
++---------------------------------------------+-----------+   library, which contains    |
+|   smop+python-2.7+cython-0.20.1             |  40 ms    |   over 120 KLOC in almost    |
++---------------------------------------------+-----------+   1,000 matlab files. There  |
+|         Table 1. ``SMOP`` performance, measured on      |   are 62 compilation errors  |
+|         fujitsu AH552 running linux 3.8.0-19            |   with smop 0.26.2           |
 +---------------------------------------------------------+------------------------------+
 
 
