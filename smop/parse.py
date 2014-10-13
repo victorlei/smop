@@ -105,6 +105,7 @@ def p_stmt(p):
          | switch_stmt
          | try_catch
          | while_stmt
+         | foo_stmt
          | unwind
     """
     # END_STMT is intentionally left out
@@ -171,6 +172,16 @@ def p_global_stmt(p):
     p[0] = node.global_stmt(p[2])
     for ident in p[0]:
         ident.props="G"  # G=global
+
+def p_foo_stmt(p):
+    "foo_stmt : expr OROR expr SEMI"
+    expr1 = p[1][1][0]
+    expr2 = p[3][1][0]
+    ident = expr1.ret
+    args1 = expr1.args
+    args2 = expr2.args
+    p[0] = node.let(ret=ident,
+                    args=node.expr("or",node.expr_list([args1,args2])))
 
 def p_persistent_stmt(p):
     #"""persistent_stmt :  PERSISTENT global_list SEMI
