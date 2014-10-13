@@ -96,7 +96,7 @@ def _backend(self,level=0):
 
 @extend(node.string)
 def _backend(self,level=0):
-    return repr(self.value)
+    return "char(%s)" % repr(self.value)
 
 @extend(node.number)
 def _backend(self,level=0):
@@ -300,7 +300,7 @@ def _backend(self,level=0):
 
 @extend(node.func_decl)
 def _backend(self,level=0):
-    if isinstance(self.args[-1],node.ident) and self.args[-1].name == "varargin":
+    if self.args and isinstance(self.args[-1],node.ident) and self.args[-1].name == "varargin":
         del self.args[-1]
     s = ",".join(["%s=None" % a for a in self.args if isinstance(a,node.ident)]+["*args,**kwargs"])
     s = "def %s(%s):\n" % (self.ident._backend(), s)

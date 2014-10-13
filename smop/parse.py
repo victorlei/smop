@@ -495,9 +495,9 @@ def p_expr_ident(p):
     "ident : IDENT"
     global use_nargin,use_varargin
     if p[1] == "varargin":
-        use_varargin += 1
+        use_varargin = 1
     if p[1] == "nargin":
-        use_nargin += 1
+        use_nargin = 1
     #import pdb; pdb.set_trace()
     p[0] = node.ident(name=p[1],
                       lineno=p.lineno(1),
