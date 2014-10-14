@@ -13,8 +13,8 @@ class IllegalCharacterError(Exception):
 
 tokens = [
     "AND", "ANDAND", "ANDEQ", "BACKSLASH", "COLON", "COMMA", "DIV","DIVEQ",
-    "DOT", "DOTDIV", "DOTEXP", "DOTMUL","DOTMULEQ", "END_EXPR",
-    "END_STMT", "EQ", "EQEQ", "EXP", "FIELD", "GE", "GT", "HANDLE",
+    "DOT", "DOTDIV", "DOTDIVEQ", "DOTEXP", "DOTMUL","DOTMULEQ", "END_EXPR",
+    "END_STMT", "EQ", "EQEQ", "EXP", "EXPEQ", "FIELD", "GE", "GT", "HANDLE",
     "IDENT", "LBRACE", "LBRACKET", "LE", "LPAREN", "LT",
     "MINUS","MINUSMINUS","MINUSEQ","MUL","MULEQ","NE", "NEG",
     "NUMBER", "OR","OREQ", "OROR", "PLUS", "PLUSEQ","PLUSPLUS",
@@ -55,12 +55,14 @@ def new():
     t_DIVEQ       = r"\/="
     t_DOT         = r"\."
     t_DOTDIV      = r"\./"
+    t_DOTDIVEQ    = r"\./="
     t_DOTEXP      = r"\.\^"
     t_DOTMUL      = r"\.\*"
     t_DOTMULEQ    = r"\.\*="
     t_EQ          = r"="
     t_EQEQ        = r"=="
     t_EXP         = r"\^"
+    t_EXPEQ       = r"\^="
     t_GE          = r">="
     t_GT          = r"\>"
     t_HANDLE      = r"\@"

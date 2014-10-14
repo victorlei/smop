@@ -39,7 +39,7 @@ class syntax_error(error):
     pass
 
 precedence = (
-    ("right","DOTMULEQ","EQ","MULEQ","MINUSEQ","DIVEQ","PLUSEQ","OREQ","ANDEQ"),
+    ("right","DOTDIVEQ","DOTMULEQ","EQ","EXPEQ","MULEQ","MINUSEQ","DIVEQ","PLUSEQ","OREQ","ANDEQ"),
     ("nonassoc","HANDLE"),
     ("left", "COMMA"),
     ("left", "COLON"),
@@ -608,11 +608,13 @@ def p_expr2(p):
              | expr DIV expr
              | expr DOT expr
              | expr DOTDIV expr
+             | expr DOTDIVEQ expr
              | expr DOTEXP expr
              | expr DOTMUL expr
              | expr DOTMULEQ expr
              | expr EQEQ expr
              | expr EXP expr
+             | expr EXPEQ expr
              | expr GE expr
              | expr GT expr 
              | expr LE expr
@@ -686,9 +688,6 @@ def p_expr2(p):
                 p[3].nargout = len(p[1].args[0])
     elif p[2] == ".*":
         p[0] = node.dot(p[1],p[3])
-    elif p[2] == "." and isinstance(p[3],node.expr) and p[3].op=="parens":
-        p[0] = node.getfield(p[1],p[3].args[0])
-        raise NotImplementedError(p[3],p.lineno(3),p.lexpos(3))
     elif p[2] == ":" and isinstance(p[1],node.expr) and p[1].op==":":
         # Colon expression means different things depending on the
         # context.  As an array subscript, it is a slice; otherwise,
@@ -722,7 +721,7 @@ def parse(buf,filename=""):
         print 'Error:%s:%s.%s:illegal character:%s' % (filename,lineno,column,c)
         return []
     except NotImplementedError as e:
-        print 'Error:%s:%s:not implemented:%s' % (filename,e[1],e[0])
+        print 'Error:%s:not implemented:%s' % (filename,e)
         return []
     except syntax_error as e:
         try:
