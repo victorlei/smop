@@ -89,7 +89,7 @@ def new():
     ws1 = ws+"+"
     ws0 = ws+"*"
     ms  = r"'([^']|(''))*'" 
-    os  = r'"([^"\a\b\r\t\0\v\n\\]|(\\[abn0vtr\"\n\\])|(""))*"'
+    os  = r'"([^"\a\b\f\r\t\0\v\n\\]|(\\[abfn0vtr\"\n\\])|(""))*"'
     mos = "(%s)|(%s)" % (os,ms)
     id  = r"[a-zA-Z_][a-zA-Z_0-9]*"
     
