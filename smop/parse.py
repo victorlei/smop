@@ -535,6 +535,7 @@ def p_cellarray(p):
     """
     cellarray : LBRACE RBRACE
               | LBRACE expr_list RBRACE
+              | LBRACE concat_list RBRACE
     """
     if len(p) == 3:
         p[0] = node.cellarray(op="{}",args=node.expr_list())
