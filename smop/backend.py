@@ -158,9 +158,19 @@ def _backend(self,level=0):
 #                                     self.args[1]._backend())
 #        else:
             return "end()"
+
     if self.op == ".":
-        return "%s%s" % (self.args[0]._backend(),
-                         self.args[1]._backend())
+        try:
+            is_parens = self.args[1].op != "parens"
+        except:
+            is_parens = False
+        if is_parens:
+            return "%s%s" % (self.args[0]._backend(),
+                             self.args[1]._backend())
+        else:
+            return "getattr(%s,%s)" % (self.args[0]._backend(),
+                                       self.args[1]._backend())
+
 #     if self.op == "matrix":
 #         return "[%s]" % ",".join([t._backend() for t in self.args])
     if self.op == "parens":
@@ -448,7 +458,6 @@ def _backend(self,level=0):
 ###         return "os.path.exists(%s)" % self.args[0]._backend()
 ###     if self.args[1].__class__ is node.string and self.args[1].value == "var":
 ###         return "%s in globals()" % self.args[0]._backend()
-###     raise NotImplementedError("Not implemented: exist")
 
 ### @extend(node.find)
 ### @exceptions
