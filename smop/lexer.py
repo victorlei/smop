@@ -87,7 +87,7 @@ def new():
     ws1 = ws+"+"
     ws0 = ws+"*"
     ms  = r"'([^']|(''))*'" 
-    os  = r'"([^"\a\b\r\t\0\v\n\\]|(\\[abn0vtr\"\n\\]))*"'
+    os  = r'"([^"\a\b\r\t\0\v\n\\]|(\\[abn0vtr\"\n\\])|(""))*"'
     mos = "(%s)|(%s)" % (os,ms)
     id  = r"[a-zA-Z_][a-zA-Z_0-9]*"
     
@@ -95,8 +95,7 @@ def new():
         if s[0] == "'":
             return s[1:-1].replace("''","'")
         else:
-            return s[1:-1].decode('string_escape')
-#            return s[1:-1].replace('\\"','"').replace('\\\n','').replace('\\n','\n').replace('\\\\','\\').replace('\\0','\0').replace('\\v','\v').replace('\\t','\t').replace('\\r','\r')
+            return s[1:-1].decode('string_escape').replace('""','"')
 
     @TOKEN(mos)
     def t_afterkeyword_STRING(t):

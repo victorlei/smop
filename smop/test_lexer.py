@@ -144,6 +144,12 @@ world"''')
         tok = self.lexer.next()
         self.assertEqual(tok.value,r'hello\world')
 
+    def test119(self):
+        "Quotes and backslashes in octave strings"
+        self.lexer.input(r'"hello""world"')
+        tok = self.lexer.next()
+        self.assertEqual(tok.value,r'hello"world')
+
     def test120(self):
         "d5ef: cell arrays nested in regular arrays"
         self.lexer.input(r"[foo{i} bar]")
