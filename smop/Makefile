@@ -3,7 +3,7 @@
 OCTAVE = ~/octave-3.8.2/scripts
 CYTHON = cython
 PYTHON = python
-FLAGS =
+FLAGS = --syntax-errors=stft.m
 V = 2.7
 
 go_so: solver.so
@@ -22,13 +22,15 @@ solver.py: solver.m r8_random.m
 	$(PYTHON) main.py $^ -o $@
 
 check:
-	$(PYTHON) runtime.py $(FLAGS)
-	$(PYTHON) test_runtime.py $(FLAGS)
-	$(PYTHON) test_matlabarray.py $(FLAGS)
-	$(PYTHON) test_sparsearray.py $(FLAGS)
-	$(PYTHON) test_lexer.py $(FLAGS)
-	$(PYTHON) main.py solver.m r8_random.m -o solver.py && python go.py
-	find $(OCTAVE) -name \*.m | xargs python main.py -X legend.m | wc
+	$(PYTHON) runtime.py 
+	$(PYTHON) test_runtime.py
+	$(PYTHON) test_matlabarray.py
+	$(PYTHON) test_sparsearray.py
+	$(PYTHON) test_lexer.py 
+	$(PYTHON) main.py $(FLAGS) solver.m r8_random.m -o solver.py && python go.py
+      
+test:
+	find $(OCTAVE) -name \*.m | xargs python main.py $(FLAGS)
 
 
 %.c: %.pyx

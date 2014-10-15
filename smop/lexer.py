@@ -74,7 +74,7 @@ def new():
     t_MUL         = r"\*"
     t_MULEQ       = r"\*="
     t_NE          = r"(~=)|(!=)"
-    t_NEG         = r"\~|!"
+    t_NEG         = r"\~|\!"
     t_OR          = r"\|"
     t_OREQ        = r"\|="
     t_OROR        = r"\|\|"

@@ -60,6 +60,7 @@ def p_top(p):
     top :
         | stmt_list
         | top func_decl stmt_list_opt
+        | top func_decl END_STMT semi_opt
         | top func_decl stmt_list END_STMT semi_opt
     """
     if len(p) == 1:
@@ -471,8 +472,8 @@ def p_expr(p):
             | expr2
             | expr1
             | lambda_expr
-            | ident PLUSPLUS
-            | ident MINUSMINUS
+            | expr PLUSPLUS
+            | expr MINUSMINUS
     """
     #        | PLUSPLUS ident
     #        | MINUSMINUS ident
@@ -537,6 +538,7 @@ def p_cellarray(p):
     cellarray : LBRACE RBRACE
               | LBRACE expr_list RBRACE
               | LBRACE concat_list RBRACE
+              | LBRACE concat_list SEMI RBRACE
     """
     if len(p) == 3:
         p[0] = node.cellarray(op="{}",args=node.expr_list())
