@@ -16,7 +16,7 @@ import lexer
 #import builtins
 import node
 #from node import *
-import resolve
+import resolve,options
 
 # ident properties (set in parse.py)
 # ----------------------------------
@@ -226,6 +226,7 @@ def p_case_list(p):
     """
     case_list : 
               | CASE expr sep stmt_list_opt case_list
+              | CASE expr error stmt_list_opt case_list
               | OTHERWISE stmt_list
     """
     if len(p) == 1:
@@ -678,7 +679,8 @@ def p_expr2(p):
 
             if isinstance(p[1],node.matrix):
                 # TBD: mark idents as "P" - persistent
-                assert p[3].__class__ in (node.ident,node.funcall), p[3].__class__
+                if p[3].__class__ not in (node.ident,node.funcall): #, p[3].__class__
+                    raise NotImplementedError("multi-assignment %d" % p[0].lineno)
                 if p[3].__class__ is node.ident:
                     # [A1(B1) A2(B2) ...] = F     implied F()
                     # import pdb; pdb.set_trace()
@@ -699,19 +701,18 @@ def p_expr2(p):
     else:
         p[0] = node.expr(op=p[2],args=node.expr_list([p[1],p[3]]))
 
-opt_exclude = []
 def p_error(p):
-    if p is None:
-        if p not in opt_exclude:
-            raise syntax_error(p)
-    elif p.lexpos not in opt_exclude:
-        raise syntax_error(p)
-    #print "Ignored:",p
-    return p
+    #import pdb; pdb.set_trace()
+    #print "p_error",p
+    if ("." in options.syntax_errors or
+        os.path.basename(options.filename) in options.syntax_errors):
+        return p
+    raise syntax_error(p)
 
 parser = yacc.yacc(start="top")
 
 def parse(buf,filename=""):
+    options.filename = filename
     try:
         new_lexer = lexer.new()
         p = parser.parse(buf,tracking=1,debug=0,lexer=new_lexer)
@@ -740,4 +741,9 @@ def parse(buf,filename=""):
 #     buf = open(filename).read()
 #     return parse(buf)
 
+#    if p is None:
+#        if p not in opt_exclude:
+#            raise syntax_error(p)
+#    elif p.lexpos not in opt_exclude:
+#        raise syntax_error(p)
 # vim: ts=4:sw=4:et:si:ai

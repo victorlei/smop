@@ -29,5 +29,6 @@ uppercase=True # active only with f90
 
 line_numbering=True #True # uses either # or ! or %
 
-syntax_errors = ["."]
+syntax_errors = []
 verbose = 0
+filename = ""
