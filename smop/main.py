@@ -15,7 +15,11 @@ def usage():
     print """Usage: smop [options] file-list
     Options:
     -V --version
-    -X --exclude=FILES      Ignore files listed in comma-separated list FILES
+    -X --exclude=FILES      Ignore files listed in comma-separated list FILES.
+                            Can be used several times.
+    -S --syntax-errors=FILES Ignore syntax errors in comma-separated list of FILES.
+                            Can be used several times.
+    -S.                     Always gnore syntax errors 
     -d --dot=REGEX          For functions whose names match REGEX, save debugging
                             information in "dot" format (see www.graphviz.org).
                             You need an installation of graphviz to use --dot
@@ -43,11 +47,12 @@ def main():
     """
     try:
         opts, args = getopt.gnu_getopt(sys.argv[1:],
-                                       "d:ho:vVsX:", 
+                                       "d:ho:vVsS:X:", 
                                        [
                                         "dot=",
-                                        "exclude",
+                                        "exclude=",
                                         "help",
+                                        "syntax-errors=",
                                         "output=",
                                         "strict",
                                         "verbose",
@@ -61,19 +66,20 @@ def main():
 
     exclude_list = []
     output = None
-    verbose = 0
     strict = 0
     dot = None
 
     for o, a in opts:
         if o in ("-s", "--strict"):
             strict = 1
+        elif o in ("-S", "--syntax-errors"):
+            options.syntax_errors += a.split(",")
         elif o in ("-d", "--dot"):
             dot = re.compile(a)
         elif o in ("-X", "--exclude"):
             exclude_list += a.split(",")
         elif o in ("-v", "--verbose"):
-            verbose += 1
+            options.verbose += 1
         elif o in ("-V", "--version"):
             print "SMOP compiler version " + __version__
             sys.exit()
@@ -141,7 +147,7 @@ except ImportError:
             if os.path.basename(filename) in exclude_list:
                 print "\tExcluded file: '%s'" % filename
                 continue
-            if verbose:
+            if options.verbose:
                 print filename
             buf = open(filename).read().replace("\r\n","\n")
             func_list = parse.parse(buf if buf[-1]=='\n' else buf+'\n',filename)
@@ -151,10 +157,10 @@ except ImportError:
             for func_obj in func_list: 
                 try:
                     func_name = func_obj.head.ident.name
-                    if verbose:
+                    if options.verbose:
                         print "\t",func_name
                 except AttributeError:
-                    if verbose:
+                    if options.verbose:
                         print "\tJunk ignored"
                     if strict:
                         sys.exit(-1)
