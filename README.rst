@@ -1,10 +1,10 @@
 +---------------------------------------------------------+------------------------------+
-|``SMOP`` is Small Matlab and Octave to Python compiler.  | + October 11, 2014           |
+|``SMOP`` is Small Matlab and Octave to Python compiler.  | + October 15, 2014           |
 |   ``SMOP`` translates matlab to python. Despite obvious |                              |
 |   similarities between matlab and numeric python, there |                              |
 |   are enough differences to make manual translation     |                              |
 |   infeasible in real life.  ``SMOP`` generates          |   Current version            |
-|   human-readable python, which also appears to be faster|   0.26.1 is                  |
+|   human-readable python, which also appears to be faster|   0.26.3 is                  |
 |   than octave.  Just how fast?    Timing results for    |   available for              |
 |   "Moving furniture" are shown           in Table 1.    |   beta testing.              |
 |   It seems that for this program, translation to python |                              |
@@ -21,8 +21,8 @@
 +---------------------------------------------+-----------+   library, which contains    |
 |   smop+python-2.7+cython-0.20.1             |  40 ms    |   over 120 KLOC in almost    |
 +---------------------------------------------+-----------+   1,000 matlab files. There  |
-|         Table 1. ``SMOP`` performance, measured on      |   are 62 compilation errors  |
-|         fujitsu AH552 running linux 3.8.0-19            |   with smop 0.26.2           |
+|         Table 1. ``SMOP`` performance, measured on      |   are 13 compilation errors  |
+|         fujitsu AH552 running linux 3.8.0-19            |   with smop 0.26.3           |
 +---------------------------------------------------------+------------------------------+
 
 
