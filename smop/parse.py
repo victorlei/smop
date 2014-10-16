@@ -158,22 +158,21 @@ def p_command(p):
     p[0] = node.funcall(p[1],p[2])
 
 ####################
-def p_init_opt(p):
-    """init_opt :
-                | EQ expr
-    """
 def p_global_list(p):
-    """global_list : ident init_opt
-                   | global_list ident init_opt
+    """global_list : ident
+                   | global_list ident
     """
-    if len(p) == 3:
+    if len(p) == 2:
         p[0] = node.global_list([p[1]])
-    elif len(p) == 4:
+    elif len(p) == 3:
         p[0] = p[1]
         p[0].append(p[2])
 
 def p_global_stmt(p):
-    "global_stmt : GLOBAL global_list SEMI"
+    """
+    global_stmt : GLOBAL global_list SEMI
+                | GLOBAL ident EQ expr SEMI
+    """
     p[0] = node.global_stmt(p[2])
     for ident in p[0]:
         ident.props="G"  # G=global
@@ -189,17 +188,18 @@ def p_foo_stmt(p):
                     args=node.expr("or",node.expr_list([args1,args2])))
 
 def p_persistent_stmt(p):
-    #"""persistent_stmt :  PERSISTENT global_list SEMI
-    """persistent_stmt :  PERSISTENT expr SEMI
+    """
+    persistent_stmt :  PERSISTENT global_list SEMI
+                    |  PERSISTENT ident EQ expr SEMI
     """
 #    if len(p) == 4:
 #        p[0] = node.global_stmt(p[2])
 #        for ident in p[0]:
 #            ident.props="G"  # G=global
 #    else:
-    assert p[2].__class__ in (node.let,node.ident), p[2].__class__
-    p[0] = p[2]
-    #print p[2]
+#    assert p[2].__class__ in (node.let,node.ident), p[2].__class__
+#    p[0] = p[2]
+#    #print p[2]
 
 
 def p_return_stmt(p):
