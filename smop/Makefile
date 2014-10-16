@@ -3,7 +3,7 @@
 OCTAVE = ~/octave-3.8.2/scripts
 CYTHON = cython
 PYTHON = python
-FLAGS = --syntax-errors=stft.m
+FLAGS = -S stft.m -X orderfields.m,legend.m
 V = 2.7
 
 go_so: solver.so

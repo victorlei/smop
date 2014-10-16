@@ -158,13 +158,17 @@ def p_command(p):
     p[0] = node.funcall(p[1],p[2])
 
 ####################
-def p_global_list(p):
-    """global_list : ident
-                   | global_list ident
+def p_init_opt(p):
+    """init_opt :
+                | EQ expr
     """
-    if len(p) == 2:
+def p_global_list(p):
+    """global_list : ident init_opt
+                   | global_list ident init_opt
+    """
+    if len(p) == 3:
         p[0] = node.global_list([p[1]])
-    elif len(p) == 3:
+    elif len(p) == 4:
         p[0] = p[1]
         p[0].append(p[2])
 
