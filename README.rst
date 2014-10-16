@@ -1,85 +1,67 @@
-+---------------------------------------------------------+------------------------------+
-|``SMOP`` is Small Matlab and Octave to Python compiler.  | + October 15, 2014           |
-|   ``SMOP`` translates matlab to python. Despite obvious |                              |
-|   similarities between matlab and numeric python, there |                              |
-|   are enough differences to make manual translation     |                              |
-|   infeasible in real life.  ``SMOP`` generates          |   Current version            |
-|   human-readable python, which also appears to be faster|   0.26.3 is                  |
-|   than octave.  Just how fast?    Timing results for    |   available for              |
-|   "Moving furniture" are shown           in Table 1.    |   beta testing.              |
-|   It seems that for this program, translation to python |                              |
-|   resulted in about two times speedup, and additional   |                              |
-|   two times  speedup was achieved by compiling ``SMOP`` |                              |
-|   run-time library ``runtime.py`` to C, using `cython`. |                              |   
-|   This pseudo-benchmark measures the scalar performance,|                              |
-|   and my interpretation is that scalar computations are |                              |
-|   of less interest to the octave team.                  |                              |
-+---------------------------------------------+-----------+   Next version               |
-|   octave-3.8.1                              | 190 ms    |   0.27 will                  |
-+---------------------------------------------+-----------+   compile octave             |
-|   smop+python-2.7                           |  80 ms    |   ``scripts``                |
-+---------------------------------------------+-----------+   library, which contains    |
-|   smop+python-2.7+cython-0.20.1             |  40 ms    |   over 120 KLOC in almost    |
-+---------------------------------------------+-----------+   1,000 matlab files. There  |
-|         Table 1. ``SMOP`` performance, measured on      |   are 13 compilation errors  |
-|         fujitsu AH552 running linux 3.8.0-19            |   with smop 0.26.3           |
-+---------------------------------------------------------+------------------------------+
+``SMOP`` is Small Matlab and Octave to Python compiler.   
+   ``SMOP`` translates matlab to python. Despite obvious similarities
+   between matlab and numeric python, there are enough differences to
+   make manual translation infeasible in real life.  ``SMOP`` generates
+   human-readable python, which also appears to be faster than octave.
+   Just how fast?  Timing results for "Moving furniture" are shown
+   in Table 1. It seems that for this program, translation to python
+   resulted in about two times speedup, and additional two times  speedup
+   was achieved by compiling ``SMOP`` run-time library ``runtime.py``
+   to C, using `cython`.  This pseudo-benchmark measures scalar
+   performance, and my interpretation is that scalar computations are
+   of less interest to the octave team.
 
+======================================== ================== 
+ octave-3.8.1                               190 ms     
+---------------------------------------- ------------------
+ smop+python-2.7                             80 ms     
+---------------------------------------- ------------------
+ smop+python-2.7+cython-0.20.1               40 ms     
+---------------------------------------- ------------------
+ Table 1. ``SMOP`` performance
+======================================== ================== 
 
-With less than five thousands lines of python code
-    ``SMOP`` does not pretend to compete with such polished
-    products as matlab or octave.  Yet, it is not a toy.
-    There is an attempt to follow the original matlab
-    semantics as close as possible.  Matlab language
-    definition (never published afaik) is full of dark
-    corners, and ``SMOP`` tries to follow matlab as
-    precisely as possible.
+News
+====
 
-There is a price, too.
-    The generated sources are
-    `matlabic`, rather than `pythonic`, which means that
-    library maintainers must be fluent in both languages,
-    and the old development environment must be kept around. 
+October 15, 2014
+   Version 0.26.3 is available for beta testing.
+   Next version 0.27 is planned to compile octave
+   ``scripts`` library, which contains over 120 KLOC in
+   almost 1,000 matlab files. There  are 13 compilation
+   errors with smop 0.26.3 
 
-Should the generated program be `pythonic` or `matlabic`? 
-    For example should array indexing start with zero
-    (`pythonic`) or with one (`matlabic`)?
+Installation
+============
 
-    I beleive now that some matlabic accent is unavoidable
-    in the generated python sources.  Imagine matlab program
-    is using regular expressions, matlab style.  We are not
-    going to translate them to python style, and that code
-    will remain forever as a reminder of the program's
-    matlab origin.
++  Network installation is the best method if you just want it to
+   run the example::
 
-    Another example.  Matlab code opens a file; fopen
-    returns -1 on error.  Pythonic code would raise
-    exception, but we are not going to do `that`.   Instead,
-    we will live with the accent, and smop takes this to the
-    extreme --- the matlab program remains mostly unchanged.
+   $ easy_install smop --user
 
-    It turns out that generating `matlabic`` allows for
-    moving much of the project complexity out of the
-    compiler (which is already complicated enough) and into
-    the runtime library, where there is almost no
-    interaction between the library parts.
++  Install from the sources if you are behind a firewall::
 
-.. missing standard library and toolboxes
-.. missing grapphics library
+   $ tar zxvf smop.tar.gz
+   $ cd smop
+   $ python setup.py install --user
 
-Working example: ``solver.m``
-    We will translate ``solver.m`` to present a sample of
-    smop features.  The program was borrowed from the
-    matlab programming competition in 2004 (Moving
-    Furniture). For the impatient, it is possible to compile
-    and run the example without installing smop::
++  Fork github repository if you need the latest fixes.
 
-    $ tar zxvf smop-0.25.4.tar.gz
-    $ cd smop-0.25.4/smop
-    $ python main.py solver.m
-    $ python go.py
++  Finally, it is possible to use smop without doing the installation,
+   but only if you already installed the dependences -- numpy
+   and networkx::
 
-To the left is ``solver.m``.  To the right is ``a.py`` --- its
+   $ tar zxvf smop.tar.gz
+   $ cd smop/smop
+   $ python main.py solver.m
+   $ python go.py
+
+Working example
+===============
+
+We will translate ``solver.m`` to present a sample of smop features.  The
+program was borrowed from the matlab programming competition in 2004 (Moving
+Furniture).To the left is ``solver.m``.  To the right is ``a.py`` --- its
 translation to python.  Though only 30 lines long, this
 example shows many of the complexities of converting matlab code
 to python.
@@ -175,6 +157,50 @@ to python.
   29  end                             29
   30                                  30     return mv
 
+Random remarks
+==============
+
+With less than five thousands lines of python code
+    ``SMOP`` does not pretend to compete with such polished
+    products as matlab or octave.  Yet, it is not a toy.
+    There is an attempt to follow the original matlab
+    semantics as close as possible.  Matlab language
+    definition (never published afaik) is full of dark
+    corners, and ``SMOP`` tries to follow matlab as
+    precisely as possible.
+
+There is a price, too.
+    The generated sources are
+    `matlabic`, rather than `pythonic`, which means that
+    library maintainers must be fluent in both languages,
+    and the old development environment must be kept around. 
+
+Should the generated program be `pythonic` or `matlabic`? 
+    For example should array indexing start with zero
+    (`pythonic`) or with one (`matlabic`)?
+
+    I beleive now that some matlabic accent is unavoidable
+    in the generated python sources.  Imagine matlab program
+    is using regular expressions, matlab style.  We are not
+    going to translate them to python style, and that code
+    will remain forever as a reminder of the program's
+    matlab origin.
+
+    Another example.  Matlab code opens a file; fopen
+    returns -1 on error.  Pythonic code would raise
+    exception, but we are not going to do `that`.   Instead,
+    we will live with the accent, and smop takes this to the
+    extreme --- the matlab program remains mostly unchanged.
+
+    It turns out that generating `matlabic`` allows for
+    moving much of the project complexity out of the
+    compiler (which is already complicated enough) and into
+    the runtime library, where there is almost no
+    interaction between the library parts.
+
+.. missing standard library and toolboxes
+.. missing grapphics library
+
 Which one is faster --- python or octave?  I don't know.  
   Doing reliable performance measurements is notoriously
   hard, and is of low priority for me now.  Instead, I wrote
@@ -205,16 +231,11 @@ Which one is faster --- python or octave?  I don't know.
     mv = solver(ai,af,0);
     toc
 
----------------------------------------------------------------------
-
-Work in progress below this line
-================================
-
-
 Running the test suite::
 
      $ cd smop
      $ make check
+     $ make test
 
 Command-line options
 --------------------
@@ -241,122 +262,5 @@ Command-line options
         -v --verbose
 
 ---------------------------------------------------------------------
-
-
-+-----------------------------------------+-------+-------+-------+
-|                                         |matlab |fortran|python |
-+=========================================+=======+=======+=======+
-|                                         |       |       |       |
-|   A. Base-one indexing                  |  yes  | yes   |  no   |
-+-----------------------------------------+-------+-------+-------+
-|                                         |       |       |       |
-|   B. Columns-first data layout          |  yes  | yes   |  no   |
-+-----------------------------------------+-------+-------+-------+
-|   C. Auto-expanding arrays              |  yes  | no *  |  yes  |
-+-----------------------------------------+-------+-------+-------+
-|   D. Update to create                   |  yes  | no *  |  yes  |
-+-----------------------------------------+-------+-------+-------+
-|   E. Assignment as copy                 |  yes  |  yes  |   no  |
-+-----------------------------------------+-------+-------+-------+
-
-
-+-----------------------------------------+-------+-------+-------+
-|                                         |matlab |fortran|python |
-+=========================================+=======+=======+=======+
-|   F. Matrices everywhere                |  yes  |  no   |   no  |
-+-----------------------------------------+-------+-------+-------+
-|   G. Single subscript implies ravel     |  yes  |       |       |
-+-----------------------------------------+-------+-------+-------+
-|   H. Broadcast                          |       |       |       |
-+-----------------------------------------+-------+-------+-------+
-|   I. Boolean indexing                   |       |       |       |
-+-----------------------------------------+-------+-------+-------+
-|   J. Type and rank must be known        |  no   | yes   |  no   |
-|      in compile time                    |       |       |       |
-+-----------------------------------------+-------+-------+-------+
-
-+-----------------------------------------+-------+-------+-------+
-|                                         |matlab |fortran|python |
-+=========================================+=======+=======+=======+
-|   K. Garbage collection                 |  yes  | no *  |  yes  |
-+-----------------------------------------+-------+-------+-------+
-|   L. All uppercase                      |  no   | yes   |  no   |
-+-----------------------------------------+-------+-------+-------+
-|   M. Structs                            |       |       |       |
-+-----------------------------------------+-------+-------+-------+
-|   N. Interpreted                        |  yes  | no    |  yes  |
-+-----------------------------------------+-------+-------+-------+
-|   P. Strings are arrays of chars        |  yes  | no    |  yes  |
-+-----------------------------------------+-------+-------+-------+
-
-
-Base-one indexing
-   Following fortran tradition, matlab starts array indexing with one,
-   not zero.  Correspondingly, the last element of a N-element array is
-   N, not N-1.
-
-C_CONTIGUOUS and F_CONTIGUOUS data layout
-  Matlab matrix elements are ordered in columns-first, aka
-  F_CONTIGUOUS order.  Numpy arrays are C_CONTIGUOUS by default, with
-  some support for F_CONTIGUOUS arrays.  Instances of matlabarray are
-  F_CONTIGUOUS except if created empty, in which case they are
-  C_CONTIGUOUS.
-
-Auto-expanding arrays
-  Matlab arrays are auto-magically resized on out-of-bounds update.
-  Though deprecated, this feature is widely used in legacy code.
-  Supporting this feature is one of the main reasons behind creation
-  of the dedicated ``matlabarray`` class.  If we chose the `pythonic`
-  option --- smop arrays directly mapped to ndarrays --- any array
-  update that could not be proven to be safe, should have been
-  enclosed in try-except-resize-retry.  It would not look any better.
-  
-  In fortran, the pattern should be somehow (how exactly?) detected in
-  compile-time.  In python ``__setitem__`` hides ``try-catch``, with
-  ``resize`` called inside ``catch``.  Is try-catch in fortran?
-
-  In numpy out-of-bounds assignment is an error.  In smop,
-  out-of-bounds assignment is supported for row and column matrices
-  and their generalizations having shape
-
-      [1 1 ... N ... 1]
-
-  These arrays may be resized along their only non-singular dimension.
-  For other matrices, new columns can be added to F_CONTIGUOUS arrays,
-  and new rows can be added to C_CONTIGUOUS arrays.
-
-  Finally, scalar array of any dimension, having shape
-
-      [1 1 ... 1]
-
-  can be resized along any dimension.
-
-Update to create
-  In matlab, arrays may be created by  updating a non existent array,
-  as in the example::
-
-      >>> clear a
-      >>> a(17)=42
-
-  This unique feature is not supported by smop, but can be worked
-  around by inserting assignments into the original matlab code::
-
-      >>> a=[]
-      >>> a(17_=42
-
--------------------------------------
-
-SMOP assumes that the input is syntactically correct  and
-passes some test suite. 
-
-.. code:: matlab
- 
-  01   ok = 0                         01 def solver_(c):                  
-  02   if c                           02     if c:
-  03      ok = f00                    03         ok = f00()
-    
-    .. code:: matlab
-
-     
 
 .. vim: tw=80
