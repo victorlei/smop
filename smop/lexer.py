@@ -305,13 +305,16 @@ def new():
 
 if __name__ == "__main__":
     lexer = new()
-    while 1:
-        line = raw_input("=>> ")
-        if not line:
-            break
-        while line[-1] == "\\":
-            line = line[:-1] + raw_input("... ")
-        print len(line), [c for c  in line]
-        lexer.input(line)
-        for tok in lexer:
-            print len(str(tok.value)), tok
+    try:
+        while 1:
+            line = raw_input("=>> ")
+            if not line:
+                continue
+            while line[-1] == "\\":
+                line = line[:-1] + raw_input("... ")
+            print len(line), [c for c  in line]
+            lexer.input(line)
+            for tok in lexer:
+                print len(str(tok.value)), tok
+    except EOFError:
+        pass
