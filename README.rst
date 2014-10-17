@@ -157,9 +157,73 @@ to python.
   29  end                             29
   30                                  30     return mv
 
+Implementation status
+=====================
+
+Table 2. Status by directory
+
+=========================== ============ ============ =========== 
+subdirectory of scripts     compiled     failed       tested
+--------------------------- ------------ ------------ ----------- 
+Total                       951          8            1 
+--------------------------- ------------ ------------ ----------- 
+audio
+deprecated
+elfun
+@ftp
+general                                                1
+geometry
+gui
+help
+image
+io
+java
+linear-algebra
+miscellaneous
+mk-pkg-add
+optimization
+path
+pkg
+plot
+polynomial
+prefs
+set
+signal
+sparse
+specfun
+special-matrix
+startup
+statistics
+strings
+testfun
+time
+=========================== ============ ============ =========== 
+
+Table 3.  Not compiled
+
+=========================== ===================================== 
+stft.m                      missing semicolon
+datenum.m                   missing semicolon
+orderfields.m
+legend.m
+pack.m                      premature EOF
+unpack.m                    premature EOF
+__unimplemented__.m         premature EOF
+assert.m
+optimset.m
+=========================== ===================================== 
+
+
+Table 4. Tested
+
+================== =================== =============
+Subdirectory       function            status
+general            isscalar            tested
+================== =================== =============
+
+
 Random remarks
 ==============
-
 With less than five thousands lines of python code
     ``SMOP`` does not pretend to compete with such polished
     products as matlab or octave.  Yet, it is not a toy.
