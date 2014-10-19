@@ -380,6 +380,13 @@ class char(matlabarray):
             return "\n".join("".join(s) for s in self)
         raise NotImplementedError
 
+class struct(object):
+    def __init__(self,*args):
+        for i in range(0,len(args),2):
+            setattr(self,str(args[i]),args[i+1])
+
+OCTAVE_VERSION = "speedboots"
+clc = 0  # FIXME
 
 def abs(a):
     """
@@ -416,6 +423,11 @@ def copy(a):
 
 def disp(*args):
     print (args)
+
+def exist(a,b):
+    if str(b) == 'builtin':
+        return str(a) in globals()
+    return False
 
 false = False
 
@@ -598,9 +610,7 @@ def strread(s, format="", nargout=1):
     raise NotImplementedError
 
 def strrep(a,b,c):
-    if isinstance(a,str):
-        return a.replace(b,c)
-    raise NotImplementedError # cell arrays
+    return str(a).replace(str(b),str(c))
 
 def sum(a, dim=None):
     if dim is None:
@@ -617,6 +627,9 @@ def true(*args):
     if len(args) == 1:
         args += args
     return matlabarray(np.ones(args,dtype=bool,order="F"))
+
+def version():
+    return char('0.26')
 
 def zeros(*args,**kwargs):
     if not args:

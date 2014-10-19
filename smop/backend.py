@@ -53,7 +53,7 @@ def _backend(self,level=0):
                        self.args._backend())
 @extend(node.cellarray)
 def _backend(self,level=0):
-    return "[%s]" % self.args._backend()
+    return "cellarray([%s])" % self.args._backend()
 
 #@extend(node.concat_list)
 #def _backend(self,level=0):
