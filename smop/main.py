@@ -7,6 +7,7 @@ import getopt,re
 import lexer,parse,resolve,backend,options,node,graphviz
 import networkx as nx
 import readline
+from runtime import *
 #from version import __version__
 __version__ = version.__version__
 
@@ -101,7 +102,7 @@ def main():
         print "? for help"
         while 1:
             try:
-                buf = raw_input("=>> ")
+                buf = raw_input("octave: ")
                 if not buf:
                     continue
                 while buf[-1] == "\\":
@@ -118,9 +119,18 @@ def main():
                 t = parse.parse(buf if buf[-1]=='\n' else buf+'\n')
                 if not t:
                     continue
+                print "t=", repr(t)
+                print 60*"-"
                 resolve.resolve(t,symtab)
-                _ = backend.backend(t)
-                exec _
+                print "t=", repr(t)
+                print 60*"-"
+                print "symtab:",symtab
+                s = backend.backend(t)
+                print "python:",s.strip()
+                try:
+                    print eval(s)
+                except SyntaxError:
+                    exec s
             except EOFError:
                 return
             except Exception as ex:

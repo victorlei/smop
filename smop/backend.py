@@ -150,7 +150,7 @@ def _backend(self,level=0):
                                  self.args[2]._backend(),
                                  self.args[1]._backend())
     if self.op == ":":
-        return "arange_(%s)" % self.args._backend()
+        return "arange(%s)" % self.args._backend()
     
     if self.op == "end":
 #        if self.args:
@@ -160,11 +160,12 @@ def _backend(self,level=0):
             return "end()"
 
     if self.op == ".":
+        #import pdb; pdb.set_trace()
         try:
-            is_parens = self.args[1].op != "parens"
+            is_parens = self.args[1].op == "parens"
         except:
             is_parens = False
-        if is_parens:
+        if not is_parens:
             return "%s%s" % (self.args[0]._backend(),
                              self.args[1]._backend())
         else:
@@ -228,9 +229,19 @@ def _backend(self,level=0):
 #        s = ''
     #if self.args.__class__ is node.funcall:
     #    self.args.nargout = self.nargout
-    if (self.ret.__class__ is node.ident and
+    if self.ret.__class__ is node.expr and self.ret.op == "." :
+        try:
+            if self.ret.args[1].op == 'parens':
+                s = "setattr(%s,%s,%s)" % (self.ret.args[0]._backend(),
+                                           self.ret.args[1].args[0]._backend(),
+                                           self.args._backend())
+        except:
+            s = "%s%s = copy(%s)" % (self.ret.args[0]._backend(),
+                                       self.ret.args[1]._backend(),
+                                       self.args._backend())
+    elif (self.ret.__class__ is node.ident and
         self.args.__class__ is node.ident):
-        s = "%s=copy_(%s)" % (self.ret._backend(),
+        s = "%s=copy(%s)" % (self.ret._backend(),
                               self.args._backend())
     else:
         s = "%s=%s" % (self.ret._backend(), 
@@ -298,7 +309,7 @@ reserved = set(
 
 @extend(node.ident)
 def _backend(self,level=0):
-    return self.name if self.name not in reserved else "_"+self.name
+    return self.name #if self.name not in reserved else "_"+self.name
 
 @extend(node.stmt_list)
 def _backend(self,level=0):

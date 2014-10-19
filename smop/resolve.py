@@ -80,14 +80,14 @@ def resolve(t, symtab=None, fp=None, func_name=None):
         G.node[n]["label"] = "%s\\n%s" % (n, u.props)
 
     for u in node.postorder(t):
-        if u.__class__ is node.func_decl:
-            u.ident.name += "_"
-        elif u.__class__ is node.funcall:
+        #if u.__class__ is node.func_decl:
+        #    u.ident.name += "_"
+        if u.__class__ is node.funcall:
             try:
                 if u.func_expr.props in "UR": # upd,ref
                     u.__class__ = node.arrayref
-                else:
-                    u.func_expr.name += "_"
+                #else:
+                #    u.func_expr.name += "_"
             except:
                 pass
 

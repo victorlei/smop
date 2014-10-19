@@ -4,8 +4,8 @@ import solver as a
 from runtime import *
 
 def main():
-    ai = matlabarray(zeros_(10,10,dtype=int),dtype=int)
-    af = copy_(ai)
+    ai = matlabarray(zeros (10,10,dtype=int),dtype=int)
+    af = copy(ai)
 
     ai[1,1]=2
     ai[2,2]=3
@@ -20,7 +20,7 @@ def main():
     af[10,10]=5
 
     t0 = time.clock()
-    mv = a.solver_(ai,af,0)
+    mv = a.solver(ai,af,0)
     t1 = time.clock()
     print t1-t0
     print mv.shape
