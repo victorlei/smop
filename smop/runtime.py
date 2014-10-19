@@ -63,9 +63,20 @@ Coexistence of matlab matrices and numpy arrays
 
 """
 import version
+import math
 from numpy import inf
+
+from numpy.linalg import inv as _inv
+from numpy.linalg import eig as _eig
+from numpy.linalg import qr  as _qr 
+try:
+    from scipy.linalg import schur as _schur
+except ImportError:
+    pass
+
 import numpy as np
-import os,sys,copy
+import os,sys,copy,time
+from sys import stdin,stdout,stderr
 try:
     from scipy.io import loadmat
 except:
@@ -424,6 +435,10 @@ def copy(a):
 def disp(*args):
     print (args)
 
+def eig(a):
+    u,v = _eig(np.asarray(a))
+    return matlabarray(u).T
+
 def exist(a,b):
     if str(b) == 'builtin':
         return str(a) in globals()
@@ -435,6 +450,9 @@ def false(*args):
     if len(args) == 1:
         args += args
     return np.zeros(args,dtype=bool,order="F")
+
+def fft2(a):
+    return np.fft.fft2(a)
 
 def find(a,n=None,d=None,nargout=1):
     if d:
@@ -469,6 +487,12 @@ def fopen(*args):
     except:
         return -1
 
+def fflush(fp):
+    fp.flush()
+
+def fprintf(fp,fmt,*args):
+    print str(fmt) % tuple(str(a) if isinstance(a,char) else a for a in args)
+
 def fullfile(*args):
     return os.path.join(*args)
 
@@ -484,6 +508,9 @@ def intersect(a,b,nargout=1):
             # both args are column vectors; otherwise row vector
             return np.array(c)
     raise NotImplementedError
+
+def inv(a):
+    return matlabarray(_inv(np.asarray(a)))
 
 #def inf(*args):
 #    t = np.empty(np.prod(args))
@@ -518,6 +545,9 @@ def isequal(a,b):
     return np.array_equal(np.asanyarray(a),
                           np.asanyarray(b))
                           
+def isfield(a,b):
+    return str(b) in a.__dict__.keys()
+
 def isscalar(a):
     """np.isscalar returns True if a.__class__ is a scalar
     type (i.e., int, and also immutable containers str and
@@ -567,6 +597,16 @@ def ones(*args,**kwargs):
         args += args
     return matlabarray(np.ones(args,order="F",**kwargs))
 
+def primes(upto):
+    primes=np.arange(2,upto+1)
+    isprime=np.ones(upto-1,dtype=bool)
+    for factor in primes[:int(math.sqrt(upto))]:
+        if isprime[factor-2]: isprime[factor*2-2::factor]=0
+    return primes[isprime]
+
+def qr(a):
+    return matlabarray(_qr(np.asarray(a)))
+
 def rand(*args,**kwargs):
     if not args:
         return np.random.rand()
@@ -577,14 +617,40 @@ def rand(*args,**kwargs):
     except:
         pass
 
+def rand(*args,**kwargs):
+    if not args:
+        return np.random.rand()
+    if len(args) == 1:
+        args += args
+    try:
+        return np.random.rand(np.prod(args)).reshape(args,order="F")
+    except:
+        pass
+
+def randn(*args,**kwargs):
+    if not args:
+        return np.random.randn()
+    if len(args) == 1:
+        args += args
+    try:
+        return np.random.randn(np.prod(args)).reshape(args,order="F")
+    except:
+        pass
+
 def ravel(a):
     return np.asanyarray(a).reshape(-1,1)
+
+def roots(a):
+    return matlabarray(np.roots(np.asarray(a).ravel()))
 
 def round(a):
     return np.round(np.asanyarray(a))
 
 def rows(a):
     return np.asarray(a).shape[0]
+
+def schur(a):
+    return matlabarray(_schur(np.asarray(a)))
 
 def size(a, b=0, nargout=1):
     """
@@ -622,6 +688,12 @@ def toupper(a):
     return char(str(a.data).upper())
 
 true = True
+
+def tic():
+    return time.clock()
+
+def toc(t):
+    return time.clock()-t
 
 def true(*args):
     if len(args) == 1:
