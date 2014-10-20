@@ -10,22 +10,25 @@ PYTHON = python
 FLAGS = -X interp1.m,interpn.m,nargchk.m,nargoutchk.m,profexplore.m,profshow.m,quadgk.m,quadl.m
 V = 2.7
 ALL = \*.m
-GENERAL = accumarray.py accumdim.py bicubic.py bincoeff.py\
-    bitcmp.py bitget.py bitset.py blkdiag.py cart2pol.py cart2sph.py\
-    cell2mat.py celldisp.py chop.py circshift.py common_size.py cplxpair.py\
-    cumtrapz.py curl.py dblquad.py deal.py del2.py display.py divergence.py\
-    fieldnames.py flipdim.py fliplr.py flipud.py gradient.py idivide.py\
-    int2str.py interp1.py interp2.py interp3.py interpft.py interpn.py\
-    isa.py iscolumn.py isdir.py isequal.py isequaln.py isrow.py isscalar.py\
-    issquare.py isvector.py loadobj.py logspace.py methods.py nargchk.py\
-    narginchk.py nargoutchk.py nextpow2.py nthargout.py num2str.py pol2cart.py\
-    polyarea.py postpad.py prepad.py profexplore.py profile.py profshow.py\
-    quadgk.py quadl.py quadv.py randi.py rat.py repmat.py rot90.py rotdim.py\
-    saveobj.py shiftdim.py shift.py sortrows.py sph2cart.py structfun.py\
-    subsindex.py trapz.py triplequad.py
+GENERAL = accumarray.m accumdim.m bicubic.m bincoeff.m\
+    bitcmp.m bitget.m bitset.m blkdiag.m cart2pol.m cart2sph.m\
+    cell2mat.m celldisp.m chop.m circshift.m common_size.m cplxpair.m\
+    cumtrapz.m curl.m dblquad.m deal.m del2.m display.m divergence.m\
+    fieldnames.m flipdim.m fliplr.m flipud.m gradient.m idivide.m\
+    int2str.m interp1.m interp2.m interp3.m interpft.m interpn.m\
+    isa.m iscolumn.m isdir.m isequal.m isequaln.m isrow.m isscalar.m\
+    issquare.m isvector.m loadobj.m logspace.m methods.m nargchk.m\
+    narginchk.m nargoutchk.m nextpow2.m nthargout.m num2str.m pol2cart.m\
+    polyarea.m postpad.m prepad.m profexplore.m profile.m profshow.m\
+    quadgk.m quadl.m quadv.m randi.m rat.m repmat.m rot90.m rotdim.m\
+    saveobj.m shiftdim.m shift.m sortrows.m sph2cart.m structfun.m\
+    subsindex.m trapz.m triplequad.m
 
 all: mybench.py runtime.py
 	$(PYTHON) -c "import mybench ; mybench.mybench()"
+
+general.py: $(GENERAL)
+	$(PYTHON) main.py $^ -o $@ -v $(FLAGS)
 
 go_so: solver.so
 	$(PYTHON) go.py	

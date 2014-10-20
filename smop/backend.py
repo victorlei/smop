@@ -96,7 +96,10 @@ def _backend(self,level=0):
 
 @extend(node.string)
 def _backend(self,level=0):
-    return "char('%s')" % (self.value)
+    if self.value.find("'")+1:
+        return 'char("%s")' % (self.value)
+    else:
+        return "char('%s')" % (self.value)
 
 @extend(node.number)
 def _backend(self,level=0):

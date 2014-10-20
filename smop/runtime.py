@@ -83,6 +83,7 @@ except:
     pass
 import unittest
 from version import __version__
+import general
 
 def isvector_or_scalar(a):
     """
@@ -513,6 +514,9 @@ def intersect(a,b,nargout=1):
 
 def inv(a):
     return matlabarray(_inv(np.asarray(a)))
+
+def interp2(*args):
+    return general.interp2(*args)
 
 #def inf(*args):
 #    t = np.empty(np.prod(args))

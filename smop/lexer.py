@@ -97,7 +97,8 @@ def new():
         if s[0] == "'":
             return s[1:-1].replace("''","'")
         else:
-            return s[1:-1].decode('string_escape').replace('""','"')
+            return s[1:-1].replace('""','"')
+            #return s[1:-1].decode('string_escape').replace('""','"')
 
     @TOKEN(mos)
     def t_afterkeyword_STRING(t):
