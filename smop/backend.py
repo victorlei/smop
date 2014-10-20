@@ -96,7 +96,7 @@ def _backend(self,level=0):
 
 @extend(node.string)
 def _backend(self,level=0):
-    return "char(%s)" % repr(self.value)
+    return "char('%s')" % (self.value)
 
 @extend(node.number)
 def _backend(self,level=0):
@@ -301,15 +301,15 @@ reserved = set(
     except exec execfile exit False file filter finally float for format from
     frozenset getattr global globals hasattr hash help hex id if import __import__
     in input int intern is isinstance issubclass iter lambda len license list
-    locals long map max memoryview min next None not not NotImplemented object oct
+    locals long map memoryview next None not not NotImplemented object oct
     open or ord pass pow print property quit raise range raw_input reduce reload
     repr return reversed round set setattr slice sorted staticmethod str sum super
-    True try tuple type unichr unicode vars while with xrange yield zip
+    True try tuple type unichr unicode vars while with xrange yield zip struct
     """.split())
 
 @extend(node.ident)
 def _backend(self,level=0):
-    return self.name #if self.name not in reserved else "_"+self.name
+    return self.name if self.name not in reserved else self.name+'_'
 
 @extend(node.stmt_list)
 def _backend(self,level=0):

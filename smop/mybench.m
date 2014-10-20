@@ -77,7 +77,7 @@ function res = mybench(varargin)
 
     %create output file
     moVersio =     strrep(version(),' ','_');
-    outFileName = ['results_',moVersio,'.txt'];
+    outFileName = "foo.txt" %['results_',moVersio,'.txt'];
     fid = fopen(outFileName,'w');
     
     if NORMALIZE_TIMES
@@ -119,9 +119,9 @@ function res = mybench(varargin)
                 fprintf(1,'%d ',ii);
                 if IS_OCTAVE, fflush(stdout); end
                 
-                tic();   
+                t0=tic();   
                 mytests{i}.test(x); 
-                t1=toc(); 
+                t1=toc(t0); 
                 
                 if isfield(mytests{i}, 'goldResult') && NORMALIZE_TIMES == true       
                     goldResult = mytests{i}.goldResult;

@@ -391,7 +391,7 @@ class char(matlabarray):
             return "\n".join("".join(s) for s in self)
         raise NotImplementedError
 
-class struct(object):
+class struct_(object):
     def __init__(self,*args):
         for i in range(0,len(args),2):
             setattr(self,str(args[i]),args[i+1])
@@ -491,7 +491,9 @@ def fflush(fp):
     fp.flush()
 
 def fprintf(fp,fmt,*args):
-    print str(fmt) % tuple(str(a) if isinstance(a,char) else a for a in args)
+    if not isinstance(fp,file):
+        fp = stdout
+    fp.write(str(fmt) % tuple(str(a) if isinstance(a,char) else a for a in args))
 
 def fullfile(*args):
     return os.path.join(*args)
