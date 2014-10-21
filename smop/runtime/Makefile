@@ -6,7 +6,7 @@ SCRIPTS = $(OCTAVE)/scripts
 
 CYTHON = cython
 PYTHON = python
-FLAGS = -Xquadgk.m,quadl.m,lcm.m
+FLAGS = -Xquadgk.m,quadl.m,lcm.m --runtime .
 V = 2.7
 SMOP = smop
 SPECFUN = bessel.py betaln.py beta.py ellipke.py expint.py factorial.py\
@@ -41,4 +41,4 @@ clean:
 	gcc -Wno-cpp -I /usr/include/python$V -O2 -shared -o $@ $^
 
 %.py: %.m
-	smop $(FLAGS) -o $@ $^
+	$(SMOP) $(FLAGS) -o $@ $^

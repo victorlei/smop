@@ -24,7 +24,7 @@ GENERAL = accumarray.m accumdim.m bicubic.m bincoeff.m\
     saveobj.m shiftdim.m shift.m sortrows.m sph2cart.m structfun.m\
     subsindex.m trapz.m triplequad.m
 
-all: mybench.py runtime.py
+all: mybench.py 
 	$(PYTHON) -c "import mybench ; mybench.mybench()"
 
 general.py: $(GENERAL)
