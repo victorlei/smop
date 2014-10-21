@@ -143,10 +143,7 @@ def main():
     print >> fp, "# " + " ".join(sys.argv)
     print >> fp, """
 from __future__ import division
-try:
-    from runtime import *
-except ImportError:
-    from smop.runtime import *
+from . import *
 """
 
     for pattern in args:

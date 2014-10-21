@@ -83,7 +83,9 @@ except:
     pass
 import unittest
 from version import __version__
-import general
+
+#import interp2 as _interp2
+#import primes as _primes
 
 def isvector_or_scalar(a):
     """
@@ -516,7 +518,7 @@ def inv(a):
     return matlabarray(_inv(np.asarray(a)))
 
 def interp2(*args):
-    return general.interp2(*args)
+    return _interp2.interp2(*args)
 
 #def inf(*args):
 #    t = np.empty(np.prod(args))
@@ -603,12 +605,15 @@ def ones(*args,**kwargs):
         args += args
     return matlabarray(np.ones(args,order="F",**kwargs))
 
-def primes(upto):
-    primes=np.arange(2,upto+1)
-    isprime=np.ones(upto-1,dtype=bool)
-    for factor in primes[:int(math.sqrt(upto))]:
-        if isprime[factor-2]: isprime[factor*2-2::factor]=0
-    return primes[isprime]
+#def primes2(upto):
+#    primes=np.arange(2,upto+1)
+#    isprime=np.ones(upto-1,dtype=bool)
+#    for factor in primes[:int(math.sqrt(upto))]:
+#        if isprime[factor-2]: isprime[factor*2-2::factor]=0
+#    return primes[isprime]
+#
+#def primes(*args):
+#    return _primes.primes(*args)
 
 def qr(a):
     return matlabarray(_qr(np.asarray(a)))
@@ -647,6 +652,7 @@ def ravel(a):
     return np.asanyarray(a).reshape(-1,1)
 
 def roots(a):
+
     return matlabarray(np.roots(np.asarray(a).ravel()))
 
 def round(a):
@@ -674,6 +680,8 @@ def size(a, b=0, nargout=1):
             return matlabarray(s) if nargout <= 1 else s
     except IndexError:
         return 1
+
+from numpy import sort,sqrt
 
 def strread(s, format="", nargout=1):
     if format == "":
