@@ -1,6 +1,6 @@
 import numpy as np
 import unittest
-from runtime import *
+from core import *
 from sparsearray import sparsearray
 
 class Slice(unittest.TestCase):

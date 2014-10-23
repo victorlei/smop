@@ -27,14 +27,14 @@ go_m: solver.m
 	octave -q go.m
 
 clean:
-	rm -f a.* *.pyc solver.so solver.py runtime.so
+	rm -f a.* *.pyc solver.so solver.py octave.so
 
 solver.py: solver.m r8_random.m 
 	$(PYTHON) main.py $^ -o $@
 
 check:
-	$(PYTHON) runtime.py 
-	$(PYTHON) test_runtime.py
+	$(PYTHON) octave.py 
+	$(PYTHON) test_core.py
 	$(PYTHON) test_matlabarray.py
 	$(PYTHON) test_sparsearray.py
 	$(PYTHON) test_lexer.py 

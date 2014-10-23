@@ -1,5 +1,5 @@
 import unittest
-from runtime import *
+from core import *
 
 class test_matlabarray(unittest.TestCase):
     """Expanding matlabarray"""

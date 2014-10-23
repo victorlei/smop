@@ -4,7 +4,7 @@
 # MIT license
 import numpy as np
 import unittest
-from runtime import *
+from core import *
 
 class Getitem(unittest.TestCase):
     def setUp(self):
