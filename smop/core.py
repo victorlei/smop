@@ -4,6 +4,8 @@
 # MIT license
 
 import __builtin__
+
+import numpy
 from numpy import abs,ceil,floor,sqrt
 from numpy.fft import fft2
 from numpy.linalg import inv
@@ -12,8 +14,8 @@ try:
     from scipy.linalg import schur as _schur
 except ImportError:
     pass
-
 import numpy as np
+
 import os,sys,copy,time
 from sys import stdin,stdout,stderr
 try:
@@ -360,7 +362,7 @@ def disp(*args):
     print (args)
 
 def eig(a):
-    u,v = numpy.linalg.eig(a)
+    u,v = np.linalg.eig(a)
     return u.T
 
 def exist(a,b):

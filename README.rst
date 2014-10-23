@@ -24,12 +24,36 @@
 News
 ====
 
+October 23, 2014
+   Downloaded ``mybench`` -- a collection of 20 or so
+   micro-benchmarks originally meant to compare matlab and
+   octave performance.  After succesfully running the first nine,
+   the geometric mean of the speedup is 0.36,  which is cool.
+
+
+    ==   ========   ======    ===========    =======
+         name       octave    speedboots     speedup
+                                                     
+    ==   ========   ======    ===========    =======
+    1    rand       2.58      0.36           0.14
+    2    randn      2.26      1.04           0.46
+    3    primes     0.35      0.17           0.49
+    4    fft2       2.75      1.13           0.41
+    5    square     4.24      0              
+    6    inv        4.38      2.26           0.53
+    7    eig        17.95     9.09           0.51
+    8    qr         3.06      1.83           0.60
+    9    shur       5.98      2.31           0.39
+    10   roots      8.31      2.02           0.24
+    ==   ========   ======    ===========    =======
+
 October 15, 2014
    Version 0.26.3 is available for beta testing.
    Next version 0.27 is planned to compile octave
    ``scripts`` library, which contains over 120 KLOC in
    almost 1,000 matlab files. There  are 13 compilation
-   errors with smop 0.26.3 
+   errors with smop 0.26.3 .
+
 
 Installation
 ============
@@ -160,45 +184,6 @@ to python.
 Implementation status
 =====================
 
-Table 2. Status by directory
-
-=========================== ============ ============ =========== 
-subdirectory of scripts     compiled     failed       tested
---------------------------- ------------ ------------ ----------- 
-Total                       951          8            1 
---------------------------- ------------ ------------ ----------- 
-audio
-deprecated
-elfun
-@ftp
-general                                                1
-geometry
-gui
-help
-image
-io
-java
-linear-algebra
-miscellaneous
-mk-pkg-add
-optimization
-path
-pkg
-plot
-polynomial
-prefs
-set
-signal
-sparse
-specfun
-special-matrix
-startup
-statistics
-strings
-testfun
-time
-=========================== ============ ============ =========== 
-
 Table 3.  Not compiled
 
 =========================== ===================================== 
@@ -212,14 +197,6 @@ __unimplemented__.m         premature EOF
 assert.m
 optimset.m
 =========================== ===================================== 
-
-
-Table 4. Tested
-
-================== =================== =============
-Subdirectory       function            status
-general            isscalar            tested
-================== =================== =============
 
 
 Random remarks
