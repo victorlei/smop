@@ -1,6 +1,6 @@
 # for py3: make PYTHON=python3 CYTHON="cython -3" V=3.4
 
-VPATH = $(SCRIPTS)/general:$(SCRIPTS)/specfun
+VPATH = $(SCRIPTS)/general:$(SCRIPTS)/specfun:$(SCRIPTS)/plot/util
 OCTAVE = /home/lei/octave-3.8.2
 SCRIPTS = $(OCTAVE)/scripts
 
@@ -15,11 +15,12 @@ ALL = \*.m
 all: mybench.py 
 	$(PYTHON) -c "import mybench ; mybench.mybench()"
 
-octave.py: randi.m primes.m
+octave.py: primes.m interp2.m meshgrid.m repmat.m
 	$(PYTHON) main.py $^ -r core -o $@
 
 #octave.py:
 #	find $(SCRIPTS)/general $(SCRIPTS)/specfun -name \*.m | xargs smop -v -o $@ -r core $(FLAGS)
+
 
 go_so: solver.so
 	$(PYTHON) go.py	
@@ -41,7 +42,7 @@ check:
 	$(PYTHON) test_core.py
 	$(PYTHON) test_matlabarray.py
 	$(PYTHON) test_sparsearray.py
-	$(PYTHON) test_lexer.py 
+	-$(PYTHON) test_lexer.py 
 	$(PYTHON) main.py $(FLAGS) solver.m r8_random.m -o solver.py && python go.py
       
 test:
@@ -54,6 +55,6 @@ test:
 	gcc -Wno-cpp -I /usr/include/python$V -O2 -shared -o $@ $^
 
 %.py: %.m
-	smop $(FLAGS) -o $@ $^
-	#$(PYTHON) main.py -o $@ $^
+	#smop $(FLAGS) -o $@ $^
+	$(PYTHON) main.py -o $@ $^ -r core -r octave
 	$(PYTHON) $@

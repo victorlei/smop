@@ -32,7 +32,7 @@ October 23, 2014
 
 
     ==   ========   ======    ===========    =======
-         name       octave    speedboots     speedup
+    //   name       octave    smop           speedup
     ==   ========   ======    ===========    =======
     1    rand       2.58      0.36           0.14
     2    randn      2.26      1.04           0.46

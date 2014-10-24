@@ -336,8 +336,13 @@ class struct_(object):
         for i in range(0,len(args),2):
             setattr(self,str(args[i]),args[i+1])
 
+NA = numpy.NaN
+
 def abs(a):
     return numpy.abs(a)
+
+def all(a):
+    return numpy.all(a)
 
 def arange(start,stop,step=1,**kwargs):
     """
@@ -365,6 +370,10 @@ def clc():
 
 def copy(a):
     return matlabarray(np.asanyarray(a).copy(order="F"))
+
+def deal(a,**kwargs):
+    #import pdb; pdb.set_trace()
+    return tuple([ai for ai in a.flat])
 
 def disp(*args):
     print (args)
@@ -467,6 +476,12 @@ def isequal(a,b):
                           
 def isfield(a,b):
     return str(b) in a.__dict__.keys()
+
+def ismatrix(a):
+    return True
+
+def isnumeric(a):
+    return np.asarray(a).dtype in (int,float)
 
 def isscalar(a):
     """np.isscalar returns True if a.__class__ is a scalar
@@ -594,8 +609,19 @@ def size(a, b=0, nargout=1):
     except IndexError:
         return 1
 
+def size_equal(a,b):
+    if a.size != b.size:
+        return False
+    for i in range(len(a.shape)):
+        if a.shape[i] != b.shape[i]:
+            return False
+    return True
+
 from numpy import sqrt
 sort = __builtin__.sorted
+
+def strcmp(a,b):
+    return str(a) == str(b)
 
 def strread(s, format="", nargout=1):
     if format == "":

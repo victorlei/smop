@@ -298,7 +298,7 @@ def _backend(self,level=0):
 # the lexer code.
 reserved = set(
     """
-    abs all and any apply as assert basestring bin bool break buffer bytearray
+    abs and apply as assert basestring bin bool break buffer bytearray
     callable chr class classmethod cmp coerce compile complex continue copyright
     credits def del delattr dict dir divmod elif Ellipsis else enumerate eval
     except exec execfile exit False file filter finally float for format from
@@ -328,6 +328,7 @@ def _backend(self,level=0):
         del self.args[-1]
     s = ",".join(["%s=None" % a for a in self.args if isinstance(a,node.ident)]+["*args,**kwargs"])
     s = "def %s(%s):\n" % (self.ident._backend(), s)
+    s += '    nargout = kwargs["nargout"] if kwargs else None\n'
     s += '    varargin = cellarray(args)\n'
     s += "    nargin = %d-[%s].count(None)+len(args)\n" % (len(self.args),
                        ",".join([(a._backend() if isinstance(a,node.ident) else a.ret._backend())

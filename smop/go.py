@@ -1,7 +1,7 @@
 import pstats,cProfile
 import numpy,time
 import solver as a
-from runtime import *
+from core import *
 
 def main():
     ai = matlabarray(zeros (10,10,dtype=int),dtype=int)
