@@ -82,7 +82,7 @@ def main():
         elif o in ("-d", "--dot"):
             dot = re.compile(a)
         elif o in ("-X", "--exclude"):
-            exclude_list += a.split(",")
+            exclude_list += [ "%s.m" % b for b in a.split(",")]
         elif o in ("-v", "--verbose"):
             options.verbose += 1
         elif o in ("-V", "--version"):

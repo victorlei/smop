@@ -1,5 +1,6 @@
 # for py3: make PYTHON=python3 CYTHON="cython -3" V=3.4
 
+VPATH = $(SCRIPTS)/general:$(SCRIPTS)/specfun
 OCTAVE = /home/lei/octave-3.8.2
 SCRIPTS = $(OCTAVE)/scripts
 
@@ -7,15 +8,18 @@ CYTHON = cython
 PYTHON = python
 #FLAGS = -S stft.m,datenum.m -X orderfields.m,legend.m,pack.m,unpack.m,__unimplemented__.m,assert.m,optimset.m
 #FLAGS = -X interp1.m,interpn.m,nargchk.m,nargoutchk.m,profexplore.m,profshow.m,quadgk.m,quadl.m
-FLAGS = -Xquadgk.m,quadl.m,lcm.m,adaptlobstp.m,spline.m,ppval.m
+FLAGS = -Xquadgk,quadl,lcm,adaptlobstp,spline,ppval,ellipke
 V = 2.7
 ALL = \*.m
 
 all: mybench.py 
 	$(PYTHON) -c "import mybench ; mybench.mybench()"
 
-octave.py:
-	find $(SCRIPTS)/general $(SCRIPTS)/specfun -name \*.m | xargs smop -v -o $@ -r core $(FLAGS)
+octave.py: randi.m primes.m
+	$(PYTHON) main.py $^ -r core -o $@
+
+#octave.py:
+#	find $(SCRIPTS)/general $(SCRIPTS)/specfun -name \*.m | xargs smop -v -o $@ -r core $(FLAGS)
 
 go_so: solver.so
 	$(PYTHON) go.py	
@@ -43,7 +47,7 @@ check:
 test:
 	find $(SCRIPTS) -name $(ALL) | xargs python main.py $(FLAGS)
 
-%.c: %.pyx
+%.c: %.py
 	$(CYTHON) $^
 
 %.so: %.c

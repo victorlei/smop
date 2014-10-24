@@ -45,7 +45,7 @@ def _backend(self,level=0):
         return " + ".join(a._backend() for a in self.args)
     else:
         #import pdb; pdb.set_trace()
-        return "np.r_[%s]" % self.args[0]._backend()
+        return "cat(%s)" % self.args[0]._backend()
 
 @extend(node.cellarrayref)
 def _backend(self,level=0):

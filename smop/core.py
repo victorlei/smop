@@ -6,7 +6,7 @@
 import __builtin__
 
 import numpy
-from numpy import abs,ceil,floor,sqrt
+from numpy import sqrt
 from numpy.fft import fft2
 from numpy.linalg import inv
 from numpy.linalg import qr  as _qr 
@@ -336,6 +336,9 @@ class struct_(object):
         for i in range(0,len(args),2):
             setattr(self,str(args[i]),args[i+1])
 
+def abs(a):
+    return numpy.abs(a)
+
 def arange(start,stop,step=1,**kwargs):
     """
     >>> a=arange(1,10) # 1:10
@@ -346,6 +349,11 @@ def arange(start,stop,step=1,**kwargs):
                                  stop+1,
                                  step,
                                  **kwargs).reshape(1,-1),**kwargs)
+def cat(*args):
+    return np.concatenate([matlabarray(a) for a in args],axis=1)
+
+def ceil(a):
+    return numpy.ceil(a)
 
 def cell(*args):
     if len(args) == 1:
@@ -400,6 +408,9 @@ def find(a,n=None,d=None,nargout=1):
         return (matlabarray((i+1).reshape(-1,1)),
                 matlabarray((j+1).reshape(-1,1)))
     raise NotImplementedError
+
+def floor(a):
+    return numpy.floor(a)
 
 def fopen(*args):
     try:
