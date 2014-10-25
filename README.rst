@@ -24,14 +24,14 @@
 News
 ====
 
-October 23, 2014
+.. October 23, 2014
    Downloaded ``mybench`` -- a collection of 20 or so
    micro-benchmarks originally meant to compare matlab and
    octave performance.  After succesfully running the first nine,
    the geometric mean of the speedup is 0.36,  which is cool.
 
 
-    ==   ========   ======    ===========    =======
+..  ==   ========   ======    ===========    =======
     //   name       octave    smop           speedup
     ==   ========   ======    ===========    =======
     1    rand       2.58      0.36           0.14
@@ -183,19 +183,19 @@ to python.
 Implementation status
 =====================
 
-Table 3.  Not compiled
+..  Table 3.  Not compiled
 
-=========================== ===================================== 
-stft.m                      missing semicolon
-datenum.m                   missing semicolon
-orderfields.m
-legend.m
-pack.m                      premature EOF
-unpack.m                    premature EOF
-__unimplemented__.m         premature EOF
-assert.m
-optimset.m
-=========================== ===================================== 
+..  =========================== ===================================== 
+    stft.m                      missing semicolon
+    datenum.m                   missing semicolon
+    orderfields.m
+    legend.m
+    pack.m                      premature EOF
+    unpack.m                    premature EOF
+    __unimplemented__.m         premature EOF
+    assert.m
+    optimset.m
+    =========================== ===================================== 
 
 
 Random remarks
