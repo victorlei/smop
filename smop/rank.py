@@ -2,9 +2,9 @@ import operator
 
 from constraint import Problem,RecursiveBacktrackingSolver
 import networkx as nx
-import node
-from node import extend
-import resolve
+from . import node
+from .node import extend
+from . import resolve
 
 def rank(tree):
     @extend(node.number)
@@ -17,7 +17,7 @@ def rank(tree):
             # plain assignment -- not a field, lhs indexing
             vars = [id(self.ret), id(self.args)]
             try:
-                problem.addVariables(vars,range(4))
+                problem.addVariables(vars,list(range(4)))
                 problem.addConstraint(operator.__eq__,vars)
             except ValueError:
                 pass
@@ -28,29 +28,29 @@ def rank(tree):
     @extend(node.for_stmt)
     def _rank(self):
         vars =  [id(self.ident), id(self.expr)]
-        problem.addVariables(vars,range(4))
+        problem.addVariables(vars,list(range(4)))
         problem.addConstraint((lambda u,v: u+1==v),vars)
 
     @extend(node.if_stmt)
     def _rank(self):
         # could use operator.__not__ instead of lambda expression
-        problem.addVariable(id(self.cond_expr),range(4))
+        problem.addVariable(id(self.cond_expr),list(range(4)))
         problem.addConstraint(lambda t: t==0, [id(self.cond_expr)])
 
     @extend(node.ident)
     def _rank(self):
         try:
             x = id(self)
-            problem.addVariable(x,range(4))
+            problem.addVariable(x,list(range(4)))
             for other in self.defs:
                 y = id(other)
                 try:
-                    problem.addVariable(y,range(4))
+                    problem.addVariable(y,list(range(4)))
                 except ValueError:
                     pass
                 problem.addConstraint(operator.__eq__, [x,y])
         except:
-            print "Ignored ",self
+            print("Ignored ",self)
     """
 
     @extend(funcall)
@@ -104,13 +104,13 @@ def rank(tree):
                 pass
     s = problem.getSolution()
     if not s:
-        print "No solutions"
+        print("No solutions")
     else:
         d = set()
         #for k in sorted(G.nodes(), key=lambda t: (t.name,t.lexpos)):
         for k in node.postorder(tree):
             if isinstance(k,node.ident):
-                print k.name,k.lineno, s.get(id(k),-1)
+                print(k.name,k.lineno, s.get(id(k),-1))
                 #if not k.name in d and s[id(k)]:
                 #    print "%s(%d)" % (k.name,s[id(k)])
                 #    d.add(k.name)
