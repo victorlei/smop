@@ -4,8 +4,8 @@ to argument list, such as ["i","d"]
 and return the result.
 """
 
-import node,options
-from node import extend,exceptions
+from . import node,options
+from .node import extend,exceptions
 
 callstack = set()
 
@@ -15,13 +15,13 @@ def apply(self,args,symtab):
     name = self.head.ident.name 
     if name in callstack:
         return
-    print "%%%", self.head.ident.name
+    print("%%%", self.head.ident.name)
     callstack.add(name)
 
     params = [(u.name,u.lineno) for u in self.head.args]
     if len(args) < len(self.head.args): # head.args are formal params
         args += [''] * (len(self.head.args)-len(args))
-    symtab.update(zip(params,args))
+    symtab.update(list(zip(params,args)))
     self.body._typeof(symtab)
     #return [symtab[u.name,u.lineno] for u in self.ret] 
 #    for u in node.postorder(self):
@@ -72,7 +72,7 @@ def _typeof(self,symtab):
         try:
             return symtab[self.name,self.lineno]
         except:
-            print '+++ Missing type for',self.name
+            print('+++ Missing type for',self.name)
             return '' 
     ts = set([u._typeof(symtab) for u in self.defs if u.defs is None])
     if '' in ts:
@@ -86,7 +86,7 @@ def _typeof(self,symtab):
         self._t = ts.pop()
         return self._t
     if len(ts) > 1:
-        print '+++','Conflicting defs for', self.name,self.lineno,ts
+        print('+++','Conflicting defs for', self.name,self.lineno,ts)
         return ''
         
     return ''
