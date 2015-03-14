@@ -1191,7 +1191,7 @@ class Production(object):
         return len(self.prod)
 
     def __bool__(self):
-        return 1
+        return True
 
     def __getitem__(self,index):
         return self.prod[index]
