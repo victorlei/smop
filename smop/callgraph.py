@@ -1,6 +1,6 @@
 import parse,sys
 import networkx as nx
-import node,resolve
+from . import node,resolve
 
 def callgraph(func_list):
     """
