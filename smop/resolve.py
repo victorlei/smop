@@ -1,16 +1,3 @@
-# smop -- Matlab to Python compiler
-# Copyright 2011-2013 Victor Leikehman
-"""
-if i.defs: 
-    i is defined, possibly more than once.  
-    Typical for vairable references.
-
-if i.defs is None:
-    i is a definition (lhs)
-    
-if i.defs == set():
-    i is used but not defined.  
-    Typical for function calls.
 
 symtab is a temporary variable, which maps
 variable names (strings) to sets of ident
@@ -20,9 +7,9 @@ It is used in if_stmt, for_stmt, and while_stmt.
 
 import copy,sys,pprint
 
-import node
-from node import extend
-import backend,options
+from . import node
+from .node import extend
+from . import backend,options
 import networkx as nx
 
 def graphviz(t,fp,func_name):
@@ -128,7 +115,7 @@ def do_resolve(t,symtab):
 
 def copy_symtab(symtab):
     new_symtab = copy.copy(symtab)
-    for k,v in new_symtab.items():
+    for k,v in list(new_symtab.items()):
         new_symtab[k] = copy.copy(v)
     return new_symtab
 
@@ -196,7 +183,7 @@ def _resolve(self,symtab):
     self.stmt_list._resolve(symtab)
     self.stmt_list._resolve(symtab) # 2nd time, intentionally
     # Handle the case where FOR loop is not executed
-    for k,v in symtab_copy.items():
+    for k,v in list(symtab_copy.items()):
         symtab.setdefault(k,set()).update(v)
 
 @extend(node.if_stmt)
@@ -206,7 +193,7 @@ def _resolve(self,symtab):
     self.then_stmt._resolve(symtab)
     if self.else_stmt:
         self.else_stmt._resolve(symtab_copy)
-    for k,v in symtab_copy.items():
+    for k,v in list(symtab_copy.items()):
         symtab.setdefault(k,set()).update(v)
         
 @extend(node.continue_stmt)  # FIXME
@@ -236,7 +223,7 @@ def _resolve(self,symtab):
     self.cond_expr._resolve(symtab)
     self.stmt_list._resolve(symtab)
     # Handle the case where WHILE loop is not executed
-    for k,v in symtab_copy.items():
+    for k,v in list(symtab_copy.items()):
         symtab.setdefault(k,set()).update(v)
 
 @extend(node.try_catch)
