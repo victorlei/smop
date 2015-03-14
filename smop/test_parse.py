@@ -1,5 +1,5 @@
 import unittest
-import parse
+from . import parse
 
 class TestParse(unittest.TestCase):
     def test_p03(self):
