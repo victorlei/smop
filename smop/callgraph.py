@@ -1,4 +1,5 @@
-import parse,sys
+import sys
+from . import parse
 import networkx as nx
 from . import node,resolve
 
