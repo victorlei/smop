@@ -63,9 +63,9 @@ class node(object):
             def __iter__(self):
                 other = object.__getattribute__(self,"other")
                 return iter(other)
-            #def __hash__(self):
-            #    other = object.__getattribute__(self,"other")
-            #    return id(other)
+            def __hash__(self):
+                other = object.__getattribute__(self,"other")
+                return id(other)
             def __repr__(self):
                 other = object.__getattribute__(self,"other")
                 return repr(other)
@@ -79,6 +79,11 @@ class node(object):
     def _type(self):
         raise AttributeError("_type")
 
+    def __hash__(self):
+        return id(self)
+
+    def __eq__(self, other):
+        return self.__has__() == other.__hash__()
 
 ######### LISTS
 
