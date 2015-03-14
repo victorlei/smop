@@ -217,6 +217,8 @@ def new():
         r"(0x[0-9A-Fa-f]+)|((\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?[ij]?)"
         if t.value[-1] == 'i':
             t.value = t.value[:-1]+'j'
+        if t.value[0] == '0' and len(t.value) > 1 and not t.value[1] == '.':
+            t.value = '0o'+t.value[1:]
         t.value = eval(t.value)
         return t
 
