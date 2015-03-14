@@ -83,7 +83,7 @@ class node(object):
         return id(self)
 
     def __eq__(self, other):
-        return self.__has__() == other.__hash__()
+        return self.__hash__() == other.__hash__()
 
 ######### LISTS
 
