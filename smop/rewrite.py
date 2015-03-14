@@ -5,10 +5,10 @@
 
 import inspect
 import sys
-import node
-from node import extend
+from . import node
+from .node import extend
 
-import options,parse
+from . import options,parse
 
 ZERO = node.number(0)
 
