@@ -1,7 +1,7 @@
 import pstats,cProfile
 import numpy,time
 import solver as a
-from core import *
+from .core import *
 
 def main():
     ai = matlabarray(zeros (10,10,dtype=int),dtype=int)
@@ -22,8 +22,8 @@ def main():
     t0 = time.clock()
     mv = a.solver(ai,af,0)
     t1 = time.clock()
-    print t1-t0
-    print mv.shape
+    print(t1-t0)
+    print(mv.shape)
 
 if __name__ == '__main__':
     main()
