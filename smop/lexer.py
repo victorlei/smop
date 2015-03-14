@@ -4,8 +4,8 @@
 import sys
 import re
 from zlib import adler32
-import lex
-from lex import TOKEN
+from . import lex
+from .lex import TOKEN
 import readline
 
 class IllegalCharacterError(Exception):
@@ -308,14 +308,14 @@ if __name__ == "__main__":
     lexer = new()
     try:
         while 1:
-            line = raw_input("=>> ")
+            line = input("=>> ")
             if not line:
                 continue
             while line[-1] == "\\":
-                line = line[:-1] + raw_input("... ")
-            print len(line), [c for c  in line]
+                line = line[:-1] + input("... ")
+            print(len(line), [c for c  in line])
             lexer.input(line)
             for tok in lexer:
-                print len(str(tok.value)), tok
+                print(len(str(tok.value)), tok)
     except EOFError:
         pass
