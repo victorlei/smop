@@ -22,7 +22,7 @@ class sparsearray(dict):
         #import pdb;pdb.set_trace()
         if self._shape is None:
             s = [0] * self.ndim
-            for key in self.keys():
+            for key in list(self.keys()):
                 for i,k in enumerate(key):
                     s[i] = max(k,s[i])
             self._shape = tuple(s)
@@ -30,7 +30,7 @@ class sparsearray(dict):
 
     def todense(self):
         a = np.zeros(self.shape,dtype=self.dtype)
-        for key,value in self.iteritems():
+        for key,value in self.items():
             key = tuple([i-1 for i in key])
             a.__setitem__(key,value)
         return a
@@ -54,7 +54,7 @@ class sparsearray(dict):
             raise NotImplementedError
 
     def __getslice__(self,i,j):
-        if j == sys.maxint:
+        if j == sys.maxsize:
             j = None
         return self.__getitem__(slice(i,j,None))
 
@@ -78,9 +78,9 @@ class sparsearray(dict):
             key = np.unravel_index(index-1, self.shape, order='F')
             yield tuple(k+1 for k in key)
         elif isinstance(index,slice):
-            index = range((index.start or 1)-1,
+            index = list(range((index.start or 1)-1,
                           index.stop or np.prod(self.shape),
-                          index.step or 1)
+                          index.step or 1))
             for key in np.transpose(np.unravel_index(index, self.shape, order='F')): # 0-based
                 yield tuple(k+1 for k in key)
         elif isinstance(index,(list,np.ndarray)):
