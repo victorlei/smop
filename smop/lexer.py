@@ -6,7 +6,6 @@ import re
 from zlib import adler32
 import lex
 from lex import TOKEN
-import readline
 
 class IllegalCharacterError(Exception):
     pass
@@ -81,18 +80,19 @@ def new():
     t_PLUS        = r"\+"
     t_PLUSEQ      = r"\+="
     t_PLUSPLUS    = r"\+\+"
-    
-    states = (("matrix","inclusive"),
-              ("afterkeyword","exclusive"))
 
-    ws  = r"(\s|(\#|%).*\n|\.\.\..*\n|\\\n)"
+    states = (("matrix","inclusive"),
+              ("afterkeyword","exclusive"),
+              ("comment", "exclusive"))
+
+    ws  = r"(\s|(\#|%)[^\n]*\n|\.\.\.[^\n]*\n|\\\n)"
     ws1 = ws+"+"
     ws0 = ws+"*"
-    ms  = r"'([^']|(''))*'" 
+    ms  = r"'([^']|(''))*'"
     os  = r'"([^"\a\b\f\r\t\0\v\n\\]|(\\[abfn0vtr\"\n\\])|(""))*"'
     mos = "(%s)|(%s)" % (os,ms)
     id  = r"[a-zA-Z_][a-zA-Z_0-9]*"
-    
+
     def unescape(s):
         if s[0] == "'":
             return s[1:-1].replace("''","'")
@@ -229,11 +229,25 @@ def new():
             return t
 
     def t_comment(t):
-        r"(%|\#).*"
+        r"(%|\#)(?!{)[^\n]*"
         pass
 
+    def t_multicomment(t):
+        r"%\{"
+        t.lexer.begin("comment")
 
-#    @TOKEN(ws+r"(?=[-+]\S)")    
+    def t_comment_contents(t):
+        r"(?!%\}).*\n"
+        t.lexer.lineno += 1
+
+    def t_comment_end(t):
+        r"%\}"
+        t.lexer.begin("INITIAL")
+
+    def t_comment_error(t):
+        pass
+
+#    @TOKEN(ws+r"(?=[-+]\S)")
 #    def t_matrix_WHITESPACE(t):
 #        #r"\s+(?=[-+]\S)"
 #        # Whitespace, followed by + or - followed by anything but whitespace
@@ -255,7 +269,7 @@ def new():
         # In matrix state, consume whitespace separating two
         # terms and return a fake COMMA token.  This allows
         # parsing [1 2 3] as if it was [1,2,3].  Handle
-        # with care: [x + y] vs [x +y] 
+        # with care: [x + y] vs [x +y]
         #
         # A term T is
         # (a) a name or a number
@@ -266,12 +280,12 @@ def new():
         # (1) an alphanumeric charater \w
         # (2) single quote (in octave also double-quote)
         # (3) right parenthesis, bracket, or brace
-        # (4) a dot (after a number, such as 3. 
+        # (4) a dot (after a number, such as 3.
         #
         # The pattern for whitespace accounts for ellipsis as a
         # whitespace, and for the trailing junk.
         #
-        # Terms start with 
+        # Terms start with
         # (1) an alphanumeric character
         # (2) a single or double quote,
         # (3) left paren, bracket, or brace and finally
@@ -280,13 +294,13 @@ def new():
         # TODO: what about curly brackets ???
         # TODO: what about dot followed by a letter, as in field
         #   [foo  .bar]
-        
+
         t.lexer.lineno += t.value.count("\n")
         t.type = "COMMA"
         return t
 
     def t_ELLIPSIS(t):
-        r"\.\.\..*\n"
+        r"\.\.\.[^\n]*\n"
         t.lexer.lineno += 1
         pass
 

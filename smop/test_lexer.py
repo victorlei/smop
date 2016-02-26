@@ -187,5 +187,12 @@ world"''')
         t = [tok.type for tok in self.lexer]
         self.assertEqual("SEMI",t[6])
 
+    def test_multilinecomment(self):
+        self.lexer.input("foo\n%{\nasdf !@#$%^&*() asdf asdf asdf\n%}bar")
+        t = [tok.type for tok in self.lexer]
+        u = ["IDENT", "SEMI", "IDENT"]
+        self.assertEqual(t,u)
+
+
 if __name__ == "__main__":
     unittest.main()
