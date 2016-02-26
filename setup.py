@@ -1,8 +1,13 @@
 import os
-from setuptools import setup
+
+from distutils.core import setup
+from Cython.Build import cythonize
+from distutils.extension import Extension
+
+import numpy
 
 try:
-    versionstring = os.popen("git describe").read().strip()
+    versionstring = os.popen("git describe --tags").read().strip()
     open("smop/version.py","w").write("__version__ = '%s'\n" % versionstring)
 except:
     versionstring = "'0.26'"
@@ -24,4 +29,14 @@ setup(
     #include_package_data = True,
     #package_data = { 'smop': ['*.m', 'Makefile'], },
     install_requires = ['numpy', 'scipy', 'networkx'],
+
+    ext_modules = # cythonize(["smop/solver.pyx", include_dirs = [numpy.get_include()],),
+
+    cythonize([Extension("smop.runtime",
+                sources = ["smop/runtime.pyx"],
+                include_dirs = [numpy.get_include()],
+                ),
+            ])
 )
+
+# python -c "import smop.solver; import smop.runtime"
