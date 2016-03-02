@@ -17,7 +17,7 @@ tokens = [
     "IDENT", "LBRACE", "LBRACKET", "LE", "LPAREN", "LT",
     "MINUS","MINUSMINUS","MINUSEQ","MUL","MULEQ","NE", "NEG",
     "NUMBER", "OR","OREQ", "OROR", "PLUS", "PLUSEQ","PLUSPLUS",
-    "RBRACE", "RBRACKET", "RPAREN", "SEMI", "STRING", "TRANSPOSE",
+    "RBRACE", "RBRACKET", "RPAREN", "SEMI", "STRING", "TRANSPOSE"
 ]
 
 reserved = {

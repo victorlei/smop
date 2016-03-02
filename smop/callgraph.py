@@ -1,6 +1,7 @@
 import parse,sys
 import networkx as nx
-import node,resolve
+import smop.node as node
+import resolve
 
 def callgraph(func_list):
     """

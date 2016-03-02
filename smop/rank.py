@@ -2,8 +2,8 @@ import operator
 
 from constraint import Problem,RecursiveBacktrackingSolver
 import networkx as nx
-import node
-from node import extend
+import smop.node as node
+extend = node.extend
 import resolve
 
 def rank(tree):

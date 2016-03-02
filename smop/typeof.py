@@ -4,7 +4,8 @@ to argument list, such as ["i","d"]
 and return the result.
 """
 
-import node,options
+import smop.node as node
+import options
 from node import extend,exceptions
 
 callstack = set()
@@ -12,7 +13,7 @@ callstack = set()
 @extend(node.function)
 @exceptions
 def apply(self,args,symtab):
-    name = self.head.ident.name 
+    name = self.head.ident.name
     if name in callstack:
         return
     print "%%%", self.head.ident.name
@@ -23,7 +24,7 @@ def apply(self,args,symtab):
         args += [''] * (len(self.head.args)-len(args))
     symtab.update(zip(params,args))
     self.body._typeof(symtab)
-    #return [symtab[u.name,u.lineno] for u in self.ret] 
+    #return [symtab[u.name,u.lineno] for u in self.ret]
 #    for u in node.postorder(self):
 #        if u.__class__ is node.ident:
 #            try:
@@ -73,7 +74,7 @@ def _typeof(self,symtab):
             return symtab[self.name,self.lineno]
         except:
             print '+++ Missing type for',self.name
-            return '' 
+            return ''
     ts = set([u._typeof(symtab) for u in self.defs if u.defs is None])
     if '' in ts:
         ts.remove('')
@@ -88,7 +89,7 @@ def _typeof(self,symtab):
     if len(ts) > 1:
         print '+++','Conflicting defs for', self.name,self.lineno,ts
         return ''
-        
+
     return ''
 
 @extend(node.matrix)
@@ -104,8 +105,8 @@ def _typeof(self,symtab):
 #        return ts.pop()
 #    return ''
 
-@extend(node.arrayref) 
-@extend(node.cellarrayref) 
+@extend(node.arrayref)
+@extend(node.cellarrayref)
 @exceptions
 def _typeof(self,symtab):
     return self.func_expr._typeof(symtab)
@@ -128,7 +129,7 @@ def _typeof(self,symtab):
         if self.op in ("<",">","<=",">=","==","~=","!=","&&","||"):
             return 'l'
         if self.op in ("*","+","-","/","^",".*","./"):
-            if (self.args[0]._typeof(symtab) == 'i' and 
+            if (self.args[0]._typeof(symtab) == 'i' and
                 self.args[1]._typeof(symtab) == 'i'):
                 return 'i'
             else:
@@ -138,7 +139,7 @@ def _typeof(self,symtab):
 @extend(node.sub)
 @exceptions
 def _typeof(self,symtab):
-    if (self.args[0]._typeof(symtab) == 'i' and 
+    if (self.args[0]._typeof(symtab) == 'i' and
         self.args[1]._typeof(symtab) == 'i'):
         return 'i'
     else:
