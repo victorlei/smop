@@ -6,7 +6,10 @@ import sys,cPickle,glob,os
 import getopt,re
 import lexer,parse,resolve,backend,options,node,graphviz
 import networkx as nx
-import readline
+try:
+  import readline
+except ImportError:
+  import pyreadline as readline
 #from runtime import *
 #from version import __version__
 __version__ = version.__version__
