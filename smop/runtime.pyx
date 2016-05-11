@@ -1,3 +1,6 @@
+# cython: linetrace=True
+# distutils: define_macros=CYTHON_TRACE_NOGIL=1
+
 # SMOP compiler runtime support library
 # Copyright 2014 Victor Leikehman
 # cython: profile=True
@@ -114,7 +117,7 @@ class matlabarray(np.ndarray):
         else:
             index = slice(i,j)
         self.__setitem__(index,value)
-        
+
     def sizeof(self,ix):
         if isinstance(ix,int):
             n = ix+1
@@ -126,7 +129,7 @@ class matlabarray(np.ndarray):
             assert 0,ix
         if not isinstance(n,int):
             raise IndexError
-        return n 
+        return n
 
     def __setitem__(self,index,value):
         #import pdb; pdb.set_trace()
@@ -180,7 +183,7 @@ class matlabarray(np.ndarray):
 
     def __str__(self):
         return str(np.asarray(self))
- 
+
     def __add__(self,other):
         return matlabarray(np.asarray(self)+np.asarray(other))
 
@@ -225,7 +228,7 @@ class cellarray(matlabarray):
             obj.shape = (0,0)
         return obj
 
-    def __getitem__(self,index): 
+    def __getitem__(self,index):
         return self.get(index)
 
 #    def __str__(self):
@@ -257,7 +260,7 @@ class cellstr(matlabarray):
         create a cell array where each cell contains
         a line.
         """
-        obj = np.array(["".join(s) for s in a], 
+        obj = np.array(["".join(s) for s in a],
                        dtype=object,
                        copy=False,
                        order="C",
@@ -269,7 +272,7 @@ class cellstr(matlabarray):
     def __str__(self):
         return "\n".join("".join(s) for s in self.reshape(-1))
 
-    def __getitem__(self,index): 
+    def __getitem__(self,index):
         return self.get(index)
 
 
@@ -304,7 +307,7 @@ class char(matlabarray):
             obj.shape = (0,0)
         return obj
 
-    def __getitem__(self,index): 
+    def __getitem__(self,index):
         return self.get(index)
 
     def __str__(self):
@@ -438,7 +441,7 @@ def isempty_(a):
 def isequal_(a,b):
     return np.array_equal(np.asanyarray(a),
                           np.asanyarray(b))
-                          
+
 
 def length_(a):
     try:

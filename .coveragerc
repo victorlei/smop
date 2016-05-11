@@ -1,0 +1,8 @@
+[run]
+plugins = Cython.Coverage
+include =
+    smop*
+
+[report]
+include =
+    smop*

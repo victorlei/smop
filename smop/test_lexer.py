@@ -120,6 +120,7 @@ class TestLexer(unittest.TestCase):
         tok = self.lexer.next()
         self.assertEqual(tok.value,r"hello'world")
 
+    @unittest.skip('broken')
     def broken_test112(self):
         "Quotes and backslashes in octave strings"
         self.lexer.input(r'"hello\"world"')
@@ -133,12 +134,14 @@ world"''')
         tok = self.lexer.next()
         self.assertEqual(tok.value,r'helloworld')
 
+    @unittest.skip('broken')
     def broken_test116(self):
         "Quotes and backslashes in octave strings"
         self.lexer.input(r'"hello\n"')
         tok = self.lexer.next()
         self.assertEqual(tok.value,'hello\n')
 
+    @unittest.skip('broken')
     def broken_test118(self):
         "Quotes and backslashes in octave strings"
         self.lexer.input(r'"hello\\world"')

@@ -6,10 +6,9 @@
 import __builtin__
 
 import numpy
-from numpy import sqrt
 from numpy.fft import fft2
 from numpy.linalg import inv
-from numpy.linalg import qr  as _qr 
+from numpy.linalg import qr  as _qr
 try:
     from scipy.linalg import schur as _schur
 except ImportError:
@@ -126,7 +125,7 @@ class matlabarray(np.ndarray):
         else:
             index = slice(i,j)
         self.__setitem__(index,value)
-        
+
     def sizeof(self,ix):
         if isinstance(ix,int):
             n = ix+1
@@ -138,7 +137,7 @@ class matlabarray(np.ndarray):
             assert 0,ix
         if not isinstance(n,int):
             raise IndexError
-        return n 
+        return n
 
     def __setitem__(self,index,value):
         #import pdb; pdb.set_trace()
@@ -192,7 +191,7 @@ class matlabarray(np.ndarray):
 
     def __str__(self):
         return str(np.asarray(self))
- 
+
     def __add__(self,other):
         return matlabarray(np.asarray(self)+np.asarray(other))
 
@@ -240,7 +239,7 @@ class cellarray(matlabarray):
             obj.shape = (0,0)
         return obj
 
-    def __getitem__(self,index): 
+    def __getitem__(self,index):
         return self.get(index)
 
 #    def __str__(self):
@@ -272,7 +271,7 @@ class cellstr(matlabarray):
         create a cell array where each cell contains
         a line.
         """
-        obj = np.array(["".join(s) for s in a], 
+        obj = np.array(["".join(s) for s in a],
                        dtype=object,
                        copy=False,
                        order="C",
@@ -284,7 +283,7 @@ class cellstr(matlabarray):
     def __str__(self):
         return "\n".join("".join(s) for s in self.reshape(-1))
 
-    def __getitem__(self,index): 
+    def __getitem__(self,index):
         return self.get(index)
 
 
@@ -319,7 +318,7 @@ class char(matlabarray):
             obj.shape = (0,0)
         return obj
 
-    def __getitem__(self,index): 
+    def __getitem__(self,index):
         return self.get(index)
 
     def __str__(self):
@@ -392,7 +391,7 @@ def exist(a,b):
 def false(*args):
     if not args:
         return False # or matlabarray(False) ???
-    if len(args) == 1: 
+    if len(args) == 1:
         args += args
     return np.zeros(args,dtype=bool,order="F")
 
@@ -473,7 +472,7 @@ def isempty(a):
 def isequal(a,b):
     return np.array_equal(np.asanyarray(a),
                           np.asanyarray(b))
-                          
+
 def isfield(a,b):
     return str(b) in a.__dict__.keys()
 
@@ -617,7 +616,6 @@ def size_equal(a,b):
             return False
     return True
 
-from numpy import sqrt
 sort = __builtin__.sorted
 
 def strcmp(a,b):
@@ -663,6 +661,73 @@ def zeros(*args,**kwargs):
     if len(args) == 1:
         args += args
     return matlabarray(np.zeros(args,**kwargs))
+
+
+def str2num(s):
+    # TODO woefully incomplete
+    return float(s)
+
+
+def _deg2rad(f):
+    def deg2rad_f(x):
+        return matlabarray(f(numpy.deg2rad(x)))
+
+    deg2rad_f.__name__ = f.__name__
+    deg2rad_f.__doc__ = f. __doc__
+    return deg2rad_f
+
+
+def _matlabarray(f):
+    def wrap(x):
+        return matlabarray(f(x))
+
+    wrap.__name__ = f.__name__
+    return wrap
+
+sqrt = _matlabarray(numpy.sqrt)
+
+sin = _matlabarray(numpy.sin)
+
+sind = _deg2rad(numpy.sin)
+asin = _matlabarray(numpy.arcsin)
+asind = _deg2rad(numpy.arcsin)
+sinh = _matlabarray(numpy.sinh)
+asinh = _matlabarray(numpy.arcsinh)
+cos = _matlabarray(numpy.cos)
+cosd = _deg2rad(numpy.cos)
+acos = _matlabarray(numpy.arccos)
+acosd = _deg2rad(numpy.arccos)
+cosh = _matlabarray(numpy.cosh)
+acosh = _matlabarray(numpy.arccosh)
+tan = _matlabarray(numpy.tan)
+tand = _deg2rad(numpy.tan)
+atan = _matlabarray(numpy.arctan)
+atand = _deg2rad(numpy.arctan)
+atan2 = _matlabarray(numpy.arctan2)
+atan2d = _deg2rad(numpy.arctan2)
+tanh = _matlabarray(numpy.tanh)
+atanh = _matlabarray(numpy.arctanh)
+# csc
+# cscd
+# acsc
+# acscd
+# csch
+# acsch
+# sec
+# secd
+# asec
+# asecd
+# sech
+# asech
+# cot
+# cotd
+# acot
+# acotd
+# coth
+# acoth
+# hypot
+deg2rad = _matlabarray(numpy.deg2rad)
+rad2deg = _matlabarray(numpy.rad2deg)
 
 if __name__ == "__main__":
     import doctest

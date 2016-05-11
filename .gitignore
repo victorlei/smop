@@ -9,3 +9,8 @@ version.py
 dist/
 build/
 runtime/
+.coverage
+cover/
+venv/
+*.pyd
+smop/runtime.c

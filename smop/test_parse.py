@@ -9,6 +9,7 @@ class TestParse(unittest.TestCase):
         t = parse.parse(s)
         self.assert_(t)
 
+    @unittest.skip('broken')
     def broken_test_p04(self):
         """Dot has higher precedence than other operations"""
         s = "a+b.c.d;"
@@ -92,6 +93,7 @@ class TestParse(unittest.TestCase):
         self.assert_(t)
         self.assertEqual(3, len(t))
 
+    @unittest.skip('broken')
     def broken_test_command(self):
         s = "zlabel y_3(1)\n"
         t = parse.parse(s)
