@@ -1,4 +1,5 @@
 import os
+import re
 
 from setuptools import setup
 from Cython.Build import cythonize
@@ -8,9 +9,12 @@ import numpy
 
 try:
     versionstring = os.popen("git describe --tags").read().strip()
-    open("smop/version.py","w").write("__version__ = '%s'\n" % versionstring)
+    versionparts = re.match('([^-]+)(?:-(\\d+)-(g[^-]+))?', versionstring).groups()
+    if versionparts[2]:
+        versionstring = '{}+{}'.format(versionparts[0], versionparts[2])
+    open("smop/version.py", "w").write("__version__ = '%s'\n" % versionstring)
 except:
-    versionstring = "'0.26'"
+    versionstring = "0.21"
 
 setup(
     author = 'Victor Leikehman',
