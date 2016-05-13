@@ -1,0 +1,24 @@
+language: python
+sudo: required
+dist: trusty
+cache: pip
+git:
+  depth: 1000000  # need full history for `git describe`
+addons:
+  apt:
+    packages:
+      - libatlas3-base
+python:
+  - "2.7"
+install:
+  - git fetch --tags
+  - "sed -r 's/^(numpy|scipy).*//' -i requirements.txt"
+  - "pip install --upgrade https://github.com/metamorph-inc/scipy/releases/download/v0.17.0/numpy-1.11.0-cp27-none-linux_x86_64.whl"
+  - "pip install --upgrade https://github.com/metamorph-inc/scipy/releases/download/v0.17.0/scipy-0.17.0-cp27-none-linux_x86_64.whl"
+  - "dpkg -l | grep 'openblas\\|atlas\\|lapack'"
+  - "update-alternatives --get-selections | grep 'blas\\|lapack'"
+  - "pip install -r requirements.txt"
+  - "pip install --no-deps ."
+script:
+  - "python setup.py build_ext --inplace"
+  - nosetests

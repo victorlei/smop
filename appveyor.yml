@@ -1,0 +1,23 @@
+cache:
+  - '%LOCALAPPDATA%\pip\cache'
+install:
+  - python -m virtualenv venv
+  - '.\venv\Scripts\pip install --upgrade -r requirements.txt'
+build_script:
+  - '.\venv\Scripts\python setup.py build_ext --inplace'
+  - '.\venv\Scripts\python setup.py bdist_wheel'
+test_script:
+  - '.\venv\Scripts\nosetests'
+#  nosetests.exe --with-coverage --cover-html --traverse-namespace --cover-branches --cover-erase --cover-tests
+#  coverage html -d cover
+artifacts:
+  - path: 'dist\*.whl'
+deploy:
+  - provider: GitHub
+    artifact: 'dist\*.whl'
+    draft: false
+    prerelease: false
+    auth_token:
+      secure: yFXzatuZuCoIHQ1VmlpfLPND2jGU4l1NHkNUfoLXrrTfo5m7VxYJNGiXp7OnpCgp
+    on:
+      appveyor_repo_tag: true
