@@ -3,9 +3,8 @@
 *.swp
 a.py
 *.egg-info
-parser.out
-parsetab.py
-version.py
+/smop/parser.out
+/smop/parsetab.py
 dist/
 build/
 runtime/

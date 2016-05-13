@@ -1,31 +1,29 @@
-import parse,sys
+import parse
+import sys
 import networkx as nx
 import smop.node as node
-import resolve
+import smop.resolve as resolve
+
 
 def callgraph(func_list):
-    """
-    Build callgraph of func_list, ignoring
-    built-in functions
-    """
+    """Build callgraph of func_list, ignoring built-in functions."""
     G = nx.DiGraph()
     for func in func_list:
         G.add_node(func.head.ident.name)
     for func in func_list:
-        assert isinstance(func,node.function)
+        assert isinstance(func, node.function)
         func_name = func.head.ident.name
         resolve.resolve(func)
         for s in node.postorder(func):
             if (s.__class__ is node.funcall and
-                s.func_expr.__class__ is  node.ident and
+                s.func_expr.__class__ is node.ident and
                 s.func_expr.name in G.nodes()):
-                G.add_edge(func_name,s.func_expr.name)
+                G.add_edge(func_name, s.func_expr.name)
     return G
 
-G = nx.DiGraph()
 
 def postorder_edge(u):
-    if isinstance(u,node.node):
+    if isinstance(u, node.node):
         for v in u:
             for t in postorder_edge(v):
                 yield (v,t)
