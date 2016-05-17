@@ -1,7 +1,11 @@
+environment:
+  matrix:
+    - PYTHON: "C:\\Python27"
+    - PYTHON: "C:\\Python27-x64"
 cache:
   - '%LOCALAPPDATA%\pip\cache'
 install:
-  - python -m virtualenv venv
+  - '%PYTHON%\python -m virtualenv venv'
   - '.\venv\Scripts\pip install --upgrade -r requirements.txt'
 build_script:
   - '.\venv\Scripts\python setup.py build_ext --inplace'
