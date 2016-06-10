@@ -1,6 +1,7 @@
-import parse,sys
-import node
-from node import extend
+import sys
+from . import parse
+from . import node
+from .node import extend
 import networkx as nx
  
                 

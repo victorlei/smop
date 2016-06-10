@@ -3,7 +3,7 @@
 
 # MIT license
 
-import __builtin__
+import builtins
 
 import numpy
 from numpy import sqrt
@@ -475,7 +475,7 @@ def isequal(a,b):
                           np.asanyarray(b))
                           
 def isfield(a,b):
-    return str(b) in a.__dict__.keys()
+    return str(b) in list(a.__dict__.keys())
 
 def ismatrix(a):
     return True
@@ -494,7 +494,7 @@ def isscalar(a):
 
 def length(a):
     try:
-        return __builtin__.max(np.asarray(a).shape)
+        return builtins.max(np.asarray(a).shape)
     except ValueError:
         return 1
 
@@ -618,7 +618,7 @@ def size_equal(a,b):
     return True
 
 from numpy import sqrt
-sort = __builtin__.sorted
+sort = builtins.sorted
 
 def strcmp(a,b):
     return str(a) == str(b)

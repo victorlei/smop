@@ -8,15 +8,15 @@ import operator
 import sys
 
 import re
-import yacc
+from . import yacc
 
-from lexer import tokens
-import lexer
+from .lexer import tokens
+from . import lexer
 
 #import builtins
-import node
+from . import node
 #from node import *
-import resolve,options
+from . import resolve,options
 
 # ident properties (set in parse.py)
 # ----------------------------------
@@ -723,24 +723,26 @@ def parse(buf,filename=""):
         new_lexer = lexer.new()
         p = parser.parse(buf,tracking=1,debug=0,lexer=new_lexer)
         return p
-    except lexer.IllegalCharacterError as (lineno,column,c):
+    except lexer.IllegalCharacterError as xxx_todo_changeme:
         #import pdb; pdb.set_trace()
-        print 'Error:%s:%s.%s:illegal character:%s' % (filename,lineno,column,c)
+        (lineno,column,c) = xxx_todo_changeme.args
+        #import pdb; pdb.set_trace()
+        print('Error:%s:%s.%s:illegal character:%s' % (filename,lineno,column,c))
         return []
     except NotImplementedError as e:
-        print 'Error:%s:not implemented:%s' % (filename,e)
+        print('Error:%s:not implemented:%s' % (filename,e))
         return []
     except syntax_error as e:
         try:
             #import pdb;pdb.set_trace()
             column=e[0].lexpos - new_lexer.lexdata.rfind("\n",0,e[0].lexpos)
-            print '%s:%s.%s:syntax error %s=<%s>' % (filename,
+            print('%s:%s.%s:syntax error %s=<%s>' % (filename,
                                                      e[0].lineno,
                                                      column,
                                                      e[0].type,
-                                                     e[0].value)
+                                                     e[0].value))
         except:
-            print "%s:unexpected EOF" % filename
+            print("%s:unexpected EOF" % filename)
         return []
 
 # def fparse(filename):
