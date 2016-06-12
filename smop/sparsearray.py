@@ -54,7 +54,7 @@ class sparsearray(dict):
             raise NotImplementedError
 
     def __getslice__(self,i,j):
-        if j == sys.maxint:
+        if j == sys.maxsize:
             j = None
         return self.__getitem__(slice(i,j,None))
 
@@ -102,4 +102,3 @@ class sparsearray(dict):
             indices[0].shape = (-1,1)
             for key in np.broadcast(*indices):
                 yield tuple(map(int,key))
-

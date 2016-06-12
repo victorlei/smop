@@ -1,15 +1,16 @@
 # SMOP compiler -- Simple Matlab/Octave to Python compiler
 # Copyright 2011-2013 Victor Leikehman
 
-import version
+import smop.version
 import sys,cPickle,glob,os
 import getopt,re
-import lexer,parse,resolve,backend,options,node,graphviz
+import lexer,parse,resolve,backend,options,graphviz
+import smop.node as node
 import networkx as nx
-import readline
-#from runtime import *
+from smop.runtime import *
+from smop.core import *
 #from version import __version__
-__version__ = version.__version__
+__version__ = smop.version.__version__
 
 def usage():
     print "SMOP compiler version " + __version__
@@ -20,12 +21,12 @@ def usage():
                             Can be used several times.
     -S --syntax-errors=FILES Ignore syntax errors in comma-separated list of FILES.
                             Can be used several times.
-    -S.                     Always gnore syntax errors 
+    -S.                     Always gnore syntax errors
     -d --dot=REGEX          For functions whose names match REGEX, save debugging
                             information in "dot" format (see www.graphviz.org).
                             You need an installation of graphviz to use --dot
                             option.  Use "dot" utility to create a pdf file.
-                            For example: 
+                            For example:
                                 $ python main.py fastsolver.m -d "solver|cbest"
                                 $ dot -Tpdf -o resolve_solver.pdf resolve_solver.dot
     -h --help
@@ -48,7 +49,7 @@ def main():
     """
     try:
         opts, args = getopt.gnu_getopt(sys.argv[1:],
-                                       "d:ho:vVsr:S:X:", 
+                                       "d:ho:vVsr:S:X:",
                                        [
                                         "dot=",
                                         "exclude=",
@@ -164,7 +165,7 @@ def main():
             if not func_list and strict:
                 sys.exit(-1)
 
-            for func_obj in func_list: 
+            for func_obj in func_list:
                 try:
                     func_name = func_obj.head.ident.name
                     if options.verbose:

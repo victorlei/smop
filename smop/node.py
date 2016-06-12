@@ -151,14 +151,14 @@ class let(stmt,recordtype("let",
     which is handled by call_stmt."""
     def __str__(self):
         return "%s=%s" % (str(self.ret), str(self.args))
-    
+
 class func_decl(stmt,recordtype("func_decl","ident ret args decl_list use_nargin",default=None)):
     pass
 
 class lambda_expr(func_decl):
     pass
 
-class function(stmt,recordtype("function","head body")):
+class function(stmt,recordtype("function","head body end")):
     pass
 
 class for_stmt(stmt,recordtype("for_stmt","ident expr stmt_list")):
@@ -213,7 +213,7 @@ class allocate_stmt(stmt,recordtype("allocate_stmt",
 # FUNCALL
 
 class funcall(node,recordtype("funcall","func_expr args nargout",default=None)):
-    """Funcall instances represent 
+    """Funcall instances represent
     (a) Array references, both lhs and rhs
     (b) Function call expressions
     """
@@ -254,7 +254,7 @@ class builtins(funcall):
 
 class arrayref(funcall):
     def __repr__(self):
-        return "%s%s[%s]" % (self.__class__, 
+        return "%s%s[%s]" % (self.__class__,
                              self.func_expr,
                              self.args)
 

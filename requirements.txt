@@ -1,0 +1,8 @@
+--index-url https://pypi.metamorphsoftware.com/
+--extra-index-url https://pypi.python.org/simple
+numpy==1.9.2
+scipy==0.16.0
+Cython==0.24
+networkx
+coverage
+nose

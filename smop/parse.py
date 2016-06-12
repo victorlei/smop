@@ -14,7 +14,7 @@ from lexer import tokens
 import lexer
 
 #import builtins
-import node
+import smop.node as node
 #from node import *
 import resolve,options
 
@@ -25,10 +25,10 @@ import resolve,options
 # A function argument
 # F function return value
 # I for-loop iteration index
-# 
+#
 # ident properties (set in resolve.py)
 # ------------------------------------
-# R ref    =...a  or  =...a(b) 
+# R ref    =...a  or  =...a(b)
 # D def    a=...  or   [a,b,c]=...
 # U update a(b)=...  or  [a(b) c(d)]=...
 
@@ -53,35 +53,73 @@ precedence = (
     ("right","EXP", "DOTEXP"),
     ("nonassoc","LPAREN","RPAREN","RBRACE","LBRACE"),
     ("left", "FIELD","DOT","PLUSPLUS","MINUSMINUS"),
+    ("nonassoc", "END_STMT")
     )
+
+
+def _pull_functions_toplevel(toplevel_stmt_list, stmt_list):
+    """"Typically, functions do not require an end statement. However, to nest any function in a program file, all functions in that file must use an end statement."
+            http://www.mathworks.com/help/matlab/matlab_prog/nested-functions.html
+    """
+    for node_ in list(stmt_list):
+        if node_.__class__ is node.function:
+            if toplevel_stmt_list != stmt_list:
+                stmt_list.remove(node_)
+                toplevel_stmt_list.append(node_)
+            _pull_functions_toplevel(toplevel_stmt_list, node_.body)
+
 
 def p_top(p):
     """
     top :
         | stmt_list
-        | top func_decl stmt_list_opt
-        | top func_decl END_STMT semi_opt
-        | top func_decl stmt_list END_STMT semi_opt
     """
-    if len(p) == 1:
-        p[0] = node.stmt_list()
-    elif len(p) == 2:
-        p[0] = p[1]
+    if len(p) == 2:
+        stmt_list = p[1]
     else:
-        # we backpatch the func_decl node
-        assert p[2].__class__ is node.func_decl
-        p[2].use_nargin = use_nargin
-        p[2].use_varargin = use_varargin
+        stmt_list = node.stmt_list()
 
-        try:
-            if p[3][-1].__class__ is not node.return_stmt:
-                p[3].append(node.return_stmt(ret_expr))
-        except:
-            raise syntax_error(p)
+    if len([fn for fn in stmt_list if fn.__class__ is node.function and not fn.end]):
+        _pull_functions_toplevel(stmt_list, stmt_list)
 
-        p[0] = p[1]
-        p[0].append(node.function(head=p[2],body=p[3]))
-    assert isinstance(p[0],node.stmt_list)
+    p[0] = stmt_list
+
+
+def p_function(p):
+    """
+    function : func_decl
+             | func_decl END_STMT
+             | func_decl stmt_list
+             | func_decl stmt_list END_STMT
+    """
+    # we backpatch the func_decl node
+    func_decl = p[1]
+    end_stmt = None
+    if len(p) > 2 and isinstance(p[2], node.stmt_list):
+        stmt_list = p[2]
+        if len(p) == 4:
+            end_stmt = p[3]
+    else:
+        stmt_list = node.stmt_list()
+        if len(p) == 3:
+            end_stmt = p[2]
+
+    assert stmt_list.__class__ is node.stmt_list
+    assert func_decl.__class__ is node.func_decl
+    assert end_stmt is None or end_stmt == 'end', repr(end_stmt)
+    func_decl.use_nargin = use_nargin
+    func_decl.use_varargin = use_varargin
+
+    # if not end_stmt:
+    #    print "%s has no end" % func_decl.ident.name
+
+    # for fns in [fn for fn in stmt_list if fn.__class__ is node.function and not fn.end]:
+    #    print fn.head.ident.name
+
+    if len(stmt_list) == 0 or stmt_list[-1].__class__ is not node.return_stmt:
+        stmt_list.append(node.return_stmt(ret_expr))
+
+    p[0] = node.function(head=func_decl, body=stmt_list, end=end_stmt)
 
 def p_semi_opt(p):
     """
@@ -108,6 +146,7 @@ def p_stmt(p):
          | while_stmt
          | foo_stmt
          | unwind
+         | function
     """
     # END_STMT is intentionally left out
     p[0] = p[1]
@@ -229,7 +268,7 @@ def p_switch_stmt(p):
 
 def p_case_list(p):
     """
-    case_list : 
+    case_list :
               | CASE expr sep stmt_list_opt case_list
               | CASE expr error stmt_list_opt case_list
               | OTHERWISE stmt_list
@@ -267,10 +306,10 @@ def p_null_stmt(p):
               | COMMA
     """
     p[0] = None
-    
+
 def p_func_decl(p):
-    """func_decl : FUNCTION ident args_opt SEMI 
-                 | FUNCTION ret EQ ident args_opt SEMI 
+    """func_decl : FUNCTION ident args_opt SEMI
+                 | FUNCTION ret EQ ident args_opt SEMI
     """
     global ret_expr,use_nargin,use_varargin
     use_varargin = use_nargin = 0
@@ -346,7 +385,7 @@ def p_ret(p):
 
 def p_stmt_list_opt(p):
     """
-    stmt_list_opt : 
+    stmt_list_opt :
                   | stmt_list
     """
     if len(p) == 1:
@@ -435,7 +474,7 @@ def p_elseif_stmt(p):
     """
     elseif_stmt :
                 | ELSE stmt_list_opt
-                | ELSEIF expr sep stmt_list_opt elseif_stmt 
+                | ELSEIF expr sep stmt_list_opt elseif_stmt
     """
     if len(p) == 1:
         p[0] = node.stmt_list()
@@ -518,7 +557,7 @@ def p_expr_end(p):
     "end : END_EXPR"
     p[0] = node.expr(op="end",args=node.expr_list([node.number(0),
                                                    node.number(0)]))
-    
+
 def p_expr_string(p):
     "string : STRING"
     p[0] = node.string(p[1],lineno=p.lineno(1),lexpos=p.lexpos(1))
@@ -526,7 +565,7 @@ def p_expr_string(p):
 def p_expr_colon(p):
     "colon : COLON"
     p[0] = node.expr(op=":",args=node.expr_list())
-    
+
 def p_expr1(p):
     """expr1 : MINUS expr %prec UMINUS
              | PLUS expr %prec UMINUS
@@ -548,7 +587,7 @@ def p_cellarray(p):
         p[0] = node.cellarray(op="{}",args=node.expr_list())
     else:
         p[0] = node.cellarray(op="{}",args=p[2])
-    
+
 def p_matrix(p):
     """matrix : LBRACKET RBRACKET
               | LBRACKET concat_list RBRACKET
@@ -560,7 +599,7 @@ def p_matrix(p):
         p[0] = node.matrix()
     else:
         p[0] = node.matrix(p[2])
-    
+
 def p_paren_expr(p):
     """
     expr :  LPAREN expr RPAREN
@@ -569,7 +608,7 @@ def p_paren_expr(p):
 
 def p_field_expr(p):
     """
-    expr : expr FIELD 
+    expr : expr FIELD
     """
     p[0] = node.expr(op=".",
                      args=node.expr_list([p[1],
@@ -592,11 +631,11 @@ def p_cellarrayref(p):
     p[0] = node.cellarrayref(func_expr=p[1],args=args)
 
 def p_funcall_expr(p):
-    """expr : expr LPAREN expr_list RPAREN 
+    """expr : expr LPAREN expr_list RPAREN
             | expr LPAREN RPAREN
     """
     if (0 and len(p)==5 and
-        len(p[3])==1 and 
+        len(p[3])==1 and
         p[3][0].__class__ is node.expr and
         p[3][0].op == ":" and not p[3][0].args):
         # foo(:) => ravel(foo)
@@ -606,7 +645,7 @@ def p_funcall_expr(p):
         args = node.expr_list() if len(p) == 4 else p[3]
         assert isinstance(args,node.expr_list)
         p[0] = node.funcall(func_expr=p[1],args=args)
-    
+
 def p_expr2(p):
     """expr2 : expr AND expr
              | expr ANDAND expr
@@ -623,7 +662,7 @@ def p_expr2(p):
              | expr EXP expr
              | expr EXPEQ expr
              | expr GE expr
-             | expr GT expr 
+             | expr GT expr
              | expr LE expr
              | expr LT expr
              | expr MINUS expr
@@ -667,7 +706,7 @@ def p_expr2(p):
             for e in p[1].args:
                 if e.__class__ is node.funcall:
                     e.__class__ = node.arrayref
-        # XXX   
+        # XXX
 
         if isinstance(p[1],node.getfield):
             #import pdb;pdb.set_trace()
@@ -732,7 +771,7 @@ def parse(buf,filename=""):
         return []
     except syntax_error as e:
         try:
-            #import pdb;pdb.set_trace()
+            # import pdb; pdb.set_trace()
             column=e[0].lexpos - new_lexer.lexdata.rfind("\n",0,e[0].lexpos)
             print '%s:%s.%s:syntax error %s=<%s>' % (filename,
                                                      e[0].lineno,

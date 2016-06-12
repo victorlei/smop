@@ -1,15 +1,15 @@
 # smop -- Matlab to Python compiler
 # Copyright 2011-2013 Victor Leikehman
 """
-if i.defs: 
-    i is defined, possibly more than once.  
+if i.defs:
+    i is defined, possibly more than once.
     Typical for vairable references.
 
 if i.defs is None:
     i is a definition (lhs)
-    
+
 if i.defs == set():
-    i is used but not defined.  
+    i is used but not defined.
     Typical for function calls.
 
 symtab is a temporary variable, which maps
@@ -20,7 +20,7 @@ It is used in if_stmt, for_stmt, and while_stmt.
 
 import copy,sys,pprint
 
-import node
+import smop.node as node
 from node import extend
 import backend,options
 import networkx as nx
@@ -137,7 +137,7 @@ def _resolve(self,symtab):
     self.head._resolve(symtab)
     self.body._resolve(symtab)
     self.head.ret._resolve(symtab)
-        
+
 @extend(node.global_list)
 @extend(node.concat_list)
 @extend(node.expr_list)
@@ -151,12 +151,12 @@ def _resolve(self,symtab):
 def _lhs_resolve(self,symtab):
     for expr in self:
         expr._lhs_resolve(symtab)
-        
+
 @extend(node.stmt_list)
 def _resolve(self,symtab):
     for stmt in self:
         stmt._resolve(symtab)
-        
+
 @extend(node.number)
 @extend(node.string)
 def _resolve(self,symtab):
@@ -166,7 +166,7 @@ def _resolve(self,symtab):
 # def _resolve(self,symtab):
 #     # TODO: does the order of A and B matter? Only if the
 #     # evaluation of function args may change the value of the
-#     # func_expr. 
+#     # func_expr.
 #     self.func_expr._resolve(symtab) # A
 #     self.args._resolve(symtab)      # B
 #     self.ret._lhs_resolve(symtab)
@@ -208,7 +208,7 @@ def _resolve(self,symtab):
         self.else_stmt._resolve(symtab_copy)
     for k,v in symtab_copy.items():
         symtab.setdefault(k,set()).update(v)
-        
+
 @extend(node.continue_stmt)  # FIXME
 @extend(node.break_stmt)     # FIXME
 def _resolve(self,symtab):
@@ -217,7 +217,7 @@ def _resolve(self,symtab):
 @extend(node.global_stmt)
 def _resolve(self,symtab):
     self.global_list._lhs_resolve(symtab)
-        
+
 @extend(node.return_stmt)
 def _resolve(self,symtab):
     self.ret._resolve(symtab)
@@ -226,7 +226,7 @@ def _resolve(self,symtab):
 @extend(node.expr_stmt)
 def _resolve(self,symtab):
     self.expr._resolve(symtab)
-        
+
 @extend(node.where_stmt) # FIXME where_stmt ???
 @extend(node.while_stmt)
 def _resolve(self,symtab):
@@ -247,7 +247,7 @@ def _resolve(self,symtab):
 @extend(node.ident)
 def _lhs_resolve(self,symtab):
     symtab[self.name] = set([self])
- 
+
 @extend(node.ident)
 def _resolve(self,symtab):
     if self.defs is None:
@@ -257,7 +257,7 @@ def _resolve(self,symtab):
     except KeyError:
         # defs == set() means name used, but not defined
         pass
-        
+
 @extend(node.arrayref)
 @extend(node.cellarrayref)
 @extend(node.funcall)
@@ -274,11 +274,11 @@ def _resolve(self,symtab):
 def _resolve(self,symtab):
     self.func_expr._resolve(symtab)
     self.args._resolve(symtab)
-    self.args[0]._lhs_resolve(symtab) 
+    self.args[0]._lhs_resolve(symtab)
 
 @extend(node.arrayref)
 @extend(node.cellarrayref)
-@extend(node.funcall)    
+@extend(node.funcall)
 def _lhs_resolve(self,symtab):
     # Definitely lhs array indexing.  It's both a ref and a def.
     # Must properly handle cases such as foo(foo(17))=42
@@ -286,7 +286,7 @@ def _lhs_resolve(self,symtab):
     self.func_expr._resolve(symtab) # A
     self.args._resolve(symtab)      # B
     self.func_expr._lhs_resolve(symtab)
-        
+
 @extend(node.expr)
 def _resolve(self,symtab):
     for expr in self.args:

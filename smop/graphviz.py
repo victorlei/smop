@@ -1,9 +1,9 @@
 import parse,sys
-import node
+import smop.node as node
 from node import extend
 import networkx as nx
- 
-                
+
+
 
 def resolve(t,fp,func_name):
     fp.write("digraph %s {\n" % func_name)
@@ -42,12 +42,12 @@ def _graphviz(self,fp):
 
 @extend(node.number)
 def _graphviz(self,fp):
-    fp.write('"%s" [label="<f0> %s|<f1> %s"]\n' % 
+    fp.write('"%s" [label="<f0> %s|<f1> %s"]\n' %
              (id(self), self.__class__.__name__,self.value))
 
 @extend(node.ident)
 def _graphviz(self,fp):
-    fp.write('"%s" [label="<f0> %s|<f1> %s"]\n' % 
+    fp.write('"%s" [label="<f0> %s|<f1> %s"]\n' %
              (id(self), self.__class__.__name__,self.name))
 
 def graphviz(tree,fp):

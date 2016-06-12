@@ -12,7 +12,8 @@ return value:  return (x,y,z)[:nargout] or return x
 
 import logging
 logger = logging.getLogger(__name__)
-import node,options
+import smop.node as node
+import options
 from node import extend
 
 indent = " "*4
@@ -74,7 +75,7 @@ def _backend(self,level=0):
 @extend(node.return_stmt)
 def _backend(self,level=0):
     if not self.ret:
-        return "return" 
+        return "return"
     else:
         return "return %s" % self.ret._backend()
 
@@ -113,7 +114,7 @@ def _backend(self,level=0):
         return "false"
     else:
         return "true"
-    
+
 # @extend(node.range)
 # def _backend(self,level=0):
 #     i = node.ident.new("I")
@@ -154,7 +155,7 @@ def _backend(self,level=0):
                                  self.args[1]._backend())
     if self.op == ":":
         return "arange(%s)" % self.args._backend()
-    
+
     if self.op == "end":
 #        if self.args:
 #            return "%s.shape[%s]" % (self.args[0]._backend(),
@@ -247,7 +248,7 @@ def _backend(self,level=0):
         s = "%s=copy(%s)" % (self.ret._backend(),
                               self.args._backend())
     else:
-        s = "%s=%s" % (self.ret._backend(), 
+        s = "%s=%s" % (self.ret._backend(),
                        self.args._backend())
     return s
 
@@ -280,7 +281,7 @@ fortran_type = {
 #         if i._rank() == 0:
 #             return "%s :: %s\n" % (fortran_type[i._type()],
 #                                    i)
-#         return ("%s,DIMENSION(%s),ALLOCATABLE :: %s\n" % 
+#         return ("%s,DIMENSION(%s),ALLOCATABLE :: %s\n" %
 #                 (fortran_type[i._type()],
 #                  ",".join([":" for j in range(i._rank())]), i))
 #     except:
@@ -290,7 +291,7 @@ def _backend(self,level=0):
     s = self.head._backend(level)
     t = self.body._backend(level+1)
     return "%s%s" %  (s,t)
-        
+
 
 # Sometimes variable names collide with _python reserved
 # words and constants.  We handle this in the _backend rather than in
@@ -328,9 +329,9 @@ def _backend(self,level=0):
         del self.args[-1]
     s = ",".join(["%s=None" % a for a in self.args if isinstance(a,node.ident)]+["*args,**kwargs"])
     s = "def %s(%s):\n" % (self.ident._backend(), s)
-    s += '    nargout = kwargs["nargout"] if kwargs else None\n'
-    s += '    varargin = cellarray(args)\n'
-    s += "    nargin = %d-[%s].count(None)+len(args)\n" % (len(self.args),
+    s += indent*level + '    nargout = kwargs["nargout"] if kwargs else None\n'
+    s += indent*level + '    varargin = cellarray(args)\n'
+    s += indent*level + "    nargin = %d-[%s].count(None)+len(args)\n" % (len(self.args),
                        ",".join([(a._backend() if isinstance(a,node.ident) else a.ret._backend())
                        for a in self.args])) # sic: a.name
     return s
@@ -396,7 +397,7 @@ def _backend(self,level=0):
 ### def _backend(self,level=0):
 ###     return "%s.lower()==%s.lower()" % (self.args[0]._backend(),
 ###                                        self.args[1]._backend())
-                       
+
 ### @extend(node.isequal)
 ### def _backend(self,level=0):
 ###     return "np.array_equal(%s)" % self.args._backend()
@@ -420,7 +421,7 @@ def _backend(self,level=0):
 ###         #                               self.args[0]._backend())
 ###         # else:
 ###         return "%s.shape" % self.args[0]._backend()
-###             
+###
 ###     if self.args[1].__class__ is node.number:
 ###         return "%s.shape[%s]" % (self.args[0]._backend(),
 ###                                  self.args[1].value-1)
@@ -437,7 +438,7 @@ def _backend(self,level=0):
 ###                                      self.args[1].value-1)
 ###     return "np.cumsum(%s,%s-1)" % (self.args[0]._backend(),
 ###                                    self.args[1]._backend())
-    
+
 @extend(node.dot)
 def _backend(self,level=0):
     return "%s.dot(%s)" % (self.args[0]._backend(),
@@ -451,12 +452,12 @@ def _backend(self,level=0):
 ### @exceptions
 ### def _backend(self,level=0):
 ###     return "open(%s)" % self.args._backend()
-### 
+###
 ### @extend(node.fclose)
 ### @exceptions
 ### def _backend(self,level=0):
 ###     return "%s.close()" % self.args._backend()
-### 
+###
 ### @extend(node.min)
 ### @extend(node.max)
 ### @extend(node.sum)
@@ -465,7 +466,7 @@ def _backend(self,level=0):
 ### def _backend(self,level=0):
 ###     cls_name = self.__class__.__name__
 ###     return ("np." + cls_name  + "(%s)") % self.args._backend()
-### 
+###
 ### @extend(node.exist)
 ### @exceptions
 ### def _backend(self,level=0):
@@ -489,7 +490,7 @@ def _backend(self,level=0):
 ### @exceptions
 ### def _backend(self,level=0):
 ###     return "loadmat(%s,matlab_compatible=True)" % self.args._backend()
-### 
+###
 ### @extend(node.save)
 ### @exceptions
 ### def _backend(self,level=0):

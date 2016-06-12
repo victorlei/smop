@@ -5,8 +5,8 @@
 
 import inspect
 import sys
-import node
-from node import extend
+import smop.node as node
+extend = node.extend
 
 import options,parse
 
@@ -68,7 +68,7 @@ def _rewrite(self):
 #         self.become(v)
 #         modified.append(lineno())
 #         return
-    
+
 #     if options.row_vector_ndim == 1 and s and s[0].__class__ == node.number:
 #         del s[0]
 
@@ -178,7 +178,7 @@ def _rewrite(self):
 # #     #We dont know a priori type and rank
 # #     #of function arguments.  We do know that
 # #     #to get their size we use SIZE(args[i])
-# #     
+# #
 # #     for a in self.args:
 # #         if a.__class__ == node.ident:
 # #             a.__class__ = node.param
@@ -198,11 +198,11 @@ def _rewrite(self):
 #         self.ret[0]._s = node.expr_list()
 #         self.ret[1]._s = node.expr_list()
 #         modified.append(lineno())
-        
+
 # @extend(node.arrayref)
 # def _rewrite(self):
 #     pass
-        
+
 
 # @extend(node.funcall)
 # def _rewrite(self):
