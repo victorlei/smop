@@ -6,7 +6,10 @@ import re
 from zlib import adler32
 import lex
 from lex import TOKEN
-import readline
+try:
+  import readline
+except ImportError:
+  import pyreadline as readline
 
 class IllegalCharacterError(Exception):
     pass
