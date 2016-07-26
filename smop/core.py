@@ -6,7 +6,9 @@
 import __builtin__
 
 import numpy
-from numpy import sqrt
+from sparsearray import sparsearray as sparse
+from magic import magic
+from numpy import sqrt,eye
 from numpy.fft import fft2
 from numpy.linalg import inv
 from numpy.linalg import qr  as _qr 
@@ -365,8 +367,7 @@ def cell(*args):
         args += args
     return cellarray(np.zeros(args,dtype=object,order="F"))
 
-def clc():
-    pass
+clc = 0
 
 def copy(a):
     return matlabarray(np.asanyarray(a).copy(order="F"))

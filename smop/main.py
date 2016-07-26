@@ -149,6 +149,7 @@ def main():
     for a in runtime:
         print >> fp, "from %s import *" % a
 
+    print >> fp, "clc=0" #FIXME
     for pattern in args:
         for filename in glob.glob(os.path.expanduser(pattern)):
             if not filename.endswith(".m"):

@@ -15,7 +15,7 @@ ALL = \*.m
 all: mybench.py 
 	$(PYTHON) -c "import mybench ; mybench.mybench()"
 
-octave.py: primes.m interp2.m meshgrid.m repmat.m
+octave.py: primes.m interp2.m meshgrid.m repmat.m magic.m
 	$(PYTHON) main.py $^ -r core -o $@
 
 #octave.py:
@@ -35,7 +35,7 @@ clean:
 	rm -f a.* *.pyc solver.so solver.py octave.so
 
 solver.py: solver.m r8_random.m 
-	$(PYTHON) main.py $^ -o $@
+	$(PYTHON) main.py $^ -o $@ -r core
 
 check:
 	$(PYTHON) octave.py 
