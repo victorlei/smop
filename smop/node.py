@@ -39,6 +39,7 @@ def extend(cls):
     return lambda f: (setattr(cls,f.__name__,f) or f)
 
 def exceptions(f):
+    return f
     def wrapper(self,*args,**kwargs):
         try:
             return f(self,*args,**kwargs)
@@ -46,6 +47,7 @@ def exceptions(f):
             print "%s.%s()" % (self.__class__.__name__, f.__name__)
             raise
     wrapper.__name__ = f.__name__
+    wrapper.__doc__ = f.__doc__
     return wrapper
 
 class node(object):
@@ -100,6 +102,9 @@ class stmt_list(node,list):
         return "\n".join([str(t) for t in self])
     def __repr__(self):
         return "stmt_list(%s)" % list.__repr__(self)
+    def append(self,s):
+        assert isinstance(s,node), s.__class__
+        list.append(self,s)
 
 #####################
 #
@@ -152,10 +157,18 @@ class let(stmt,recordtype("let",
     def __str__(self):
         return "%s=%s" % (str(self.ret), str(self.args))
     
-class func_decl(stmt,recordtype("func_decl","ident ret args decl_list use_nargin",default=None)):
+class func_stmt(stmt,recordtype("func_stmt",
+                                """
+                                ident
+                                ret
+                                args
+                                stmt_list
+                                use_nargin
+                                """,
+                                default=None)):
     pass
 
-class lambda_expr(func_decl):
+class lambda_expr(func_stmt):
     pass
 
 class function(stmt,recordtype("function","head body")):
@@ -178,9 +191,17 @@ class global_stmt(stmt,recordtype("global_stmt","global_list")):
     def __str__(self):
         return "global %s" % str(self.global_list)
 
+class persistent_stmt(stmt,recordtype("persistent_stmt","global_list")):
+    def __str__(self):
+        return "global %s" % str(self.global_list)
+
 class return_stmt(stmt,namedtuple("return_stmt","ret")):
     def __str__(self):
         return "return"
+
+class comment_stmt(stmt,namedtuple("comment_stmt","value")):
+    def __str__(self):
+        return "comment"
 
 class end_stmt(stmt,namedtuple("end_stmt","dummy")):
     def __str__(self):
@@ -193,6 +214,10 @@ class continue_stmt(stmt,namedtuple("continue_stmt","dummy")):
 class break_stmt(stmt,namedtuple("break_stmt","dummy")):
     def __str__(self):
         return "break"
+
+class null_stmt(stmt,namedtuple("null_stmt","")):
+    def __str__(self):
+        return ";"
 
 class expr_stmt(stmt,node,recordtype("expr_stmt","expr")):
     def __str__(self):
@@ -281,21 +306,21 @@ class expr(node,recordtype("expr","op args")):
 
 # names in caps correspond to fortran funcs
 builtins_list = [
-    "ABS",
-    "ALL",
-    "ANY",
-    "CEILING",
-    "FIND",
-    "ISNAN",
-    "MAXVAL",
-    "MINVAL",
-    "MODULO",
-    "RAND",
-    "RESHAPE",
-    "SHAPE",
-    "SIGN",
-    "SIZE",
-    "SUM",
+#    "ABS",
+#    "ALL",
+#    "ANY",
+#    "CEILING",
+#    "FIND",
+#    "ISNAN",
+#    "MAXVAL",
+#    "MINVAL",
+#    "MODULO",
+#    "RAND",
+#    "RESHAPE",
+#    "SHAPE",
+#    "SIGN",
+#    "SIZE",
+#    "SUM",
 
     #"abs",
     "add", # synthetic opcode

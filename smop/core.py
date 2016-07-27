@@ -6,8 +6,7 @@
 import __builtin__
 
 import numpy
-from sparsearray import sparsearray as sparse
-from numpy import sqrt,eye
+from numpy import sqrt
 from numpy.fft import fft2
 from numpy.linalg import inv
 from numpy.linalg import qr  as _qr 
@@ -54,6 +53,10 @@ class matlabarray(np.ndarray):
     """
     >>> matlabarray()
     matlabarray([], shape=(0, 0), dtype=float64)
+    >>> matlabarray([arange(1,5), arange(1,5)])
+    matlabarray([1, 2, 3, 4, 5, 1, 2, 3, 4, 5])
+    >>> matlabarray(["hello","world"])
+    matlabarray("helloworld")
     """
 
     def __new__(cls,a=[],dtype=None):
@@ -303,14 +306,16 @@ class char(matlabarray):
     >>> print s
     hello
     world
-
-    >>> s.shape
-    (2, 5)
+    >>> s=char([104, 101, 108, 108, 111, 119, 111, 114, 108, 100])
+    >>> s.shape = 2,5
+    >>> print s
+    hello
+    world
     """
 
     def __new__(cls, a=""):
         if not isinstance(a,str):
-            raise NotImplementedError
+            a = "".join([chr(c) for c in a])
         obj = np.array(list(a),
                        dtype='|S1',
                        copy=False,
@@ -332,7 +337,7 @@ class char(matlabarray):
             return "\n".join("".join(s) for s in self)
         raise NotImplementedError
 
-class struct_(object):
+class struct(object):
     def __init__(self,*args):
         for i in range(0,len(args),2):
             setattr(self,str(args[i]),args[i+1])
@@ -356,7 +361,7 @@ def arange(start,stop,step=1,**kwargs):
                                  step,
                                  **kwargs).reshape(1,-1),**kwargs)
 def cat(*args):
-    return np.concatenate([matlabarray(a) for a in args],axis=1)
+    return matlabarray(np.concatenate([matlabarray(a) for a in args],axis=1)).reshape(-1)
 
 def ceil(a):
     return numpy.ceil(a)
@@ -557,15 +562,26 @@ def rand(*args,**kwargs):
     except:
         pass
 
-def rand(*args,**kwargs):
-    if not args:
-        return np.random.rand()
-    if len(args) == 1:
-        args += args
-    try:
-        return np.random.rand(np.prod(args)).reshape(args,order="F")
-    except:
+def assert_(a,b=None):
+    if b is None:
+        assert a
+    else:
+        assert isequal(a,b)
+
+def shared(a):
         pass
+
+def rand(*args,**kwargs):
+    """from core aka libsmop.py"""
+    return np.random.rand()
+    # if not args:
+    #     return np.random.rand()
+    # if len(args) == 1:
+    #     args += args
+    # try:
+    #     return np.random.rand(np.prod(args)).reshape(args,order="F")
+    # except:
+    #     pass
 
 def randn(*args,**kwargs):
     if not args:
@@ -664,6 +680,9 @@ def zeros(*args,**kwargs):
     if len(args) == 1:
         args += args
     return matlabarray(np.zeros(args,**kwargs))
+
+def isa(a,b):
+    return True
 
 if __name__ == "__main__":
     import doctest

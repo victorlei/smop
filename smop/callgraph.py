@@ -1,49 +1,31 @@
-import parse,sys
+import parse,sys,os
 import networkx as nx
-import node,resolve
+import node,resolve,options
 
-def callgraph(func_list):
+def callgraph(G, stmt_list):
     """
     Build callgraph of func_list, ignoring
     built-in functions
     """
-    G = nx.DiGraph()
-    for func in func_list:
-        G.add_node(func.head.ident.name)
+    func_list = []
+    for stmt in stmt_list:
+        try:
+            G.add_node(stmt.head.ident.name)
+            func_list.append(stmt)
+        except:
+            pass
     for func in func_list:
         assert isinstance(func,node.function)
         func_name = func.head.ident.name
-        resolve.resolve(func)
+        #resolve.resolve(func)
         for s in node.postorder(func):
             if (s.__class__ is node.funcall and
-                s.func_expr.__class__ is  node.ident and
-                s.func_expr.name in G.nodes()):
-                G.add_edge(func_name,s.func_expr.name)
-    return G
-
-G = nx.DiGraph()
-
-def postorder_edge(u):
-    if isinstance(u,node.node):
-        for v in u:
-            for t in postorder_edge(v):
-                yield (v,t)
-        yield (u,u) # returns only traversible objects
-
-def foo(tree):
-    G = nx.DiGraph()
-    for u,v in postorder_edge(tree):
-        G.add_edge(id(u),id(v))
-    return G
-
-def main():
-    func_list = parse.parse(open(sys.argv[1]).read())
-    G = foo(func_list)
-    #G = callgraph(func_list)
-    nx.write_dot(G,"G.dot")
-    #H = nx.dfs_tree(G,'solver')
-    #nx.write_dot(H,"H.dot")
-    #print nx.topological_sort(H)
-
+                s.func_expr.__class__ is  node.ident):
+                #if s.func_expr.name in G.nodes():
+                    G.add_edge(func_name,s.func_expr.name)
+    #nx.write_dot(G,"G.dot")
+    #for u in G.nodes():
+    #    if G.out_degree(u) == 0:
+    #        print u
 if __name__ == '__main__':
     main()
