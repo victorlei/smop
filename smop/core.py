@@ -6,7 +6,8 @@
 import __builtin__
 
 import numpy
-from numpy import sqrt
+from sparsearray import sparsearray as sparse
+from numpy import sqrt,eye
 from numpy.fft import fft2
 from numpy.linalg import inv
 from numpy.linalg import qr  as _qr 

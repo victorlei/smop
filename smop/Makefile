@@ -35,7 +35,7 @@ clean:
 	rm -f a.* *.pyc solver.so solver.py octave.so
 
 solver.py: solver.m r8_random.m 
-	$(PYTHON) main.py $^ -o $@
+	$(PYTHON) main.py $^ -o $@ -r core
 
 check:
 	$(PYTHON) octave.py 

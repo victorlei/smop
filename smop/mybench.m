@@ -242,8 +242,8 @@ function s = getBenchmarkTests()
     
     s={};     
   
-    s{end+1}=struct('name','interp2','test', @(x) interp2(x,2,'spline'),...
-        'input', @()rand(600),'goldResult',4.20);
+    %s{end+1}=struct('name','interp2','test', @(x) interp2(x,2,'spline'),...
+    %    'input', @()rand(600),'goldResult',4.20);
     
 
     s{end+1}=struct(...

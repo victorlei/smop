@@ -4,8 +4,6 @@
 %* EMAIL  : stefan@steinhaus-net.de                                        * 
 %* This program is public domain. Feel free to copy it freely.             *
 %***************************************************************************
-
-clc
 disp('The following benchmark program will print the average timings')
 disp('to calculate the functions by 3 runs.')
 disp(' ')
@@ -38,8 +36,8 @@ disp(['IO test & descriptive statistics_____________________ : ' num2str(result)
 result=0; a=1;
 for i=1:runs
    tic;
-   for x=1:15000;
-       for y=1:15000;
+   for x=1:1500;
+       for y=1:1500;
            a=a+x+y;
        end;
    end;
@@ -49,7 +47,7 @@ result=result/runs;
 disp(['Loop testing_________________________________________ : ' num2str(result) ' sec.'])
 result=0;
 for i=1:runs
-   for j=1:200
+   for j=1:2
        b=1+(rand(2000,2000)/100);
        tic;
        a=b.^1000; 
@@ -60,7 +58,7 @@ result=result/runs;
 disp(['2000x2000 normal distributed random matrix^1000______ : ' num2str(result) ' sec.'])
 clear a; clear b; result=0; 
 for i=1:runs
-   for j=1:100
+   for j=1:1
        a=rand(1000000,1);
        tic;
        b=sort(a); 
@@ -88,7 +86,7 @@ disp(['FFT over 1048576 values (2^20)_______________________ : ' num2str(result)
 
 clear a; clear b; result=0;
 for i=1:runs
-   for j=1:100
+   for j=1:1
         a=rand(1500,1500);
         tic;
         b=det(a); 
@@ -99,7 +97,7 @@ result=result/runs;
 disp(['Determinant of a 1500x1500 random matrix_____________ : ' num2str(result) ' sec.'])
 clear a; clear b; result=0;
 for i=1:runs
-   for j=1:100
+   for j=1:1
         a=rand(1500,1500);
         tic;
         b=inv(a); 
@@ -119,7 +117,7 @@ result=result/runs;
 disp(['Eigenval. of a normal distr. 1200x1200 randommatrix___ : ' num2str(result) ' sec.'])
 clear a; clear b; result=0;
 for i=1:runs
-   for j=1:100
+   for j=1:1
        a=rand(1500,1500);
        a=a'*a;
        tic;
@@ -131,7 +129,7 @@ result=result/runs;
 disp(['Cholesky decomposition of a 1500x1500-matrix_________ : ' num2str(result) ' sec.'])
 clear a; clear b; result=0;
 for i=1:runs
-   for j=1:100
+   for j=1:1
        a=rand(1500,1500);
        tic;
        b=a'*a; 
