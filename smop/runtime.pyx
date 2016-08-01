@@ -383,7 +383,10 @@ def find_(a,n=None,d=None,nargout=1):
     raise NotImplementedError
 
 def floor_(a):
-    return np.floor_(np.asanyarray(a))
+    return np.floor(np.asanyarray(a))
+
+def fix_(a):
+    return np.fix(np.asanyarray(a))
 
 def fopen_(*args):
     try:
