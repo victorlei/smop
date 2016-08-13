@@ -1,6 +1,6 @@
 import pstats,cProfile
 import numpy,time
-import solver as a
+from solver import *
 from core import *
 
 def main():
@@ -20,7 +20,7 @@ def main():
     af[10,10]=5
 
     t0 = time.clock()
-    mv = a.solver(ai,af,0)
+    mv = solver(ai,af,0)
     t1 = time.clock()
     print t1-t0
     print mv.shape

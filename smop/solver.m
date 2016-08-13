@@ -15,7 +15,6 @@ a = ai;
 mv = [];
 
 while ~isequal(af,a)
-
     % Pick a random block
     bid = ceil(rand()*nBlocks);
     [i,j] = find(a==bid);
@@ -34,7 +33,6 @@ while ~isequal(af,a)
     if a(ni,nj)>0
         continue
     end
-
     % Check distance
     % Get the target location
     [ti,tj] = find(af==bid);
@@ -54,15 +52,15 @@ while ~isequal(af,a)
     end
 end
 
-function r = rand(varargin)
-    global s1 s2 s3
-    if nargin != 0
-        r=0;
-        s1=varargin{1};
-        s2=varargin{2};
-        s3=varargin{3};
-    else
-        [r,s1,s2,s3] = r8_random(s1,s2,s3);
-    end
-end
+## function r = rand(varargin)
+##     global s1 s2 s3
+##     if nargin != 0
+##         r=0;
+##         s1=varargin{1};
+##         s2=varargin{2};
+##         s3=varargin{3};
+##     else
+##         [r,s1,s2,s3] = r8_random(s1,s2,s3);
+##     end
+## end
 

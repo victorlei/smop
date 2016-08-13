@@ -1,52 +1,50 @@
+
 # for py3: make PYTHON=python3 CYTHON="cython -3" V=3.4
 
-VPATH = $(SCRIPTS)/general:$(SCRIPTS)/specfun:$(SCRIPTS)/plot/util
-OCTAVE = /home/lei/octave-3.8.2
+VPATH = $(SCRIPTS)/strings $(SCRIPTS)/specfun
+OCTAVE = /home/lei/octave-4.0.2
 SCRIPTS = $(OCTAVE)/scripts
 
 CYTHON = cython
 PYTHON = python
-#FLAGS = -S stft.m,datenum.m -X orderfields.m,legend.m,pack.m,unpack.m,__unimplemented__.m,assert.m,optimset.m
-#FLAGS = -X interp1.m,interpn.m,nargchk.m,nargoutchk.m,profexplore.m,profshow.m,quadgk.m,quadl.m
-FLAGS = -Xquadgk,quadl,lcm,adaptlobstp,spline,ppval,ellipke
+XFILES = -x inputParser.m,quadgk.m,quadl.m,triplequad.m,dblquad.m
+FLAGS  = 
 V = 2.7
 ALL = \*.m
 
+factorial.py: factorial.m
+	$(PYTHON) main.py -v -loctave $^ -o-  $(FLAGS) 
 all: mybench.py 
 	$(PYTHON) -c "import mybench ; mybench.mybench()"
 
-octave.py: primes.m interp2.m meshgrid.m repmat.m magic.m
-	$(PYTHON) main.py $^ -r core -o $@
+#octave.py: primes.m interp2.m meshgrid.m repmat.m
+#	$(PYTHON) main.py --callgraph $(FLAGS) $^ -r core -o $@
+#	dot -Tpdf -o G.pdf G.dot
 
-#octave.py:
-#	find $(SCRIPTS)/general $(SCRIPTS)/specfun -name \*.m | xargs smop -v -o $@ -r core $(FLAGS)
+#test_primes: octave.py
+#	$(PYTHON) -c "import octave ; octave.primes(1000)"
 
+octave.py:
+	find $(SCRIPTS)/general $(SCRIPTS)/specfun -name \*.m | xargs python main.py -o $@  $(FLAGS) $(XFILES)
 
-go_so: solver.so
-	$(PYTHON) go.py	
-
-go_py: solver.py
-	$(PYTHON) go.py
-
-go_m: solver.m
-	octave -q go.m
 
 clean:
 	rm -f a.* *.pyc solver.so solver.py octave.so
 
-solver.py: solver.m r8_random.m 
-	$(PYTHON) main.py $^ -o $@ -r core
+solver.py: solver.m #r8_random.m octave.py
+	$(PYTHON) main.py $^ -o $@ 
 
-check:
-	$(PYTHON) octave.py 
+check: solver.py 
 	$(PYTHON) test_core.py
 	$(PYTHON) test_matlabarray.py
 	$(PYTHON) test_sparsearray.py
-	-$(PYTHON) test_lexer.py 
-	$(PYTHON) main.py $(FLAGS) solver.m r8_random.m -o solver.py && python go.py
-      
-test:
-	find $(SCRIPTS) -name $(ALL) | xargs python main.py $(FLAGS)
+	$(PYTHON) test_lexer.py 
+	$(PYTHON) test_solver.py
+#	$(PYTHON) test_primes.py
+
+#$(PYTHON) main.py $(FLAGS) -r core solver.m r8_random.m -o solver.py && python go.py
+#test:
+#	find $(SCRIPTS) -name $(ALL) | xargs python main.py $(FLAGS)
 
 %.c: %.py
 	$(CYTHON) $^
@@ -56,5 +54,11 @@ test:
 
 %.py: %.m
 	#smop $(FLAGS) -o $@ $^
-	$(PYTHON) main.py -o $@ $^ -r core -r octave
+	$(PYTHON) main.py -o $@ $^
 	$(PYTHON) $@
+
+%.pdf: %.dot
+	dot -Tpdf -o $@ $^
+
+%.pdf: %.rst
+	rst2pdf $^

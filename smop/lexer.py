@@ -1,25 +1,26 @@
-# SMOP compiler -- Simple Matlab/Octave to Python compiler
-# Copyright 2011-2014 Victor Leikehman
+# SMOP -- Simple Matlab/Octave to Python compiler
+# Copyright 2011-2016 Victor Leikehman
 
 import sys
 import re
 from zlib import adler32
-import lex
-from lex import TOKEN
+import ply.lex as lex
+from ply.lex import TOKEN
 import readline
+import options
 
 class IllegalCharacterError(Exception):
     pass
 
-tokens = [
-    "AND", "ANDAND", "ANDEQ", "BACKSLASH", "COLON", "COMMA", "DIV","DIVEQ",
-    "DOT", "DOTDIV", "DOTDIVEQ", "DOTEXP", "DOTMUL","DOTMULEQ", "END_EXPR",
-    "END_STMT", "EQ", "EQEQ", "EXP", "EXPEQ", "FIELD", "GE", "GT", "HANDLE",
-    "IDENT", "LBRACE", "LBRACKET", "LE", "LPAREN", "LT",
-    "MINUS","MINUSMINUS","MINUSEQ","MUL","MULEQ","NE", "NEG",
-    "NUMBER", "OR","OREQ", "OROR", "PLUS", "PLUSEQ","PLUSPLUS",
-    "RBRACE", "RBRACKET", "RPAREN", "SEMI", "STRING", "TRANSPOSE",
-]
+tokens = [ "AND", "ANDAND", "ANDEQ", "BACKSLASH", "COLON", "COMMA",
+           "DIV","DIVEQ", "DOT", "DOTDIV", "DOTDIVEQ", "DOTEXP",
+           "DOTMUL","DOTMULEQ", "END_EXPR", "END_STMT", "EQ", "EQEQ",
+           "EXP", "EXPEQ", "FIELD", "GE", "GT", "HANDLE", "IDENT",
+           "LBRACE", "LBRACKET", "LE", "LPAREN", "LT",
+           "MINUS","MINUSMINUS","MINUSEQ","MUL","MULEQ","NE", "NEG",
+           "NUMBER", "OR","OREQ", "OROR", "PLUS", "PLUSEQ","PLUSPLUS",
+           "RBRACE", "RBRACKET", "RPAREN", "SEMI", "STRING",
+           "TRANSPOSE", "ERROR_STMT", "COMMENT", "END_FUNCTION", ]
 
 reserved = {
     "break"                  : "BREAK",
@@ -85,7 +86,8 @@ def new():
     states = (("matrix","inclusive"),
               ("afterkeyword","exclusive"))
 
-    ws  = r"(\s|(\#|%).*\n|\.\.\..*\n|\\\n)"
+    ws  = r"(\s|\.\.\..*\n|\\\n)"
+    #ws  = r"(\s|(\#|(%[^!])).*\n|\.\.\..*\n|\\\n)"
     ws1 = ws+"+"
     ws0 = ws+"*"
     ms  = r"'([^']|(''))*'" 
@@ -94,11 +96,13 @@ def new():
     id  = r"[a-zA-Z_][a-zA-Z_0-9]*"
     
     def unescape(s):
+        """
+        ffd52d5fc5
+        """
         if s[0] == "'":
-            return s[1:-1].replace("''","'")
+            return s[1:-1].replace("''","'").decode("string_escape")
         else:
-            return s[1:-1].replace('""','"')
-            #return s[1:-1].decode('string_escape').replace('""','"')
+            return s[1:-1].replace('""','"').decode("string_escape")
 
     @TOKEN(mos)
     def t_afterkeyword_STRING(t):
@@ -133,25 +137,31 @@ def new():
     def t_IDENT(t):
         t.lexer.lineno += t.value.count("\n")
         if t.value[0] == ".":
-            # Reserved words are not reserved when used as fields.
-            # So return=1 is illegal, but foo.return=1 is fine.
+            # Reserved words are not reserved
+            # when used as fields.  So return=1
+            # is illegal, but foo.return=1 is fine.
             t.type = "FIELD"
             return t
-        if t.value in ("endwhile","endfunction","endif","endfor",
-                       "endswitch","end_try_catch"): # octave
+        if t.value == "endfunction":
+            t.type = "END_FUNCTION"
+            return t
+        if t.value in ("endwhile", "endif","endfor",
+                       "endswitch","end_try_catch"):
             t.type = "END_STMT"
             return t
         if t.value == "end":
-            if t.lexer.parens > 0 or t.lexer.brackets > 0 or t.lexer.braces > 0:
+            if (t.lexer.parens > 0 or
+                t.lexer.brackets > 0 or
+                t.lexer.braces > 0):
                 t.type = "END_EXPR"
             else:
                 t.type = "END_STMT"
         else:
             t.type = reserved.get(t.value,"IDENT")
-            if t.type != "IDENT" and t.lexer.lexdata[t.lexer.lexpos]=="'":
+            if (t.type != "IDENT" and 
+                t.lexer.lexdata[t.lexer.lexpos]=="'"):
                 t.lexer.begin("afterkeyword")
         return t
-
 
     def t_LPAREN(t):
         r"\("
@@ -215,6 +225,8 @@ def new():
 
     def t_NUMBER(t):
         r"(0x[0-9A-Fa-f]+)|((\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?[ij]?)"
+        #  <-------------> <------------------><------------->
+        #   int,oct,hex        float               exp
         if t.value[-1] == 'i':
             t.value = t.value[:-1]+'j'
         t.value = eval(t.value)
@@ -228,18 +240,23 @@ def new():
             t.type = "SEMI"
             return t
 
+    def t_ERROR_STMT(t):
+        r"%!error.*\n"
+
+    # keep multiline comments
+    def t_COMMENT(t):
+        r"(^[ \t]*[%#][^!].*\n)+"
+        t.lexer.lineno += t.value.count("\n")
+        if not options.no_comments:
+            t.type = "COMMENT"
+            return t
+
+    # drop end-of-line comments
     def t_comment(t):
-        r"(%|\#).*"
-        pass
+        r"(%|\#)!?"
+        if not options.testing_mode or t.value[-1] != "!":
+            t.lexer.lexpos = t.lexer.lexdata.find("\n",t.lexer.lexpos)
 
-
-#    @TOKEN(ws+r"(?=[-+]\S)")    
-#    def t_matrix_WHITESPACE(t):
-#        #r"\s+(?=[-+]\S)"
-#        # Whitespace, followed by + or - followed by anything but whitespace
-#        t.lexer.lineno += t.value.count("\n")
-#        t.type = "COMMA"
-#        return t
 
     @TOKEN(r"(?<=\w)" + ws1 + r"(?=\()")
     def t_matrix_BAR(t):
@@ -298,24 +315,33 @@ def new():
         column=t.lexer.lexpos - t.lexer.lexdata.rfind("\n",0,t.lexer.lexpos)
         raise IllegalCharacterError(t.lineno,column,t.value[0])
 
-    lexer = lex.lex(reflags=re.I)
+
+    lexer = lex.lex(reflags=re.MULTILINE)
     lexer.brackets = 0  # count open square brackets
     lexer.parens = 0    # count open parentheses
     lexer.braces = 0    # count open curly braces
+    lexer.stack  = []
     return lexer
 
-if __name__ == "__main__":
+def main():
     lexer = new()
-    try:
-        while 1:
-            line = raw_input("=>> ")
-            if not line:
-                continue
-            while line[-1] == "\\":
-                line = line[:-1] + raw_input("... ")
+    line = ""
+    while 1:
+        try:
+            line += raw_input("=>> ").decode("string_escape")
             print len(line), [c for c  in line]
+        except EOFError:
+            reload(sys.modules["lexer.py"])
             lexer.input(line)
-            for tok in lexer:
-                print len(str(tok.value)), tok
-    except EOFError:
-        pass
+            print list(tok for tok in lexer)
+            line = ""
+
+if __name__ == "__main__":
+    options.testing_mode = 0
+    options.debug_lexer = 0
+    lexer = new()
+    buf = open(sys.argv[1]).read()
+    lexer.input(buf)
+    for tok in lexer:
+        print tok
+
