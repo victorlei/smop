@@ -325,9 +325,9 @@ def _backend(self,level=0):
 def _backend(self,level=0):
     return "global %s" % self.global_list._backend()
 
-@extend(node.ravel)
-def _backend(self,level=0):
-    return "%s.ravel()" % self.args[0]._backend()
+#@extend(node.ravel)
+#def _backend(self,level=0):
+#    return "%s.ravel()" % self.args[0]._backend()
 
 @extend(node.return_stmt)
 def _backend(self,level=0):

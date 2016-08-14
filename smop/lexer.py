@@ -245,7 +245,7 @@ def new():
 
     # keep multiline comments
     def t_COMMENT(t):
-        r"(^[ \t]*[%#][^!].*\n)+"
+        r"(^[ \t]*[%#][^!\n].*\n)+"
         t.lexer.lineno += t.value.count("\n")
         if not options.no_comments:
             t.type = "COMMENT"

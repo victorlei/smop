@@ -565,7 +565,7 @@ def p_funcall_expr(p):
     """expr : expr LPAREN expr_list RPAREN 
             | expr LPAREN RPAREN
     """
-    if (0 and len(p)==5 and
+    if (len(p)==5 and
         len(p[3])==1 and 
         p[3][0].__class__ is node.expr and
         p[3][0].op == ":" and not p[3][0].args):
@@ -845,7 +845,11 @@ def parse(buf):
 
     if "1" in options.debug:
         for i,pi in enumerate(p):
-            print i,pi.__class__.__name__,str(pi)[:50]
+            print i,pi.__class__.__name__,pi._backend()
+
+    if "p" in options.debug:
+        import pdb
+        pdb.set_trace()
 
     for i in range(len(p)):
         if isinstance(p[i], node.func_stmt):
