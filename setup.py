@@ -1,11 +1,7 @@
 import os
 from setuptools import setup
 
-try:
-    versionstring = os.popen("git describe").read().strip()
-    open("smop/version.py","w").write("__version__ = '%s'\n" % versionstring)
-except:
-    versionstring = "'0.26'"
+from smop.version import __version__
 
 setup(
     author = 'Victor Leikehman',
@@ -16,12 +12,12 @@ setup(
     url = 'https://github.com/victorlei/smop',
     download_url = 'https://github.com/victorlei/smop/archive/master.zip',
     name = 'smop',
-    version = versionstring,
+    version = __version__,
     entry_points = { 'console_scripts': [ 'smop = smop.main:main', ], },
     packages = ['smop'],
     #package_dir = {'':'src'},
     #test_suite = "smop.testsuite.test_lexer",
     #include_package_data = True,
     #package_data = { 'smop': ['*.m', 'Makefile'], },
-    install_requires = ['numpy', 'scipy', 'networkx'],
+    install_requires = ['ply', 'numpy', 'scipy', 'networkx', 'pygraphviz'],
 )

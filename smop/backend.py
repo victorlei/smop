@@ -125,7 +125,18 @@ def _backend(self,level=0):
 
 @extend(node.expr)
 def _backend(self,level=0):
-    if self.op == '@': # FIXME
+    if self.op in ("!","not"): # ???
+       return "not %s" % self.args[0]
+    if self.op in ("&","and"):
+       return "logical_and(%s)" % self.args._backend()
+    if self.op == "&&":
+        return " and ".join(t._backend() for t in self.args)
+    if self.op in ("|","or"):
+        return "logical_or(%s)" % self.args._backend()
+    if self.op == "||":
+        return " or ".join(t._backend() for t in self.args)
+
+    if self.op == '@': # FIXMEj
         return self.args[0]._backend()
 
     if self.op == "\\":

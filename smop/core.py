@@ -352,6 +352,9 @@ def abs(a):
 def all(a):
     return numpy.all(a)
 
+def any(a):
+    return numpy.any(a)
+
 def arange(start,stop,step=1,**kwargs):
     """
     >>> a=arange(1,10) # 1:10
@@ -389,6 +392,15 @@ def disp(*args):
 def eig(a):
     u,v = np.linalg.eig(a)
     return u.T
+
+def logical_not(a):
+    return numpy.logical_not(a)
+
+def logical_and(a,b):
+    return numpy.logical_and(a,b)
+
+def logical_or(a,b):
+    return numpy.logical_or(a,b)
 
 def exist(a,b):
     if str(b) == 'builtin':
