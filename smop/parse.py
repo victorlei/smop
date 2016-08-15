@@ -1,5 +1,5 @@
 # SMOP compiler -- Simple Matlab/Octave to Python compiler
-# Copyright 2011-2014 Victor Leikehman
+# Copyright 2011-2016 Victor Leikehman
 
 import copy
 import pprint
@@ -80,7 +80,7 @@ def p_end_function(p):
     """
     p[0] = p[1]
     p[0].append(node.return_stmt(ret=ret_expr))
-    p[0].append(node.comment_stmt("\nif __name__ == '__main__':"))
+    p[0].append(node.comment_stmt("\nif __name__ == '__main__':\n    pass"))
 
 
 @exceptions
@@ -857,16 +857,16 @@ def parse(buf):
     else:
         return None # p[i] is a func decl
 
-    for j in range(i+1,len(p)):
-        if i < j and isinstance(p[j], node.func_stmt):
-            p.insert(j,node.return_stmt(ret=p[i].ret))
-            j += 1
-            i = j
-    p.append(node.return_stmt(ret=p[i].ret))
-
-    if "2" in options.debug:
-        for i,pi in enumerate(p):
-            print i,pi.__class__.__name__,str(pi)[:50]
+#    for j in range(i+1,len(p)):
+#        if i < j and isinstance(p[j], node.func_stmt):
+#            p.insert(j,node.return_stmt(ret=p[i].ret))
+#            j += 1
+#            i = j
+#    p.append(node.return_stmt(ret=p[i].ret))
+#
+#    if "2" in options.debug:
+#        for i,pi in enumerate(p):
+#            print i,pi.__class__.__name__,str(pi)[:50]
 
     return p
  

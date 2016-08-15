@@ -126,15 +126,17 @@ def _backend(self,level=0):
 @extend(node.expr)
 def _backend(self,level=0):
     if self.op in ("!","not"): # ???
-       return "not %s" % self.args[0]
+       return "not %s" % self.args[0]._backend()
     if self.op in ("&","and"):
        return "logical_and(%s)" % self.args._backend()
     if self.op == "&&":
-        return " and ".join(t._backend() for t in self.args)
+        return "%s and %s" % (self.args[0]._backend(),
+                              self.args[1]._backend())
     if self.op in ("|","or"):
         return "logical_or(%s)" % self.args._backend()
     if self.op == "||":
-        return " or ".join(t._backend() for t in self.args)
+        return "%s or %s" % (self.args[0]._backend(),
+                             self.args[1]._backend())
 
     if self.op == '@': # FIXMEj
         return self.args[0]._backend()
@@ -221,9 +223,11 @@ def _backend(self,level=0):
 
     s = """
 @function
-def {0}({1}):
-    nargin = {0}.nargin""".format(self.ident._backend(),
-                                   self.args._backend())
+def {0}({1}{2}nargin=-1):
+""".format(self.ident._backend(),
+           self.args._backend(),
+           "," if self.args else "")
+           
     return s
 
 @extend(node.funcall)

@@ -48,6 +48,7 @@ def main():
             if options.verbose:
                 print options.filename
             buf = open(options.filename).read().replace("\r\n","\n")
+            buf = buf.decode("ascii",errors="ignore")
             stmt_list=parse.parse(buf if buf[-1]=='\n' else buf+'\n')
             #assert None not in stmt_list                  
             if not stmt_list and options.strict:

@@ -7,13 +7,13 @@ SCRIPTS = $(OCTAVE)/scripts
 
 CYTHON = cython
 PYTHON = python
-XFILES = -x inputParser.m,quadgk.m,quadl.m,triplequad.m,dblquad.m
+XFILES = -x inputParser.m,quadgk.m,quadl.m,triplequad.m,dblquad.m,reallog.m,nthroot.m,factorial.m
 FLAGS  = 
 V = 2.7
 ALL = \*.m
 
 factorial.py: factorial.m
-	$(PYTHON) main.py -v -loctave $^ -o-  $(FLAGS) 
+	$(PYTHON) main.py -v $^ $(FLAGS) 
 all: mybench.py 
 	$(PYTHON) -c "import mybench ; mybench.mybench()"
 
