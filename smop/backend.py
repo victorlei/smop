@@ -223,10 +223,10 @@ def _backend(self,level=0):
 
     s = """
 @function
-def {0}({1}{2}nargin=-1):
+def {0}({1}):
+    nargin = sys._getframe(1).f_locals["nargin"]
 """.format(self.ident._backend(),
-           self.args._backend(),
-           "," if self.args else "")
+           self.args._backend())
            
     return s
 

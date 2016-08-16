@@ -709,9 +709,9 @@ def print_usage():
     raise Exception
 
 def function(f):
-    def helper(*args,**kwargs):
-        kwargs["nargin"]=len(args)
-        return f(*args,**kwargs)
+    def helper(*args):
+        nargin=len(args)
+        return f(*args)
     return helper
 
 def error(s):
