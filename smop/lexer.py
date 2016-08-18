@@ -20,7 +20,7 @@ tokens = [ "AND", "ANDAND", "ANDEQ", "BACKSLASH", "COLON", "COMMA",
            "MINUS","MINUSMINUS","MINUSEQ","MUL","MULEQ","NE", "NEG",
            "NUMBER", "OR","OREQ", "OROR", "PLUS", "PLUSEQ","PLUSPLUS",
            "RBRACE", "RBRACKET", "RPAREN", "SEMI", "STRING",
-           "TRANSPOSE", "ERROR_STMT", "COMMENT", "END_FUNCTION", ]
+           "TRANSPOSE", "ERROR_STMT", "COMMENT", "END_FUNCTION","POW", ]
 
 reserved = {
     "break"                  : "BREAK",
@@ -73,6 +73,7 @@ def new():
     t_MINUSEQ     = r"\-="
     t_MINUSMINUS  = r"\--"
     t_MUL         = r"\*"
+    t_POW         = r"\*\*"
     t_MULEQ       = r"\*="
     t_NE          = r"(~=)|(!=)"
     t_NEG         = r"\~|\!"

@@ -59,7 +59,7 @@ def main():
                 s = backend.backend(stmt_list)
                 print >> fp, s
         except Exception as e:
-            print e
+            print "\tFailed: ",options.filename
             if options.strict:
                 raise
 

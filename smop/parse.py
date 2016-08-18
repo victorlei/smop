@@ -52,7 +52,7 @@ precedence = (
     ("left", "MUL","DIV","DOTMUL","DOTDIV","BACKSLASH"),
     ("right","UMINUS","NEG"),
     ("right","TRANSPOSE"),
-    ("right","EXP", "DOTEXP"),
+    ("right","EXP", "DOTEXP", "POW"),
     ("nonassoc","LPAREN","RPAREN","RBRACE","LBRACE"),
     ("left", "FIELD","DOT","PLUSPLUS","MINUSMINUS"),
     )
@@ -323,6 +323,7 @@ def p_expr2(p):
              | expr DOTMUL expr
              | expr DOTMULEQ expr
              | expr EQEQ expr
+             | expr POW expr
              | expr EXP expr
              | expr EXPEQ expr
              | expr GE expr
@@ -831,6 +832,10 @@ def p_while_stmt(p):
 
 @exceptions
 def p_error(p):
+    if p.type == "COMMENT":
+        #print "Discarded comment", p.value
+        parser.errok()
+        return
     raise syntax_error(p)
 
 parser = yacc.yacc(start="top")

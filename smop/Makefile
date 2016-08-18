@@ -1,51 +1,34 @@
-
 # for py3: make PYTHON=python3 CYTHON="cython -3" V=3.4
 
-VPATH = $(SCRIPTS)/strings $(SCRIPTS)/specfun
 OCTAVE = /home/lei/octave-4.0.2
 SCRIPTS = $(OCTAVE)/scripts
 
 CYTHON = cython
 PYTHON = python
-XFILES = -x inputParser.m,quadgk.m,quadl.m,triplequad.m,dblquad.m,reallog.m,nthroot.m,factorial.m
+#XFILES = -x inputParser.m,quadgk.m,quadl.m,triplequad.m,dblquad.m,uiputfile.m,uigetfile.m,qmr.m,installed_packages.m,stft.m,legend.m,__plt_get_axis_arg__.m,rotate.m,print.m,__ghostscript__.m,__gnuplot_print__.m,set.m,edit.m,what.m,usejava.m,javachk.m,__go_draw_axes__.m,interp3.m,interp2.m,interpn.m,randi.m,interp1.m,spdiags.m,importdata.m,stemleaf.m
 FLAGS  = 
+
 V = 2.7
-ALL = \*.m
 
-factorial.py: factorial.m
-	$(PYTHON) main.py -v $^ $(FLAGS) 
-all: mybench.py 
-	$(PYTHON) -c "import mybench ; mybench.mybench()"
+all:
+	make -B FLAGS=     liboctave.py | wc
+	make -B FLAGS=-C   liboctave.py | wc
+	make -B FLAGS=-N   liboctave.py | wc
+	make -B FLAGS=-T   liboctave.py | wc
+	make -B FLAGS=-CN  liboctave.py | wc
+	make -B FLAGS=-TN  liboctave.py | wc
+	make -B FLAGS=-CT  liboctave.py | wc
+	make -B FLAGS=-CTN liboctave.py | wc
 
-#octave.py: primes.m interp2.m meshgrid.m repmat.m
-#	$(PYTHON) main.py --callgraph $(FLAGS) $^ -r core -o $@
-#	dot -Tpdf -o G.pdf G.dot
-
-#test_primes: octave.py
-#	$(PYTHON) -c "import octave ; octave.primes(1000)"
-
-octave.py:
-	find $(SCRIPTS)/general $(SCRIPTS)/specfun -name \*.m | xargs python main.py -o $@  $(FLAGS) $(XFILES)
-
+liboctave.py:
+	find $(SCRIPTS) -name \*.m | xargs $(PYTHON) main.py -o $@ $(FLAGS) $(XFILES) $^
+	#$(PYTHON) $@
 
 clean:
 	rm -f a.* *.pyc solver.so solver.py octave.so
 
-solver.py: solver.m #r8_random.m octave.py
-	$(PYTHON) main.py $^ -o $@ 
-
-check: solver.py 
-	$(PYTHON) test_core.py
-	$(PYTHON) test_matlabarray.py
-	$(PYTHON) test_sparsearray.py
-	$(PYTHON) test_lexer.py 
-	$(PYTHON) test_solver.py
-#	$(PYTHON) test_primes.py
-
-#$(PYTHON) main.py $(FLAGS) -r core solver.m r8_random.m -o solver.py && python go.py
-#test:
-#	find $(SCRIPTS) -name $(ALL) | xargs python main.py $(FLAGS)
-
+regress:
+	make | sort -u | wc
 %.c: %.py
 	$(CYTHON) $^
 
@@ -53,7 +36,6 @@ check: solver.py
 	gcc -Wno-cpp -I /usr/include/python$V -O2 -shared -o $@ $^
 
 %.py: %.m
-	#smop $(FLAGS) -o $@ $^
 	$(PYTHON) main.py -o $@ $^
 	$(PYTHON) $@
 

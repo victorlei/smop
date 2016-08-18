@@ -26,6 +26,7 @@ optable = {
     "||": "or",
     "&&": "and",
     "^" : "**",
+    "**": "**",
     ".^": "**",
     "./": "/",
     ".*": "*",
@@ -125,15 +126,18 @@ def _backend(self,level=0):
 
 @extend(node.expr)
 def _backend(self,level=0):
-    if self.op in ("!","not"): # ???
-       return "not %s" % self.args[0]._backend()
-    if self.op in ("&","and"):
+    if self.op in ("!","~"): 
+       return "logical_not(%s)" % self.args[0]._backend()
+
+    if self.op == "&":
        return "logical_and(%s)" % self.args._backend()
+
     if self.op == "&&":
         return "%s and %s" % (self.args[0]._backend(),
                               self.args[1]._backend())
-    if self.op in ("|","or"):
+    if self.op == "|":
         return "logical_or(%s)" % self.args._backend()
+
     if self.op == "||":
         return "%s or %s" % (self.args[0]._backend(),
                              self.args[1]._backend())
