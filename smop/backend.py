@@ -220,17 +220,18 @@ def _backend(self,level=0):
 
 @extend(node.func_stmt)
 def _backend(self,level=0):
-    if len(self.args) == 1 and self.args[0].name == "varargin":
-        s = "\ndef %s(*args):"  %  self.ident._backend()
-        s += "\n    varargin = cellarray(args)"
-        return s
-
+    if (self.args and 
+            isinstance(self.args[-1],node.ident) and
+            self.args and
+            self.args[-1].name == "varargin"):
+        self.args[-1].name = "*varargin"
     s = """
 @function
-def {0}({1}):
+def %s(%s):
     nargin = sys._getframe(1).f_locals["nargin"]
-""".format(self.ident._backend(),
-           self.args._backend())
+    varargin = cellarray(varargin)
+""" % (self.ident._backend(),
+       self.args._backend())
            
     return s
 
@@ -255,7 +256,7 @@ def _backend(self,level=0):
 
 @extend(node.ident)
 def _backend(self,level=0):
-    return self.name if self.name not in reserved else self.name+'_'
+    return (self.name if self.name not in reserved else self.name+'_') + ("=" + self.init._backend() if self.init is not None else '')
 
 @extend(node.if_stmt)
 def _backend(self,level=0):
@@ -374,7 +375,7 @@ def _backend(self,level=0):
 #        return ""
 #    if s[0] in "%#":
 #        return "\n"+s.replace("%","#")
-    return '"%s"' % self.value.encode("string_escape").replace('"','\\"')
+    return '"%s"' % self.value #.encode("string_escape").replace('"','\\"')
 
 @extend(node.sub)
 def _backend(self,level=0):

@@ -137,6 +137,7 @@ def p_args_opt(p):
              | LPAREN RPAREN
              | LPAREN expr_list RPAREN
     """
+    flag = False
     if len(p) == 1:
         p[0] = node.expr_list()
     elif len(p) == 3:
@@ -144,8 +145,17 @@ def p_args_opt(p):
     elif len(p) == 4:
         assert isinstance(p[2],node.expr_list)
         p[0] = p[2]
+        flag = True
     else:
         assert 0
+
+    if flag:
+        t = p[2][-1]
+        if isinstance(t,node.ident) and t.name=="varargin":
+            t.name = "*varargin"
+        for t in p[2]:
+            if isinstance(t,node.ident) and t.name != '*varargin':
+               t.init = node.ident("None")
 
 
 @exceptions

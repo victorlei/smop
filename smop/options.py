@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser(
 
     smop [options][file.m ...file.m][-l file.py...]
              or
-    python -m smop.main  [options][file.m ...file.m][-l file.py...]
+    smop [options] library.tar [-l file.py...]
 """,
     description= """
 SMOP is Small Matlab and Octave to Python compiler.
@@ -88,6 +88,7 @@ help= """support special "testing" percent-bang comments used to
 write Octave test suite.  When disabled, behaves like
 regular comments.""")
 
+parser.add_argument("-I", "--ignore", type=int)
 
 
 args = parser.parse_args(namespace=sys.modules[__name__])

@@ -2,7 +2,7 @@
 # Copyright 2011-2016 Victor Leikehman
 from os.path import splitext,basename
 import version
-import sys,cPickle,glob,os
+import sys,cPickle,glob,os,tarfile
 import getopt,re
 import lexer
 import parse
@@ -17,9 +17,14 @@ import readline
 import graphviz
 
 def main():
+    tar = None
     if not options.filelist:
         options.parser.print_help()
         return
+    if (len(options.filelist) == 1 and
+            options.filelist[0].endswith(".tar")):
+        tar = tarfile.open(options.filelist[0])
+        options.filelist = tar.getnames()
     if options.output == "-":
         fp = sys.stdout
     elif options.output:
@@ -39,19 +44,24 @@ def main():
             
     for i, options.filename in enumerate(options.filelist):
         try:
-            if not options.filename.endswith((".m",".tst")):
-                print "\tIgnored file: '%s' (unexpected file type)" % options.filename
+            if not options.filename.endswith((".m")):
+                if options.verbose:
+                    print "\tIgnored: '%s' (unexpected file type)" % options.filename
                 continue
             if os.path.basename(options.filename) in options.xfiles:
-                print "\tExcluded file: '%s'" % options.filename
+                print "\tExcluded: '%s'" % options.filename
                 continue
             if options.verbose:
                 print options.filename
-            buf = open(options.filename).read().replace("\r\n","\n")
+            if tar:
+                buf = tar.extractfile(options.filename).read()
+            else:
+                buf = open(options.filename).read()
+            buf = buf.replace("\r\n","\n")
             buf = buf.decode("ascii",errors="ignore")
             stmt_list=parse.parse(buf if buf[-1]=='\n' else buf+'\n')
             #assert None not in stmt_list                  
-            if not stmt_list and options.strict:
+            if not stmt_list:
                 return
             if not options.no_resolve:
                 G = resolve.resolve(stmt_list)
@@ -60,8 +70,9 @@ def main():
                 print >> fp, s
         except Exception as e:
             print "\tFailed: ",options.filename
-            if options.strict:
+            if not options.ignore:
                 raise
+            options.ignore -= 1
 
 if __name__ == "__main__":
     main()

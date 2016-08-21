@@ -100,10 +100,16 @@ def new():
         """
         ffd52d5fc5
         """
-        if s[0] == "'":
-            return s[1:-1].replace("''","'").decode("string_escape")
-        else:
-            return s[1:-1].replace('""','"').decode("string_escape")
+        try:
+            if s == r"'\'" or s == r'"\"':
+                return s[1:-1]
+            if s[0] == "'":
+                return s[1:-1].replace("''","'").decode("string_escape")
+            else:
+                return s[1:-1].replace('""','"').decode("string_escape")
+        except ValueError:
+            print s
+            raise
 
     @TOKEN(mos)
     def t_afterkeyword_STRING(t):
@@ -242,7 +248,8 @@ def new():
             return t
 
     def t_ERROR_STMT(t):
-        r"%!error.*\n"
+        r"%!(error|warning|test).*\n"
+        t.lexer.lineno += 1
 
     # keep multiline comments
     def t_COMMENT(t):
