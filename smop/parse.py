@@ -52,7 +52,7 @@ precedence = (
     ("left", "MUL","DIV","DOTMUL","DOTDIV","BACKSLASH"),
     ("right","UMINUS","NEG"),
     ("right","TRANSPOSE"),
-    ("right","EXP", "DOTEXP"),
+    ("right","EXP", "DOTEXP", "POW"),
     ("nonassoc","LPAREN","RPAREN","RBRACE","LBRACE"),
     ("left", "FIELD","DOT","PLUSPLUS","MINUSMINUS"),
     )
@@ -137,6 +137,7 @@ def p_args_opt(p):
              | LPAREN RPAREN
              | LPAREN expr_list RPAREN
     """
+    flag = False
     if len(p) == 1:
         p[0] = node.expr_list()
     elif len(p) == 3:
@@ -144,8 +145,17 @@ def p_args_opt(p):
     elif len(p) == 4:
         assert isinstance(p[2],node.expr_list)
         p[0] = p[2]
+        flag = True
     else:
         assert 0
+
+    if flag:
+        t = p[2][-1]
+        if isinstance(t,node.ident) and t.name=="varargin":
+            t.name = "*varargin"
+        for t in p[2]:
+            if isinstance(t,node.ident) and t.name != '*varargin':
+               t.init = node.ident("None")
 
 
 @exceptions
@@ -323,6 +333,7 @@ def p_expr2(p):
              | expr DOTMUL expr
              | expr DOTMULEQ expr
              | expr EQEQ expr
+             | expr POW expr
              | expr EXP expr
              | expr EXPEQ expr
              | expr GE expr
@@ -831,6 +842,10 @@ def p_while_stmt(p):
 
 @exceptions
 def p_error(p):
+    if p.type == "COMMENT":
+        #print "Discarded comment", p.value
+        parser.errok()
+        return
     raise syntax_error(p)
 
 parser = yacc.yacc(start="top")

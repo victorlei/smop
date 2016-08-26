@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser(
 
     smop [options][file.m ...file.m][-l file.py...]
              or
-    python -m smop.main  [options][file.m ...file.m][-l file.py...]
+    smop [options] library.tar [-l file.py...]
 """,
     description= """
 SMOP is Small Matlab and Octave to Python compiler.
@@ -19,7 +19,11 @@ resulting file is derived from the name of the first
 compiled file unless explicitly set with -o .  Additional
 libraries can be specified with -l (lowercase L), for
 example -loctave.py.""",
-#    epilog=
+epilog="""Hint: put into your Makefile the following rule
+
+%.py: %.m
+	$(SMOP) $^ $(FLAGS)
+	($(PYTHON) $@ && cat $@ >> libscripts.py)""",
     formatter_class=argparse.RawTextHelpFormatter,
     )
 
@@ -88,6 +92,7 @@ help= """support special "testing" percent-bang comments used to
 write Octave test suite.  When disabled, behaves like
 regular comments.""")
 
+parser.add_argument("-I", "--ignore", type=int)
 
 
 args = parser.parse_args(namespace=sys.modules[__name__])

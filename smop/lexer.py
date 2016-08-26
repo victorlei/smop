@@ -20,7 +20,7 @@ tokens = [ "AND", "ANDAND", "ANDEQ", "BACKSLASH", "COLON", "COMMA",
            "MINUS","MINUSMINUS","MINUSEQ","MUL","MULEQ","NE", "NEG",
            "NUMBER", "OR","OREQ", "OROR", "PLUS", "PLUSEQ","PLUSPLUS",
            "RBRACE", "RBRACKET", "RPAREN", "SEMI", "STRING",
-           "TRANSPOSE", "ERROR_STMT", "COMMENT", "END_FUNCTION", ]
+           "TRANSPOSE", "ERROR_STMT", "COMMENT", "END_FUNCTION","POW", ]
 
 reserved = {
     "break"                  : "BREAK",
@@ -73,6 +73,7 @@ def new():
     t_MINUSEQ     = r"\-="
     t_MINUSMINUS  = r"\--"
     t_MUL         = r"\*"
+    t_POW         = r"\*\*"
     t_MULEQ       = r"\*="
     t_NE          = r"(~=)|(!=)"
     t_NEG         = r"\~|\!"
@@ -99,10 +100,16 @@ def new():
         """
         ffd52d5fc5
         """
-        if s[0] == "'":
-            return s[1:-1].replace("''","'").decode("string_escape")
-        else:
-            return s[1:-1].replace('""','"').decode("string_escape")
+        try:
+            if s == r"'\'" or s == r'"\"':
+                return s[1:-1]
+            if s[0] == "'":
+                return s[1:-1].replace("''","'").decode("string_escape")
+            else:
+                return s[1:-1].replace('""','"').decode("string_escape")
+        except ValueError:
+            print s
+            raise
 
     @TOKEN(mos)
     def t_afterkeyword_STRING(t):
@@ -241,7 +248,8 @@ def new():
             return t
 
     def t_ERROR_STMT(t):
-        r"%!error.*\n"
+        r"%!(error|warning|test).*\n"
+        t.lexer.lineno += 1
 
     # keep multiline comments
     def t_COMMENT(t):
