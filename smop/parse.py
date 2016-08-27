@@ -126,34 +126,6 @@ def p_args(p):
 
 
 @exceptions
-def p_args_opt(p):
-    """
-    args_opt :
-             | LPAREN RPAREN
-             | LPAREN expr_list RPAREN
-    """
-    flag = False
-    if len(p) == 1:
-        p[0] = node.expr_list()
-    elif len(p) == 3:
-        p[0] = node.expr_list()
-    elif len(p) == 4:
-        assert isinstance(p[2],node.expr_list)
-        p[0] = p[2]
-        flag = True
-    else:
-        assert 0
-
-    if flag:
-        t = p[2][-1]
-        if isinstance(t,node.ident) and t.name=="varargin":
-            t.name = "*varargin"
-        for t in p[2]:
-            if isinstance(t,node.ident) and t.name != '*varargin':
-               t.init = node.ident("None")
-
-
-@exceptions
 def p_break_stmt(p):
     "break_stmt : BREAK SEMI"
     p[0] = node.break_stmt(None)
@@ -454,10 +426,14 @@ def p_expr_ident(p):
 @exceptions
 def p_ident_init_opt(p):
     """
-    ident_init_opt : ident
+    ident_init_opt : NEG
+                   | ident
                    | ident EQ expr
     """
-    p[0] = p[1]
+    if p[1] == '~':
+        p[0] = node.ident("__")
+    else:
+        p[0] = p[1]
     if len(p) == 2:
         p[0].init = node.ident(name="None") if p[0].name != "varargin" else ""
     else:
