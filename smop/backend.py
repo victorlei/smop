@@ -217,14 +217,14 @@ def _backend(self,level=0):
 def _backend(self,level=0):
     if (self.args and 
             isinstance(self.args[-1],node.ident) and
-            self.args and
             self.args[-1].name == "varargin"):
         self.args[-1].name = "*varargin"
     s = """
 @function
 def %s(%s):
     nargin = sys._getframe(1).f_locals["nargin"]
-    varargin = cellarray(varargin)
+    varargin = sys._getframe(1).f_locals["varargin"]
+
 """ % (self.ident._backend(),
        self.args._backend())
            
@@ -251,7 +251,12 @@ def _backend(self,level=0):
 
 @extend(node.ident)
 def _backend(self,level=0):
-    return (self.name if self.name not in reserved else self.name+'_') + ("=" + self.init._backend() if self.init is not None else '')
+    if self.name in reserved:
+        self.name += "_"
+    if self.init:
+        return "%s=%s" % (self.name,
+                          self.init._backend())
+    return self.name
 
 @extend(node.if_stmt)
 def _backend(self,level=0):

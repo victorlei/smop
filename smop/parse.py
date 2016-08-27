@@ -40,10 +40,10 @@ class syntax_error(error):
     pass
 
 precedence = (
+    ("left", "COMMA"),
     ("right","DOTDIVEQ","DOTMULEQ","EQ","EXPEQ",
      "MULEQ","MINUSEQ","DIVEQ","PLUSEQ","OREQ","ANDEQ"),
     ("nonassoc","HANDLE"),
-    ("left", "COMMA"),
     ("left", "COLON"),
     ("left", "ANDAND", "OROR"),
     ("left", "EQEQ", "NE", "GE", "LE", "GT", "LT"),
@@ -100,22 +100,17 @@ def p_arg1(p):
 @exceptions
 def p_arg_list(p):
     """
-    arg_list : ident
-             | arg_list COMMA ident
+    arg_list : ident_init_opt
+             | arg_list COMMA ident_init_opt
     """
     if len(p) == 2:
-        p[1].__class__ = node.param
         p[0] = node.expr_list([p[1]])
     elif len(p) == 4:
         p[0] = p[1]
-        p[3].__class__ = node.param
         p[0].append(p[3])
     else:
         assert 0
     assert isinstance(p[0],node.expr_list)
-    for ident in p[0]:
-        ident.props="A"
-
 
 @exceptions
 def p_args(p):
@@ -456,7 +451,17 @@ def p_expr_ident(p):
                       lineno=p.lineno(1),
                       lexpos=p.lexpos(1),
                       column=p.lexpos(1) - p.lexer.lexdata.rfind("\n",0,p.lexpos(1)))
-
+@exceptions
+def p_ident_init_opt(p):
+    """
+    ident_init_opt : ident
+                   | ident EQ expr
+    """
+    p[0] = p[1]
+    if len(p) == 2:
+        p[0].init = node.ident(name="None") if p[0].name != "varargin" else ""
+    else:
+        p[0].init = p[3]
 
 @exceptions
 def p_expr_list(p):
@@ -547,8 +552,8 @@ def p_for_stmt(p):
 
 @exceptions
 def p_func_stmt(p):
-    """func_stmt : FUNCTION ident args_opt SEMI 
-                 | FUNCTION ret EQ ident args_opt SEMI 
+    """func_stmt : FUNCTION ident lambda_args SEMI 
+                 | FUNCTION ret EQ ident lambda_args SEMI 
     """
     # stmt_list of func_stmt is set below
     # marked with XYZZY
