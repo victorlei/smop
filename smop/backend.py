@@ -119,11 +119,6 @@ def _backend(self,level=0):
 def _backend(self,level=0):
     return "continue"
 
-@extend(node.dot)
-def _backend(self,level=0):
-    return "%s.dot(%s)" % (self.args[0]._backend(),
-                           self.args[1]._backend())
-
 @extend(node.expr)
 def _backend(self,level=0):
     if self.op in ("!","~"): 
@@ -344,10 +339,6 @@ def _backend(self,level=0):
 @extend(node.global_stmt)
 def _backend(self,level=0):
     return "global %s" % self.global_list._backend()
-
-#@extend(node.ravel)
-#def _backend(self,level=0):
-#    return "%s.ravel()" % self.args[0]._backend()
 
 @extend(node.return_stmt)
 def _backend(self,level=0):

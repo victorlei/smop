@@ -408,8 +408,12 @@ def p_expr2(p):
                                         args=node.expr_list())
                 # [A1(B1) A2(B2) ...] = F(X)
                 p[3].nargout = len(p[1].args[0])
+    elif p[2] == "*":
+        p[0] = node.funcall(func_expr=node.ident("dot"),
+                            args=node.expr_list([p[1],p[3]]))
     elif p[2] == ".*":
-        p[0] = node.dot(p[1],p[3])
+        p[0] = node.funcall(func_expr=node.ident("multiply"),
+                            args=node.expr_list([p[1],p[3]]))
 #    elif p[2] == "." and isinstance(p[3],node.expr) and p[3].op=="parens":
 #        p[0] = node.getfield(p[1],p[3].args[0])
 #        raise NotImplementedError(p[3],p.lineno(3),p.lexpos(3))
