@@ -6,20 +6,20 @@ PYFILES= $(sort $(subst .m,.py,$(notdir $(MFILES) )))
 MFILES = $(shell find $(SCRIPTS) -name \*.m -type f)
 CYTHON = cython
 PYTHON = python
-XFILES = 
+XFILES = -x white.m,summer.m,spring.m,rainbow.m,prism.m,pink.m,ocean.m,lines.m,jet.m
 FLAGS  = 
 SMOP   = $(PYTHON) ../main.py
 
 V = 2.7
 
 all: $(PYFILES)
-	grep __main__ libscripts.py | wc -l
+	grep Autogen libscripts.py | wc -l
 
 clean:
 	rm -f libscripts.py *.pyc *.py
 
 %.py: %.m
-	$(SMOP) $^ $(FLAGS)
+	$(SMOP) $^ $(FLAGS) $(XFILES)
 	($(PYTHON) $@ && cat $@ >> libscripts.py)
 
 
