@@ -368,8 +368,10 @@ def _backend(self,level=0):
 def _backend(self,level=0):
     if "\n" in self.value:
         fmt = '"""%s"""'
-    else:
-        fmt = '"%s"'
+    elif options.strings == "C":
+        fmt = '"%s"' % self.value.replace('"',r'\"')
+    elif options.strings == "F":
+        fmt = "'%s'" % self.value.replace("'",r"''")
     return fmt % self.value
 
 @extend(node.sub)

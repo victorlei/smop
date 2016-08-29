@@ -87,6 +87,9 @@ help="omit code generation")
 parser.add_argument("-R","--no-resolve", action="store_true",
 help="omit name resolution")
 
+parser.add_argument("-S","--strings", default="C",
+help="""C for Octave style, F for Matlab style""")
+
 parser.add_argument("-T","--testing-mode",action="store_true",
 help= """support special "testing" percent-bang comments used to
 write Octave test suite.  When disabled, behaves like
