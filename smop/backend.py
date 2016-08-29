@@ -367,12 +367,12 @@ def _backend(self,level=0):
 @extend(node.string)
 def _backend(self,level=0):
     if "\n" in self.value:
-        fmt = '"""%s"""'
-    elif options.strings == "C":
-        fmt = '"%s"' % self.value.replace('"',r'\"')
-    elif options.strings == "F":
-        fmt = "'%s'" % self.value.replace("'",r"''")
-    return fmt % self.value
+        return '"""%s"""' % self.value
+    if options.strings == "C":
+        return 'r"%s"' % self.value.replace('"',r'\"')
+    if options.strings == "F":
+        return "r'%s'" % self.value.replace("'",r"''")
+    assert 0
 
 @extend(node.sub)
 def _backend(self,level=0):
