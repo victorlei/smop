@@ -831,6 +831,9 @@ def p_error(p):
         #print "Discarded comment", p.value
         parser.errok()
         return
+    if p.type == "END_UNEXPECTED":
+        raise syntax_error(p)
+
     raise syntax_error(p)
 
 parser = yacc.yacc(start="top")
