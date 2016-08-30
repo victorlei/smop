@@ -56,7 +56,7 @@ reserved = set(
 
     Data  Float Int   Numeric Oxphys
     array close float int     input
-    open  range type  write   zeros
+    open  range type  write
 
     len
     """.split())
@@ -215,19 +215,17 @@ def _backend(self,level=0):
 
 @extend(node.func_stmt)
 def _backend(self,level=0):
-    if (self.args and 
-            isinstance(self.args[-1],node.ident) and
-            self.args[-1].name == "varargin"):
-        self.args[-1].name = "*varargin"
+    self.args.append(node.ident("*args"))
+    self.args.append(node.ident("**kwargs"))
+    
     s = """
 @function
 def %s(%s):
     nargin = sys._getframe(1).f_locals["nargin"]
     varargin = sys._getframe(1).f_locals["varargin"]
-
+    nargout = sys._getframe(1).f_locals["nargout"]
 """ % (self.ident._backend(),
        self.args._backend())
-           
     return s
 
 @extend(node.funcall)
@@ -367,10 +365,12 @@ def _backend(self,level=0):
 @extend(node.string)
 def _backend(self,level=0):
     if "\n" in self.value:
-        fmt = '"""%s"""'
-    else:
-        fmt = '"%s"'
-    return fmt % self.value
+        return '"""%s"""' % self.value
+    if options.strings == "C":
+        return 'r"%s"' % self.value.replace('"',r'\"')
+    if options.strings == "F":
+        return "r'%s'" % self.value.replace("'",r"''")
+    assert 0
 
 @extend(node.sub)
 def _backend(self,level=0):

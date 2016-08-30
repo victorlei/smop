@@ -1,4 +1,4 @@
-function moves=solver(A,B,w0)
+function moves=fastsolver(A,B,w0)
 [moves,optmove,optscore]=cbest(A,B,w0);
 curscore=sum(w0(moves(:,1)));
 lots=1;

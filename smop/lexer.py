@@ -9,6 +9,9 @@ from ply.lex import TOKEN
 import readline
 import options
 
+class unbalanced_end(Exception):
+    pass
+
 class IllegalCharacterError(Exception):
     pass
 
@@ -20,7 +23,8 @@ tokens = [ "AND", "ANDAND", "ANDEQ", "BACKSLASH", "COLON", "COMMA",
            "MINUS","MINUSMINUS","MINUSEQ","MUL","MULEQ","NE", "NEG",
            "NUMBER", "OR","OREQ", "OROR", "PLUS", "PLUSEQ","PLUSPLUS",
            "RBRACE", "RBRACKET", "RPAREN", "SEMI", "STRING",
-           "TRANSPOSE", "ERROR_STMT", "COMMENT", "END_FUNCTION","POW", ]
+           "TRANSPOSE", "ERROR_STMT", "COMMENT", "END_FUNCTION",
+           "END_UNEXPECTED","POW", ]
 
 reserved = {
     "break"                  : "BREAK",
@@ -149,22 +153,28 @@ def new():
             # is illegal, but foo.return=1 is fine.
             t.type = "FIELD"
             return t
-        if t.value == "endfunction":
-            t.type = "END_FUNCTION"
+        if (t.value == "end" and (t.lexer.parens > 0 or
+                                  t.lexer.brackets > 0 or
+                                  t.lexer.braces > 0)):
+            t.type = "END_EXPR"
             return t
-        if t.value in ("endwhile", "endif","endfor",
-                       "endswitch","end_try_catch"):
-            t.type = "END_STMT"
-            return t
-        if t.value == "end":
-            if (t.lexer.parens > 0 or
-                t.lexer.brackets > 0 or
-                t.lexer.braces > 0):
-                t.type = "END_EXPR"
+        if t.value in ("end","endif","endfunction","endwhile",
+                           "endfor","endswitch","end_try_catch"):
+            keyword = t.lexer.stack.pop() # if,while,etc.
+            #assert keyword == t.value or keyword == "try"
+            if keyword == "function":
+                t.type = "END_FUNCTION"
             else:
                 t.type = "END_STMT"
+            return t
         else:
             t.type = reserved.get(t.value,"IDENT")
+            if t.value in ("if","function","while",
+                           "for","switch","try"):
+                # lexer stack may contain only these
+                # six words, ever, because there is
+                # one place to push -- here
+                t.lexer.stack.append(t.value)
             if (t.type != "IDENT" and 
                 t.lexer.lexdata[t.lexer.lexpos]=="'"):
                 t.lexer.begin("afterkeyword")
@@ -326,9 +336,9 @@ def new():
 
     lexer = lex.lex(reflags=re.MULTILINE)
     lexer.brackets = 0  # count open square brackets
-    lexer.parens = 0    # count open parentheses
-    lexer.braces = 0    # count open curly braces
-    lexer.stack  = []
+    lexer.parens   = 0  # count open parentheses
+    lexer.braces   = 0  # count open curly braces
+    lexer.stack    = []
     return lexer
 
 def main():
