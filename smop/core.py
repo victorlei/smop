@@ -693,7 +693,7 @@ def true(*args):
     return matlabarray(np.ones(args,dtype=bool,order="F"))
 
 def version():
-    return char('0.26')
+    return char('0.29')
 
 def zeros(*args,**kwargs):
     if not args:
@@ -709,7 +709,9 @@ def print_usage():
     raise Exception
 
 def function(f):
-    def helper(*args):
+    def helper(*args,**kwargs):
+        nargout = kwargs and kwargs["nargout"]
+        varargin = cellarray(args)
         nargin=len(args)
         return f(*args)
     return helper

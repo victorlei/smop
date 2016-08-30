@@ -435,7 +435,8 @@ def p_ident_init_opt(p):
     else:
         p[0] = p[1]
     if len(p) == 2:
-        p[0].init = node.ident(name="None") if p[0].name != "varargin" else ""
+#        p[0].init = node.ident(name="None") if p[0].name != "varargin" else ""
+        pass
     else:
         p[0].init = p[3]
 
