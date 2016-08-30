@@ -6,7 +6,7 @@
 import __builtin__
 
 import numpy
-from numpy import sqrt,prod,exp,log,dot,multiply
+from numpy import sqrt,prod,exp,log,dot,multiply,inf
 from numpy.fft import fft2
 from numpy.linalg import inv
 from numpy.linalg import qr  as _qr 
