@@ -361,8 +361,9 @@ def arange(start,stop,step=1,**kwargs):
     >>> size(a)
     matlabarray([[ 1, 10]])
     """
+    expand_value = 1 if step > 0 else -1
     return matlabarray(np.arange(start,
-                                 stop+1,
+                                 stop+expand_value,
                                  step,
                                  **kwargs).reshape(1,-1),**kwargs)
 def cat(*args):
