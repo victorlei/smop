@@ -1,7 +1,9 @@
 import os
 from setuptools import setup
 
-from smop.version import __version__
+__VERSION__ = "0.30"
+
+open("smop/version.py","w").write("__version__='%s'\n" % __VERSION__)
 
 setup(
     author = 'Victor Leikehman',
@@ -12,7 +14,7 @@ setup(
     url = 'https://github.com/victorlei/smop',
     download_url = 'https://github.com/victorlei/smop/archive/master.zip',
     name = 'smop',
-    version = __version__,
+    version = __VERSION__,
     entry_points = { 'console_scripts': [ 'smop = smop.main:main', ], },
     packages = ['smop'],
     #package_dir = {'':'src'},
