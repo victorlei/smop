@@ -77,7 +77,7 @@ Installation
    $ tar zxvf smop.tar.gz
    $ cd smop/smop
    $ python main.py solver.m
-   $ python go.py
+   $ python solver.py
 
 Working example
 ===============
