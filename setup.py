@@ -1,7 +1,7 @@
 import os
 from setuptools import setup
 
-__VERSION__ = "0.30"
+__VERSION__ = "0.31"
 
 open("smop/version.py","w").write("__version__='%s'\n" % __VERSION__)
 
