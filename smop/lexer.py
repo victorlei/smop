@@ -101,19 +101,10 @@ def new():
     id  = r"[a-zA-Z_][a-zA-Z_0-9]*"
     
     def unescape(s):
-        """
-        ffd52d5fc5
-        """
-        try:
-            if s == r"'\'" or s == r'"\"':
-                return s[1:-1]
-            if s[0] == "'":
-                return s[1:-1].replace("''","'").decode("string_escape")
-            else:
-                return s[1:-1].replace('""','"').decode("string_escape")
-        except ValueError:
-            print s
-            raise
+        if s[0] == "'":
+            return s[1:-1].replace("''","'")
+        else:
+            return s[1:-1].decode("string_escape")
 
     @TOKEN(mos)
     def t_afterkeyword_STRING(t):

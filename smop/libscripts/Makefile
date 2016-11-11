@@ -7,20 +7,21 @@ MFILES = $(shell find $(SCRIPTS) -name \*.m -type f)
 CYTHON = cython
 PYTHON = python
 CAT    = cat
-XFILES = -x white.m,summer.m,spring.m,rainbow.m,prism.m,pink.m,ocean.m,lines.m,jet.m
+XFILES = -x white.m,summer.m,spring.m,rainbow.m,prism.m,pink.m,ocean.m,lines.m,jet.m,__gnuplot_open_stream__.m
 FLAGS  = 
 SMOP   = $(PYTHON) ../main.py
 
 V = 2.7
 
 all: $(PYFILES)
-	grep Autogen libscripts.py | wc -l
+	$(CAT) *.py > libscripts.py
 
 clean:
 	rm -f libscripts.py *.pyc *.py
 
 %.py: %.m
 	$(SMOP) $^ $(FLAGS) $(XFILES)
-	($(PYTHON) $@ && $(CAT) $@ >> libscripts.py)
+	$(PYTHON) $@
 
+.DELETE_ON_ERROR:
 

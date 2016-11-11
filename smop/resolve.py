@@ -1,15 +1,15 @@
 # smop -- Matlab to Python compiler
 # Copyright 2011-2013 Victor Leikehman
 """
-if i.defs: 
-    i is defined, possibly more than once.  
+if i.defs:
+    i is defined, possibly more than once.
     Typical for vairable references.
 
 if i.defs is None:
     i is a definition (lhs)
-    
+
 if i.defs == set():
-    i is used but not defined.  
+    i is used but not defined.
     Typical for function calls.
 
 symtab is a temporary variable, which maps
@@ -18,45 +18,48 @@ instances, which possibly define the variable.
 It is used in if_stmt, for_stmt, and while_stmt.
 """
 
-import copy,sys,pprint
+import copy
 
 import node
 from node import extend
-import backend,options
 import networkx as nx
 
-def graphviz(t,fp,func_name):
+
+def graphviz(t, fp, func_name):
     fp.write("digraph %s {\n" % func_name)
     fp.write('graph [rankdir="LR"];\n')
     for u in node.postorder(t):
-        if u.__class__ in (node.ident,node.param):
-            fp.write("%s [label=%s_%s_%s];\n" % (u.lexpos,u.name,u.lineno,u.column))
+        if u.__class__ in (node.ident, node.param):
+            fp.write("%s [label=%s_%s_%s];\n" %
+                     (u.lexpos, u.name, u.lineno, u.column))
             if u.defs:
                 for v in u.defs:
-                    fp.write("%s -> %s" % (u.lexpos,v.lexpos))
+                    fp.write("%s -> %s" % (u.lexpos, v.lexpos))
                     if u.lexpos < v.lexpos:
                         fp.write('[color=red]')
-                    #else:
+                    # else:
                     #    fp.write('[label=%s.%s]' % (v.lineno,v.column))
                     fp.write(';\n')
     fp.write("}\n")
 
+
 def as_networkx(t):
     G = nx.DiGraph()
     for u in node.postorder(t):
-        if u.__class__ in (node.ident,node.param):
-            uu = "%s_%s_%s" % (u.name,u.lineno,u.column)
-            #label = "%s\\n%s" % (uu, u.props if u.props else "")
-            G.add_node(uu, ident=u) # label=label)
+        if u.__class__ in (node.ident, node.param):
+            uu = "%s_%s_%s" % (u.name, u.lineno, u.column)
+            # label = "%s\\n%s" % (uu, u.props if u.props else "")
+            G.add_node(uu, ident=u)
             if u.defs:
                 for v in u.defs:
-                    vv = "%s_%s_%s" % (v.name,v.lineno,v.column)
+                    vv = "%s_%s_%s" % (v.name, v.lineno, v.column)
                     G.add_node(vv, ident=v)
                     if u.lexpos < v.lexpos:
-                        G.add_edge(uu,vv,color="red")
+                        G.add_edge(uu, vv, color="red")
                     else:
-                        G.add_edge(uu,vv,color="black")
+                        G.add_edge(uu, vv, color="black")
     return G
+
 
 def resolve(t, symtab=None, fp=None, func_name=None):
     if symtab is None:
@@ -123,6 +126,7 @@ def resolve(t, symtab=None, fp=None, func_name=None):
         #print S.edges()
     return G
 
+
 def do_resolve(t,symtab):
     t._resolve(symtab)
 
@@ -135,7 +139,7 @@ def copy_symtab(symtab):
 
 @extend(node.arrayref)
 @extend(node.cellarrayref)
-@extend(node.funcall)    
+@extend(node.funcall)
 def _lhs_resolve(self,symtab):
     # Definitely lhs array indexing.  It's both a ref and a def.
     # Must properly handle cases such as foo(foo(17))=42
@@ -143,6 +147,8 @@ def _lhs_resolve(self,symtab):
     self.func_expr._resolve(symtab) # A
     self.args._resolve(symtab)      # B
     self.func_expr._lhs_resolve(symtab)
+
+
 
 @extend(node.expr)
 def _lhs_resolve(self,symtab):
@@ -219,7 +225,7 @@ def _resolve(self,symtab):
 
 @extend(node.null_stmt)
 @extend(node.continue_stmt)
-@extend(node.break_stmt) 
+@extend(node.break_stmt)
 def _resolve(self,symtab):
     pass
 
@@ -227,13 +233,13 @@ def _resolve(self,symtab):
 def _resolve(self,symtab):
     self.func_expr._resolve(symtab)
     self.args._resolve(symtab)
-    self.args[0]._lhs_resolve(symtab) 
+    self.args[0]._lhs_resolve(symtab)
 
 @extend(node.try_catch)
 def _resolve(self,symtab):
     self.try_stmt._resolve(symtab)
     self.catch_stmt._resolve(symtab) # ???
- 
+
 @extend(node.ident)
 def _resolve(self,symtab):
     if self.defs is None:
@@ -243,7 +249,7 @@ def _resolve(self,symtab):
     except KeyError:
         # defs == set() means name used, but not defined
         pass
-        
+
 @extend(node.arrayref)
 @extend(node.cellarrayref)
 @extend(node.funcall)
@@ -255,12 +261,12 @@ def _resolve(self,symtab):
     self.args._resolve(symtab)
     #if self.ret:
     #    self.ret._lhs_resolve(symtab)
-        
+
 @extend(node.expr)
 def _resolve(self,symtab):
     for expr in self.args:
         expr._resolve(symtab)
-        
+
 @extend(node.number)
 @extend(node.string)
 @extend(node.comment_stmt)
@@ -271,21 +277,21 @@ def _resolve(self,symtab):
 # def _resolve(self,symtab):
 #     # TODO: does the order of A and B matter? Only if the
 #     # evaluation of function args may change the value of the
-#     # func_expr. 
+#     # func_expr.
 #     self.func_expr._resolve(symtab) # A
 #     self.args._resolve(symtab)      # B
 #     self.ret._lhs_resolve(symtab)
-        
+
 @extend(node.return_stmt)
 def _resolve(self,symtab):
     self.ret._resolve(symtab)
         #symtab.clear()
-        
+
 @extend(node.stmt_list)
 def _resolve(self,symtab):
     for stmt in self:
         stmt._resolve(symtab)
-        
+
 @extend(node.where_stmt) # FIXME where_stmt ???
 @extend(node.while_stmt)
 def _resolve(self,symtab):
@@ -302,4 +308,4 @@ def _resolve(self,symtab):
     self.head._resolve(symtab)
     self.body._resolve(symtab)
     self.head.ret._resolve(symtab)
-        
+

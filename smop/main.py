@@ -2,7 +2,7 @@
 # Copyright 2011-2016 Victor Leikehman
 from os.path import splitext,basename
 import version
-import sys,cPickle,glob,os,tarfile
+import sys,cPickle,os #,tarfile
 import getopt,re
 import lexer
 import parse
@@ -13,7 +13,11 @@ import node,graphviz
 import callgraph
 import networkx as nx
 import pickle
-import readline
+try:
+    import readline
+except:
+    import readline as pyreadline
+
 import graphviz
 
 def main():
@@ -21,10 +25,10 @@ def main():
     if not options.filelist:
         options.parser.print_help()
         return
-    if (len(options.filelist) == 1 and
-            options.filelist[0].endswith(".tar")):
-        tar = tarfile.open(options.filelist[0])
-        options.filelist = tar.getnames()
+    #if (len(options.filelist) == 1 and
+    #        options.filelist[0].endswith(".tar")):
+    #    tar = tarfile.open(options.filelist[0])
+    #    options.filelist = tar.getnames()
     if options.output == "-":
         fp = sys.stdout
     elif options.output:
@@ -41,7 +45,7 @@ def main():
     if options.link:
         print >> fp, "from %s import *" % options.link
     print >> fp, "#", options.filename
-            
+
     for i, options.filename in enumerate(options.filelist):
         try:
             if not options.filename.endswith((".m")):
@@ -52,15 +56,15 @@ def main():
                 print "\tExcluded: '%s'" % options.filename
                 continue
             if options.verbose:
-                print options.filename
-            if tar:
-                buf = tar.extractfile(options.filename).read()
-            else:
-                buf = open(options.filename).read()
+                print i, options.filename
+            #if tar:
+            #    buf = tar.extractfile(options.filename).read()
+            #else:
+            buf = open(options.filename).read()
             buf = buf.replace("\r\n","\n")
             buf = buf.decode("ascii",errors="ignore")
             stmt_list=parse.parse(buf if buf[-1]=='\n' else buf+'\n')
-            #assert None not in stmt_list                  
+            #assert None not in stmt_list
             if not stmt_list:
                 return
             if not options.no_resolve:

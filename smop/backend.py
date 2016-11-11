@@ -52,7 +52,7 @@ reserved = set(
     exec   finally for   from  global
     if     import  in    is    lambda
     not    or      pass  print raise
-    return try     while
+    return try     while with
 
     Data  Float Int   Numeric Oxphys
     array close float int     input
@@ -217,15 +217,15 @@ def _backend(self,level=0):
 def _backend(self,level=0):
     self.args.append(node.ident("*args"))
     self.args.append(node.ident("**kwargs"))
-    
     s = """
 @function
 def %s(%s):
-    nargin = sys._getframe(1).f_locals["nargin"]
-    varargin = sys._getframe(1).f_locals["varargin"]
-    nargout = sys._getframe(1).f_locals["nargout"]
+    varargin = %s.varargin
+    nargin = %s.nargin
 """ % (self.ident._backend(),
-       self.args._backend())
+       self.args._backend(),
+       self.ident._backend(),
+       self.ident._backend())
     return s
 
 @extend(node.funcall)
@@ -364,13 +364,7 @@ def _backend(self,level=0):
 
 @extend(node.string)
 def _backend(self,level=0):
-    if "\n" in self.value:
-        return '"""%s"""' % self.value
-    if options.strings == "C":
-        return 'r"%s"' % self.value.replace('"',r'\"')
-    if options.strings == "F":
-        return "r'%s'" % self.value.replace("'",r"''")
-    assert 0
+    return "'%s'" % str(self.value).encode("string_escape")
 
 @extend(node.sub)
 def _backend(self,level=0):

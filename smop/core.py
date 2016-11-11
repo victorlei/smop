@@ -711,10 +711,9 @@ def print_usage():
 
 def function(f):
     def helper(*args,**kwargs):
-        nargout = kwargs and kwargs["nargout"]
-        varargin = cellarray(args)
-        nargin=len(args)
-        return f(*args)
+        helper.nargin = len(args)
+        helper.varargin = cellarray(args)
+        return f(*args,**kwargs)
     return helper
 
 def error(s):

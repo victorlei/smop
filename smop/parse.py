@@ -40,7 +40,7 @@ class syntax_error(error):
     pass
 
 precedence = (
-    ("left", "COMMA"),
+    ("right", "COMMA"),
     ("right","DOTDIVEQ","DOTMULEQ","EQ","EXPEQ",
      "MULEQ","MINUSEQ","DIVEQ","PLUSEQ","OREQ","ANDEQ"),
     ("nonassoc","HANDLE"),
@@ -435,8 +435,7 @@ def p_ident_init_opt(p):
     else:
         p[0] = p[1]
     if len(p) == 2:
-#        p[0].init = node.ident(name="None") if p[0].name != "varargin" else ""
-        pass
+        p[0].init = node.ident(name="None")
     else:
         p[0].init = p[3]
 

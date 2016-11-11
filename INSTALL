@@ -1,5 +1,22 @@
 smop -- matlab to python compiler
 
+Installation with pip
+=====================
+
+Install pip
+
+    sudo apt-get install python-pip
+
+Install smop
+
+    pip install smop --user
+
+or
+
+    sudo pip install smop
+
+Done.
+
 Installation with easy_install
 ==============================
 
