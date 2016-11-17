@@ -73,6 +73,7 @@ def main():
                 fp.write(s)
 
         except:
+            print 40*"="
             traceback.print_exc()
             if not options.ignore_errors:
                 return

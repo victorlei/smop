@@ -132,13 +132,9 @@ def new():
     @TOKEN(r"(\.%s)?%s" % (ws0, id))
     def t_IDENT(t):
         if t.value == "classdef":
-            column = t.lexer.lexpos - t.lexer.lexdata.rfind("\n", 0,
-                                                            t.lexer.lexpos)
-            raise NotImplementedError("classdef",
-                                      (options.filename,
-                                       t.lexer.lineno,
-                                       column,
-                                       t.value))
+            raise_exception(SyntaxError,
+                            "Not implemented: %s" % t.value,
+                            t.lexer)
         t.lexer.lineno += t.value.count("\n")
         if t.value[0] == ".":
             # Reserved words are not reserved
@@ -319,13 +315,7 @@ def new():
         pass
 
     def t_error(t):
-        column = t.lexer.lexpos - t.lexer.lexdata.rfind("\n", 0,
-                                                        t.lexer.lexpos)
-        raise SyntaxError("invalid character",
-                          (options.filename,
-                           t.lexer.lineno,
-                           column,
-                           t.value[0]))
+        raise_exception(SyntaxError, ('Unexpected "%s"' % t.value), t.lexer)
 
     lexer = lex.lex(reflags=re.MULTILINE)
     lexer.brackets = 0  # count open square brackets
@@ -334,7 +324,13 @@ def new():
     lexer.stack = []
     return lexer
 
-
+def raise_exception(error_type, message, my_lexer):
+    startpos = 1 + my_lexer.lexdata.rfind("\n", 0, my_lexer.lexpos)
+    endpos = my_lexer.lexdata.find("\n", startpos)
+    raise error_type(message, (options.filename,
+                               my_lexer.lineno,
+                               1 + my_lexer.lexpos - startpos,
+                               my_lexer.lexdata[startpos:endpos]))
 def main():
     lexer = new()
     line = ""

@@ -3,7 +3,7 @@
 
 import ply.yacc as yacc
 import lexer
-from lexer import tokens
+from lexer import tokens, raise_exception
 import node
 from node import exceptions
 import options
@@ -317,10 +317,9 @@ def p_expr2(p):
     """
     if p[2] == "=":
         if p[1].__class__ is node.let:
-            raise NotImplementedError("assignment as expression",
-                                      (options.filename,
-                                       p.lineno(2)))
-
+            raise_exception(SyntaxError,
+                            "Not implemented assignment as expression",
+                            new_lexer)
         # The algorithm, which decides if an
         # expression F(X)
         # is arrayref or funcall, is implemented in
@@ -361,9 +360,9 @@ def p_expr2(p):
                 # TBD: mark idents as "P" - persistent
                 if p[3].__class__ not in (node.ident, node.funcall
                                           ):  #, p[3].__class__
-                    raise NotImplementedError("multi-assignment",
-                                              (options.filename,
-                                              p.lineno(2)))
+                    raise_exception(SyntaxError,
+                                    "multi-assignment",
+                                    new_lexer)
                 if p[3].__class__ is node.ident:
                     # [A1(B1) A2(B2) ...] = F     implied F()
                     # import pdb; pdb.set_trace()
@@ -380,7 +379,7 @@ def p_expr2(p):
 
 #    elif p[2] == "." and isinstance(p[3],node.expr) and p[3].op=="parens":
 #        p[0] = node.getfield(p[1],p[3].args[0])
-#        raise NotImplementedError(p[3],p.lineno(3),p.lexpos(3))
+#        raise SyntaxError(p[3],p.lineno(3),p.lexpos(3))
     elif p[2] == ":" and isinstance(p[1], node.expr) and p[1].op == ":":
         # Colon expression means different things depending on the
         # context.  As an array subscript, it is a slice; otherwise,
@@ -519,7 +518,7 @@ def p_for_stmt(p):
     """
     if len(p) == 8:
         if not isinstance(p[2], node.ident):
-            raise NotImplementedError("for loop", (options.filename, p.lineno(0)))
+            raise_exception(SyntaxError, "Not implemented: for loop", new_lexer)
         p[2].props = "I"  # I= for-loop iteration variable
         p[0] = node.for_stmt(ident=p[2], expr=p[4], stmt_list=p[6])
 
@@ -825,19 +824,15 @@ def p_while_stmt(p):
 
 @exceptions
 def p_error(p):
+    if p is None:
+        raise_exception(SyntaxError, "Unexpected EOF", new_lexer)
     if p.type == "COMMENT":
         # print "Discarded comment", p.value
         parser.errok()
         return
-    if p.type == "END_UNEXPECTED":
-        raise SyntaxError('Unexpected "end"',
-                          options.filename)
-    raise SyntaxError(p.type,
-                      (options.filename,
-                       p.lineno,
-                       p.lexpos))
-                       #p.value))
-
+    raise_exception(SyntaxError,
+                    ('Unexpected "%s"' % p.value),
+                    new_lexer)
 parser = yacc.yacc(start="top")
 
 
