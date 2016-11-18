@@ -1,0 +1,4 @@
+## System-wide startup file for Octave.
+##
+## This file should contain any commands that should be executed each
+## time Octave starts for every user at this site.

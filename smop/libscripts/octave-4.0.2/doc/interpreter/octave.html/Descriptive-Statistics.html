@@ -1,0 +1,574 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Descriptive Statistics</title>
+
+<meta name="description" content="GNU Octave: Descriptive Statistics">
+<meta name="keywords" content="GNU Octave: Descriptive Statistics">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Statistics.html#Statistics" rel="up" title="Statistics">
+<link href="Basic-Statistical-Functions.html#Basic-Statistical-Functions" rel="next" title="Basic Statistical Functions">
+<link href="Statistics.html#Statistics" rel="prev" title="Statistics">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Descriptive-Statistics"></a>
+<div class="header">
+<p>
+Next: <a href="Basic-Statistical-Functions.html#Basic-Statistical-Functions" accesskey="n" rel="next">Basic Statistical Functions</a>, Up: <a href="Statistics.html#Statistics" accesskey="u" rel="up">Statistics</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Descriptive-Statistics-1"></a>
+<h3 class="section">26.1 Descriptive Statistics</h3>
+
+<p>One principal goal of descriptive statistics is to represent the essence of a
+large data set concisely.  Octave provides the mean, median, and mode functions
+which all summarize a data set with just a single number corresponding to
+the central tendency of the data.
+</p>
+<a name="XREFmean"></a><dl>
+<dt><a name="index-mean"></a>Function File: <em></em> <strong>mean</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-mean-1"></a>Function File: <em></em> <strong>mean</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-mean-2"></a>Function File: <em></em> <strong>mean</strong> <em>(<var>x</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-mean-3"></a>Function File: <em></em> <strong>mean</strong> <em>(<var>x</var>, <var>dim</var>, <var>opt</var>)</em></dt>
+<dd><p>Compute the mean of the elements of the vector <var>x</var>.
+</p>
+<p>The mean is defined as
+</p>
+
+<div class="example">
+<pre class="example">mean (x) = SUM_i x(i) / N
+</pre></div>
+
+<p>If <var>x</var> is a matrix, compute the mean for each column and return them
+in a row vector.
+</p>
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p>The optional argument <var>opt</var> selects the type of mean to compute.
+The following options are recognized:
+</p>
+<dl compact="compact">
+<dt><code>&quot;a&quot;</code></dt>
+<dd><p>Compute the (ordinary) arithmetic mean.  [default]
+</p>
+</dd>
+<dt><code>&quot;g&quot;</code></dt>
+<dd><p>Compute the geometric mean.
+</p>
+</dd>
+<dt><code>&quot;h&quot;</code></dt>
+<dd><p>Compute the harmonic mean.
+</p></dd>
+</dl>
+
+<p>Both <var>dim</var> and <var>opt</var> are optional.  If both are supplied, either
+may appear first.
+</p>
+<p><strong>See also:</strong> <a href="#XREFmedian">median</a>, <a href="#XREFmode">mode</a>.
+</p></dd></dl>
+
+
+<a name="XREFmedian"></a><dl>
+<dt><a name="index-median"></a>Function File: <em></em> <strong>median</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-median-1"></a>Function File: <em></em> <strong>median</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>Compute the median value of the elements of the vector <var>x</var>.
+</p>
+<p>When the elements of <var>x</var> are sorted, the median is defined as
+</p>
+<div class="example">
+<pre class="example">              x(ceil(N/2))             N odd
+median (x) =
+             (x(N/2) + x((N/2)+1))/2   N even
+</pre></div>
+
+<p>If <var>x</var> is a matrix, compute the median value for each column and
+return them in a row vector.
+</p>
+<p>If the optional <var>dim</var> argument is given, operate along this dimension.
+</p>
+<p><strong>See also:</strong> <a href="#XREFmean">mean</a>, <a href="#XREFmode">mode</a>.
+</p></dd></dl>
+
+
+<a name="XREFmode"></a><dl>
+<dt><a name="index-mode"></a>Function File: <em></em> <strong>mode</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-mode-1"></a>Function File: <em></em> <strong>mode</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-mode-2"></a>Function File: <em>[<var>m</var>, <var>f</var>, <var>c</var>] =</em> <strong>mode</strong> <em>(&hellip;)</em></dt>
+<dd><p>Compute the most frequently occurring value in a dataset (mode).
+</p>
+<p><code>mode</code> determines the frequency of values along the first non-singleton
+dimension and returns the value with the highest frequency.  If two, or
+more, values have the same frequency <code>mode</code> returns the smallest.
+</p>
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p>The return variable <var>f</var> is the number of occurrences of the mode in
+the dataset.
+</p>
+<p>The cell array <var>c</var> contains all of the elements with the maximum
+frequency.
+</p>
+<p><strong>See also:</strong> <a href="#XREFmean">mean</a>, <a href="#XREFmedian">median</a>.
+</p></dd></dl>
+
+
+<p>Using just one number, such as the mean, to represent an entire data set may
+not give an accurate picture of the data.  One way to characterize the fit is
+to measure the dispersion of the data.  Octave provides several functions for
+measuring dispersion.
+</p>
+<a name="XREFrange"></a><dl>
+<dt><a name="index-range"></a>Function File: <em></em> <strong>range</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-range-1"></a>Function File: <em></em> <strong>range</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>Return the range, i.e., the difference between the maximum and the minimum
+of the input data.
+</p>
+<p>If <var>x</var> is a vector, the range is calculated over the elements of
+<var>x</var>.  If <var>x</var> is a matrix, the range is calculated over each column
+of <var>x</var>.
+</p>
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p>The range is a quickly computed measure of the dispersion of a data set, but
+is less accurate than <code>iqr</code> if there are outlying data points.
+</p>
+<p><strong>See also:</strong> <a href="#XREFiqr">iqr</a>, <a href="#XREFstd">std</a>.
+</p></dd></dl>
+
+
+<a name="XREFiqr"></a><dl>
+<dt><a name="index-iqr"></a>Function File: <em></em> <strong>iqr</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-iqr-1"></a>Function File: <em></em> <strong>iqr</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>Return the interquartile range, i.e., the difference between the upper
+and lower quartile of the input data.
+</p>
+<p>If <var>x</var> is a matrix, do the above for first non-singleton dimension of
+<var>x</var>.
+</p>
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p>As a measure of dispersion, the interquartile range is less affected by
+outliers than either <code>range</code> or <code>std</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrange">range</a>, <a href="#XREFstd">std</a>.
+</p></dd></dl>
+
+
+<a name="XREFmeansq"></a><dl>
+<dt><a name="index-meansq"></a>Function File: <em></em> <strong>meansq</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-meansq-1"></a>Function File: <em></em> <strong>meansq</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>Compute the mean square of the elements of the vector <var>x</var>.
+</p>
+<p>The mean square is defined as
+</p>
+<div class="example">
+<pre class="example">meansq (x) = 1/N SUM_i x(i)^2
+</pre></div>
+
+<p>For matrix arguments, return a row vector containing the mean square
+of each column.
+</p>
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p><strong>See also:</strong> <a href="#XREFvar">var</a>, <a href="#XREFstd">std</a>, <a href="#XREFmoment">moment</a>.
+</p></dd></dl>
+
+
+<a name="XREFstd"></a><dl>
+<dt><a name="index-std"></a>Function File: <em></em> <strong>std</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-std-1"></a>Function File: <em></em> <strong>std</strong> <em>(<var>x</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-std-2"></a>Function File: <em></em> <strong>std</strong> <em>(<var>x</var>, <var>opt</var>, <var>dim</var>)</em></dt>
+<dd><p>Compute the standard deviation of the elements of the vector <var>x</var>.
+</p>
+<p>The standard deviation is defined as
+</p>
+<div class="example">
+<pre class="example">std (x) = sqrt ( 1/(N-1) SUM_i (x(i) - mean(x))^2 )
+</pre></div>
+
+<p>where <em>N</em> is the number of elements.
+</p>
+<p>If <var>x</var> is a matrix, compute the standard deviation for each column and
+return them in a row vector.
+</p>
+<p>The argument <var>opt</var> determines the type of normalization to use.
+Valid values are
+</p>
+<dl compact="compact">
+<dt>0:</dt>
+<dd><p>normalize with <em>N-1</em>, provides the square root of the best unbiased
+estimator of the variance [default]
+</p>
+</dd>
+<dt>1:</dt>
+<dd><p>normalize with <em>N</em>, this provides the square root of the second
+moment around the mean
+</p></dd>
+</dl>
+
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p><strong>See also:</strong> <a href="#XREFvar">var</a>, <a href="#XREFrange">range</a>, <a href="#XREFiqr">iqr</a>, <a href="#XREFmean">mean</a>, <a href="#XREFmedian">median</a>.
+</p></dd></dl>
+
+
+<p>In addition to knowing the size of a dispersion it is useful to know the shape
+of the data set.  For example, are data points massed to the left or right
+of the mean?  Octave provides several common measures to describe the shape
+of the data set.  Octave can also calculate moments allowing arbitrary shape
+measures to be developed.
+</p>
+<a name="XREFvar"></a><dl>
+<dt><a name="index-var"></a>Function File: <em></em> <strong>var</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-var-1"></a>Function File: <em></em> <strong>var</strong> <em>(<var>x</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-var-2"></a>Function File: <em></em> <strong>var</strong> <em>(<var>x</var>, <var>opt</var>, <var>dim</var>)</em></dt>
+<dd><p>Compute the variance of the elements of the vector <var>x</var>.
+</p>
+<p>The variance is defined as
+</p>
+<div class="example">
+<pre class="example">var (x) = 1/(N-1) SUM_i (x(i) - mean(x))^2
+</pre></div>
+
+<p>If <var>x</var> is a matrix, compute the variance for each column and return
+them in a row vector.
+</p>
+<p>The argument <var>opt</var> determines the type of normalization to use.
+Valid values are
+</p>
+<dl compact="compact">
+<dt>0:</dt>
+<dd><p>normalize with <em>N-1</em>, provides the best unbiased estimator of the
+variance [default]
+</p>
+</dd>
+<dt>1:</dt>
+<dd><p>normalizes with <em>N</em>, this provides the second moment around the mean
+</p></dd>
+</dl>
+
+<p>If <em>N==1</em> the value of <var>opt</var> is ignored and normalization by
+<em>N</em> is used.
+</p>
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p><strong>See also:</strong> <a href="Correlation-and-Regression-Analysis.html#XREFcov">cov</a>, <a href="#XREFstd">std</a>, <a href="#XREFskewness">skewness</a>, <a href="#XREFkurtosis">kurtosis</a>, <a href="#XREFmoment">moment</a>.
+</p></dd></dl>
+
+
+<a name="XREFskewness"></a><dl>
+<dt><a name="index-skewness"></a>Function File: <em></em> <strong>skewness</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-skewness-1"></a>Function File: <em></em> <strong>skewness</strong> <em>(<var>x</var>, <var>flag</var>)</em></dt>
+<dt><a name="index-skewness-2"></a>Function File: <em></em> <strong>skewness</strong> <em>(<var>x</var>, <var>flag</var>, <var>dim</var>)</em></dt>
+<dd><p>Compute the sample skewness of the elements of <var>x</var>.
+</p>
+<p>The sample skewness is defined as
+</p>
+<div class="example">
+<pre class="example">               mean ((<var>x</var> - mean (<var>x</var>)).^3)
+skewness (<var>X</var>) = ------------------------.
+                      std (<var>x</var>).^3
+</pre></div>
+
+
+<p>The optional argument <var>flag</var> controls which normalization is used.
+If <var>flag</var> is equal to 1 (default value, used when <var>flag</var> is omitted
+or empty), return the sample skewness as defined above.  If <var>flag</var> is
+equal to 0, return the adjusted skewness coefficient instead:
+</p>
+<div class="example">
+<pre class="example">                  sqrt (N*(N-1))   mean ((<var>x</var> - mean (<var>x</var>)).^3)
+skewness (<var>X</var>, 0) = -------------- * ------------------------.
+                      (N - 2)             std (<var>x</var>).^3
+</pre></div>
+
+<p>The adjusted skewness coefficient is obtained by replacing the sample second
+and third central moments by their bias-corrected versions.
+</p>
+<p>If <var>x</var> is a matrix, or more generally a multi-dimensional array, return
+the skewness along the first non-singleton dimension.  If the optional
+<var>dim</var> argument is given, operate along this dimension.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFvar">var</a>, <a href="#XREFkurtosis">kurtosis</a>, <a href="#XREFmoment">moment</a>.
+</p></dd></dl>
+
+
+<a name="XREFkurtosis"></a><dl>
+<dt><a name="index-kurtosis"></a>Function File: <em></em> <strong>kurtosis</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-kurtosis-1"></a>Function File: <em></em> <strong>kurtosis</strong> <em>(<var>x</var>, <var>flag</var>)</em></dt>
+<dt><a name="index-kurtosis-2"></a>Function File: <em></em> <strong>kurtosis</strong> <em>(<var>x</var>, <var>flag</var>, <var>dim</var>)</em></dt>
+<dd><p>Compute the sample kurtosis of the elements of <var>x</var>.
+</p>
+<p>The sample kurtosis is defined as
+</p>
+<div class="example">
+<pre class="example">     mean ((<var>x</var> - mean (<var>x</var>)).^4)
+k1 = ------------------------
+            std (<var>x</var>).^4
+</pre></div>
+
+
+<p>The optional argument <var>flag</var> controls which normalization is used.
+If <var>flag</var> is equal to 1 (default value, used when <var>flag</var> is omitted
+or empty), return the sample kurtosis as defined above.  If <var>flag</var> is
+equal to 0, return the <span class="nolinebreak">&quot;bias-corrected&quot;</span><!-- /@w --> kurtosis coefficient instead:
+</p>
+<div class="example">
+<pre class="example">              N - 1
+k0 = 3 + -------------- * ((N + 1) * k1 - 3 * (N - 1))
+         (N - 2)(N - 3)
+</pre></div>
+
+<p>The bias-corrected kurtosis coefficient is obtained by replacing the sample
+second and fourth central moments by their unbiased versions.  It is an
+unbiased estimate of the population kurtosis for normal populations.
+</p>
+<p>If <var>x</var> is a matrix, or more generally a multi-dimensional array, return
+the kurtosis along the first non-singleton dimension.  If the optional
+<var>dim</var> argument is given, operate along this dimension.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFvar">var</a>, <a href="#XREFskewness">skewness</a>, <a href="#XREFmoment">moment</a>.
+</p></dd></dl>
+
+
+<a name="XREFmoment"></a><dl>
+<dt><a name="index-moment"></a>Function File: <em></em> <strong>moment</strong> <em>(<var>x</var>, <var>p</var>)</em></dt>
+<dt><a name="index-moment-1"></a>Function File: <em></em> <strong>moment</strong> <em>(<var>x</var>, <var>p</var>, <var>type</var>)</em></dt>
+<dt><a name="index-moment-2"></a>Function File: <em></em> <strong>moment</strong> <em>(<var>x</var>, <var>p</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-moment-3"></a>Function File: <em></em> <strong>moment</strong> <em>(<var>x</var>, <var>p</var>, <var>type</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-moment-4"></a>Function File: <em></em> <strong>moment</strong> <em>(<var>x</var>, <var>p</var>, <var>dim</var>, <var>type</var>)</em></dt>
+<dd><p>Compute the <var>p</var>-th central moment of the vector <var>x</var>.
+</p>
+
+<div class="example">
+<pre class="example">1/N SUM_i (x(i) - mean(x))^p
+</pre></div>
+
+
+<p>If <var>x</var> is a matrix, return the row vector containing the <var>p</var>-th
+central moment of each column.
+</p>
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p>The optional string <var>type</var> specifies the type of moment to be computed.
+Valid options are:
+</p>
+<dl compact="compact">
+<dt><code>&quot;c&quot;</code></dt>
+<dd><p>Central Moment (default).
+</p>
+</dd>
+<dt><code>&quot;a&quot;</code></dt>
+<dt><code>&quot;ac&quot;</code></dt>
+<dd><p>Absolute Central Moment.  The moment about the mean ignoring sign
+defined as
+</p>
+<div class="example">
+<pre class="example">1/N SUM_i (abs (x(i) - mean(x)))^p
+</pre></div>
+
+
+</dd>
+<dt><code>&quot;r&quot;</code></dt>
+<dd><p>Raw Moment.  The moment about zero defined as
+</p>
+
+<div class="example">
+<pre class="example">moment (x) = 1/N SUM_i x(i)^p
+</pre></div>
+
+
+</dd>
+<dt><code>&quot;ar&quot;</code></dt>
+<dd><p>Absolute Raw Moment.  The moment about zero ignoring sign defined as
+</p>
+<div class="example">
+<pre class="example">1/N SUM_i ( abs (x(i)) )^p
+</pre></div>
+
+</dd>
+</dl>
+
+<p>If both <var>type</var> and <var>dim</var> are given they may appear in any order.
+</p>
+<p><strong>See also:</strong> <a href="#XREFvar">var</a>, <a href="#XREFskewness">skewness</a>, <a href="#XREFkurtosis">kurtosis</a>.
+</p></dd></dl>
+
+
+<a name="XREFquantile"></a><dl>
+<dt><a name="index-quantile"></a>Function File: <em><var>q</var> =</em> <strong>quantile</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-quantile-1"></a>Function File: <em><var>q</var> =</em> <strong>quantile</strong> <em>(<var>x</var>, <var>p</var>)</em></dt>
+<dt><a name="index-quantile-2"></a>Function File: <em><var>q</var> =</em> <strong>quantile</strong> <em>(<var>x</var>, <var>p</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-quantile-3"></a>Function File: <em><var>q</var> =</em> <strong>quantile</strong> <em>(<var>x</var>, <var>p</var>, <var>dim</var>, <var>method</var>)</em></dt>
+<dd><p>For a sample, <var>x</var>, calculate the quantiles, <var>q</var>, corresponding to
+the cumulative probability values in <var>p</var>.  All non-numeric values (NaNs)
+of <var>x</var> are ignored.
+</p>
+<p>If <var>x</var> is a matrix, compute the quantiles for each column and
+return them in a matrix, such that the i-th row of <var>q</var> contains
+the <var>p</var>(i)th quantiles of each column of <var>x</var>.
+</p>
+<p>If <var>p</var> is unspecified, return the quantiles for
+<code>[0.00 0.25 0.50 0.75 1.00]</code>.
+The optional argument <var>dim</var> determines the dimension along which
+the quantiles are calculated.  If <var>dim</var> is omitted it defaults to
+the first non-singleton dimension.
+</p>
+<p>The methods available to calculate sample quantiles are the nine methods
+used by R (<a href="http://www.r-project.org/">http://www.r-project.org/</a>).  The default value is
+METHOD&nbsp;=&nbsp;5<!-- /@w -->.
+</p>
+<p>Discontinuous sample quantile methods 1, 2, and 3
+</p>
+<ol>
+<li> Method 1: Inverse of empirical distribution function.
+
+</li><li> Method 2: Similar to method 1 but with averaging at discontinuities.
+
+</li><li> Method 3: SAS definition: nearest even order statistic.
+</li></ol>
+
+<p>Continuous sample quantile methods 4 through 9, where p(k) is the linear
+interpolation function respecting each methods&rsquo; representative cdf.
+</p>
+<ol start="4">
+<li> Method 4: p(k) = k / n.  That is, linear interpolation of the
+empirical cdf.
+
+</li><li> Method 5: p(k) = (k - 0.5) / n.  That is a piecewise linear function
+where the knots are the values midway through the steps of the empirical
+cdf.
+
+</li><li> Method 6: p(k) = k / (n + 1).
+
+</li><li> Method 7: p(k) = (k - 1) / (n - 1).
+
+</li><li> Method 8: p(k) = (k - 1/3) / (n + 1/3).  The resulting quantile
+estimates are approximately median-unbiased regardless of the distribution
+of <var>x</var>.
+
+</li><li> Method 9: p(k) = (k - 3/8) / (n + 1/4).  The resulting quantile
+estimates are approximately unbiased for the expected order statistics if
+<var>x</var> is normally distributed.
+</li></ol>
+
+<p>Hyndman and Fan (1996) recommend method 8.  Maxima, S, and R
+(versions prior to 2.0.0) use 7 as their default.  Minitab and SPSS
+use method 6.  <small>MATLAB</small> uses method 5.
+</p>
+<p>References:
+</p>
+<ul>
+<li> Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988)
+The New S Language.  Wadsworth &amp; Brooks/Cole.
+
+</li><li> Hyndman, R. J. and Fan, Y. (1996) Sample quantiles in
+statistical packages, American Statistician, 50, 361&ndash;365.
+
+</li><li> R: A Language and Environment for Statistical Computing;
+<a href="http://cran.r-project.org/doc/manuals/fullrefman.pdf">http://cran.r-project.org/doc/manuals/fullrefman.pdf</a>.
+</li></ul>
+
+<p>Examples:
+</p>
+<div class="smallexample">
+<pre class="smallexample">x = randi (1000, [10, 1]);  # Create empirical data in range 1-1000
+q = quantile (x, [0, 1]);   # Return minimum, maximum of distribution
+q = quantile (x, [0.25 0.5 0.75]); # Return quartiles of distribution
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFprctile">prctile</a>.
+</p></dd></dl>
+
+
+<a name="XREFprctile"></a><dl>
+<dt><a name="index-prctile"></a>Function File: <em><var>q</var> =</em> <strong>prctile</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-prctile-1"></a>Function File: <em><var>q</var> =</em> <strong>prctile</strong> <em>(<var>x</var>, <var>p</var>)</em></dt>
+<dt><a name="index-prctile-2"></a>Function File: <em><var>q</var> =</em> <strong>prctile</strong> <em>(<var>x</var>, <var>p</var>, <var>dim</var>)</em></dt>
+<dd><p>For a sample <var>x</var>, compute the quantiles, <var>q</var>, corresponding
+to the cumulative probability values, <var>p</var>, in percent.
+</p>
+<p>If <var>x</var> is a matrix, compute the percentiles for each column and return
+them in a matrix, such that the i-th row of <var>y</var> contains the
+<var>p</var>(i)th percentiles of each column of <var>x</var>.
+</p>
+<p>If <var>p</var> is unspecified, return the quantiles for <code>[0 25 50 75 100]</code>.
+</p>
+<p>The optional argument <var>dim</var> determines the dimension along which the
+percentiles are calculated.  If <var>dim</var> is omitted it defaults to the
+first non-singleton dimension.
+</p>
+<p>Programming Note: All non-numeric values (NaNs) of <var>x</var> are ignored.
+</p>
+<p><strong>See also:</strong> <a href="#XREFquantile">quantile</a>.
+</p></dd></dl>
+
+
+<p>A summary view of a data set can be generated quickly with the
+<code>statistics</code> function.
+</p>
+<a name="XREFstatistics"></a><dl>
+<dt><a name="index-statistics"></a>Function File: <em></em> <strong>statistics</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-statistics-1"></a>Function File: <em></em> <strong>statistics</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>Return a vector with the minimum, first quartile, median, third quartile,
+maximum, mean, standard deviation, skewness, and kurtosis of the elements of
+the vector <var>x</var>.
+</p>
+<p>If <var>x</var> is a matrix, calculate statistics over the first non-singleton
+dimension.
+</p>
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p><strong>See also:</strong> <a href="Utility-Functions.html#XREFmin">min</a>, <a href="Utility-Functions.html#XREFmax">max</a>, <a href="#XREFmedian">median</a>, <a href="#XREFmean">mean</a>, <a href="#XREFstd">std</a>, <a href="#XREFskewness">skewness</a>, <a href="#XREFkurtosis">kurtosis</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Basic-Statistical-Functions.html#Basic-Statistical-Functions" accesskey="n" rel="next">Basic Statistical Functions</a>, Up: <a href="Statistics.html#Statistics" accesskey="u" rel="up">Statistics</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

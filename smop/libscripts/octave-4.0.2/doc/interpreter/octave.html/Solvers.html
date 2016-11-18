@@ -1,0 +1,343 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Solvers</title>
+
+<meta name="description" content="GNU Octave: Solvers">
+<meta name="keywords" content="GNU Octave: Solvers">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Nonlinear-Equations.html#Nonlinear-Equations" rel="up" title="Nonlinear Equations">
+<link href="Minimizers.html#Minimizers" rel="next" title="Minimizers">
+<link href="Nonlinear-Equations.html#Nonlinear-Equations" rel="prev" title="Nonlinear Equations">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Solvers"></a>
+<div class="header">
+<p>
+Next: <a href="Minimizers.html#Minimizers" accesskey="n" rel="next">Minimizers</a>, Up: <a href="Nonlinear-Equations.html#Nonlinear-Equations" accesskey="u" rel="up">Nonlinear Equations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Solvers-1"></a>
+<h3 class="section">20.1 Solvers</h3>
+
+<p>Octave can solve sets of nonlinear equations of the form
+</p>
+<div class="example">
+<pre class="example">F (x) = 0
+</pre></div>
+
+
+<p>using the function <code>fsolve</code>, which is based on the <small>MINPACK</small>
+subroutine <code>hybrd</code>.  This is an iterative technique so a starting
+point must be provided.  This also has the consequence that
+convergence is not guaranteed even if a solution exists.
+</p>
+<a name="XREFfsolve"></a><dl>
+<dt><a name="index-fsolve"></a>Function File: <em></em> <strong>fsolve</strong> <em>(<var>fcn</var>, <var>x0</var>, <var>options</var>)</em></dt>
+<dt><a name="index-fsolve-1"></a>Function File: <em>[<var>x</var>, <var>fvec</var>, <var>info</var>, <var>output</var>, <var>fjac</var>] =</em> <strong>fsolve</strong> <em>(<var>fcn</var>, &hellip;)</em></dt>
+<dd><p>Solve a system of nonlinear equations defined by the function <var>fcn</var>.
+</p>
+<p><var>fcn</var> should accept a vector (array) defining the unknown variables,
+and return a vector of left-hand sides of the equations.  Right-hand sides
+are defined to be zeros.  In other words, this function attempts to
+determine a vector <var>x</var> such that <code><var>fcn</var> (<var>x</var>)</code> gives
+(approximately) all zeros.
+</p>
+<p><var>x0</var> determines a starting guess.  The shape of <var>x0</var> is preserved
+in all calls to <var>fcn</var>, but otherwise it is treated as a column vector.
+</p>
+<p><var>options</var> is a structure specifying additional options.  Currently,
+<code>fsolve</code> recognizes these options:
+<code>&quot;FunValCheck&quot;</code>, <code>&quot;OutputFcn&quot;</code>, <code>&quot;TolX&quot;</code>,
+<code>&quot;TolFun&quot;</code>, <code>&quot;MaxIter&quot;</code>, <code>&quot;MaxFunEvals&quot;</code>,
+<code>&quot;Jacobian&quot;</code>, <code>&quot;Updating&quot;</code>, <code>&quot;ComplexEqn&quot;</code>
+<code>&quot;TypicalX&quot;</code>, <code>&quot;AutoScaling&quot;</code> and <code>&quot;FinDiffType&quot;</code>.
+</p>
+<p>If <code>&quot;Jacobian&quot;</code> is <code>&quot;on&quot;</code>, it specifies that <var>fcn</var>, called
+with 2 output arguments also returns the Jacobian matrix of right-hand sides
+at the requested point.  <code>&quot;TolX&quot;</code> specifies the termination tolerance
+in the unknown variables, while <code>&quot;TolFun&quot;</code> is a tolerance for
+equations.  Default is <code>1e-7</code> for both <code>&quot;TolX&quot;</code> and
+<code>&quot;TolFun&quot;</code>.
+</p>
+<p>If <code>&quot;AutoScaling&quot;</code> is on, the variables will be automatically scaled
+according to the column norms of the (estimated) Jacobian.  As a result,
+TolF becomes scaling-independent.  By default, this option is off because
+it may sometimes deliver unexpected (though mathematically correct) results.
+</p>
+<p>If <code>&quot;Updating&quot;</code> is <code>&quot;on&quot;</code>, the function will attempt to use
+Broyden updates to update the Jacobian, in order to reduce the
+amount of Jacobian calculations.  If your user function always calculates the
+Jacobian (regardless of number of output arguments) then this option provides
+no advantage and should be set to false.
+</p>
+<p><code>&quot;ComplexEqn&quot;</code> is <code>&quot;on&quot;</code>, <code>fsolve</code> will attempt to solve
+complex equations in complex variables, assuming that the equations possess
+a complex derivative (i.e., are holomorphic).  If this is not what you want,
+you should unpack the real and imaginary parts of the system to get a real
+system.
+</p>
+<p>For description of the other options, see <code>optimset</code>.
+</p>
+<p>On return, <var>fval</var> contains the value of the function <var>fcn</var>
+evaluated at <var>x</var>.
+</p>
+<p><var>info</var> may be one of the following values:
+</p>
+<dl compact="compact">
+<dt>1</dt>
+<dd><p>Converged to a solution point.  Relative residual error is less than
+specified by TolFun.
+</p>
+</dd>
+<dt>2</dt>
+<dd><p>Last relative step size was less that TolX.
+</p>
+</dd>
+<dt>3</dt>
+<dd><p>Last relative decrease in residual was less than TolF.
+</p>
+</dd>
+<dt>0</dt>
+<dd><p>Iteration limit exceeded.
+</p>
+</dd>
+<dt>-3</dt>
+<dd><p>The trust region radius became excessively small.
+</p></dd>
+</dl>
+
+<p>Note: If you only have a single nonlinear equation of one variable, using
+<code>fzero</code> is usually a much better idea.
+</p>
+<p>Note about user-supplied Jacobians:
+As an inherent property of the algorithm, a Jacobian is always requested for
+a solution vector whose residual vector is already known, and it is the last
+accepted successful step.  Often this will be one of the last two calls, but
+not always.  If the savings by reusing intermediate results from residual
+calculation in Jacobian calculation are significant, the best strategy is to
+employ OutputFcn: After a vector is evaluated for residuals, if OutputFcn is
+called with that vector, then the intermediate results should be saved for
+future Jacobian evaluation, and should be kept until a Jacobian evaluation
+is requested or until OutputFcn is called with a different vector, in which
+case they should be dropped in favor of this most recent vector.  A short
+example how this can be achieved follows:
+</p>
+<div class="example">
+<pre class="example">function [fvec, fjac] = user_func (x, optimvalues, state)
+persistent sav = [], sav0 = [];
+if (nargin == 1)
+  ## evaluation call
+  if (nargout == 1)
+    sav0.x = x; # mark saved vector
+    ## calculate fvec, save results to sav0.
+  elseif (nargout == 2)
+    ## calculate fjac using sav.
+  endif
+else
+  ## outputfcn call.
+  if (all (x == sav0.x))
+    sav = sav0;
+  endif
+  ## maybe output iteration status, etc.
+endif
+endfunction
+
+## &hellip;
+
+fsolve (@user_func, x0, optimset (&quot;OutputFcn&quot;, @user_func, &hellip;))
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFfzero">fzero</a>, <a href="Linear-Least-Squares.html#XREFoptimset">optimset</a>.
+</p></dd></dl>
+
+
+<p>The following is a complete example.  To solve the set of equations
+</p>
+<div class="example">
+<pre class="example">-2x^2 + 3xy   + 4 sin(y) = 6
+ 3x^2 - 2xy^2 + 3 cos(x) = -4
+</pre></div>
+
+
+<p>you first need to write a function to compute the value of the given
+function.  For example:
+</p>
+<div class="example">
+<pre class="example">function y = f (x)
+  y = zeros (2, 1);
+  y(1) = -2*x(1)^2 + 3*x(1)*x(2)   + 4*sin(x(2)) - 6;
+  y(2) =  3*x(1)^2 - 2*x(1)*x(2)^2 + 3*cos(x(1)) + 4;
+endfunction
+</pre></div>
+
+<p>Then, call <code>fsolve</code> with a specified initial condition to find the
+roots of the system of equations.  For example, given the function
+<code>f</code> defined above,
+</p>
+<div class="example">
+<pre class="example">[x, fval, info] = fsolve (@f, [1; 2])
+</pre></div>
+
+<p>results in the solution
+</p>
+<div class="example">
+<pre class="example">x =
+
+  0.57983
+  2.54621
+
+fval =
+
+  -5.7184e-10
+   5.5460e-10
+
+info = 1
+</pre></div>
+
+<p>A value of <code>info = 1</code> indicates that the solution has converged.
+</p>
+<p>When no Jacobian is supplied (as in the example above) it is approximated
+numerically.  This requires more function evaluations, and hence is
+less efficient.  In the example above we could compute the Jacobian
+analytically as
+</p>
+
+<div class="example">
+<pre class="example">function [y, jac] = f (x)
+  y = zeros (2, 1);
+  y(1) = -2*x(1)^2 + 3*x(1)*x(2)   + 4*sin(x(2)) - 6;
+  y(2) =  3*x(1)^2 - 2*x(1)*x(2)^2 + 3*cos(x(1)) + 4;
+  if (nargout == 2)
+    jac = zeros (2, 2);
+    jac(1,1) =  3*x(2) - 4*x(1);
+    jac(1,2) =  4*cos(x(2)) + 3*x(1);
+    jac(2,1) = -2*x(2)^2 - 3*sin(x(1)) + 6*x(1);
+    jac(2,2) = -4*x(1)*x(2);
+  endif
+endfunction
+</pre></div>
+
+<p>The Jacobian can then be used with the following call to <code>fsolve</code>:
+</p>
+<div class="example">
+<pre class="example">[x, fval, info] = fsolve (@f, [1; 2], optimset (&quot;jacobian&quot;, &quot;on&quot;));
+</pre></div>
+
+<p>which gives the same solution as before.
+</p>
+<a name="XREFfzero"></a><dl>
+<dt><a name="index-fzero"></a>Function File: <em></em> <strong>fzero</strong> <em>(<var>fun</var>, <var>x0</var>)</em></dt>
+<dt><a name="index-fzero-1"></a>Function File: <em></em> <strong>fzero</strong> <em>(<var>fun</var>, <var>x0</var>, <var>options</var>)</em></dt>
+<dt><a name="index-fzero-2"></a>Function File: <em>[<var>x</var>, <var>fval</var>, <var>info</var>, <var>output</var>] =</em> <strong>fzero</strong> <em>(&hellip;)</em></dt>
+<dd><p>Find a zero of a univariate function.
+</p>
+<p><var>fun</var> is a function handle, inline function, or string containing the
+name of the function to evaluate.
+</p>
+<p><var>x0</var> should be a two-element vector specifying two points which
+bracket a zero.  In other words, there must be a change in sign of the
+function between <var>x0</var>(1) and <var>x0</var>(2).  More mathematically, the
+following must hold
+</p>
+<div class="example">
+<pre class="example">sign (<var>fun</var>(<var>x0</var>(1))) * sign (<var>fun</var>(<var>x0</var>(2))) &lt;= 0
+</pre></div>
+
+<p>If <var>x0</var> is a single scalar then several nearby and distant values are
+probed in an attempt to obtain a valid bracketing.  If this is not
+successful, the function fails.
+</p>
+<p><var>options</var> is a structure specifying additional options.  Currently,
+<code>fzero</code> recognizes these options:
+<code>&quot;FunValCheck&quot;</code>, <code>&quot;OutputFcn&quot;</code>, <code>&quot;TolX&quot;</code>,
+<code>&quot;MaxIter&quot;</code>, <code>&quot;MaxFunEvals&quot;</code>.
+For a description of these options, see <a href="Linear-Least-Squares.html#XREFoptimset">optimset</a>.
+</p>
+<p>On exit, the function returns <var>x</var>, the approximate zero point and
+<var>fval</var>, the function value thereof.
+</p>
+<p><var>info</var> is an exit flag that can have these values:
+</p>
+<ul>
+<li> 1
+ The algorithm converged to a solution.
+
+</li><li> 0
+ Maximum number of iterations or function evaluations has been reached.
+
+</li><li> -1
+The algorithm has been terminated from user output function.
+
+</li><li> -5
+The algorithm may have converged to a singular point.
+</li></ul>
+
+<p><var>output</var> is a structure containing runtime information about the
+<code>fzero</code> algorithm.  Fields in the structure are:
+</p>
+<ul>
+<li> iterations
+ Number of iterations through loop.
+
+</li><li> nfev
+ Number of function evaluations.
+
+</li><li> bracketx
+ A two-element vector with the final bracketing of the zero along the x-axis.
+
+</li><li> brackety
+ A two-element vector with the final bracketing of the zero along the y-axis.
+</li></ul>
+
+<p><strong>See also:</strong> <a href="Linear-Least-Squares.html#XREFoptimset">optimset</a>, <a href="#XREFfsolve">fsolve</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Minimizers.html#Minimizers" accesskey="n" rel="next">Minimizers</a>, Up: <a href="Nonlinear-Equations.html#Nonlinear-Equations" accesskey="u" rel="up">Nonlinear Equations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

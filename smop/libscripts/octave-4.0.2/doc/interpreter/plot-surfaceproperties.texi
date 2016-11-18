@@ -1,0 +1,346 @@
+@c DO NOT EDIT!  Generated automatically by genpropdoc.m.
+
+@c Copyright (C) 2014-2015 Pantxo Diribarne
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@table @asis
+
+@anchor{XREFsurface__modified__}
+@cindex surface __modified__
+@item @code{__modified__}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFsurfacealphadata}
+@cindex surface alphadata
+@item @code{alphadata}: scalar | matrix, def. @code{1}
+Transparency is not yet implemented for surface objects.  @code{alphadata} is unused.
+
+
+@anchor{XREFsurfacealphadatamapping}
+@cindex surface alphadatamapping
+@item @code{alphadatamapping}: @qcode{"direct"} | @qcode{"none"} | @{@qcode{"scaled"}@}
+Transparency is not yet implemented for surface objects.  @code{alphadatamapping} is unused.
+
+
+@anchor{XREFsurfaceambientstrength}
+@cindex surface ambientstrength
+@item @code{ambientstrength}: def. @code{0.30000}
+Light is not yet implemented for surface objects.  @code{ambientstrength} is unused.
+
+
+@anchor{XREFsurfacebackfacelighting}
+@cindex surface backfacelighting
+@item @code{backfacelighting}: @qcode{"lit"} | @{@qcode{"reverselit"}@} | @qcode{"unlit"}
+Light is not yet implemented for surface objects.  @code{backfacelighting} is unused.
+
+
+@anchor{XREFsurfacebeingdeleted}
+@cindex surface beingdeleted
+@item @code{beingdeleted}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFsurfacebusyaction}
+@cindex surface busyaction
+@item @code{busyaction}: @qcode{"cancel"} | @{@qcode{"queue"}@}
+
+
+
+@anchor{XREFsurfacebuttondownfcn}
+@cindex surface buttondownfcn
+@item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
+
+
+
+@anchor{XREFsurfacecdata}
+@cindex surface cdata
+@item @code{cdata}: matrix, def. 3-by-3 double
+
+
+
+@anchor{XREFsurfacecdatamapping}
+@cindex surface cdatamapping
+@item @code{cdatamapping}: @qcode{"direct"} | @{@qcode{"scaled"}@}
+
+
+
+@anchor{XREFsurfacecdatasource}
+@cindex surface cdatasource
+@item @code{cdatasource}: def. @qcode{""}
+
+
+
+@anchor{XREFsurfacechildren}
+@cindex surface children
+@item @code{children} (read-only): vector of graphics handles, def. @code{[](0x1)}
+@code{children} is unused.
+
+
+@anchor{XREFsurfaceclipping}
+@cindex surface clipping
+@item @code{clipping}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{clipping} is @qcode{"on"}, the surface is clipped in its parent axes limits.
+
+
+@anchor{XREFsurfacecreatefcn}
+@cindex surface createfcn
+@item @code{createfcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately after surface has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultsurfacecreatefcn", 'disp ("surface created!")')}.
+
+
+@anchor{XREFsurfacedeletefcn}
+@cindex surface deletefcn
+@item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately before surface is deleted.
+
+
+@anchor{XREFsurfacediffusestrength}
+@cindex surface diffusestrength
+@item @code{diffusestrength}: def. @code{0.60000}
+Light is not yet implemented for surface objects.  @code{diffusestrength} is unused.
+
+
+@anchor{XREFsurfacedisplayname}
+@cindex surface displayname
+@item @code{displayname}: def. @qcode{""}
+Text for the legend entry corresponding to this surface.
+
+
+@anchor{XREFsurfaceedgealpha}
+@cindex surface edgealpha
+@item @code{edgealpha}: scalar, def. @code{1}
+Transparency is not yet implemented for surface objects.  @code{edgealpha} is unused.
+
+
+@anchor{XREFsurfaceedgecolor}
+@cindex surface edgecolor
+@item @code{edgecolor}: def. @code{[0   0   0]}
+
+
+
+@anchor{XREFsurfaceedgelighting}
+@cindex surface edgelighting
+@item @code{edgelighting}: @qcode{"flat"} | @qcode{"gouraud"} | @{@qcode{"none"}@} | @qcode{"phong"}
+Light is not yet implemented for surface objects.  @code{edgelighting} is unused.
+
+
+@anchor{XREFsurfaceerasemode}
+@cindex surface erasemode
+@item @code{erasemode}: @qcode{"background"} | @qcode{"none"} | @{@qcode{"normal"}@} | @qcode{"xor"}
+@code{erasemode} is unused.
+
+
+@anchor{XREFsurfacefacealpha}
+@cindex surface facealpha
+@item @code{facealpha}: scalar | matrix, def. @code{1}
+Transparency is not yet implemented for surface objects.  @code{facealpha} is unused.
+
+
+@anchor{XREFsurfacefacecolor}
+@cindex surface facecolor
+@item @code{facecolor}: @{@qcode{"flat"}@} | @qcode{"interp"} | @qcode{"none"} | @qcode{"texturemap"}
+
+
+
+@anchor{XREFsurfacefacelighting}
+@cindex surface facelighting
+@item @code{facelighting}: @qcode{"flat"} | @qcode{"gouraud"} | @{@qcode{"none"}@} | @qcode{"phong"}
+Light is not yet implemented for surface objects.  @code{facelighting} is unused.
+
+
+@anchor{XREFsurfacehandlevisibility}
+@cindex surface handlevisibility
+@item @code{handlevisibility}: @qcode{"callback"} | @qcode{"off"} | @{@qcode{"on"}@}
+If @code{handlevisibility} is @qcode{"off"}, the surface's handle is not visible in its parent's "children" property.
+
+
+@anchor{XREFsurfacehittest}
+@cindex surface hittest
+@item @code{hittest}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFsurfaceinterpreter}
+@cindex surface interpreter
+@item @code{interpreter}: @qcode{"latex"} | @qcode{"none"} | @{@qcode{"tex"}@}
+
+
+
+@anchor{XREFsurfaceinterruptible}
+@cindex surface interruptible
+@item @code{interruptible}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFsurfacelinestyle}
+@cindex surface linestyle
+@item @code{linestyle}: @{@qcode{"-"}@} | @qcode{"--"} | @qcode{"-."} | @qcode{":"} | @qcode{"none"}
+@xref{Line Styles}.
+
+
+@anchor{XREFsurfacelinewidth}
+@cindex surface linewidth
+@item @code{linewidth}: def. @code{0.50000}
+@xref{XREFlinelinewidth, , @w{line linewidth property}}.
+
+
+@anchor{XREFsurfacemarker}
+@cindex surface marker
+@item @code{marker}: @qcode{"*"} | @qcode{"+"} | @qcode{"."} | @qcode{"<"} | @qcode{">"} | @qcode{"^"} | @qcode{"d"} | @qcode{"diamond"} | @qcode{"h"} | @qcode{"hexagram"} | @{@qcode{"none"}@} | @qcode{"o"} | @qcode{"p"} | @qcode{"pentagram"} | @qcode{"s"} | @qcode{"square"} | @qcode{"v"} | @qcode{"x"}
+@xref{Marker Styles}.
+
+
+@anchor{XREFsurfacemarkeredgecolor}
+@cindex surface markeredgecolor
+@item @code{markeredgecolor}: @{@qcode{"auto"}@} | @qcode{"flat"} | @qcode{"none"}
+@xref{XREFlinemarkeredgecolor, , @w{line markeredgecolor property}}.
+
+
+@anchor{XREFsurfacemarkerfacecolor}
+@cindex surface markerfacecolor
+@item @code{markerfacecolor}: @qcode{"auto"} | @qcode{"flat"} | @{@qcode{"none"}@}
+@xref{XREFlinemarkerfacecolor, , @w{line markerfacecolor property}}.
+
+
+@anchor{XREFsurfacemarkersize}
+@cindex surface markersize
+@item @code{markersize}: scalar, def. @code{6}
+@xref{XREFlinemarkersize, , @w{line markersize property}}.
+
+
+@anchor{XREFsurfacemeshstyle}
+@cindex surface meshstyle
+@item @code{meshstyle}: @{@qcode{"both"}@} | @qcode{"column"} | @qcode{"row"}
+
+
+
+@anchor{XREFsurfacenormalmode}
+@cindex surface normalmode
+@item @code{normalmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+
+
+
+@anchor{XREFsurfaceparent}
+@cindex surface parent
+@item @code{parent}: graphics handle
+Handle of the parent graphics object.
+
+
+@anchor{XREFsurfaceselected}
+@cindex surface selected
+@item @code{selected}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFsurfaceselectionhighlight}
+@cindex surface selectionhighlight
+@item @code{selectionhighlight}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFsurfacespecularcolorreflectance}
+@cindex surface specularcolorreflectance
+@item @code{specularcolorreflectance}: def. @code{1}
+Light is not yet implemented for surface objects.  @code{specularcolorreflectance} is unused.
+
+
+@anchor{XREFsurfacespecularexponent}
+@cindex surface specularexponent
+@item @code{specularexponent}: def. @code{10}
+Light is not yet implemented for surface objects.  @code{specularexponent} is unused.
+
+
+@anchor{XREFsurfacespecularstrength}
+@cindex surface specularstrength
+@item @code{specularstrength}: def. @code{0.90000}
+Light is not yet implemented for surface objects.  @code{specularstrength} is unused.
+
+
+@anchor{XREFsurfacetag}
+@cindex surface tag
+@item @code{tag}: string, def. @qcode{""}
+A user-defined string to label the graphics object.
+
+
+@anchor{XREFsurfacetype}
+@cindex surface type
+@item @code{type} (read-only): string
+Class name of the graphics object.  @code{type} is always @qcode{"surface"}
+
+
+@anchor{XREFsurfaceuicontextmenu}
+@cindex surface uicontextmenu
+@item @code{uicontextmenu}: graphics handle, def. @code{[](0x0)}
+Graphics handle of the uicontextmenu object that is currently associated to this surface object.
+
+
+@anchor{XREFsurfaceuserdata}
+@cindex surface userdata
+@item @code{userdata}: Any Octave data, def. @code{[](0x0)}
+User-defined data to associate with the graphics object.
+
+
+@anchor{XREFsurfacevertexnormals}
+@cindex surface vertexnormals
+@item @code{vertexnormals}: def. 3-by-3-by-3 double
+
+
+
+@anchor{XREFsurfacevisible}
+@cindex surface visible
+@item @code{visible}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{visible} is @qcode{"off"}, the surface is not rendered on screen.
+
+
+@anchor{XREFsurfacexdata}
+@cindex surface xdata
+@item @code{xdata}: matrix, def. @code{[1   2   3]}
+
+
+
+@anchor{XREFsurfacexdatasource}
+@cindex surface xdatasource
+@item @code{xdatasource}: def. @qcode{""}
+
+
+
+@anchor{XREFsurfaceydata}
+@cindex surface ydata
+@item @code{ydata}: matrix, def. @code{[1;    2;    3]}
+
+
+
+@anchor{XREFsurfaceydatasource}
+@cindex surface ydatasource
+@item @code{ydatasource}: def. @qcode{""}
+
+
+
+@anchor{XREFsurfacezdata}
+@cindex surface zdata
+@item @code{zdata}: matrix, def. 3-by-3 double
+
+
+
+@anchor{XREFsurfacezdatasource}
+@cindex surface zdatasource
+@item @code{zdatasource}: def. @qcode{""}
+
+
+@end table

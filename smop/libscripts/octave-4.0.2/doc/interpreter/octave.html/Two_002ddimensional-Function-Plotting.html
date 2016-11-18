@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Two-dimensional Function Plotting</title>
+
+<meta name="description" content="GNU Octave: Two-dimensional Function Plotting">
+<meta name="keywords" content="GNU Octave: Two-dimensional Function Plotting">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Two_002dDimensional-Plots.html#Two_002dDimensional-Plots" rel="up" title="Two-Dimensional Plots">
+<link href="Two_002ddimensional-Geometric-Shapes.html#Two_002ddimensional-Geometric-Shapes" rel="next" title="Two-dimensional Geometric Shapes">
+<link href="Axis-Configuration.html#Axis-Configuration" rel="prev" title="Axis Configuration">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Two_002ddimensional-Function-Plotting"></a>
+<div class="header">
+<p>
+Next: <a href="Two_002ddimensional-Geometric-Shapes.html#Two_002ddimensional-Geometric-Shapes" accesskey="n" rel="next">Two-dimensional Geometric Shapes</a>, Previous: <a href="Axis-Configuration.html#Axis-Configuration" accesskey="p" rel="prev">Axis Configuration</a>, Up: <a href="Two_002dDimensional-Plots.html#Two_002dDimensional-Plots" accesskey="u" rel="up">Two-Dimensional Plots</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Two_002ddimensional-Function-Plotting-1"></a>
+<h4 class="subsubsection">15.2.1.2 Two-dimensional Function Plotting</h4>
+<a name="index-plotting_002c-two_002ddimensional-functions"></a>
+
+<p>Octave can plot a function from a function handle, inline function, or
+string defining the function without the user needing to explicitly
+create the data to be plotted.  The function <code>fplot</code> also generates
+two-dimensional plots with linear axes using a function name and limits
+for the range of the x-coordinate instead of the x and y data.  For
+example,
+</p>
+<div class="example">
+<pre class="example">fplot (@sin, [-10, 10], 201);
+</pre></div>
+
+<p>produces a plot that is equivalent to the one above, but also includes a
+legend displaying the name of the plotted function.
+</p>
+<a name="XREFfplot"></a><dl>
+<dt><a name="index-fplot"></a>Function File: <em></em> <strong>fplot</strong> <em>(<var>fn</var>, <var>limits</var>)</em></dt>
+<dt><a name="index-fplot-1"></a>Function File: <em></em> <strong>fplot</strong> <em>(&hellip;, <var>tol</var>)</em></dt>
+<dt><a name="index-fplot-2"></a>Function File: <em></em> <strong>fplot</strong> <em>(&hellip;, <var>n</var>)</em></dt>
+<dt><a name="index-fplot-3"></a>Function File: <em></em> <strong>fplot</strong> <em>(&hellip;, <var>fmt</var>)</em></dt>
+<dt><a name="index-fplot-4"></a>Function File: <em>[<var>x</var>, <var>y</var>] =</em> <strong>fplot</strong> <em>(&hellip;)</em></dt>
+<dd><p>Plot a function <var>fn</var> within the range defined by <var>limits</var>.
+</p>
+<p><var>fn</var> is a function handle, inline function, or string containing the
+name of the function to evaluate.
+</p>
+<p>The limits of the plot are of the form <code>[<var>xlo</var>,&nbsp;<var>xhi</var>]</code><!-- /@w --> or
+<code>[<var>xlo</var>,&nbsp;<var>xhi</var>,&nbsp;<var>ylo</var>,&nbsp;<var>yhi</var>]</code><!-- /@w -->.
+</p>
+<p>The next three arguments are all optional and any number of them may be
+given in any order.
+</p>
+<p><var>tol</var> is the relative tolerance to use for the plot and defaults
+to 2e-3 (.2%).
+</p>
+<p><var>n</var> is the minimum number of points to use.  When <var>n</var> is specified,
+the maximum stepsize will be <code><var>xhi</var> - <var>xlo</var> / <var>n</var></code>.  More
+than <var>n</var> points may still be used in order to meet the relative
+tolerance requirement.
+</p>
+<p>The <var>fmt</var> argument specifies the linestyle to be used by the plot
+command.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>With no output arguments the results are immediately plotted.  With two
+output arguments the 2-D plot data is returned.  The data can subsequently
+be plotted manually with <code>plot (<var>x</var>, <var>y</var>)</code>.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">fplot (@cos, [0, 2*pi])
+fplot (&quot;[cos(x), sin(x)]&quot;, [0, 2*pi])
+</pre></div>
+
+<p>Programming Notes:
+</p>
+<p><code>fplot</code> works best with continuous functions.  Functions with
+discontinuities are unlikely to plot well.  This restriction may be removed
+in the future.
+</p>
+<p><code>fplot</code> requires that the function accept and return a vector argument.
+Consider this when writing user-defined functions and use <code>.*</code>,
+<code>./</code>, etc.  See the function <code>vectorize</code> for potentially
+converting inline or anonymous functions to vectorized versions.
+</p> 
+
+<p><strong>See also:</strong> <a href="#XREFezplot">ezplot</a>, <a href="Two_002dDimensional-Plots.html#XREFplot">plot</a>, <a href="Basic-Vectorization.html#XREFvectorize">vectorize</a>.
+</p></dd></dl>
+
+
+<p>Other functions that can create two-dimensional plots directly from a
+function include <code>ezplot</code>, <code>ezcontour</code>, <code>ezcontourf</code> and
+<code>ezpolar</code>.
+</p>
+<a name="XREFezplot"></a><dl>
+<dt><a name="index-ezplot"></a>Function File: <em></em> <strong>ezplot</strong> <em>(<var>f</var>)</em></dt>
+<dt><a name="index-ezplot-1"></a>Function File: <em></em> <strong>ezplot</strong> <em>(<var>f2v</var>)</em></dt>
+<dt><a name="index-ezplot-2"></a>Function File: <em></em> <strong>ezplot</strong> <em>(<var>fx</var>, <var>fy</var>)</em></dt>
+<dt><a name="index-ezplot-3"></a>Function File: <em></em> <strong>ezplot</strong> <em>(&hellip;, <var>dom</var>)</em></dt>
+<dt><a name="index-ezplot-4"></a>Function File: <em></em> <strong>ezplot</strong> <em>(&hellip;, <var>n</var>)</em></dt>
+<dt><a name="index-ezplot-5"></a>Function File: <em></em> <strong>ezplot</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-ezplot-6"></a>Function File: <em><var>h</var> =</em> <strong>ezplot</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot the 2-D curve defined by the function <var>f</var>.
+</p>
+<p>The function <var>f</var> may be a string, inline function, or function handle
+and can have either one or two variables.  If <var>f</var> has one variable, then
+the function is plotted over the domain <code>-2*pi &lt; <var>x</var> &lt; 2*pi</code>
+with 500 points.
+</p>
+<p>If <var>f2v</var> is a function of two variables then the implicit function
+<code><var>f</var>(<var>x</var>,<var>y</var>) = 0</code> is calculated over the meshed domain
+<code>-2*pi &lt;= <var>x</var> | <var>y</var> &lt;= 2*pi</code> with 60 points in each dimension.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">ezplot (@(<var>x</var>, <var>y</var>) <var>x</var>.^2 - <var>y</var>.^2 - 1)
+</pre></div>
+
+<p>If two functions are passed as inputs then the parametric function
+</p>
+<div class="example">
+<pre class="example"><var>x</var> = <var>fx</var> (<var>t</var>)
+<var>y</var> = <var>fy</var> (<var>t</var>)
+</pre></div>
+
+<p>is plotted over the domain <code>-2*pi &lt;= <var>t</var> &lt;= 2*pi</code> with 500 points.
+</p>
+<p>If <var>dom</var> is a two element vector, it represents the minimum and maximum
+values of both <var>x</var> and <var>y</var>, or <var>t</var> for a parametric plot.  If
+<var>dom</var> is a four element vector, then the minimum and maximum values are
+<code>[xmin xmax ymin ymax]</code>.
+</p>
+<p><var>n</var> is a scalar defining the number of points to use in plotting
+the function.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a vector of graphics handles to
+the created line objects.
+</p>
+
+<p><strong>See also:</strong> <a href="Two_002dDimensional-Plots.html#XREFplot">plot</a>, <a href="Three_002ddimensional-Function-Plotting.html#XREFezplot3">ezplot3</a>, <a href="#XREFezpolar">ezpolar</a>, <a href="#XREFezcontour">ezcontour</a>, <a href="#XREFezcontourf">ezcontourf</a>, <a href="Three_002ddimensional-Function-Plotting.html#XREFezmesh">ezmesh</a>, <a href="Three_002ddimensional-Function-Plotting.html#XREFezmeshc">ezmeshc</a>, <a href="Three_002ddimensional-Function-Plotting.html#XREFezsurf">ezsurf</a>, <a href="Three_002ddimensional-Function-Plotting.html#XREFezsurfc">ezsurfc</a>.
+</p></dd></dl>
+
+
+<a name="XREFezcontour"></a><dl>
+<dt><a name="index-ezcontour"></a>Function File: <em></em> <strong>ezcontour</strong> <em>(<var>f</var>)</em></dt>
+<dt><a name="index-ezcontour-1"></a>Function File: <em></em> <strong>ezcontour</strong> <em>(&hellip;, <var>dom</var>)</em></dt>
+<dt><a name="index-ezcontour-2"></a>Function File: <em></em> <strong>ezcontour</strong> <em>(&hellip;, <var>n</var>)</em></dt>
+<dt><a name="index-ezcontour-3"></a>Function File: <em></em> <strong>ezcontour</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-ezcontour-4"></a>Function File: <em><var>h</var> =</em> <strong>ezcontour</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot the contour lines of a function.
+</p>
+<p><var>f</var> is a string, inline function, or function handle with two arguments
+defining the function.  By default the plot is over the meshed domain
+<code>-2*pi &lt;= <var>x</var> | <var>y</var> &lt;= 2*pi</code> with 60 points in each dimension.
+</p>
+<p>If <var>dom</var> is a two element vector, it represents the minimum and maximum
+values of both <var>x</var> and <var>y</var>.  If <var>dom</var> is a four element vector,
+then the minimum and maximum values are <code>[xmin xmax ymin ymax]</code>.
+</p>
+<p><var>n</var> is a scalar defining the number of points to use in each dimension.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created plot.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">f = @(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
+ezcontour (f, [-3, 3]);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Two_002dDimensional-Plots.html#XREFcontour">contour</a>, <a href="#XREFezcontourf">ezcontourf</a>, <a href="#XREFezplot">ezplot</a>, <a href="Three_002ddimensional-Function-Plotting.html#XREFezmeshc">ezmeshc</a>, <a href="Three_002ddimensional-Function-Plotting.html#XREFezsurfc">ezsurfc</a>.
+</p></dd></dl>
+
+
+<a name="XREFezcontourf"></a><dl>
+<dt><a name="index-ezcontourf"></a>Function File: <em></em> <strong>ezcontourf</strong> <em>(<var>f</var>)</em></dt>
+<dt><a name="index-ezcontourf-1"></a>Function File: <em></em> <strong>ezcontourf</strong> <em>(&hellip;, <var>dom</var>)</em></dt>
+<dt><a name="index-ezcontourf-2"></a>Function File: <em></em> <strong>ezcontourf</strong> <em>(&hellip;, <var>n</var>)</em></dt>
+<dt><a name="index-ezcontourf-3"></a>Function File: <em></em> <strong>ezcontourf</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-ezcontourf-4"></a>Function File: <em><var>h</var> =</em> <strong>ezcontourf</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot the filled contour lines of a function.
+</p>
+<p><var>f</var> is a string, inline function, or function handle with two arguments
+defining the function.  By default the plot is over the meshed domain
+<code>-2*pi &lt;= <var>x</var> | <var>y</var> &lt;= 2*pi</code> with 60 points in each dimension.
+</p>
+<p>If <var>dom</var> is a two element vector, it represents the minimum and maximum
+values of both <var>x</var> and <var>y</var>.  If <var>dom</var> is a four element vector,
+then the minimum and maximum values are <code>[xmin xmax ymin ymax]</code>.
+</p>
+<p><var>n</var> is a scalar defining the number of points to use in each dimension.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created plot.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">f = @(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
+ezcontourf (f, [-3, 3]);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Two_002dDimensional-Plots.html#XREFcontourf">contourf</a>, <a href="#XREFezcontour">ezcontour</a>, <a href="#XREFezplot">ezplot</a>, <a href="Three_002ddimensional-Function-Plotting.html#XREFezmeshc">ezmeshc</a>, <a href="Three_002ddimensional-Function-Plotting.html#XREFezsurfc">ezsurfc</a>.
+</p></dd></dl>
+
+
+<a name="XREFezpolar"></a><dl>
+<dt><a name="index-ezpolar"></a>Function File: <em></em> <strong>ezpolar</strong> <em>(<var>f</var>)</em></dt>
+<dt><a name="index-ezpolar-1"></a>Function File: <em></em> <strong>ezpolar</strong> <em>(&hellip;, <var>dom</var>)</em></dt>
+<dt><a name="index-ezpolar-2"></a>Function File: <em></em> <strong>ezpolar</strong> <em>(&hellip;, <var>n</var>)</em></dt>
+<dt><a name="index-ezpolar-3"></a>Function File: <em></em> <strong>ezpolar</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-ezpolar-4"></a>Function File: <em><var>h</var> =</em> <strong>ezpolar</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot a 2-D function in polar coordinates.
+</p>
+<p>The function <var>f</var> is a string, inline function, or function handle with
+a single argument.  The expected form of the function is
+<code><var>rho</var> = <var>f</var>(<var>theta</var>)</code>.
+By default the plot is over the domain <code>0 &lt;= <var>theta</var> &lt;= 2*pi</code>
+with 500 points.
+</p>
+<p>If <var>dom</var> is a two element vector, it represents the minimum and maximum
+values of <var>theta</var>.
+</p>
+<p><var>n</var> is a scalar defining the number of points to use in plotting
+the function.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created plot.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">ezpolar (@(t) sin (5/4 * t), [0, 8*pi]);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Two_002dDimensional-Plots.html#XREFpolar">polar</a>, <a href="#XREFezplot">ezplot</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Two_002ddimensional-Geometric-Shapes.html#Two_002ddimensional-Geometric-Shapes" accesskey="n" rel="next">Two-dimensional Geometric Shapes</a>, Previous: <a href="Axis-Configuration.html#Axis-Configuration" accesskey="p" rel="prev">Axis Configuration</a>, Up: <a href="Two_002dDimensional-Plots.html#Two_002dDimensional-Plots" accesskey="u" rel="up">Two-Dimensional Plots</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

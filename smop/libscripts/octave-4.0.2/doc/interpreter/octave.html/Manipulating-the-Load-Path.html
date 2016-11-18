@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Manipulating the Load Path</title>
+
+<meta name="description" content="GNU Octave: Manipulating the Load Path">
+<meta name="keywords" content="GNU Octave: Manipulating the Load Path">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Function-Files.html#Function-Files" rel="up" title="Function Files">
+<link href="Subfunctions.html#Subfunctions" rel="next" title="Subfunctions">
+<link href="Function-Files.html#Function-Files" rel="prev" title="Function Files">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Manipulating-the-Load-Path"></a>
+<div class="header">
+<p>
+Next: <a href="Subfunctions.html#Subfunctions" accesskey="n" rel="next">Subfunctions</a>, Up: <a href="Function-Files.html#Function-Files" accesskey="u" rel="up">Function Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Manipulating-the-Load-Path-1"></a>
+<h4 class="subsection">11.9.1 Manipulating the Load Path</h4>
+
+<p>When a function is called, Octave searches a list of directories for
+a file that contains the function declaration.  This list of directories
+is known as the load path.  By default the load path contains
+a list of directories distributed with Octave plus the current
+working directory.  To see your current load path call the <code>path</code>
+function without any input or output arguments.
+</p>
+<p>It is possible to add or remove directories to or from the load path
+using <code>addpath</code> and <code>rmpath</code>.  As an example, the following
+code adds &lsquo;<samp>~/Octave</samp>&rsquo; to the load path.
+</p>
+<div class="example">
+<pre class="example">addpath (&quot;~/Octave&quot;)
+</pre></div>
+
+<p>After this the directory &lsquo;<samp>~/Octave</samp>&rsquo; will be searched for functions.
+</p>
+<a name="XREFaddpath"></a><dl>
+<dt><a name="index-addpath"></a>Built-in Function: <em></em> <strong>addpath</strong> <em>(<var>dir1</var>, &hellip;)</em></dt>
+<dt><a name="index-addpath-1"></a>Built-in Function: <em></em> <strong>addpath</strong> <em>(<var>dir1</var>, &hellip;, <var>option</var>)</em></dt>
+<dd><p>Add named directories to the function search path.
+</p>
+<p>If <var>option</var> is <code>&quot;-begin&quot;</code> or 0 (the default), prepend the
+directory name to the current path.  If <var>option</var> is <code>&quot;-end&quot;</code>
+or 1, append the directory name to the current path.
+Directories added to the path must exist.
+</p>
+<p>In addition to accepting individual directory arguments, lists of
+directory names separated by <code>pathsep</code> are also accepted.  For example:
+</p>
+<div class="example">
+<pre class="example">addpath (&quot;dir1:/dir2:~/dir3&quot;)
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFpath">path</a>, <a href="#XREFrmpath">rmpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFpathdef">pathdef</a>, <a href="#XREFsavepath">savepath</a>, <a href="#XREFpathsep">pathsep</a>.
+</p></dd></dl>
+
+
+<a name="XREFgenpath"></a><dl>
+<dt><a name="index-genpath"></a>Built-in Function: <em></em> <strong>genpath</strong> <em>(<var>dir</var>)</em></dt>
+<dt><a name="index-genpath-1"></a>Built-in Function: <em></em> <strong>genpath</strong> <em>(<var>dir</var>, <var>skip</var>, &hellip;)</em></dt>
+<dd><p>Return a path constructed from <var>dir</var> and all its subdirectories.
+</p>
+<p>If additional string parameters are given, the resulting path will exclude
+directories with those names.
+</p></dd></dl>
+
+
+<a name="XREFrmpath"></a><dl>
+<dt><a name="index-rmpath"></a>Built-in Function: <em></em> <strong>rmpath</strong> <em>(<var>dir1</var>, &hellip;)</em></dt>
+<dd><p>Remove <var>dir1</var>, &hellip; from the current function search path.
+</p>
+<p>In addition to accepting individual directory arguments, lists of
+directory names separated by <code>pathsep</code> are also accepted.  For example:
+</p>
+<div class="example">
+<pre class="example">rmpath (&quot;dir1:/dir2:~/dir3&quot;)
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFpath">path</a>, <a href="#XREFaddpath">addpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFpathdef">pathdef</a>, <a href="#XREFsavepath">savepath</a>, <a href="#XREFpathsep">pathsep</a>.
+</p></dd></dl>
+
+
+<a name="XREFsavepath"></a><dl>
+<dt><a name="index-savepath"></a>Function File: <em></em> <strong>savepath</strong> <em>()</em></dt>
+<dt><a name="index-savepath-1"></a>Function File: <em></em> <strong>savepath</strong> <em>(<var>file</var>)</em></dt>
+<dt><a name="index-savepath-2"></a>Function File: <em><var>status</var> =</em> <strong>savepath</strong> <em>(&hellip;)</em></dt>
+<dd><p>Save the unique portion of the current function search path that is
+not set during Octave&rsquo;s initialization process to <var>file</var>.
+</p>
+<p>If <var>file</var> is omitted, Octave looks in the current directory for a
+project-specific <samp>.octaverc</samp> file in which to save the path
+information.  If no such file is present then the user&rsquo;s configuration file
+<samp>~/.octaverc</samp> is used.
+</p>
+<p>If successful, <code>savepath</code> returns 0.
+</p>
+<p>The <code>savepath</code> function makes it simple to customize a user&rsquo;s
+configuration file to restore the working paths necessary for a particular
+instance of Octave.  Assuming no filename is specified, Octave will
+automatically restore the saved directory paths from the appropriate
+<samp>.octaverc</samp> file when starting up.  If a filename has been specified
+then the paths may be restored manually by calling <code>source <var>file</var></code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFpath">path</a>, <a href="#XREFaddpath">addpath</a>, <a href="#XREFrmpath">rmpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFpathdef">pathdef</a>.
+</p></dd></dl>
+
+
+<a name="XREFpath"></a><dl>
+<dt><a name="index-path"></a>Built-in Function: <em></em> <strong>path</strong> <em>(&hellip;)</em></dt>
+<dd><p>Modify or display Octave&rsquo;s load path.
+</p>
+<p>If <var>nargin</var> and <var>nargout</var> are zero, display the elements of
+Octave&rsquo;s load path in an easy to read format.
+</p>
+<p>If <var>nargin</var> is zero and nargout is greater than zero, return the
+current load path.
+</p>
+<p>If <var>nargin</var> is greater than zero, concatenate the arguments,
+separating them with <code>pathsep</code>.  Set the internal search path
+to the result and return it.
+</p>
+<p>No checks are made for duplicate elements.
+</p>
+<p><strong>See also:</strong> <a href="#XREFaddpath">addpath</a>, <a href="#XREFrmpath">rmpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFpathdef">pathdef</a>, <a href="#XREFsavepath">savepath</a>, <a href="#XREFpathsep">pathsep</a>.
+</p></dd></dl>
+
+
+<a name="XREFpathdef"></a><dl>
+<dt><a name="index-pathdef"></a>Function File: <em><var>val</var> =</em> <strong>pathdef</strong> <em>()</em></dt>
+<dd><p>Return the default path for Octave.
+</p>
+<p>The path information is extracted from one of four sources.
+The possible sources, in order of preference, are:
+</p>
+<ol>
+<li> <samp>.octaverc</samp>
+
+</li><li> <samp>~/.octaverc</samp>
+
+</li><li> <samp>&lt;OCTAVE_HOME&gt;/&hellip;/&lt;version&gt;/m/startup/octaverc</samp>
+
+</li><li> Octave&rsquo;s path prior to changes by any octaverc file.
+</li></ol>
+
+<p><strong>See also:</strong> <a href="#XREFpath">path</a>, <a href="#XREFaddpath">addpath</a>, <a href="#XREFrmpath">rmpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFsavepath">savepath</a>.
+</p></dd></dl>
+
+
+<a name="XREFpathsep"></a><dl>
+<dt><a name="index-pathsep"></a>Built-in Function: <em><var>val</var> =</em> <strong>pathsep</strong> <em>()</em></dt>
+<dt><a name="index-pathsep-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>pathsep</strong> <em>(<var>new_val</var>)</em></dt>
+<dd><p>Query or set the character used to separate directories in a path.
+</p>
+<p><strong>See also:</strong> <a href="Filesystem-Utilities.html#XREFfilesep">filesep</a>.
+</p></dd></dl>
+
+
+<a name="XREFrehash"></a><dl>
+<dt><a name="index-rehash"></a>Built-in Function: <em></em> <strong>rehash</strong> <em>()</em></dt>
+<dd><p>Reinitialize Octave&rsquo;s load path directory cache.
+</p></dd></dl>
+
+
+<a name="XREFfile_005fin_005floadpath"></a><dl>
+<dt><a name="index-file_005fin_005floadpath"></a>Built-in Function: <em></em> <strong>file_in_loadpath</strong> <em>(<var>file</var>)</em></dt>
+<dt><a name="index-file_005fin_005floadpath-1"></a>Built-in Function: <em></em> <strong>file_in_loadpath</strong> <em>(<var>file</var>, &quot;all&quot;)</em></dt>
+<dd>
+<p>Return the absolute name of <var>file</var> if it can be found in
+the list of directories specified by <code>path</code>.
+</p>
+<p>If no file is found, return an empty character string.
+</p>
+<p>If the first argument is a cell array of strings, search each directory of
+the loadpath for element of the cell array and return the first that
+matches.
+</p>
+<p>If the second optional argument <code>&quot;all&quot;</code> is supplied, return a cell
+array containing the list of all files that have the same name in the path.
+If no files are found, return an empty cell array.
+</p>
+<p><strong>See also:</strong> <a href="Filesystem-Utilities.html#XREFfile_005fin_005fpath">file_in_path</a>, <a href="#XREFdir_005fin_005floadpath">dir_in_loadpath</a>, <a href="#XREFpath">path</a>.
+</p></dd></dl>
+
+
+<a name="XREFrestoredefaultpath"></a><dl>
+<dt><a name="index-restoredefaultpath"></a>Built-in Function: <em></em> <strong>restoredefaultpath</strong> <em>(&hellip;)</em></dt>
+<dd><p>Restore Octave&rsquo;s path to its initial state at startup.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFpath">path</a>, <a href="#XREFaddpath">addpath</a>, <a href="#XREFrmpath">rmpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFpathdef">pathdef</a>, <a href="#XREFsavepath">savepath</a>, <a href="#XREFpathsep">pathsep</a>.
+</p></dd></dl>
+
+
+<a name="XREFcommand_005fline_005fpath"></a><dl>
+<dt><a name="index-command_005fline_005fpath"></a>Built-in Function: <em></em> <strong>command_line_path</strong> <em>(&hellip;)</em></dt>
+<dd><p>Return the command line path variable.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFpath">path</a>, <a href="#XREFaddpath">addpath</a>, <a href="#XREFrmpath">rmpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFpathdef">pathdef</a>, <a href="#XREFsavepath">savepath</a>, <a href="#XREFpathsep">pathsep</a>.
+</p></dd></dl>
+
+
+<a name="XREFdir_005fin_005floadpath"></a><dl>
+<dt><a name="index-dir_005fin_005floadpath"></a>Built-in Function: <em></em> <strong>dir_in_loadpath</strong> <em>(<var>dir</var>)</em></dt>
+<dt><a name="index-dir_005fin_005floadpath-1"></a>Built-in Function: <em></em> <strong>dir_in_loadpath</strong> <em>(<var>dir</var>, &quot;all&quot;)</em></dt>
+<dd><p>Return the full name of the path element matching <var>dir</var>.
+</p>
+<p>The match is performed at the end of each path element.  For example, if
+<var>dir</var> is <code>&quot;foo/bar&quot;</code>, it matches the path element
+<code>&quot;/some/dir/foo/bar&quot;</code>, but not
+<code>&quot;/some/dir/foo/bar/baz&quot;</code>
+<code>&quot;/some/dir/allfoo/bar&quot;</code>.
+</p>
+<p>If the optional second argument is supplied, return a cell array containing
+all name matches rather than just the first.
+</p>
+<p><strong>See also:</strong> <a href="Filesystem-Utilities.html#XREFfile_005fin_005fpath">file_in_path</a>, <a href="#XREFfile_005fin_005floadpath">file_in_loadpath</a>, <a href="#XREFpath">path</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Subfunctions.html#Subfunctions" accesskey="n" rel="next">Subfunctions</a>, Up: <a href="Function-Files.html#Function-Files" accesskey="u" rel="up">Function Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

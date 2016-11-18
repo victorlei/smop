@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Sending Patches</title>
+
+<meta name="description" content="GNU Octave: Sending Patches">
+<meta name="keywords" content="GNU Octave: Sending Patches">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Reporting-Bugs.html#Reporting-Bugs" rel="up" title="Reporting Bugs">
+<link href="Service.html#Service" rel="next" title="Service">
+<link href="Bug-Reporting.html#Bug-Reporting" rel="prev" title="Bug Reporting">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Sending-Patches"></a>
+<div class="header">
+<p>
+Previous: <a href="Bug-Reporting.html#Bug-Reporting" accesskey="p" rel="prev">Bug Reporting</a>, Up: <a href="Reporting-Bugs.html#Reporting-Bugs" accesskey="u" rel="up">Reporting Bugs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Sending-Patches-for-Octave"></a>
+<h4 class="appendixsubsec">F.2.4 Sending Patches for Octave</h4>
+<a name="index-improving-Octave-1"></a>
+<a name="index-diffs_002c-submitting"></a>
+<a name="index-patches_002c-submitting"></a>
+<a name="index-submitting-diffs"></a>
+<a name="index-submitting-patches"></a>
+
+<p>If you would like to write bug fixes or improvements for Octave, that is
+very helpful.  When you send your changes, please follow these
+guidelines to avoid causing extra work for us in studying the patches.
+</p>
+<p>If you don&rsquo;t follow these guidelines, your information might still be
+useful, but using it will take extra work.  Maintaining Octave is a lot
+of work in the best of circumstances, and we can&rsquo;t keep up unless you do
+your best to help.
+</p>
+<ul>
+<li> Send an explanation with your changes of what problem they fix or what
+improvement they bring about.  For a bug fix, just include a copy of the
+bug report, and explain why the change fixes the bug.
+
+</li><li> Always include a proper bug report for the problem you think you have
+fixed.  We need to convince ourselves that the change is right before
+installing it.  Even if it is right, we might have trouble judging it if
+we don&rsquo;t have a way to reproduce the problem.
+
+</li><li> Include all the comments that are appropriate to help people reading the
+source in the future understand why this change was needed.
+
+</li><li> Don&rsquo;t mix together changes made for different reasons.
+Send them <em>individually</em>.
+
+<p>If you make two changes for separate reasons, then we might not want to
+install them both.  We might want to install just one.
+</p>
+</li><li> Use &lsquo;<samp>diff -c</samp>&rsquo; to make your diffs.  Diffs without context are hard
+for us to install reliably.  More than that, they make it hard for us to
+study the diffs to decide whether we want to install them.  Unified diff
+format is better than contextless diffs, but not as easy to read as
+&lsquo;<samp>-c</samp>&rsquo; format.
+
+<p>If you have GNU diff, use &lsquo;<samp>diff -cp</samp>&rsquo;, which shows the name of the
+function that each change occurs in.
+</p>
+</li><li> Write the change log entries for your changes.
+
+<p>Read the <samp>ChangeLog</samp> file to see what sorts of information to put
+in, and to learn the style that we use.  The purpose of the change log
+is to show people where to find what was changed.  So you need to be
+specific about what functions you changed; in large functions, it&rsquo;s
+often helpful to indicate where within the function the change was made.
+</p>
+<p>On the other hand, once you have shown people where to find the change,
+you need not explain its purpose.  Thus, if you add a new function, all
+you need to say about it is that it is new.  If you feel that the
+purpose needs explaining, it probably does&mdash;but the explanation will be
+much more useful if you put it in comments in the code.
+</p>
+<p>If you would like your name to appear in the header line for who made
+the change, send us the header line.
+</p></li></ul>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Bug-Reporting.html#Bug-Reporting" accesskey="p" rel="prev">Bug Reporting</a>, Up: <a href="Reporting-Bugs.html#Reporting-Bugs" accesskey="u" rel="up">Reporting Bugs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

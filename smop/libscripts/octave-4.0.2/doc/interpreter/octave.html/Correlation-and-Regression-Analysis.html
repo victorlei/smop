@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Correlation and Regression Analysis</title>
+
+<meta name="description" content="GNU Octave: Correlation and Regression Analysis">
+<meta name="keywords" content="GNU Octave: Correlation and Regression Analysis">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Statistics.html#Statistics" rel="up" title="Statistics">
+<link href="Distributions.html#Distributions" rel="next" title="Distributions">
+<link href="Statistical-Plots.html#Statistical-Plots" rel="prev" title="Statistical Plots">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Correlation-and-Regression-Analysis"></a>
+<div class="header">
+<p>
+Next: <a href="Distributions.html#Distributions" accesskey="n" rel="next">Distributions</a>, Previous: <a href="Statistical-Plots.html#Statistical-Plots" accesskey="p" rel="prev">Statistical Plots</a>, Up: <a href="Statistics.html#Statistics" accesskey="u" rel="up">Statistics</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Correlation-and-Regression-Analysis-1"></a>
+<h3 class="section">26.4 Correlation and Regression Analysis</h3>
+
+
+<a name="XREFcov"></a><dl>
+<dt><a name="index-cov"></a>Function File: <em></em> <strong>cov</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-cov-1"></a>Function File: <em></em> <strong>cov</strong> <em>(<var>x</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-cov-2"></a>Function File: <em></em> <strong>cov</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-cov-3"></a>Function File: <em></em> <strong>cov</strong> <em>(<var>x</var>, <var>y</var>, <var>opt</var>)</em></dt>
+<dd><p>Compute the covariance matrix.
+</p>
+<p>If each row of <var>x</var> and <var>y</var> is an observation, and each column is
+a variable, then the (<var>i</var>,&nbsp;<var>j</var><span class="nolinebreak">)-th</span><!-- /@w --> entry of
+<code>cov (<var>x</var>, <var>y</var>)</code> is the covariance between the <var>i</var>-th
+variable in <var>x</var> and the <var>j</var>-th variable in <var>y</var>.
+</p>
+<div class="example">
+<pre class="example">cov (x) = 1/N-1 * SUM_i (x(i) - mean(x)) * (y(i) - mean(y))
+</pre></div>
+
+
+<p>If called with one argument, compute <code>cov (<var>x</var>, <var>x</var>)</code>, the
+covariance between the columns of <var>x</var>.
+</p>
+<p>The argument <var>opt</var> determines the type of normalization to use.
+Valid values are
+</p>
+<dl compact="compact">
+<dt>0:</dt>
+<dd><p>normalize with <em>N-1</em>, provides the best unbiased estimator of the
+covariance [default]
+</p>
+</dd>
+<dt>1:</dt>
+<dd><p>normalize with <em>N</em>, this provides the second moment around the mean
+</p></dd>
+</dl>
+
+<p>Compatibility Note:: Octave always computes the covariance matrix.
+For two inputs, however, <small>MATLAB</small> will calculate
+<code>cov (<var>x</var>(:), <var>y</var>(:))</code> whenever the number of elements in
+<var>x</var> and <var>y</var> are equal.  This will result in a scalar rather than
+a matrix output.  Code relying on this odd definition will need to be
+changed when running in Octave.
+</p>
+<p><strong>See also:</strong> <a href="#XREFcorr">corr</a>.
+</p></dd></dl>
+
+
+<a name="XREFcorr"></a><dl>
+<dt><a name="index-corr"></a>Function File: <em></em> <strong>corr</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-corr-1"></a>Function File: <em></em> <strong>corr</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dd><p>Compute matrix of correlation coefficients.
+</p>
+<p>If each row of <var>x</var> and <var>y</var> is an observation and each column is
+a variable, then the (<var>i</var>,&nbsp;<var>j</var><span class="nolinebreak">)-th</span><!-- /@w --> entry of
+<code>corr (<var>x</var>, <var>y</var>)</code> is the correlation between the
+<var>i</var>-th variable in <var>x</var> and the <var>j</var>-th variable in <var>y</var>.
+</p>
+<div class="example">
+<pre class="example">corr (x,y) = cov (x,y) / (std (x) * std (y))
+</pre></div>
+
+<p>If called with one argument, compute <code>corr (<var>x</var>, <var>x</var>)</code>,
+the correlation between the columns of <var>x</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFcov">cov</a>.
+</p></dd></dl>
+
+
+<a name="XREFspearman"></a><dl>
+<dt><a name="index-spearman"></a>Function File: <em></em> <strong>spearman</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-spearman-1"></a>Function File: <em></em> <strong>spearman</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dd><a name="index-Spearman_0027s-Rho"></a>
+<p>Compute Spearman&rsquo;s rank correlation coefficient <var>rho</var>.
+</p>
+<p>For two data vectors <var>x</var> and <var>y</var>, Spearman&rsquo;s <var>rho</var> is the
+correlation coefficient of the ranks of <var>x</var> and <var>y</var>.
+</p>
+<p>If <var>x</var> and <var>y</var> are drawn from independent distributions, <var>rho</var>
+has zero mean and variance <code>1 / (n - 1)</code>, and is asymptotically
+normally distributed.
+</p>
+<p><code>spearman (<var>x</var>)</code> is equivalent to
+<code>spearman (<var>x</var>, <var>x</var>)</code>.
+</p>
+<p><strong>See also:</strong> <a href="Basic-Statistical-Functions.html#XREFranks">ranks</a>, <a href="#XREFkendall">kendall</a>.
+</p></dd></dl>
+
+
+<a name="XREFkendall"></a><dl>
+<dt><a name="index-kendall"></a>Function File: <em></em> <strong>kendall</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-kendall-1"></a>Function File: <em></em> <strong>kendall</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dd><a name="index-Kendall_0027s-Tau"></a>
+<p>Compute Kendall&rsquo;s <var>tau</var>.
+</p>
+<p>For two data vectors <var>x</var>, <var>y</var> of common length <var>n</var>, Kendall&rsquo;s
+<var>tau</var> is the correlation of the signs of all rank differences of
+<var>x</var> and <var>y</var>; i.e., if both <var>x</var> and <var>y</var> have distinct
+entries, then
+</p>
+
+<div class="example">
+<pre class="example">         1
+tau = -------   SUM sign (q(i) - q(j)) * sign (r(i) - r(j))
+      n (n-1)   i,j
+</pre></div>
+
+<p>in which the
+<var>q</var>(<var>i</var>) and <var>r</var>(<var>i</var>)
+are the ranks of <var>x</var> and <var>y</var>, respectively.
+</p>
+<p>If <var>x</var> and <var>y</var> are drawn from independent distributions,
+Kendall&rsquo;s <var>tau</var> is asymptotically normal with mean 0 and variance
+<code>(2 * (2<var>n</var>+5)) / (9 * <var>n</var> * (<var>n</var>-1))</code>.
+</p>
+<p><code>kendall (<var>x</var>)</code> is equivalent to <code>kendall (<var>x</var>,
+<var>x</var>)</code>.
+</p>
+<p><strong>See also:</strong> <a href="Basic-Statistical-Functions.html#XREFranks">ranks</a>, <a href="#XREFspearman">spearman</a>.
+</p></dd></dl>
+
+
+
+
+<a name="XREFlogistic_005fregression"></a><dl>
+<dt><a name="index-logistic_005fregression"></a>Function File: <em>[<var>theta</var>, <var>beta</var>, <var>dev</var>, <var>dl</var>, <var>d2l</var>, <var>p</var>] =</em> <strong>logistic_regression</strong> <em>(<var>y</var>, <var>x</var>, <var>print</var>, <var>theta</var>, <var>beta</var>)</em></dt>
+<dd><p>Perform ordinal logistic regression.
+</p>
+<p>Suppose <var>y</var> takes values in <var>k</var> ordered categories, and let
+<code>gamma_i (<var>x</var>)</code> be the cumulative probability that <var>y</var>
+falls in one of the first <var>i</var> categories given the covariate
+<var>x</var>.  Then
+</p>
+<div class="example">
+<pre class="example">[theta, beta] = logistic_regression (y, x)
+</pre></div>
+
+<p>fits the model
+</p>
+<div class="example">
+<pre class="example">logit (gamma_i (x)) = theta_i - beta' * x,   i = 1 &hellip; k-1
+</pre></div>
+
+<p>The number of ordinal categories, <var>k</var>, is taken to be the number
+of distinct values of <code>round (<var>y</var>)</code>.  If <var>k</var> equals 2,
+<var>y</var> is binary and the model is ordinary logistic regression.  The
+matrix <var>x</var> is assumed to have full column rank.
+</p>
+<p>Given <var>y</var> only, <code>theta = logistic_regression (y)</code>
+fits the model with baseline logit odds only.
+</p>
+<p>The full form is
+</p>
+<div class="example">
+<pre class="example">[theta, beta, dev, dl, d2l, gamma]
+   = logistic_regression (y, x, print, theta, beta)
+</pre></div>
+
+<p>in which all output arguments and all input arguments except <var>y</var>
+are optional.
+</p>
+<p>Setting <var>print</var> to 1 requests summary information about the fitted
+model to be displayed.  Setting <var>print</var> to 2 requests information
+about convergence at each iteration.  Other values request no
+information to be displayed.  The input arguments <var>theta</var> and
+<var>beta</var> give initial estimates for <var>theta</var> and <var>beta</var>.
+</p>
+<p>The returned value <var>dev</var> holds minus twice the log-likelihood.
+</p>
+<p>The returned values <var>dl</var> and <var>d2l</var> are the vector of first
+and the matrix of second derivatives of the log-likelihood with
+respect to <var>theta</var> and <var>beta</var>.
+</p>
+<p><var>p</var> holds estimates for the conditional distribution of <var>y</var>
+given <var>x</var>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Distributions.html#Distributions" accesskey="n" rel="next">Distributions</a>, Previous: <a href="Statistical-Plots.html#Statistical-Plots" accesskey="p" rel="prev">Statistical Plots</a>, Up: <a href="Statistics.html#Statistics" accesskey="u" rel="up">Statistics</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

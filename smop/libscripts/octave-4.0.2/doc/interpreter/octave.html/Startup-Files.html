@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Startup Files</title>
+
+<meta name="description" content="GNU Octave: Startup Files">
+<meta name="keywords" content="GNU Octave: Startup Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Invoking-Octave-from-the-Command-Line.html#Invoking-Octave-from-the-Command-Line" rel="up" title="Invoking Octave from the Command Line">
+<link href="Quitting-Octave.html#Quitting-Octave" rel="next" title="Quitting Octave">
+<link href="Command-Line-Options.html#Command-Line-Options" rel="prev" title="Command Line Options">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Startup-Files"></a>
+<div class="header">
+<p>
+Previous: <a href="Command-Line-Options.html#Command-Line-Options" accesskey="p" rel="prev">Command Line Options</a>, Up: <a href="Invoking-Octave-from-the-Command-Line.html#Invoking-Octave-from-the-Command-Line" accesskey="u" rel="up">Invoking Octave from the Command Line</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Startup-Files-1"></a>
+<h4 class="subsection">2.1.2 Startup Files</h4>
+<a name="index-initialization"></a>
+<a name="index-startup"></a>
+
+<p>When Octave starts, it looks for commands to execute from the files in
+the following list.  These files may contain any valid Octave commands,
+including function definitions.
+</p>
+<a name="index-startup-files"></a>
+
+<dl compact="compact">
+<dt><code><var>octave-home</var>/share/octave/site/m/startup/octaverc</code></dt>
+<dd><a name="index-site-startup-file"></a>
+<p>where <var>octave-home</var> is the directory in which Octave is installed
+(the default is <samp>/usr/local</samp>).
+This file is provided so that changes to the default Octave environment
+can be made globally for all users at your site for all versions of Octave
+you have installed.  Care should be taken when making changes to this file
+since all users of Octave at your site will be affected.  The default file
+may be overridden by the environment variable <code><span class="nolinebreak">OCTAVE_SITE_INITFILE</span></code><!-- /@w -->.
+</p>
+</dd>
+<dt><code><var>octave-home</var>/share/octave/<var>version</var>/m/startup/octaverc</code></dt>
+<dd><a name="index-version-startup-file"></a>
+<p>where <var>octave-home</var> is the directory in which Octave is
+installed (the default is <samp>/usr/local</samp>), and <var>version</var>
+is the version number of Octave.  This file is provided so that changes
+to the default Octave environment can be made globally for all users of
+a particular version of Octave.  Care should be taken when making
+changes to this file since all users of Octave at your site will be
+affected.  The default file may be overridden by the environment variable
+<code><span class="nolinebreak">OCTAVE_VERSION_INITFILE</span></code><!-- /@w -->.
+</p>
+</dd>
+<dt><code>~/.octaverc</code></dt>
+<dd><a name="index-personal-startup-file"></a>
+<a name="index-_007e_002f_002eoctaverc"></a>
+<p>This file is used to make personal changes to the default
+Octave environment.
+</p>
+</dd>
+<dt><code>.octaverc</code></dt>
+<dd><a name="index-project-startup-file"></a>
+<a name="index-_002eoctaverc"></a>
+<p>This file can be used to make changes to the default Octave environment
+for a particular project.  Octave searches for this file in the current
+directory after it reads <samp>~/.octaverc</samp>.  Any use of the <code>cd</code>
+command in the <samp>~/.octaverc</samp> file will affect the directory where
+Octave searches for <samp>.octaverc</samp>.
+</p>
+<p>If you start Octave in your home directory, commands from the file
+<samp>~/.octaverc</samp> will only be executed once.
+</p></dd>
+</dl>
+
+<p>A message will be displayed as each of the startup files is read if you
+invoke Octave with the <samp>--verbose</samp> option but without the
+<samp>--silent</samp> option.
+</p>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Command-Line-Options.html#Command-Line-Options" accesskey="p" rel="prev">Command Line Options</a>, Up: <a href="Invoking-Octave-from-the-Command-Line.html#Invoking-Octave-from-the-Command-Line" accesskey="u" rel="up">Invoking Octave from the Command Line</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

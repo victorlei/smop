@@ -1,0 +1,992 @@
+% Copyright (C) 1996-2016 John W. Eaton
+%
+% This file is part of Octave.
+%
+% Octave is free software; you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by the
+% Free Software Foundation; either version 3 of the License, or (at
+% your option) any later version.
+%
+% Octave is distributed in the hope that it will be useful, but WITHOUT
+% ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+% FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+% for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with Octave; see the file COPYING.  If not, see
+% <http://www.gnu.org/licenses/>.
+
+\input texinfo
+
+@documentencoding UTF-8
+
+@setfilename octave.info
+
+@include macros.texi
+
+@ifinfo
+@format
+START-INFO-DIR-ENTRY
+* Octave: (octave).           Interactive language for numerical computations.
+
+END-INFO-DIR-ENTRY
+@end format
+@end ifinfo
+
+@c Settings for printing on 8-1/2 by 11 inch paper (default):
+@c --------------------------------------------------------
+
+@setchapternewpage odd
+@c Fix TOC margins for printed manual
+@tex
+{\globaldefs = 1 \contentsrightmargin = 0pt}
+@end tex
+
+@c Settings for small book format:
+@c ------------------------------
+
+@ignore
+@smallbook
+@setchapternewpage odd
+@finalout
+@iftex
+@cropmarks
+@end iftex
+@end ignore
+
+@defindex op
+
+@c The version.texi file doesn't include a chapter, so it must not be
+@c included if you want to run the Emacs function
+@c texinfo-multiple-files-update.
+@include version.texi
+
+@settitle GNU Octave
+
+@ifnottex
+
+Copyright @copyright{} 1996-2016 John W. Eaton.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+@ignore
+Permission is granted to process this file through Tex and print the
+results, provided the printed document carries copying permission
+notice identical to this one except for the removal of this paragraph
+(this paragraph not being relevant to the printed manual).
+
+@end ignore
+Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that
+the entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for
+modified versions.
+@end ifnottex
+
+@titlepage
+@title GNU Octave
+@subtitle A high-level interactive language for numerical computations
+@subtitle Edition 4 for Octave version @value{VERSION}
+@subtitle March 2015
+@sp 2
+@multitable @columnfractions 0.4 0.025 0.65
+@item
+@flushright @image{octave_logo,2.1in}
+@end flushright
+@tab
+@c this is a spacer column
+@tab
+@sp 8
+@titlefont{Free Your Numbers}
+@end multitable
+@author John W. Eaton
+@author David Bateman
+@author S@o{}ren Hauberg
+@author Rik Wehbring
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} 1996, 1997, 1999, 2000, 2001, 2002, 2005, 2006,
+2007, 2011, 2013, 2015 John W. Eaton.
+
+This is the fourth edition of the Octave documentation, and is consistent
+with version @value{VERSION} of Octave.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the same conditions as for modified versions.
+
+Portions of this document have been adapted from the @code{gawk},
+@code{readline}, @code{gcc}, and C library manuals, published by the Free
+Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+02110-1301--1307, USA.
+@end titlepage
+
+@contents
+
+@ifnottex
+@node Top
+@top
+
+This manual documents how to run, install and port GNU Octave, as well
+as its new features and incompatibilities, and how to report bugs.
+It corresponds to GNU Octave version @value{VERSION}.
+@end ifnottex
+
+@c ------------------------------------------------------------------------
+
+@menu
+* Preface::
+* Introduction::                A brief introduction to Octave.
+* Getting Started::
+* Data Types::
+* Numeric Data Types::
+* Strings::
+* Data Containers::
+* Variables::
+* Expressions::
+* Evaluation::
+* Statements::                  Looping and program flow control.
+* Functions and Scripts::
+* Errors and Warnings::
+* Debugging::
+* Input and Output::
+* Plotting::
+* Matrix Manipulation::
+* Arithmetic::
+* Linear Algebra::
+* Vectorization and Faster Code Execution::
+* Nonlinear Equations::
+* Diagonal and Permutation Matrices::
+* Sparse Matrices::
+* Numerical Integration::
+* Differential Equations::
+* Optimization::
+* Statistics::
+* Sets::
+* Polynomial Manipulations::
+* Interpolation::
+* Geometry::
+* Signal Processing::
+* Image Processing::
+* Audio Processing::
+* Object Oriented Programming::
+* GUI Development::
+* System Utilities::
+* Java Interface::
+* Packages::
+* External Code Interface::
+* Test and Demo Functions::
+* Tips and Standards::
+* Contributing Guidelines::
+* Obsolete Functions::
+* Trouble::                     If you have trouble installing Octave.
+* Installation::                How to configure, compile and install Octave.
+* Emacs Octave Support::
+* Grammar and Parser::
+* Copying::                     The GNU General Public License.
+* Concept Index::               An item for each concept.
+* Function Index::              An item for each documented function.
+* Operator Index::              An item for each documented operator.
+
+@detailmenu
+ --- The Detailed Node Listing ---
+
+Preface
+
+* Acknowledgements::
+* Citing Octave in Publications::
+* How You Can Contribute to Octave::
+* Distribution::
+
+Introduction
+
+* Running Octave::
+* Simple Examples::
+* Conventions::
+
+Conventions
+
+* Fonts::
+* Evaluation Notation::
+* Printing Notation::
+* Error Messages::
+* Format of Descriptions::
+
+Format of Descriptions
+
+* A Sample Function Description::
+* A Sample Command Description::
+
+Getting Started
+
+* Invoking Octave from the Command Line::
+* Quitting Octave::
+* Getting Help::
+* Command Line Editing::
+* Errors::
+* Executable Octave Programs::
+* Comments::
+
+Invoking Octave from the Command Line
+
+* Command Line Options::
+* Startup Files::
+
+Command Line Editing
+
+* Cursor Motion::
+* Killing and Yanking::
+* Commands For Text::
+* Commands For Completion::
+* Commands For History::
+* Customizing readline::
+* Customizing the Prompt::
+* Diary and Echo Commands::
+
+Comments
+
+* Single Line Comments::
+* Block Comments::
+* Comments and the Help System::
+
+Data Types
+
+* Built-in Data Types::
+* User-defined Data Types::
+* Object Sizes::
+
+Built-in Data Types
+
+* Numeric Objects::
+* Missing Data::
+* String Objects::
+* Data Structure Objects::
+* Cell Array Objects::
+
+Numeric Data Types
+
+* Matrices::
+* Ranges::
+* Single Precision Data Types::
+* Integer Data Types::
+* Bit Manipulations::
+* Logical Values::
+* Promotion and Demotion of Data Types::
+* Predicates for Numeric Objects::
+
+Matrices
+
+* Empty Matrices::
+
+Integer Data Types
+
+* Integer Arithmetic::
+
+Strings
+
+* Escape Sequences in String Constants::
+* Character Arrays::
+* Creating Strings::
+* Comparing Strings::
+* Manipulating Strings::
+* String Conversions::
+* Character Class Functions::
+
+Creating Strings
+
+* Concatenating Strings::
+* Converting Numerical Data to Strings::
+
+Data Containers
+
+* Structures::
+* Cell Arrays::
+* Comma Separated Lists::
+
+Structures
+
+* Basic Usage and Examples::
+* Structure Arrays::
+* Creating Structures::
+* Manipulating Structures::
+* Processing Data in Structures::
+
+Cell Arrays
+
+* Basic Usage of Cell Arrays::
+* Creating Cell Arrays::
+* Indexing Cell Arrays::
+* Cell Arrays of Strings::
+* Processing Data in Cell Arrays::
+
+Comma Separated Lists
+
+* Comma Separated Lists Generated from Cell Arrays::
+* Comma Separated Lists Generated from Structure Arrays::
+
+Variables
+
+* Global Variables::
+* Persistent Variables::
+* Status of Variables::
+
+Expressions
+
+* Index Expressions::
+* Calling Functions::
+* Arithmetic Ops::
+* Comparison Ops::
+* Boolean Expressions::
+* Assignment Ops::
+* Increment Ops::
+* Operator Precedence::
+
+Index Expressions
+
+* Advanced Indexing::
+
+Calling Functions
+
+* Call by Value::
+* Recursion::
+
+Boolean Expressions
+
+* Element-by-element Boolean Operators::
+* Short-circuit Boolean Operators::
+
+Evaluation
+
+* Calling a Function by its Name::
+* Evaluation in a Different Context::
+
+Statements
+
+* The if Statement::
+* The switch Statement::
+* The while Statement::
+* The do-until Statement::
+* The for Statement::
+* The break Statement::
+* The continue Statement::
+* The unwind_protect Statement::
+* The try Statement::
+* Continuation Lines::
+
+The switch Statement
+
+* Notes for the C Programmer::
+
+The for Statement
+
+* Looping Over Structure Elements::
+
+Functions and Scripts
+
+* Introduction to Function and Script Files::
+* Defining Functions::
+* Multiple Return Values::
+* Variable-length Argument Lists::
+* Ignoring Arguments::
+* Variable-length Return Lists::
+* Returning from a Function::
+* Default Arguments::
+* Function Files::
+* Script Files::
+* Function Handles Anonymous Functions Inline Functions::
+* Commands::
+* Organization of Functions::
+
+Function Files
+
+* Manipulating the Load Path::
+* Subfunctions::
+* Private Functions::
+* Nested Functions::
+* Overloading and Autoloading::
+* Function Locking::
+* Function Precedence::
+
+Function Handles Anonymous Functions Inline Functions
+
+* Function Handles::
+* Anonymous Functions::
+* Inline Functions::
+
+Errors and Warnings
+
+* Handling Errors::
+* Handling Warnings::
+
+Handling Errors
+
+* Raising Errors::
+* Catching Errors::
+* Recovering From Errors::
+
+Handling Warnings
+
+* Issuing Warnings::
+* Enabling and Disabling Warnings::
+
+Debugging
+
+* Entering Debug Mode::
+* Leaving Debug Mode::
+* Breakpoints::
+* Debug Mode::
+* Call Stack::
+* Profiling::
+* Profiler Example::
+
+Input and Output
+
+* Basic Input and Output::
+* C-Style I/O Functions::
+
+Basic Input and Output
+
+* Terminal Output::
+* Terminal Input::
+* Simple File I/O::
+
+Terminal Output
+
+* Paging Screen Output::
+
+Simple File I/O
+
+* Saving Data on Unexpected Exits::
+
+C-Style I/O Functions
+
+* Opening and Closing Files::
+* Simple Output::
+* Line-Oriented Input::
+* Formatted Output::
+* Output Conversion for Matrices::
+* Output Conversion Syntax::
+* Table of Output Conversions::
+* Integer Conversions::
+* Floating-Point Conversions::
+* Other Output Conversions::
+* Formatted Input::
+* Input Conversion Syntax::
+* Table of Input Conversions::
+* Numeric Input Conversions::
+* String Input Conversions::
+* Binary I/O::
+* Temporary Files::
+* EOF and Errors::
+* File Positioning::
+
+Plotting
+
+* Introduction to Plotting::
+* High-Level Plotting::
+* Graphics Data Structures::
+* Advanced Plotting::
+
+High-Level Plotting
+
+* Two-Dimensional Plots::
+* Three-Dimensional Plots::
+* Plot Annotations::
+* Multiple Plots on One Page::
+* Multiple Plot Windows::
+* Manipulation of Plot Objects::
+* Manipulation of Plot Windows::
+* Use of the @code{interpreter} Property::
+* Printing and Saving Plots::
+* Interacting with Plots::
+* Test Plotting Functions::
+
+Two-Dimensional Plots
+
+* Axis Configuration::
+* Two-dimensional Function Plotting::
+* Two-dimensional Geometric Shapes::
+
+Three-Dimensional Plots
+
+* Aspect Ratio::
+* Three-dimensional Function Plotting::
+* Three-dimensional Geometric Shapes::
+
+Graphics Data Structures
+
+* Introduction to Graphics Structures::
+* Graphics Objects::
+* Graphics Object Properties::
+* Searching Properties::
+* Managing Default Properties::
+
+Graphics Object Properties
+
+* Root Figure Properties::
+* Figure Properties::
+* Axes Properties::
+* Line Properties::
+* Text Properties::
+* Image Properties::
+* Patch Properties::
+* Surface Properties::
+
+Advanced Plotting
+
+* Colors::
+* Line Styles::
+* Marker Styles::
+* Callbacks::
+* Application-defined Data::
+* Object Groups::
+* Graphics Toolkits::
+
+Object Groups
+
+* Data Sources in Object Groups::
+* Area Series::
+* Bar Series::
+* Contour Groups::
+* Error Bar Series::
+* Line Series::
+* Quiver Group::
+* Scatter Group::
+* Stair Group::
+* Stem Series::
+* Surface Group::
+
+Graphics Toolkits
+
+* Customizing Toolkit Behavior::
+
+Matrix Manipulation
+
+* Finding Elements and Checking Conditions::
+* Rearranging Matrices::
+* Special Utility Matrices::
+* Famous Matrices::
+
+Arithmetic
+
+* Exponents and Logarithms::
+* Complex Arithmetic::
+* Trigonometry::
+* Sums and Products::
+* Utility Functions::
+* Special Functions::
+* Rational Approximations::
+* Coordinate Transformations::
+* Mathematical Constants::
+
+Linear Algebra
+
+* Techniques Used for Linear Algebra::
+* Basic Matrix Functions::
+* Matrix Factorizations::
+* Functions of a Matrix::
+* Specialized Solvers::
+
+Vectorization and Faster Code Execution
+
+* Basic Vectorization::        Basic techniques for code optimization
+* Broadcasting::               Broadcasting operations
+* Function Application::       Applying functions to arrays, cells, and structs
+* Accumulation::               Accumulation functions
+* JIT Compiler::               Just-In-Time Compiler for loops
+* Miscellaneous Techniques::   Other techniques for speeding up code
+* Examples::
+
+Nonlinear Equations
+
+* Solvers::
+* Minimizers::
+
+Diagonal and Permutation Matrices
+
+* Basic Usage::          Creation and Manipulation of Diagonal/Permutation Matrices
+* Matrix Algebra::       Linear Algebra with Diagonal/Permutation Matrices
+* Function Support::     Functions That Are Aware of These Matrices
+* Example Code::         Examples of Usage
+* Zeros Treatment::      Differences in Treatment of Zero Elements
+
+Basic Usage
+
+* Creating Diagonal Matrices::
+* Creating Permutation Matrices::
+* Explicit and Implicit Conversions::
+
+Matrix Algebra
+
+* Expressions Involving Diagonal Matrices::
+* Expressions Involving Permutation Matrices::
+
+Function Support
+
+* Diagonal Matrix Functions::
+* Permutation Matrix Functions::
+
+Sparse Matrices
+
+* Basics::                      Creation and Manipulation of Sparse Matrices
+* Sparse Linear Algebra::       Linear Algebra on Sparse Matrices
+* Iterative Techniques::        Iterative Techniques
+* Real Life Example::           Using Sparse Matrices
+
+Basics
+
+* Storage of Sparse Matrices::
+* Creating Sparse Matrices::
+* Information::
+* Operators and Functions::
+
+Operators and Functions
+
+* Sparse Functions::
+* Return Types of Operators and Functions::
+* Mathematical Considerations::
+
+Numerical Integration
+
+* Functions of One Variable::
+* Orthogonal Collocation::
+* Functions of Multiple Variables::
+
+Differential Equations
+
+* Ordinary Differential Equations::
+* Differential-Algebraic Equations::
+
+Optimization
+
+* Linear Programming::
+* Quadratic Programming::
+* Nonlinear Programming::
+* Linear Least Squares::
+
+Statistics
+
+* Descriptive Statistics::
+* Basic Statistical Functions::
+* Statistical Plots::
+* Correlation and Regression Analysis::
+* Distributions::
+* Tests::
+* Random Number Generation::
+
+Sets
+
+* Set Operations::
+
+Polynomial Manipulations
+
+* Evaluating Polynomials::
+* Finding Roots::
+* Products of Polynomials::
+* Derivatives / Integrals / Transforms::
+* Polynomial Interpolation::
+* Miscellaneous Functions::
+
+Interpolation
+
+* One-dimensional Interpolation::
+* Multi-dimensional Interpolation::
+
+Geometry
+
+* Delaunay Triangulation::
+* Voronoi Diagrams::
+* Convex Hull::
+* Interpolation on Scattered Data::
+
+Delaunay Triangulation
+
+* Plotting the Triangulation::
+* Identifying Points in Triangulation::
+
+Image Processing
+
+* Loading and Saving Images::
+* Displaying Images::
+* Representing Images::
+* Plotting on top of Images::
+* Color Conversion::
+
+Audio Processing
+
+* Audio File Utilities::
+* Audio Device Information::
+* Audio Player::
+* Audio Recorder::
+* Audio Data Processing::
+
+Audio Player
+
+* Playback::
+* Player Properties::
+
+Audio Recorder
+
+* Recording::
+* Data Retrieval::
+* Recorder Properties::
+
+Object Oriented Programming
+
+* Creating a Class::
+* Manipulating Classes::
+* Indexing Objects::
+* Overloading Objects::
+* Inheritance and Aggregation::
+
+Indexing Objects
+
+* Defining Indexing And Indexed Assignment::
+* Indexed Assignment Optimization::
+
+Overloading Objects
+
+* Function Overloading::
+* Operator Overloading::
+* Precedence of Objects::
+
+GUI Development
+
+* I/O Dialogs::
+* Progress Bar::
+* UI Elements::
+* GUI Utility Functions::
+* User-Defined Preferences::
+
+System Utilities
+
+* Timing Utilities::
+* Filesystem Utilities::
+* File Archiving Utilities::
+* Networking Utilities::
+* Controlling Subprocesses::
+* Process ID Information::
+* Environment Variables::
+* Current Working Directory::
+* Password Database Functions::
+* Group Database Functions::
+* System Information::
+* Hashing Functions::
+
+Networking Utilities
+
+* FTP Objects::
+* URL Manipulation::
+* Base64 and Binary Data Transmission::
+
+Java Interface
+
+* Java Interface Functions::
+* Dialog Box Functions::
+* FAQ - Frequently asked Questions::
+
+FAQ - Frequently asked Questions
+
+* How to distinguish between Octave and Matlab?::
+* How to make Java classes available?::
+* How to create an instance of a Java class?::
+* How can I handle memory limitations?::
+* Which @TeX{} symbols are implemented in dialog functions?::
+
+Packages
+
+* Installing and Removing Packages::
+* Using Packages::
+* Administrating Packages::
+* Creating Packages::
+
+Creating Packages
+
+* The DESCRIPTION File::
+* The INDEX File::
+* PKG_ADD and PKG_DEL Directives::
+* Missing Components::
+
+External Code Interface
+
+* Oct-Files::
+* Mex-Files::
+* Standalone Programs::
+
+Oct-Files
+
+* Getting Started with Oct-Files::
+* Matrices and Arrays in Oct-Files::
+* Character Strings in Oct-Files::
+* Cell Arrays in Oct-Files::
+* Structures in Oct-Files::
+* Sparse Matrices in Oct-Files::
+* Accessing Global Variables in Oct-Files::
+* Calling Octave Functions from Oct-Files::
+* Calling External Code from Oct-Files::
+* Allocating Local Memory in Oct-Files::
+* Input Parameter Checking in Oct-Files::
+* Exception and Error Handling in Oct-Files::
+* Documentation and Test of Oct-Files::
+
+Sparse Matrices in Oct-Files
+
+* Array and Sparse Class Differences::
+* Creating Sparse Matrices in Oct-Files::
+* Using Sparse Matrices in Oct-Files::
+
+Mex-Files
+
+* Getting Started with Mex-Files::
+* Working with Matrices and Arrays in Mex-Files::
+* Character Strings in Mex-Files::
+* Cell Arrays with Mex-Files::
+* Structures with Mex-Files::
+* Sparse Matrices with Mex-Files::
+* Calling Other Functions in Mex-Files::
+
+Test and Demo Functions
+
+* Test Functions::
+* Demonstration Functions::
+
+Tips and Standards
+
+* Style Tips::                  Writing clean and robust programs.
+* Comment Tips::                Conventions for writing comments.
+* Function Headers::            Standard headers for functions.
+* Documentation Tips::          Writing readable documentation strings.
+
+Contributing Guidelines
+
+* How to Contribute::
+* Building the Development Sources::
+* Basics of Generating a Changeset::
+* General Guidelines::
+* Octave Sources (m-files)::
+* C++ Sources::
+* Other Sources::
+
+Trouble
+
+* Actual Bugs::                 Bugs we will fix later.
+* Reporting Bugs::
+* Service::
+
+Reporting Bugs
+
+* Bug Criteria::
+* Bug Tracker::        Where to submit your bug report.
+* Bug Reporting::      How to report a bug effectively.
+* Sending Patches::    How to send a patch for Octave.
+
+Installation
+
+* Build Dependencies::
+* Running Configure and Make::
+* Compiling Octave with 64-bit Indexing::
+* Installation Problems::
+
+Build Dependencies
+
+* Obtaining the Dependencies Automatically::
+* Build Tools::
+* External Packages::
+
+Emacs Octave Support
+
+* Installing EOS::
+* Using Octave Mode::
+* Running Octave from Within Emacs::
+* Using the Emacs Info Reader for Octave::
+
+Grammar and Parser
+
+* Keywords::
+* Parser::
+@end detailmenu
+@end menu
+
+@c ------------------------------------------------------------------------
+
+@include preface.texi
+@include intro.texi
+@include basics.texi
+@include data.texi
+@include numbers.texi
+@include strings.texi
+@include container.texi
+@include var.texi
+@include expr.texi
+@include eval.texi
+@include stmt.texi
+@include func.texi
+@include errors.texi
+@include debug.texi
+@include io.texi
+@include plot.texi
+@include matrix.texi
+@include arith.texi
+@include linalg.texi
+@include vectorize.texi
+@include nonlin.texi
+@include diagperm.texi
+@include sparse.texi
+@include quad.texi
+@include diffeq.texi
+@include optim.texi
+@include stats.texi
+@include set.texi
+@include poly.texi
+@include interp.texi
+@include geometry.texi
+@include signal.texi
+@include image.texi
+@include audio.texi
+@include oop.texi
+@include gui.texi
+@include system.texi
+@include java.texi
+@include package.texi
+
+@c maybe add again later, if anyone every writes any really interesting
+@c fun stuff for Octave.
+@c
+@c @include amuse.texi
+
+@c ------------------------------------------------------------------------
+@c Appendices start here.
+
+@include external.texi
+@include testfun.texi
+@include tips.texi
+@include contrib.texi
+@include obsolete.texi
+@include bugs.texi
+@include install.texi
+@include emacs.texi
+@include grammar.texi
+@include gpl.texi
+
+@c ------------------------------------------------------------------------
+@c Indices start here.
+
+@include cp-idx.texi
+@c @include vr-idx.texi
+@include fn-idx.texi
+@include op-idx.texi
+
+@bye

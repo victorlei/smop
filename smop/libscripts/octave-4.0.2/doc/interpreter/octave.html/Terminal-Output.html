@@ -1,0 +1,342 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Terminal Output</title>
+
+<meta name="description" content="GNU Octave: Terminal Output">
+<meta name="keywords" content="GNU Octave: Terminal Output">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Basic-Input-and-Output.html#Basic-Input-and-Output" rel="up" title="Basic Input and Output">
+<link href="Paging-Screen-Output.html#Paging-Screen-Output" rel="next" title="Paging Screen Output">
+<link href="Basic-Input-and-Output.html#Basic-Input-and-Output" rel="prev" title="Basic Input and Output">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Terminal-Output"></a>
+<div class="header">
+<p>
+Next: <a href="Terminal-Input.html#Terminal-Input" accesskey="n" rel="next">Terminal Input</a>, Up: <a href="Basic-Input-and-Output.html#Basic-Input-and-Output" accesskey="u" rel="up">Basic Input and Output</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Terminal-Output-1"></a>
+<h4 class="subsection">14.1.1 Terminal Output</h4>
+
+<p>Since Octave normally prints the value of an expression as soon as it
+has been evaluated, the simplest of all I/O functions is a simple
+expression.  For example, the following expression will display the
+value of &lsquo;<samp>pi</samp>&rsquo;
+</p>
+<div class="example">
+<pre class="example">pi
+     -| pi = 3.1416
+</pre></div>
+
+<p>This works well as long as it is acceptable to have the name of the
+variable (or &lsquo;<samp>ans</samp>&rsquo;) printed along with the value.  To print the
+value of a variable without printing its name, use the function
+<code>disp</code>.
+</p>
+<p>The <code>format</code> command offers some control over the way Octave prints
+values with <code>disp</code> and through the normal echoing mechanism.
+</p>
+<a name="XREFdisp"></a><dl>
+<dt><a name="index-disp"></a>Built-in Function: <em></em> <strong>disp</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Display the value of <var>x</var>.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">disp (&quot;The value of pi is:&quot;), disp (pi)
+
+     -| the value of pi is:
+     -| 3.1416
+</pre></div>
+
+<p>Note that the output from <code>disp</code> always ends with a newline.
+</p>
+<p>If an output value is requested, <code>disp</code> prints nothing and returns the
+formatted output in a string.
+</p>
+<p><strong>See also:</strong> <a href="Simple-File-I_002fO.html#XREFfdisp">fdisp</a>.
+</p></dd></dl>
+
+
+<a name="XREFlist_005fin_005fcolumns"></a><dl>
+<dt><a name="index-list_005fin_005fcolumns"></a>Built-in Function: <em></em> <strong>list_in_columns</strong> <em>(<var>arg</var>, <var>width</var>, <var>prefix</var>)</em></dt>
+<dd><p>Return a string containing the elements of <var>arg</var> listed in columns with
+an overall maximum width of <var>width</var> and optional prefix <var>prefix</var>.
+</p>
+<p>The argument <var>arg</var> must be a cell array of character strings or a
+character array.
+</p>
+<p>If <var>width</var> is not specified or is an empty matrix, or less than or equal
+to zero, the width of the terminal screen is used.  Newline characters are
+used to break the lines in the output string.  For example:
+</p>
+<div class="smallexample">
+<pre class="smallexample">list_in_columns ({&quot;abc&quot;, &quot;def&quot;, &quot;ghijkl&quot;, &quot;mnop&quot;, &quot;qrs&quot;, &quot;tuv&quot;}, 20)
+     &rArr; abc     mnop
+        def     qrs
+        ghijkl  tuv
+
+whos ans
+     &rArr;
+     Variables in the current scope:
+
+       Attr Name        Size                     Bytes  Class
+       ==== ====        ====                     =====  =====
+            ans         1x37                        37  char
+
+     Total is 37 elements using 37 bytes
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFterminal_005fsize">terminal_size</a>.
+</p></dd></dl>
+
+
+<a name="XREFterminal_005fsize"></a><dl>
+<dt><a name="index-terminal_005fsize"></a>Built-in Function: <em></em> <strong>terminal_size</strong> <em>()</em></dt>
+<dd><p>Return a two-element row vector containing the current size of the terminal
+window in characters (rows and columns).
+</p>
+<p><strong>See also:</strong> <a href="#XREFlist_005fin_005fcolumns">list_in_columns</a>.
+</p></dd></dl>
+
+
+<a name="XREFformat"></a><dl>
+<dt><a name="index-format"></a>Command: <em></em> <strong>format</strong></dt>
+<dt><a name="index-format-1"></a>Command: <em></em> <strong>format</strong> <em>options</em></dt>
+<dd><p>Reset or specify the format of the output produced by <code>disp</code> and
+Octave&rsquo;s normal echoing mechanism.
+</p>
+<p>This command only affects the display of numbers but not how they are stored
+or computed.  To change the internal representation from the default double
+use one of the conversion functions such as <code>single</code>, <code>uint8</code>,
+<code>int64</code>, etc.
+</p>
+<p>By default, Octave displays 5 significant digits in a human readable form
+(option &lsquo;<samp>short</samp>&rsquo; paired with &lsquo;<samp>loose</samp>&rsquo; format for matrices).
+If <code>format</code> is invoked without any options, this default format
+is restored.
+</p>
+<p>Valid formats for floating point numbers are listed in the following
+table.
+</p>
+<dl compact="compact">
+<dt><code>short</code></dt>
+<dd><p>Fixed point format with 5 significant figures in a field that is a maximum
+of 10 characters wide.  (default).
+</p>
+<p>If Octave is unable to format a matrix so that columns line up on the
+decimal point and all numbers fit within the maximum field width then
+it switches to an exponential &lsquo;<samp>e</samp>&rsquo; format.
+</p>
+</dd>
+<dt><code>long</code></dt>
+<dd><p>Fixed point format with 15 significant figures in a field that is a maximum
+of 20 characters wide.
+</p>
+<p>As with the &lsquo;<samp>short</samp>&rsquo; format, Octave will switch to an exponential
+&lsquo;<samp>e</samp>&rsquo; format if it is unable to format a matrix properly using the
+current format.
+</p>
+</dd>
+<dt><code>short e</code></dt>
+<dt><code>long e</code></dt>
+<dd><p>Exponential format.  The number to be represented is split between a mantissa
+and an exponent (power of 10).  The mantissa has 5 significant digits in the
+short format and 15 digits in the long format.
+For example, with the &lsquo;<samp>short e</samp>&rsquo; format, <code>pi</code> is displayed as
+<code>3.1416e+00</code>.
+</p>
+</dd>
+<dt><code>short E</code></dt>
+<dt><code>long E</code></dt>
+<dd><p>Identical to &lsquo;<samp>short e</samp>&rsquo; or &lsquo;<samp>long e</samp>&rsquo; but displays an uppercase
+&lsquo;<samp>E</samp>&rsquo; to indicate the exponent.
+For example, with the &lsquo;<samp>long E</samp>&rsquo; format, <code>pi</code> is displayed as
+<code>3.14159265358979E+00</code>.
+</p>
+</dd>
+<dt><code>short g</code></dt>
+<dt><code>long g</code></dt>
+<dd><p>Optimally choose between fixed point and exponential format based on
+the magnitude of the number.
+For example, with the &lsquo;<samp>short g</samp>&rsquo; format,
+<code>pi .^ [2; 4; 8; 16; 32]</code> is displayed as
+</p>
+<div class="example">
+<pre class="example">ans =
+
+      9.8696
+      97.409
+      9488.5
+  9.0032e+07
+  8.1058e+15
+</pre></div>
+
+</dd>
+<dt><code>short eng</code></dt>
+<dt><code>long eng</code></dt>
+<dd><p>Identical to &lsquo;<samp>short e</samp>&rsquo; or &lsquo;<samp>long e</samp>&rsquo; but displays the value
+using an engineering format, where the exponent is divisible by 3. For
+example, with the &lsquo;<samp>short eng</samp>&rsquo; format, <code>10 * pi</code> is displayed as
+<code>31.4159e+00</code>.
+</p>
+</dd>
+<dt><code>long G</code></dt>
+<dt><code>short G</code></dt>
+<dd><p>Identical to &lsquo;<samp>short g</samp>&rsquo; or &lsquo;<samp>long g</samp>&rsquo; but displays an uppercase
+&lsquo;<samp>E</samp>&rsquo; to indicate the exponent.
+</p>
+</dd>
+<dt><code>free</code></dt>
+<dt><code>none</code></dt>
+<dd><p>Print output in free format, without trying to line up columns of
+matrices on the decimal point.  This also causes complex numbers to be
+formatted as numeric pairs like this &lsquo;<samp>(0.60419, 0.60709)</samp>&rsquo; instead
+of like this &lsquo;<samp>0.60419 + 0.60709i</samp>&rsquo;.
+</p></dd>
+</dl>
+
+<p>The following formats affect all numeric output (floating point and
+integer types).
+</p>
+<dl compact="compact">
+<dt><code>&quot;+&quot;</code></dt>
+<dt><code>&quot;+&quot; <var>chars</var></code></dt>
+<dt><code>plus</code></dt>
+<dt><code>plus <var>chars</var></code></dt>
+<dd><p>Print a &lsquo;<samp>+</samp>&rsquo; symbol for matrix elements greater than zero, a
+&lsquo;<samp>-</samp>&rsquo; symbol for elements less than zero and a space for zero matrix
+elements.  This format can be very useful for examining the structure
+of a large sparse matrix.
+</p>
+<p>The optional argument <var>chars</var> specifies a list of 3 characters to use
+for printing values greater than zero, less than zero and equal to zero.
+For example, with the &lsquo;<samp>&quot;+&quot; &quot;+-.&quot;</samp>&rsquo; format,
+<code>[1, 0, -1; -1, 0, 1]</code> is displayed as
+</p>
+<div class="example">
+<pre class="example">ans =
+
++.-
+-.+
+</pre></div>
+
+</dd>
+<dt><code>bank</code></dt>
+<dd><p>Print in a fixed format with two digits to the right of the decimal
+point.
+</p>
+</dd>
+<dt><code>native-hex</code></dt>
+<dd><p>Print the hexadecimal representation of numbers as they are stored in
+memory.  For example, on a workstation which stores 8 byte real values
+in IEEE format with the least significant byte first, the value of
+<code>pi</code> when printed in <code>native-hex</code> format is
+<code>400921fb54442d18</code>.
+</p>
+</dd>
+<dt><code>hex</code></dt>
+<dd><p>The same as <code>native-hex</code>, but always print the most significant
+byte first.
+</p>
+</dd>
+<dt><code>native-bit</code></dt>
+<dd><p>Print the bit representation of numbers as stored in memory.
+For example, the value of <code>pi</code> is
+</p>
+<div class="example">
+<pre class="example">01000000000010010010000111111011
+01010100010001000010110100011000
+</pre></div>
+
+<p>(shown here in two 32 bit sections for typesetting purposes) when
+printed in native-bit format on a workstation which stores 8 byte real values
+in IEEE format with the least significant byte first.
+</p>
+</dd>
+<dt><code>bit</code></dt>
+<dd><p>The same as <code>native-bit</code>, but always print the most significant
+bits first.
+</p>
+</dd>
+<dt><code>rat</code></dt>
+<dd><p>Print a rational approximation, i.e., values are approximated
+as the ratio of small integers.
+For example, with the &lsquo;<samp>rat</samp>&rsquo; format,
+<code>pi</code> is displayed as <code>355/113</code>.
+</p></dd>
+</dl>
+
+<p>The following two options affect the display of all matrices.
+</p>
+<dl compact="compact">
+<dt><code>compact</code></dt>
+<dd><p>Remove blank lines around column number labels and between
+matrices producing more compact output with more data per page.
+</p>
+</dd>
+<dt><code>loose</code></dt>
+<dd><p>Insert blank lines above and below column number labels and between matrices
+to produce a more readable output with less data per page.  (default).
+</p></dd>
+</dl>
+
+<p><strong>See also:</strong> <a href="Matrices.html#XREFfixed_005fpoint_005fformat">fixed_point_format</a>, <a href="Matrices.html#XREFoutput_005fmax_005ffield_005fwidth">output_max_field_width</a>, <a href="Matrices.html#XREFoutput_005fprecision">output_precision</a>, <a href="Matrices.html#XREFsplit_005flong_005frows">split_long_rows</a>, <a href="Empty-Matrices.html#XREFprint_005fempty_005fdimensions">print_empty_dimensions</a>, <a href="Rational-Approximations.html#XREFrats">rats</a>.
+</p></dd></dl>
+
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Paging-Screen-Output.html#Paging-Screen-Output" accesskey="1">Paging Screen Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Terminal-Input.html#Terminal-Input" accesskey="n" rel="next">Terminal Input</a>, Up: <a href="Basic-Input-and-Output.html#Basic-Input-and-Output" accesskey="u" rel="up">Basic Input and Output</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Function Handles</title>
+
+<meta name="description" content="GNU Octave: Function Handles">
+<meta name="keywords" content="GNU Octave: Function Handles">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Function-Handles-Anonymous-Functions-Inline-Functions.html#Function-Handles-Anonymous-Functions-Inline-Functions" rel="up" title="Function Handles Anonymous Functions Inline Functions">
+<link href="Anonymous-Functions.html#Anonymous-Functions" rel="next" title="Anonymous Functions">
+<link href="Function-Handles-Anonymous-Functions-Inline-Functions.html#Function-Handles-Anonymous-Functions-Inline-Functions" rel="prev" title="Function Handles Anonymous Functions Inline Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Function-Handles"></a>
+<div class="header">
+<p>
+Next: <a href="Anonymous-Functions.html#Anonymous-Functions" accesskey="n" rel="next">Anonymous Functions</a>, Up: <a href="Function-Handles-Anonymous-Functions-Inline-Functions.html#Function-Handles-Anonymous-Functions-Inline-Functions" accesskey="u" rel="up">Function Handles Anonymous Functions Inline Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Function-Handles-1"></a>
+<h4 class="subsection">11.11.1 Function Handles</h4>
+
+<p>A function handle is a pointer to another function and is defined with
+the syntax
+</p>
+<div class="example">
+<pre class="example">@<var>function-name</var>
+</pre></div>
+
+<p>For example,
+</p>
+<div class="example">
+<pre class="example">f = @sin;
+</pre></div>
+
+<p>creates a function handle called <code>f</code> that refers to the
+function <code>sin</code>.
+</p>
+<p>Function handles are used to call other functions indirectly, or to pass
+a function as an argument to another function like <code>quad</code> or
+<code>fsolve</code>.  For example:
+</p>
+<div class="example">
+<pre class="example">f = @sin;
+quad (f, 0, pi)
+    &rArr; 2
+</pre></div>
+
+<p>You may use <code>feval</code> to call a function using function handle, or
+simply write the name of the function handle followed by an argument
+list.  If there are no arguments, you must use an empty argument list
+&lsquo;<samp>()</samp>&rsquo;.  For example:
+</p>
+<div class="example">
+<pre class="example">f = @sin;
+feval (f, pi/4)
+    &rArr; 0.70711
+f (pi/4)
+    &rArr; 0.70711
+</pre></div>
+
+<a name="XREFis_005ffunction_005fhandle"></a><dl>
+<dt><a name="index-is_005ffunction_005fhandle"></a>Built-in Function: <em></em> <strong>is_function_handle</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return true if <var>x</var> is a function handle.
+</p>
+<p><strong>See also:</strong> <a href="Built_002din-Data-Types.html#XREFisa">isa</a>, <a href="Data-Types.html#XREFtypeinfo">typeinfo</a>, <a href="Built_002din-Data-Types.html#XREFclass">class</a>, <a href="#XREFfunctions">functions</a>.
+</p></dd></dl>
+
+
+<a name="XREFfunctions"></a><dl>
+<dt><a name="index-functions"></a>Built-in Function: <em><var>s</var> =</em> <strong>functions</strong> <em>(<var>fcn_handle</var>)</em></dt>
+<dd><p>Return a structure containing information about the function handle
+<var>fcn_handle</var>.
+</p>
+<p>The structure <var>s</var> always contains these three fields:
+</p>
+<dl compact="compact">
+<dt>function</dt>
+<dd><p>The function name.  For an anonymous function (no name) this will be the
+actual function definition.
+</p>
+</dd>
+<dt>type</dt>
+<dd><p>Type of the function.
+</p>
+<dl compact="compact">
+<dt>anonymous</dt>
+<dd><p>The function is anonymous.
+</p>
+</dd>
+<dt>private</dt>
+<dd><p>The function is private.
+</p>
+</dd>
+<dt>overloaded</dt>
+<dd><p>The function overloads an existing function.
+</p>
+</dd>
+<dt>simple</dt>
+<dd><p>The function is a built-in or m-file function.
+</p>
+</dd>
+<dt>subfunction</dt>
+<dd><p>The function is a subfunction within an m-file.
+</p></dd>
+</dl>
+
+</dd>
+<dt>file</dt>
+<dd><p>The m-file that will be called to perform the function.  This field is empty
+for anonymous and built-in functions.
+</p></dd>
+</dl>
+
+<p>In addition, some function types may return more information in additional
+fields.
+</p>
+<p><strong>Warning:</strong> <code>functions</code> is provided for debugging purposes only.
+It&rsquo;s behavior may change in the future and programs should not depend on a
+particular output.
+</p>
+</dd></dl>
+
+
+<a name="XREFfunc2str"></a><dl>
+<dt><a name="index-func2str"></a>Built-in Function: <em></em> <strong>func2str</strong> <em>(<var>fcn_handle</var>)</em></dt>
+<dd><p>Return a string containing the name of the function referenced by the
+function handle <var>fcn_handle</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstr2func">str2func</a>, <a href="#XREFfunctions">functions</a>.
+</p></dd></dl>
+
+
+<a name="XREFstr2func"></a><dl>
+<dt><a name="index-str2func"></a>Built-in Function: <em></em> <strong>str2func</strong> <em>(<var>fcn_name</var>)</em></dt>
+<dt><a name="index-str2func-1"></a>Built-in Function: <em></em> <strong>str2func</strong> <em>(<var>fcn_name</var>, &quot;global&quot;)</em></dt>
+<dd><p>Return a function handle constructed from the string <var>fcn_name</var>.
+</p>
+<p>If the optional <code>&quot;global&quot;</code> argument is passed, locally visible
+functions are ignored in the lookup.
+</p>
+<p>Note: <code>str2func</code> does not currently accept strings which define
+anonymous functions (those which begin with &lsquo;<samp>@</samp>&rsquo;).
+Use <code>eval&nbsp;(<var>str</var>)</code><!-- /@w --> as a replacement.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfunc2str">func2str</a>, <a href="Inline-Functions.html#XREFinline">inline</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Anonymous-Functions.html#Anonymous-Functions" accesskey="n" rel="next">Anonymous Functions</a>, Up: <a href="Function-Handles-Anonymous-Functions-Inline-Functions.html#Function-Handles-Anonymous-Functions-Inline-Functions" accesskey="u" rel="up">Function Handles Anonymous Functions Inline Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

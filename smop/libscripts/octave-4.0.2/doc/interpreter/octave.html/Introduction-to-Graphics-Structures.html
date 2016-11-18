@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Introduction to Graphics Structures</title>
+
+<meta name="description" content="GNU Octave: Introduction to Graphics Structures">
+<meta name="keywords" content="GNU Octave: Introduction to Graphics Structures">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Graphics-Data-Structures.html#Graphics-Data-Structures" rel="up" title="Graphics Data Structures">
+<link href="Graphics-Objects.html#Graphics-Objects" rel="next" title="Graphics Objects">
+<link href="Graphics-Data-Structures.html#Graphics-Data-Structures" rel="prev" title="Graphics Data Structures">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Introduction-to-Graphics-Structures"></a>
+<div class="header">
+<p>
+Next: <a href="Graphics-Objects.html#Graphics-Objects" accesskey="n" rel="next">Graphics Objects</a>, Up: <a href="Graphics-Data-Structures.html#Graphics-Data-Structures" accesskey="u" rel="up">Graphics Data Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Introduction-to-Graphics-Structures-1"></a>
+<h4 class="subsection">15.3.1 Introduction to Graphics Structures</h4>
+<a name="index-introduction-to-graphics-structures"></a>
+<a name="XREFgraphics-structures"></a>
+<p>The graphics functions use pointers, which are of class graphics_handle, in
+order to address the data structures which control visual display.  A
+graphics handle may point to any one of a number of different base object
+types and these objects are the graphics data structures themselves.  The
+primitive graphic object types are: <code>figure</code>, <code>axes</code>, <code>line</code>,
+<code>text</code>, <code>patch</code>, <code>surface</code>, <code>text</code>, and <code>image</code>.
+</p>
+<p>Each of these objects has a function by the same name, and, each of these
+functions returns a graphics handle pointing to an object of the corresponding
+type.  In addition there are several functions which operate on properties of
+the graphics objects and which also return handles: the functions <code>plot</code>
+and <code>plot3</code> return a handle pointing to an object of type line, the
+function <code>subplot</code> returns a handle pointing to an object of type axes,
+the function <code>fill</code> returns a handle pointing to an object of type patch,
+the functions <code>area</code>, <code>bar</code>, <code>barh</code>, <code>contour</code>,
+<code>contourf</code>, <code>contour3</code>, <code>surf</code>, <code>mesh</code>, <code>surfc</code>,
+<code>meshc</code>, <code>errorbar</code>, <code>quiver</code>, <code>quiver3</code>, <code>scatter</code>,
+<code>scatter3</code>, <code>stair</code>, <code>stem</code>, <code>stem3</code> each return a handle
+to a complex data structure as documented in
+<a href="Data-Sources-in-Object-Groups.html#XREFdatasources">Data Sources</a>.
+</p>
+<p>The graphics objects are arranged in a hierarchy:
+</p>
+<p>1. The root is at 0.  In other words, <code>get (0)</code> returns the properties of
+the root object.
+</p>
+<p>2. Below the root are <code>figure</code> objects.
+</p>
+<p>3. Below the <code>figure</code> objects are <code>axes</code> objects.
+</p>
+<p>4. Below the <code>axes</code> objects are <code>line</code>, <code>text</code>, <code>patch</code>,
+<code>surface</code>, and <code>image</code> objects.
+</p>
+<p>Graphics handles may be distinguished from function handles
+(see <a href="Function-Handles.html#Function-Handles">Function Handles</a>) by means of the function <code>ishandle</code>.
+<code>ishandle</code> returns true if its argument is a handle of a graphics object.
+In addition, a figure or axes object may be tested using <code>isfigure</code> or
+<code>isaxes</code> respectively.  The test functions return true only if the
+argument is both a handle and of the correct type (figure or axes).
+</p>
+<p>The <code>whos</code> function can be used to show the object type of each currently
+defined graphics handle.  (Note: this is not true today, but it is, I hope,
+considered an error in whos.  It may be better to have whos just show
+graphics_handle as the class, and provide a new function which, given a
+graphics handle, returns its object type.  This could generalize the ishandle()
+functions and, in fact, replace them.)
+</p>
+<p>The <code>get</code> and <code>set</code> commands are used to obtain and set the values of
+properties of graphics objects.  In addition, the <code>get</code> command may be
+used to obtain property names.
+</p>
+<p>For example, the property <code>&quot;type&quot;</code> of the graphics object pointed to by
+the graphics handle h may be displayed by:
+</p>
+<div class="example">
+<pre class="example">get (h, &quot;type&quot;)
+</pre></div>
+
+<p>The properties and their current values are returned by <code>get (h)</code>
+where h is a handle of a graphics object.  If only the names of the
+allowed properties are wanted they may be displayed by:
+<code>get (h, &quot;&quot;)</code>.
+</p>
+<p>Thus, for example:
+</p>
+<div class="smallexample">
+<pre class="smallexample">h = figure ();
+get (h, &quot;type&quot;)
+ans = figure
+get (h, &quot;&quot;);
+error: get: ambiguous figure property name ; possible matches:
+
+__enhanced__           hittest                resize
+__graphics_toolkit__   integerhandle          resizefcn
+__guidata__            interruptible          selected
+__modified__           inverthardcopy         selectionhighlight
+__myhandle__           keypressfcn            selectiontype
+__plot_stream__        keyreleasefcn          tag
+alphamap               menubar                toolbar
+beingdeleted           mincolormap            type
+busyaction             name                   uicontextmenu
+buttondownfcn          nextplot               units
+children               numbertitle            userdata
+clipping               outerposition          visible
+closerequestfcn        paperorientation       windowbuttondownfcn
+color                  paperposition          windowbuttonmotionfcn
+colormap               paperpositionmode      windowbuttonupfcn
+createfcn              papersize              windowkeypressfcn
+currentaxes            papertype              windowkeyreleasefcn
+currentcharacter       paperunits             windowscrollwheelfcn
+currentobject          parent                 windowstyle
+currentpoint           pointer                wvisual
+deletefcn              pointershapecdata      wvisualmode
+dockcontrols           pointershapehotspot    xdisplay
+doublebuffer           position               xvisual
+filename               renderer               xvisualmode
+handlevisibility       renderermode
+</pre></div>
+
+<p>The root figure has index 0.  Its properties may be displayed by:
+<code>get (0, &quot;&quot;)</code>.
+</p>
+<p>The uses of <code>get</code> and <code>set</code> are further explained in
+<a href="Graphics-Objects.html#XREFget">get</a>, <a href="Graphics-Objects.html#XREFset">set</a>.
+</p>
+<a name="XREFisprop"></a><dl>
+<dt><a name="index-isprop"></a>Function File: <em><var>res</var> =</em> <strong>isprop</strong> <em>(<var>obj</var>, &quot;<var>prop</var>&quot;)</em></dt>
+<dd><p>Return true if <var>prop</var> is a property of the object <var>obj</var>.
+</p>
+<p><var>obj</var> may also be an array of objects in which case <var>res</var> will be a
+logical array indicating whether each handle has the property <var>prop</var>.
+</p>
+<p>For plotting, <var>obj</var> is a handle to a graphics object.  Otherwise,
+<var>obj</var> should be an instance of a class.
+</p>
+<p><strong>See also:</strong> <a href="Graphics-Objects.html#XREFget">get</a>, <a href="Graphics-Objects.html#XREFset">set</a>, <a href="Creating-a-Class.html#XREFismethod">ismethod</a>, <a href="Creating-a-Class.html#XREFisobject">isobject</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Graphics-Objects.html#Graphics-Objects" accesskey="n" rel="next">Graphics Objects</a>, Up: <a href="Graphics-Data-Structures.html#Graphics-Data-Structures" accesskey="u" rel="up">Graphics Data Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

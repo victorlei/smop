@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Other Sources</title>
+
+<meta name="description" content="GNU Octave: Other Sources">
+<meta name="keywords" content="GNU Octave: Other Sources">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Contributing-Guidelines.html#Contributing-Guidelines" rel="up" title="Contributing Guidelines">
+<link href="Obsolete-Functions.html#Obsolete-Functions" rel="next" title="Obsolete Functions">
+<link href="C_002b_002b-Sources.html#C_002b_002b-Sources" rel="prev" title="C++ Sources">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Other-Sources"></a>
+<div class="header">
+<p>
+Previous: <a href="C_002b_002b-Sources.html#C_002b_002b-Sources" accesskey="p" rel="prev">C++ Sources</a>, Up: <a href="Contributing-Guidelines.html#Contributing-Guidelines" accesskey="u" rel="up">Contributing Guidelines</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Other-Sources-1"></a>
+<h3 class="section">D.7 Other Sources</h3>
+<p>Apart from C++ and Octave language (m-files), Octave&rsquo;s sources include
+files written in C, Fortran, M4, Perl, Unix shell, AWK, Texinfo, and
+TeX.  There are not many rules to follow when using these other
+languages; some of them are summarized below.  In any case, the golden
+rule is: if you modify a source file, try to follow any conventions you
+can detect in the file or other similar files.
+</p>
+<p>For C you should obviously follow all C++ rules that can apply.
+</p>
+<p>If you modify a Fortran file, you should stay within Fortran 77 with
+common extensions like <code>END DO</code>.  Currently, we want all sources to
+be compilable with the f2c and g77 compilers, without special flags if
+possible.  This usually means that non-legacy compilers also accept the
+sources.
+</p>
+<p>The M4 macro language is mainly used for Autoconf configuration files.
+You should follow normal M4 rules when contributing to these files.
+Some M4 files come from external source, namely the Autoconf archive
+<a href="http://autoconf-archive.cryp.to">http://autoconf-archive.cryp.to</a>.
+</p>
+<p>If you give a code example in the documentation written in Texinfo with
+the <code>@example</code> environment, you should be aware that the text
+within such an environment will not be wrapped.  It is recommended that
+you keep the lines short enough to fit on pages in the generated pdf or
+ps documents.  Here is a ruler (in an <code>@example</code> environment) for
+finding the appropriate line width:
+</p>
+<div class="example">
+<pre class="example">         1         2         3         4         5         6
+123456789012345678901234567890123456789012345678901234567890
+</pre></div>
+
+
+
+
+
+
+</body>
+</html>

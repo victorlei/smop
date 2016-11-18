@@ -1,0 +1,102 @@
+#! /bin/sh
+##
+## run-octave -- run Octave in the build tree.
+##
+## Copyright (C) 2006-2015 John W. Eaton
+##
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 3 of the License, or (at
+## your option) any later version.
+##
+## Octave is distributed in the hope that it will be useful, but WITHOUT
+## ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+## FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+## for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with Octave; see the file COPYING.  If not, see
+## <http://www.gnu.org/licenses/>.
+
+AWK=%AWK%
+FIND=%FIND%
+SED=%SED%
+
+# FIXME -- is there a better way to handle the possibility of spaces
+# in these names?
+
+top_srcdir='%abs_top_srcdir%'
+builddir='%builddir%'
+
+d1="$top_srcdir/scripts"
+d2="$builddir/scripts"
+d3="$builddir/libinterp"
+d4="$top_srcdir/examples/data"
+
+d1_list=`$FIND "$d1" -type d -a ! \( \( -name private -o -name '@*' \) -a -prune \) -exec echo '{}' ';' | $SED 's/$/:/'`
+d2_list=`$FIND "$d2" -type d -a ! \( \( -name private -o -name '@*' \) -a -prune \) -exec echo '{}' ';' | $SED 's/$/:/'`
+d3_list=`$FIND "$d3" -type d -a ! \( \( -name private -o -name '@*' \) -a -prune \) -exec echo '{}' ';' | $SED 's/$/:/'`
+d4_list=`$FIND "$d4" -type d -exec echo '{}' ';' | $SED 's/$/:/'`
+
+d1_path=`echo "$d1_list" | $AWK '{ t = (s $0); s = t; } END { sub (/:$/, "", s); print s; }'`
+d2_path=`echo "$d2_list" | $AWK '{ t = (s $0); s = t; } END { sub (/:$/, "", s); print s; }'`
+d3_path=`echo "$d3_list" | $AWK '{ t = (s $0); s = t; } END { sub (/:$/, "", s); print s; }'`
+d4_path=`echo "$d4_list" | $AWK '{ t = (s $0); s = t; } END { sub (/:$/, "", s); print s; }'`
+
+octave_executable="$builddir/src/octave"
+
+LOADPATH="$d1_path:$d2_path:$d3_path:$d4_path"
+IMAGEPATH="$top_srcdir/scripts/image"
+DOCFILE="$builddir/doc/interpreter/doc-cache"
+BUILT_IN_DOCSTRINGS_FILE="$builddir/libinterp/DOCSTRINGS"
+TEXIMACROSFILE="$top_srcdir/doc/interpreter/macros.texi"
+INFOFILE="$top_srcdir/doc/interpreter/octave.info"
+
+## Checking for string equality below with prepended x's in order to
+## handle problems with empty strings.
+if [ $# -gt 0 ]; then
+  if [ "x$1" = "x-g" ]; then
+    driver="gdb --args"
+    shift
+  elif [ "x$1" = "x-gud" ]; then
+    ## Frontends for gdb (e.g. Emacs's GUD mode) need --annotate=3
+    driver="gdb --annotate=3 --args"
+    shift
+  elif [ "x$1" = "x-gud2" ]; then
+    ## The latest version of gud needs -i=mi. There isn't a good way to check
+    ## this at configure time, so we just add a gud2 flag
+    driver="gdb -i=mi --args"
+    shift
+  elif [ "x$1" = "x-valgrind" ]; then
+    driver="valgrind --tool=memcheck"
+    shift
+  elif [ "x$1" = "x-callgrind" ]; then
+    driver="valgrind --tool=callgrind"
+    shift
+  elif [ "x$1" = "x-strace" ]; then
+    driver="strace -o octave.trace"
+    shift
+  elif [ "x$1" = "x-cli" ]; then
+    octave_executable="$builddir/src/octave-cli"
+    shift
+  fi
+fi
+
+## We set OCTAVE_ARCHLIBDIR so that the wrapper program can find the
+## octave-gui program in the build tree.  That will fail if we ever
+## need Octave to find other things in ARCHLIBDIR that are not built
+## in the $builddir/src directory.
+
+OCTAVE_BINDIR="$builddir/src" \
+OCTAVE_ARCHLIBDIR="$builddir/src" \
+OCTAVE_SITE_INITFILE="$top_srcdir/scripts/startup/main-rcfile" \
+OCTAVE_DEFAULT_QT_SETTINGS="$builddir/libgui/default-qt-settings" \
+OCTAVE_LOCALE_DIR="$builddir/libgui/languages" \
+OCTAVE_JAVA_DIR="$builddir/scripts/java" \
+  exec $builddir/libtool --mode=execute $driver \
+    "$octave_executable" --no-init-path --path="$LOADPATH" \
+    --image-path="$IMAGEPATH" --doc-cache-file="$DOCFILE" \
+    --built-in-docstrings-file="$BUILT_IN_DOCSTRINGS_FILE" \
+    --texi-macros-file="$TEXIMACROSFILE" --info-file="$INFOFILE" "$@"

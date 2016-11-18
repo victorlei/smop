@@ -1,0 +1,71 @@
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Nonlinear Equations, Optimization, Nonlinear Functions, Top
+@chapter Nonlinear Equations
+@cindex nonlinear equations
+
+@deftypefn  {} {} NLEqn_options (void)
+@deftypefnx  {} {} NLEqn_options (const NLEqn_options &@var{opt})
+@end deftypefn
+
+@deftypefn {} NLEqn_options& {operator =} (const NLEqn_options &@var{opt})
+@end deftypefn
+
+@deftypefn {} void init (void)
+@end deftypefn
+
+@deftypefn {} void copy (const NLEqn_options &@var{opt})
+@end deftypefn
+
+@deftypefn {} void set_default_options (void)
+@end deftypefn
+
+@deftypefn {} void set_tolerance (double @var{val})
+@end deftypefn
+
+@deftypefn {} double tolerance (void)
+@end deftypefn
+
+@deftypefn  {} {} NLEqn (void)
+@deftypefnx  {} {} NLEqn (const ColumnVector&, const @var{NLFunc})
+@deftypefnx  {} {} NLEqn (const NLEqn &@var{a})
+@end deftypefn
+
+@deftypefn {} NLEqn& {operator =} (const NLEqn &@var{a})
+@end deftypefn
+
+@deftypefn {} void resize (int @var{n})
+@end deftypefn
+
+@deftypefn {} void set_states (const ColumnVector &@var{x})
+@end deftypefn
+
+@deftypefn {} ColumnVector states (void) const
+@end deftypefn
+
+@deftypefn {} int size (void) const
+@end deftypefn
+
+@deftypefn {} ColumnVector solve (void)
+@deftypefnx {} ColumnVector solve (const ColumnVector &@var{x})
+@end deftypefn
+
+@deftypefn {} ColumnVector solve (int &@var{info})
+@deftypefnx{} ColumnVector solve (const ColumnVector &@var{x}, int &@var{info})
+@end deftypefn

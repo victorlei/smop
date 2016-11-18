@@ -1,0 +1,133 @@
+# Copyright (C) 2002-2015 John W. Eaton
+#
+# This file is part of Octave.
+#
+# Octave is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 3 of the License, or (at
+# your option) any later version.
+#
+# Octave is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Octave; see the file COPYING.  If not, see
+# <http://www.gnu.org/licenses/>.
+
+CLASS = "DASRT"
+
+INCLUDE = "DAERT.h"
+
+OPTION
+  NAME = "absolute tolerance"
+  DOC_ITEM
+Absolute tolerance.  May be either vector or scalar.  If a vector, it
+must match the dimension of the state vector, and the relative
+tolerance must also be a vector of the same length.
+
+  END_DOC_ITEM
+  TYPE = "Array<double>"
+  SET_ARG_TYPE = "const $TYPE&"
+  INIT_BODY
+    $OPTVAR.resize (dim_vector (1, 1));
+    $OPTVAR(0) = ::sqrt (std::numeric_limits<double>::epsilon ());
+  END_INIT_BODY
+  SET_CODE
+    void set_$OPT (double val)
+      {
+        $OPTVAR.resize (dim_vector (1, 1));
+        $OPTVAR(0) = (val > 0.0) ? val : ::sqrt (std::numeric_limits<double>::epsilon ());
+        reset = true;
+      }
+
+    void set_$OPT (const $TYPE& val)
+      { $OPTVAR = val; reset = true; }
+  END_SET_CODE
+END_OPTION
+
+OPTION
+  NAME = "relative tolerance"
+  DOC_ITEM
+Relative tolerance.  May be either vector or scalar.  If a vector, it
+must match the dimension of the state vector, and the absolute
+tolerance must also be a vector of the same length.
+
+The local error test applied at each integration step is
+
+@example
+@group
+  abs (local error in x(i)) <= ...
+      rtol(i) * abs (Y(i)) + atol(i)
+@end group
+@end example
+
+  END_DOC_ITEM
+  TYPE = "Array<double>"
+  SET_ARG_TYPE = "const $TYPE&"
+  INIT_BODY
+    $OPTVAR.resize (dim_vector (1, 1));
+    $OPTVAR(0) = ::sqrt (std::numeric_limits<double>::epsilon ());
+  END_INIT_BODY
+  SET_CODE
+    void set_$OPT (double val)
+      {
+        $OPTVAR.resize (dim_vector (1, 1));
+        $OPTVAR(0) = (val > 0.0) ? val : ::sqrt (std::numeric_limits<double>::epsilon ());
+        reset = true;
+      }
+
+    void set_$OPT (const $TYPE& val)
+      { $OPTVAR = val; reset = true; }
+  END_SET_CODE
+END_OPTION
+
+OPTION
+  NAME = "initial step size"
+  DOC_ITEM
+Differential-algebraic problems may occasionally suffer from severe
+scaling difficulties on the first step.  If you know a great deal
+about the scaling of your problem, you can help to alleviate this
+problem by specifying an initial stepsize.
+
+  END_DOC_ITEM
+  TYPE = "double"
+  INIT_VALUE = "-1.0"
+  SET_EXPR = "(val >= 0.0) ? val : -1.0"
+END_OPTION
+
+OPTION
+  NAME = "maximum order"
+  DOC_ITEM
+Restrict the maximum order of the solution method.  This option must
+be between 1 and 5, inclusive.
+
+  END_DOC_ITEM
+  TYPE = "octave_idx_type"
+  INIT_VALUE = "-1"
+  SET_EXPR = "val"
+END_OPTION
+
+OPTION
+  NAME = "maximum step size"
+  DOC_ITEM
+Setting the maximum stepsize will avoid passing over very large
+regions.
+
+  END_DOC_ITEM
+  TYPE = "double"
+  INIT_VALUE = "-1.0"
+  SET_EXPR = "(val >= 0.0) ? val : -1.0"
+END_OPTION
+
+OPTION
+  NAME = "step limit"
+  DOC_ITEM
+Maximum number of integration steps to attempt on a single call to the
+underlying Fortran code.
+  END_DOC_ITEM
+  TYPE = "octave_idx_type"
+  INIT_VALUE = "-1"
+  SET_EXPR = "(val >= 0) ? val : -1"
+END_OPTION

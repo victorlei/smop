@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Raising Errors</title>
+
+<meta name="description" content="GNU Octave: Raising Errors">
+<meta name="keywords" content="GNU Octave: Raising Errors">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Handling-Errors.html#Handling-Errors" rel="up" title="Handling Errors">
+<link href="Catching-Errors.html#Catching-Errors" rel="next" title="Catching Errors">
+<link href="Handling-Errors.html#Handling-Errors" rel="prev" title="Handling Errors">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Raising-Errors"></a>
+<div class="header">
+<p>
+Next: <a href="Catching-Errors.html#Catching-Errors" accesskey="n" rel="next">Catching Errors</a>, Up: <a href="Handling-Errors.html#Handling-Errors" accesskey="u" rel="up">Handling Errors</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Raising-Errors-1"></a>
+<h4 class="subsection">12.1.1 Raising Errors</h4>
+
+<p>The most common use of errors is for checking input arguments to
+functions.  The following example calls the <code>error</code> function if
+the function <code>f</code> is called without any input arguments.
+</p>
+<div class="example">
+<pre class="example">function f (arg1)
+  if (nargin == 0)
+    error (&quot;not enough input arguments&quot;);
+  endif
+endfunction
+</pre></div>
+
+<p>When the <code>error</code> function is called, it prints the given message
+and returns to the Octave prompt.  This means that no code following
+a call to <code>error</code> will be executed.
+</p>
+<a name="XREFerror"></a><dl>
+<dt><a name="index-error"></a>Built-in Function: <em></em> <strong>error</strong> <em>(<var>template</var>, &hellip;)</em></dt>
+<dt><a name="index-error-1"></a>Built-in Function: <em></em> <strong>error</strong> <em>(<var>id</var>, <var>template</var>, &hellip;)</em></dt>
+<dd><p>Display an error message and stop m-file execution.
+</p>
+<p>Format the optional arguments under the control of the template string
+<var>template</var> using the same rules as the <code>printf</code> family of
+functions (see <a href="Formatted-Output.html#Formatted-Output">Formatted Output</a>) and print the resulting message
+on the <code>stderr</code> stream.  The message is prefixed by the character
+string &lsquo;<samp>error: </samp>&rsquo;.
+</p>
+<p>Calling <code>error</code> also sets Octave&rsquo;s internal error state such that
+control will return to the top level without evaluating any further
+commands.  This is useful for aborting from functions or scripts.
+</p>
+<p>If the error message does not end with a newline character, Octave will
+print a traceback of all the function calls leading to the error.  For
+example, given the following function definitions:
+</p>
+<div class="example">
+<pre class="example">function f () g (); end
+function g () h (); end
+function h () nargin == 1 || error (&quot;nargin != 1&quot;); end
+</pre></div>
+
+<p>calling the function <code>f</code> will result in a list of messages that
+can help you to quickly locate the exact location of the error:
+</p>
+<div class="example">
+<pre class="example">f ()
+error: nargin != 1
+error: called from:
+error:   error at line -1, column -1
+error:   h at line 1, column 27
+error:   g at line 1, column 15
+error:   f at line 1, column 15
+</pre></div>
+
+<p>If the error message ends in a newline character, Octave will print the
+message but will not display any traceback messages as it returns
+control to the top level.  For example, modifying the error message
+in the previous example to end in a newline causes Octave to only print
+a single message:
+</p>
+<div class="example">
+<pre class="example">function h () nargin == 1 || error (&quot;nargin != 1\n&quot;); end
+f ()
+error: nargin != 1
+</pre></div>
+
+<p>A null string (&quot;&quot;) input to <code>error</code> will be ignored and the code
+will continue running as if the statement were a NOP.  This is for
+compatibility with <small>MATLAB</small>.  It also makes it possible to write code such
+as
+</p>
+<div class="example">
+<pre class="example">err_msg = &quot;&quot;;
+if (CONDITION 1)
+  err_msg = &quot;CONDITION 1 found&quot;;
+elseif (CONDITION2)
+  err_msg = &quot;CONDITION 2 found&quot;;
+&hellip;
+endif
+error (err_msg);
+</pre></div>
+
+<p>which will only stop execution if an error has been found.
+</p>
+<p>Implementation Note: For compatibility with <small>MATLAB</small>, escape
+sequences in <var>template</var> (e.g., <code>&quot;\n&quot;</code> =&gt;
+newline) are processed regardless of whether <var>template</var> has been defined
+with single quotes, as long as there are two or more input arguments.  To
+disable escape sequence expansion use a second backslash before the sequence
+(e.g., <code>&quot;\\n&quot;</code>) or use the
+<code>regexptranslate</code> function.
+</p>
+<p><strong>See also:</strong> <a href="Issuing-Warnings.html#XREFwarning">warning</a>, <a href="Catching-Errors.html#XREFlasterror">lasterror</a>.
+</p></dd></dl>
+
+
+<p>Since it is common to use errors when there is something wrong with
+the input to a function, Octave supports functions to simplify such code.
+When the <code>print_usage</code> function is called, it reads the help text
+of the function calling <code>print_usage</code>, and presents a useful error.
+If the help text is written in Texinfo it is possible to present an
+error message that only contains the function prototypes as described
+by the <code>@deftypefn</code> parts of the help text.  When the help text
+isn&rsquo;t written in Texinfo, the error message contains the entire help
+message.
+</p>
+<p>Consider the following function.
+</p>
+<div class="example">
+<pre class="example">## -*- texinfo -*-
+## @deftypefn {Function File} f (@var{arg1})
+## Function help text goes here&hellip;
+## @end deftypefn
+function f (arg1)
+  if (nargin == 0)
+    print_usage ();
+  endif
+endfunction
+</pre></div>
+
+<p>When it is called with no input arguments it produces the following
+error.
+</p>
+<div class="example">
+<pre class="example">f ()
+
+-|  error: Invalid call to f.  Correct usage is:
+-|
+-|   -- Function File: f (ARG1)
+-|
+-|
+-|  Additional help for built-in functions and operators is
+-|  available in the online version of the manual.  Use the command
+-|  `doc &lt;topic&gt;' to search the manual index.
+-|
+-|  Help and information about Octave is also available on the WWW
+-|  at http://www.octave.org and via the help@octave.org
+-|  mailing list.
+</pre></div>
+
+<a name="XREFprint_005fusage"></a><dl>
+<dt><a name="index-print_005fusage"></a>Function File: <em></em> <strong>print_usage</strong> <em>()</em></dt>
+<dt><a name="index-print_005fusage-1"></a>Function File: <em></em> <strong>print_usage</strong> <em>(<var>name</var>)</em></dt>
+<dd><p>Print the usage message for the function <var>name</var>.
+</p>
+<p>When called with no input arguments the <code>print_usage</code> function displays
+the usage message of the currently executing function.
+</p>
+<p><strong>See also:</strong> <a href="Getting-Help.html#XREFhelp">help</a>.
+</p></dd></dl>
+
+
+<a name="XREFbeep"></a><dl>
+<dt><a name="index-beep"></a>Function File: <em></em> <strong>beep</strong> <em>()</em></dt>
+<dd><p>Produce a beep from the speaker (or visual bell).
+</p>
+<p>This function sends the alarm character <code>&quot;\a&quot;</code> to
+the terminal. Depending on the user&rsquo;s configuration this may produce an
+audible beep, a visual bell, or nothing at all.
+</p>
+<p><strong>See also:</strong> <a href="Simple-Output.html#XREFputs">puts</a>, <a href="Simple-Output.html#XREFfputs">fputs</a>, <a href="Formatted-Output.html#XREFprintf">printf</a>, <a href="Formatted-Output.html#XREFfprintf">fprintf</a>.
+</p></dd></dl>
+
+
+<a name="XREFbeep_005fon_005ferror"></a><dl>
+<dt><a name="index-beep_005fon_005ferror"></a>Built-in Function: <em><var>val</var> =</em> <strong>beep_on_error</strong> <em>()</em></dt>
+<dt><a name="index-beep_005fon_005ferror-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>beep_on_error</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-beep_005fon_005ferror-2"></a>Built-in Function: <em></em> <strong>beep_on_error</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that controls whether Octave will try
+to ring the terminal bell before printing an error message.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Catching-Errors.html#Catching-Errors" accesskey="n" rel="next">Catching Errors</a>, Up: <a href="Handling-Errors.html#Handling-Errors" accesskey="u" rel="up">Handling Errors</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

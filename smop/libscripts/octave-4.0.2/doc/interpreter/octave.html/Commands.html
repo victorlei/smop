@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Commands</title>
+
+<meta name="description" content="GNU Octave: Commands">
+<meta name="keywords" content="GNU Octave: Commands">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Functions-and-Scripts.html#Functions-and-Scripts" rel="up" title="Functions and Scripts">
+<link href="Organization-of-Functions.html#Organization-of-Functions" rel="next" title="Organization of Functions">
+<link href="Inline-Functions.html#Inline-Functions" rel="prev" title="Inline Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Commands"></a>
+<div class="header">
+<p>
+Next: <a href="Organization-of-Functions.html#Organization-of-Functions" accesskey="n" rel="next">Organization of Functions</a>, Previous: <a href="Function-Handles-Anonymous-Functions-Inline-Functions.html#Function-Handles-Anonymous-Functions-Inline-Functions" accesskey="p" rel="prev">Function Handles Anonymous Functions Inline Functions</a>, Up: <a href="Functions-and-Scripts.html#Functions-and-Scripts" accesskey="u" rel="up">Functions and Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Commands-1"></a>
+<h3 class="section">11.12 Commands</h3>
+
+<p>Commands are a special class of functions that only accept string
+input arguments.  A command can be called as an ordinary function, but
+it can also be called without the parentheses.  For example,
+</p>
+<div class="example">
+<pre class="example">my_command hello world
+</pre></div>
+
+<p>is equivalent to
+</p>
+<div class="example">
+<pre class="example">my_command (&quot;hello&quot;, &quot;world&quot;)
+</pre></div>
+
+<p>The general form of a command call is
+</p>
+<div class="example">
+<pre class="example"><var>cmdname</var> <var>arg1</var> <var>arg2</var> &hellip;
+</pre></div>
+
+<p>which translates directly to
+</p>
+<div class="example">
+<pre class="example"><var>cmdname</var> (&quot;<var>arg1</var>&quot;, &quot;<var>arg2</var>&quot;, &hellip;)
+</pre></div>
+
+<p>Any regular function can be used as a command if it accepts string input
+arguments.  For example:
+</p>
+<div class="example">
+<pre class="example">toupper lower_case_arg
+   &rArr; ans = LOWER_CASE_ARG
+</pre></div>
+
+<p>One difficulty of commands occurs when one of the string input arguments
+is stored in a variable.  Because Octave can&rsquo;t tell the difference between
+a variable name and an ordinary string, it is not possible to pass a
+variable as input to a command.  In such a situation a command must be
+called as a function.  For example:
+</p>
+<div class="example">
+<pre class="example">strvar = &quot;hello world&quot;;
+toupper strvar
+   &rArr; ans = STRVAR
+toupper (strvar)
+   &rArr; ans = HELLO WORLD
+</pre></div>
+
+
+
+
+
+</body>
+</html>

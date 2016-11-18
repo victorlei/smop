@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: The INDEX File</title>
+
+<meta name="description" content="GNU Octave: The INDEX File">
+<meta name="keywords" content="GNU Octave: The INDEX File">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Creating-Packages.html#Creating-Packages" rel="up" title="Creating Packages">
+<link href="PKG_005fADD-and-PKG_005fDEL-Directives.html#PKG_005fADD-and-PKG_005fDEL-Directives" rel="next" title="PKG_ADD and PKG_DEL Directives">
+<link href="The-DESCRIPTION-File.html#The-DESCRIPTION-File" rel="prev" title="The DESCRIPTION File">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="The-INDEX-File"></a>
+<div class="header">
+<p>
+Next: <a href="PKG_005fADD-and-PKG_005fDEL-Directives.html#PKG_005fADD-and-PKG_005fDEL-Directives" accesskey="n" rel="next">PKG_ADD and PKG_DEL Directives</a>, Previous: <a href="The-DESCRIPTION-File.html#The-DESCRIPTION-File" accesskey="p" rel="prev">The DESCRIPTION File</a>, Up: <a href="Creating-Packages.html#Creating-Packages" accesskey="u" rel="up">Creating Packages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="The-INDEX-File-1"></a>
+<h4 class="subsection">38.4.2 The INDEX File</h4>
+
+<p>The optional <samp>INDEX</samp> file provides a categorical view of the
+functions in the package.  This file has a very simple format
+</p>
+<ul>
+<li> Lines beginning with &lsquo;<samp>#</samp>&rsquo; are comments.
+
+</li><li> The first non-comment line should look like this
+
+<div class="example">
+<pre class="example">toolbox &gt;&gt; Toolbox name
+</pre></div>
+
+</li><li> Lines beginning with an alphabetical character indicates a new
+category of functions.
+
+</li><li> Lines starting with a white space character indicate that the
+function names on the line belong to the last mentioned category.
+</li></ul>
+
+<p>The format can be summarized with the following example:
+</p>
+<div class="example">
+<pre class="example"># A comment
+toolbox &gt;&gt; Toolbox name
+Category Name 1
+ function1 function2 function3
+ function4
+Category Name 2
+ function2 function5
+</pre></div>
+
+<p>If you wish to refer to a function that users might expect
+to find in your package but is not there, providing a work around or
+pointing out that the function is available elsewhere, you can use:
+</p>
+<div class="example">
+<pre class="example">fn = workaround description
+</pre></div>
+
+<p>This workaround description will not appear when listing functions in the
+package with <code>pkg describe</code> but they will be published
+in the HTML documentation online.
+Workaround descriptions can use any HTML markup, but
+keep in mind that it will be enclosed in a bold-italic environment.
+For the special case of:
+</p>
+<div class="example">
+<pre class="example">fn = use &lt;code&gt;alternate expression&lt;/code&gt;
+</pre></div>
+
+<p>the bold-italic is automatically suppressed.  You will need
+to use <code>&lt;code&gt;</code> even in references:
+</p>
+<div class="example">
+<pre class="example">fn = use &lt;a href=&quot;someothersite.html&quot;&gt;&lt;code&gt;fn&lt;/code&gt;&lt;/a&gt;
+</pre></div>
+
+<p>Sometimes functions are only partially compatible, in which
+case you can list the non-compatible cases separately.  To
+refer to another function in the package, use <code>&lt;f&gt;fn&lt;/f&gt;</code>.
+For example:
+</p>
+<div class="example">
+<pre class="example">eig (a, b) = use &lt;f&gt;qz&lt;/f&gt;
+</pre></div>
+
+<p>Since sites may have many missing functions, you can define
+a macro rather than typing the same link over and again.
+</p>
+<div class="example">
+<pre class="example">$id = expansion
+</pre></div>
+
+<p>defines the macro id.  You can use <code>$id</code> anywhere in the
+description and it will be expanded.  For example:
+</p>
+<div class="example">
+<pre class="example">$TSA = see &lt;a href=&quot;link_to_spctools&quot;&gt;SPC Tools&lt;/a&gt;
+arcov = $TSA &lt;code&gt;armcv&lt;/code&gt;
+</pre></div>
+
+<p>id is any string of letters, numbers and <code>_</code>.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="PKG_005fADD-and-PKG_005fDEL-Directives.html#PKG_005fADD-and-PKG_005fDEL-Directives" accesskey="n" rel="next">PKG_ADD and PKG_DEL Directives</a>, Previous: <a href="The-DESCRIPTION-File.html#The-DESCRIPTION-File" accesskey="p" rel="prev">The DESCRIPTION File</a>, Up: <a href="Creating-Packages.html#Creating-Packages" accesskey="u" rel="up">Creating Packages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

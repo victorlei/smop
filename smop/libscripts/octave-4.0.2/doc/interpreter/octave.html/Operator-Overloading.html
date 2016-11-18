@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Operator Overloading</title>
+
+<meta name="description" content="GNU Octave: Operator Overloading">
+<meta name="keywords" content="GNU Octave: Operator Overloading">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Overloading-Objects.html#Overloading-Objects" rel="up" title="Overloading Objects">
+<link href="Precedence-of-Objects.html#Precedence-of-Objects" rel="next" title="Precedence of Objects">
+<link href="Function-Overloading.html#Function-Overloading" rel="prev" title="Function Overloading">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Operator-Overloading"></a>
+<div class="header">
+<p>
+Next: <a href="Precedence-of-Objects.html#Precedence-of-Objects" accesskey="n" rel="next">Precedence of Objects</a>, Previous: <a href="Function-Overloading.html#Function-Overloading" accesskey="p" rel="prev">Function Overloading</a>, Up: <a href="Overloading-Objects.html#Overloading-Objects" accesskey="u" rel="up">Overloading Objects</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Operator-Overloading-1"></a>
+<h4 class="subsection">34.4.2 Operator Overloading</h4>
+<a name="index-addition-1"></a>
+<a name="index-and-operator-1"></a>
+<a name="index-arithmetic-operators-1"></a>
+<a name="index-boolean-expressions-1"></a>
+<a name="index-boolean-operators-1"></a>
+<a name="index-comparison-expressions-1"></a>
+<a name="index-complex_002dconjugate-transpose-1"></a>
+<a name="index-division-1"></a>
+<a name="index-equality-operator-1"></a>
+<a name="index-equality_002c-tests-for-1"></a>
+<a name="index-exponentiation-1"></a>
+<a name="index-expressions_002c-boolean-1"></a>
+<a name="index-expressions_002c-comparison-1"></a>
+<a name="index-expressions_002c-logical-1"></a>
+<a name="index-greater-than-operator-1"></a>
+<a name="index-Hermitian-operator-1"></a>
+<a name="index-less-than-operator-1"></a>
+<a name="index-logical-expressions-1"></a>
+<a name="index-logical-operators-1"></a>
+<a name="index-matrix-multiplication-1"></a>
+<a name="index-multiplication-1"></a>
+<a name="index-negation-1"></a>
+<a name="index-not-operator-1"></a>
+<a name="index-operators_002c-arithmetic-1"></a>
+<a name="index-operators_002c-boolean-1"></a>
+<a name="index-operators_002c-logical-1"></a>
+<a name="index-operators_002c-relational-1"></a>
+<a name="index-or-operator-1"></a>
+<a name="index-quotient-1"></a>
+<a name="index-relational-operators-1"></a>
+<a name="index-subtraction-1"></a>
+<a name="index-tests-for-equality-1"></a>
+<a name="index-transpose-1"></a>
+<a name="index-transpose_002c-complex_002dconjugate-1"></a>
+<a name="index-unary-minus-1"></a>
+
+<p>The following table shows, for each built-in numerical operation, the
+corresponding function name to use when providing an overloaded method for a
+user class.
+</p>
+<div class="float"><a name="tab_003aoverload_005fops"></a>
+<a name="index-_002b-4"></a>
+<a name="index-_002d-4"></a>
+<a name="index-_002e_002a-2"></a>
+<a name="index-_002a-2"></a>
+<a name="index-_002e_002f-2"></a>
+<a name="index-_002f-2"></a>
+<a name="index-_002e_005c-2"></a>
+<a name="index-_005c-2"></a>
+<a name="index-_002e_005e-2"></a>
+<a name="index-_005e-2"></a>
+<a name="index-_003c-2"></a>
+<a name="index-_003c_003d-2"></a>
+<a name="index-_003e-2"></a>
+<a name="index-_003e_003d-2"></a>
+<a name="index-_003d_003d-2"></a>
+<a name="index-_0021_003d-2"></a>
+<a name="index-_007e_003d-2"></a>
+<a name="index-_0026-2"></a>
+<a name="index-_007c-2"></a>
+<a name="index-_0021-2"></a>
+<a name="index-_0027-4"></a>
+<a name="index-_002e_0027-2"></a>
+<a name="index-_003a-2"></a>
+<a name="index-_003c-3"></a>
+
+<table>
+<thead><tr><th width="10%"></th><th width="20%">Operation</th><th width="20%">Method</th><th width="40%">Description</th><th width="10%"></th></tr></thead>
+<tr><td width="10%"></td><td width="20%">a + b</td><td width="20%">plus (a, b)</td><td width="40%">Binary addition</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a - b</td><td width="20%">minus (a, b)</td><td width="40%">Binary subtraction operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">+ a</td><td width="20%">uplus (a)</td><td width="40%">Unary addition operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">- a</td><td width="20%">uminus (a)</td><td width="40%">Unary subtraction operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a .* b</td><td width="20%">times (a, b)</td><td width="40%">Element-wise multiplication operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a * b</td><td width="20%">mtimes (a, b)</td><td width="40%">Matrix multiplication operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a ./ b</td><td width="20%">rdivide (a, b)</td><td width="40%">Element-wise right division operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a / b</td><td width="20%">mrdivide (a, b)</td><td width="40%">Matrix right division operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a .\ b</td><td width="20%">ldivide (a, b)</td><td width="40%">Element-wise left division operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a \ b</td><td width="20%">mldivide (a, b)</td><td width="40%">Matrix left division operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a .^ b</td><td width="20%">power (a, b)</td><td width="40%">Element-wise power operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a ^ b</td><td width="20%">mpower (a, b)</td><td width="40%">Matrix power operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a &lt; b</td><td width="20%">lt (a, b)</td><td width="40%">Less than operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a &lt;= b</td><td width="20%">le (a, b)</td><td width="40%">Less than or equal to operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a &gt; b</td><td width="20%">gt (a, b)</td><td width="40%">Greater than operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a &gt;= b</td><td width="20%">ge (a, b)</td><td width="40%">Greater than or equal to operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a == b</td><td width="20%">eq (a, b)</td><td width="40%">Equal to operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a != b</td><td width="20%">ne (a, b)</td><td width="40%">Not equal to operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a &amp; b</td><td width="20%">and (a, b)</td><td width="40%">Logical and operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a | b</td><td width="20%">or (a, b)</td><td width="40%">Logical or operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">! b</td><td width="20%">not (a)</td><td width="40%">Logical not operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a&rsquo;</td><td width="20%">ctranspose (a)</td><td width="40%">Complex conjugate transpose operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a.&rsquo;</td><td width="20%">transpose (a)</td><td width="40%">Transpose operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a : b</td><td width="20%">colon (a, b)</td><td width="40%">Two element range operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a : b : c</td><td width="20%">colon (a, b, c)</td><td width="40%">Three element range operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">[a, b]</td><td width="20%">horzcat (a, b)</td><td width="40%">Horizontal concatenation operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">[a; b]</td><td width="20%">vertcat (a, b)</td><td width="40%">Vertical concatenation operator</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a(s_1, &hellip;, s_n)</td><td width="20%">subsref (a, s)</td><td width="40%">Subscripted reference</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">a(s_1, &hellip;, s_n) = b</td><td width="20%">subsasgn (a, s, b)</td><td width="40%">Subscripted assignment</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%">b (a)</td><td width="20%">subsindex (a)</td><td width="40%">Convert to zero-based index</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="20%"><em>display</em></td><td width="20%">display (a)</td><td width="40%">Commandline display function</td><td width="10%"></td></tr>
+</table>
+
+<div class="float-caption"><p><strong>Table 34.1: </strong>Available overloaded operators and their corresponding class method</p></div></div>
+<p>An example <code>mtimes</code> method for our polynomial class might look like
+</p>
+<div class="example">
+<pre class="verbatim">function y = mtimes (a, b)
+  y = polynomial (conv (double (a), double (b)));
+endfunction
+</pre><pre class="example">
+
+</pre></div>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Precedence-of-Objects.html#Precedence-of-Objects" accesskey="n" rel="next">Precedence of Objects</a>, Previous: <a href="Function-Overloading.html#Function-Overloading" accesskey="p" rel="prev">Function Overloading</a>, Up: <a href="Overloading-Objects.html#Overloading-Objects" accesskey="u" rel="up">Overloading Objects</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

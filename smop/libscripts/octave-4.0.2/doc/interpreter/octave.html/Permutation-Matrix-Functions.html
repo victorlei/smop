@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Permutation Matrix Functions</title>
+
+<meta name="description" content="GNU Octave: Permutation Matrix Functions">
+<meta name="keywords" content="GNU Octave: Permutation Matrix Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Function-Support.html#Function-Support" rel="up" title="Function Support">
+<link href="Example-Code.html#Example-Code" rel="next" title="Example Code">
+<link href="Diagonal-Matrix-Functions.html#Diagonal-Matrix-Functions" rel="prev" title="Diagonal Matrix Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Permutation-Matrix-Functions"></a>
+<div class="header">
+<p>
+Previous: <a href="Diagonal-Matrix-Functions.html#Diagonal-Matrix-Functions" accesskey="p" rel="prev">Diagonal Matrix Functions</a>, Up: <a href="Function-Support.html#Function-Support" accesskey="u" rel="up">Function Support</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Permutation-Matrix-Functions-1"></a>
+<h4 class="subsection">21.3.2 Permutation Matrix Functions</h4>
+<a name="index-matrix_002c-permutation-functions"></a>
+<a name="index-permutation-matrix-functions"></a>
+
+<p><em>inv</em> and <em>pinv</em> will invert a permutation matrix, preserving its
+specialness.  <em>det</em> can be applied to a permutation matrix, efficiently
+calculating the sign of the permutation (which is equal to the determinant).
+</p>
+<p>A permutation matrix can also be returned from the built-in functions
+<em>lu</em> and <em>qr</em>, if a pivoted factorization is requested.
+</p>
+<p>The <em>sparse</em> function will convert a permutation matrix efficiently to a
+sparse matrix.
+The <em>find</em> function will also work efficiently with a permutation matrix,
+making it possible to conveniently obtain the permutation indices.
+</p>
+
+
+
+</body>
+</html>

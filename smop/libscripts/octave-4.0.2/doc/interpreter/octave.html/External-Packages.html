@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: External Packages</title>
+
+<meta name="description" content="GNU Octave: External Packages">
+<meta name="keywords" content="GNU Octave: External Packages">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Build-Dependencies.html#Build-Dependencies" rel="up" title="Build Dependencies">
+<link href="Running-Configure-and-Make.html#Running-Configure-and-Make" rel="next" title="Running Configure and Make">
+<link href="Build-Tools.html#Build-Tools" rel="prev" title="Build Tools">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="External-Packages"></a>
+<div class="header">
+<p>
+Previous: <a href="Build-Tools.html#Build-Tools" accesskey="p" rel="prev">Build Tools</a>, Up: <a href="Build-Dependencies.html#Build-Dependencies" accesskey="u" rel="up">Build Dependencies</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="External-Packages-1"></a>
+<h4 class="subsection">G.1.3 External Packages</h4>
+
+<p>The following external packages are required:
+</p>
+<dl compact="compact">
+<dt>BLAS</dt>
+<dd><p>Basic Linear Algebra Subroutine library.  Accelerated <small>BLAS</small> libraries such
+as OpenBLAS (<a href="http://www.openblas.net/">http://www.openblas.net/</a>) or
+ATLAS (<a href="http://math-atlas.sourceforge.net">http://math-atlas.sourceforge.net</a>) are recommended for best
+performance.  The reference implementation (<a href="http://www.netlib.org/blas">http://www.netlib.org/blas</a>)
+is slow, unmaintained, and suffers from certain bugs in corner case inputs.
+</p>
+</dd>
+<dt>LAPACK</dt>
+<dd><p>Linear Algebra Package (<a href="http://www.netlib.org/lapack">http://www.netlib.org/lapack</a>).
+</p>
+</dd>
+<dt>PCRE</dt>
+<dd><p>The Perl Compatible Regular Expression library (<a href="http://www.pcre.org">http://www.pcre.org</a>).
+</p></dd>
+</dl>
+
+<p>The following external package is optional but strongly recommended:
+</p>
+<dl compact="compact">
+<dt>GNU Readline</dt>
+<dd><p>Command-line editing library (<a href="www.gnu.org/s/readline">www.gnu.org/s/readline</a>).
+</p></dd>
+</dl>
+
+<p>If you wish to build Octave without GNU readline installed, you must use
+the <samp>--disable-readline</samp> option when running the configure script.
+</p>
+<p>The following external software packages are optional but recommended:
+</p>
+<dl compact="compact">
+<dt>ARPACK</dt>
+<dd><p>Library for the solution of large-scale eigenvalue problems
+(<a href="http://forge.scilab.org/index.php/p/arpack-ng">http://forge.scilab.org/index.php/p/arpack-ng</a>).  <small>ARPACK</small> is
+required to provide the functions <code>eigs</code> and <code>svds</code>.
+</p>
+</dd>
+<dt>cURL</dt>
+<dd><p>Library for transferring data with URL syntax
+(<a href="http://curl.haxx.se">http://curl.haxx.se</a>).  cURL is required to provide the
+<code>urlread</code> and <code>urlwrite</code> functions and the <code>ftp</code> class.
+</p>
+</dd>
+<dt>FFTW3</dt>
+<dd><p>Library for computing discrete Fourier transforms
+(<a href="http://www.fftw.org">http://www.fftw.org</a>).  FFTW3 is used to provide better
+performance for functions that compute discrete Fourier transforms
+(<code>fft</code>, <code>ifft</code>, <code>fft2</code>, etc.)
+</p>
+</dd>
+<dt>FLTK</dt>
+<dd><p>Portable GUI toolkit (<a href="http://www.fltk.org">http://www.fltk.org</a>).  FLTK is currently
+used to provide windows for Octave&rsquo;s OpenGL-based graphics functions.
+</p>
+</dd>
+<dt>fontconfig</dt>
+<dd><p>Library for configuring and customizing font access
+(<a href="http://www.freedesktop.org/wiki/Software/fontconfig">http://www.freedesktop.org/wiki/Software/fontconfig</a>).  Fontconfig
+is used to manage fonts for Octave&rsquo;s OpenGL-based graphics functions.
+</p>
+</dd>
+<dt>FreeType</dt>
+<dd><p>Portable font engine (<a href="http://www.freetype.org">http://www.freetype.org</a>).  FreeType is used
+to perform font rendering for Octave&rsquo;s OpenGL-based graphics functions.
+</p>
+</dd>
+<dt>GLPK</dt>
+<dd><p>GNU Linear Programming Kit (<a href="http://www.gnu.org/software/glpk">http://www.gnu.org/software/glpk</a>).
+GPLK is required for the function <code>glpk</code>.
+</p>
+</dd>
+<dt>gl2ps</dt>
+<dd><p>OpenGL to PostScript printing library (<a href="http://www.geuz.org/gl2ps/">http://www.geuz.org/gl2ps/</a>).
+gl2ps is required for printing when using the FLTK toolkit.
+</p>
+</dd>
+<dt>gnuplot</dt>
+<dd><p>Interactive graphics program (<a href="http://www.gnuplot.info">http://www.gnuplot.info</a>).  gnuplot
+is currently the default graphics renderer for Octave.
+</p>
+</dd>
+<dt>GraphicsMagick++</dt>
+<dd><p>Image processing library (<a href="http://www.graphicsmagick.org">http://www.graphicsmagick.org</a>).
+GraphicsMagick++ is used to provide the <code>imread</code> and <code>imwrite</code>
+functions.
+</p>
+</dd>
+<dt>HDF5</dt>
+<dd><p>Library for manipulating portable data files
+(<a href="http://www.hdfgroup.org/HDF5">http://www.hdfgroup.org/HDF5</a>).  <small>HDF5</small> is required for Octave&rsquo;s
+<code>load</code> and <code>save</code> commands to read and write HDF data files.
+</p>
+</dd>
+<dt>Java Development Kit</dt>
+<dd><p>Java programming language compiler and libraries.  The OpenJDK free
+software implementation is recommended (<a href="http://openjdk.java.net/">http://openjdk.java.net/</a>),
+although other JDK implementations may work.  Java is required to be able
+to call Java functions from within Octave.
+</p>
+</dd>
+<dt>LLVM</dt>
+<dd><p>Compiler framework, (<a href="http://www.llvm.org">http://www.llvm.org</a>).  LLVM is required for
+Octave&rsquo;s experimental just-in-time (JIT) compilation for speeding up the
+interpreter.
+</p>
+</dd>
+<dt>OpenGL</dt>
+<dd><p>API for portable 2-D and 3-D graphics (<a href="http://www.opengl.org">http://www.opengl.org</a>).  An
+OpenGL implementation is required to provide Octave&rsquo;s OpenGL-based
+graphics functions.  Octave&rsquo;s OpenGL-based graphics functions usually
+outperform the gnuplot-based graphics functions because plot data can be
+rendered directly instead of sending data and commands to gnuplot for
+interpretation and rendering.
+</p>
+</dd>
+<dt>Qhull</dt>
+<dd><p>Computational geometry library (<a href="http://www.qhull.org">http://www.qhull.org</a>).  Qhull is
+required to provide the functions <code>convhull</code>, <code>convhulln</code>,
+<code>delaunay</code>, <code>delaunayn</code>, <code>voronoi</code>, and <code>voronoin</code>.
+</p>
+</dd>
+<dt>QRUPDATE</dt>
+<dd><p>QR factorization updating library
+(<a href="http://sourceforge.net/projects/qrupdate">http://sourceforge.net/projects/qrupdate</a>).  QRUPDATE is used to
+provide improved performance for the functions <code>qrdelete</code>,
+<code>qrinsert</code>, <code>qrshift</code>, and <code>qrupdate</code>.
+</p>
+</dd>
+<dt>QScintilla</dt>
+<dd><p>Source code highlighter and manipulator; a Qt port of Scintilla
+(<a href="http://www.riverbankcomputing.co.uk/software/qscintilla">http://www.riverbankcomputing.co.uk/software/qscintilla</a>).
+QScintilla is used for syntax highlighting and code completion in the
+GUI.
+</p>
+</dd>
+<dt>Qt</dt>
+<dd><p>GUI and utility libraries ().  Qt is required for building the GUI.
+It is a large framework, but the only components required are the GUI,
+core, and network modules.
+</p>
+</dd>
+<dt>SuiteSparse</dt>
+<dd><p>Sparse matrix factorization library
+(<a href="http://www.cise.ufl.edu/research/sparse/SuiteSparse">http://www.cise.ufl.edu/research/sparse/SuiteSparse</a>).
+SuiteSparse is required to provide sparse matrix factorizations and
+solution of linear equations for sparse systems.
+</p>
+</dd>
+<dt>zlib</dt>
+<dd><p>Data compression library (<a href="http://zlib.net">http://zlib.net</a>).  The zlib library is
+required for Octave&rsquo;s <code>load</code> and <code>save</code> commands to handle
+compressed data, including <small>MATLAB</small> v5 MAT files.
+</p></dd>
+</dl>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Build-Tools.html#Build-Tools" accesskey="p" rel="prev">Build Tools</a>, Up: <a href="Build-Dependencies.html#Build-Dependencies" accesskey="u" rel="up">Build Dependencies</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

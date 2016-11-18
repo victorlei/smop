@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Ignoring Arguments</title>
+
+<meta name="description" content="GNU Octave: Ignoring Arguments">
+<meta name="keywords" content="GNU Octave: Ignoring Arguments">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Functions-and-Scripts.html#Functions-and-Scripts" rel="up" title="Functions and Scripts">
+<link href="Variable_002dlength-Return-Lists.html#Variable_002dlength-Return-Lists" rel="next" title="Variable-length Return Lists">
+<link href="Variable_002dlength-Argument-Lists.html#Variable_002dlength-Argument-Lists" rel="prev" title="Variable-length Argument Lists">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Ignoring-Arguments"></a>
+<div class="header">
+<p>
+Next: <a href="Variable_002dlength-Return-Lists.html#Variable_002dlength-Return-Lists" accesskey="n" rel="next">Variable-length Return Lists</a>, Previous: <a href="Variable_002dlength-Argument-Lists.html#Variable_002dlength-Argument-Lists" accesskey="p" rel="prev">Variable-length Argument Lists</a>, Up: <a href="Functions-and-Scripts.html#Functions-and-Scripts" accesskey="u" rel="up">Functions and Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Ignoring-Arguments-1"></a>
+<h3 class="section">11.5 Ignoring Arguments</h3>
+
+<p>In the formal argument list, it is possible to use the dummy placeholder
+<code>~</code> instead of a name.  This indicates that the corresponding argument
+value should be ignored and not stored to any variable.
+</p>
+<div class="example">
+<pre class="example">function val = pick2nd (~, arg2)
+  val = arg2;
+endfunction
+</pre></div>
+
+<p>The value of <code>nargin</code> is not affected by using this declaration.
+</p>
+<p>Return arguments can also be ignored using the same syntax.  Functions may
+take advantage of ignored outputs to reduce the number of calculations
+performed.  To do so, use the <code>isargout</code> function to query whether the
+output argument is wanted.  For example:
+</p>
+<div class="example">
+<pre class="example">function [out1, out2] = long_function (x, y, z)
+  if (isargout (1))
+    ## Long calculation
+    &hellip;
+    out1 = result;
+  endif
+  &hellip;
+endfunction
+</pre></div>
+
+<a name="XREFisargout"></a><dl>
+<dt><a name="index-isargout"></a>Built-in Function: <em></em> <strong>isargout</strong> <em>(<var>k</var>)</em></dt>
+<dd><p>Within a function, return a logical value indicating whether the argument
+<var>k</var> will be assigned to a variable on output.
+</p>
+<p>If the result is false, the argument has been ignored during the function
+call through the use of the tilde (~) special output argument.  Functions
+can use <code>isargout</code> to avoid performing unnecessary calculations for
+outputs which are unwanted.
+</p>
+<p>If <var>k</var> is outside the range <code>1:max (nargout)</code>, the function returns
+false.  <var>k</var> can also be an array, in which case the function works
+element-by-element and a logical array is returned.  At the top level,
+<code>isargout</code> returns an error.
+</p>
+<p><strong>See also:</strong> <a href="Multiple-Return-Values.html#XREFnargout">nargout</a>, <a href="Multiple-Return-Values.html#XREFvarargout">varargout</a>, <a href="Multiple-Return-Values.html#XREFnthargout">nthargout</a>.
+</p></dd></dl>
+
+
+
+
+
+</body>
+</html>

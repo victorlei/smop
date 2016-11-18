@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Manipulation of Plot Objects</title>
+
+<meta name="description" content="GNU Octave: Manipulation of Plot Objects">
+<meta name="keywords" content="GNU Octave: Manipulation of Plot Objects">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" rel="up" title="High-Level Plotting">
+<link href="Manipulation-of-Plot-Windows.html#Manipulation-of-Plot-Windows" rel="next" title="Manipulation of Plot Windows">
+<link href="Multiple-Plot-Windows.html#Multiple-Plot-Windows" rel="prev" title="Multiple Plot Windows">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Manipulation-of-Plot-Objects"></a>
+<div class="header">
+<p>
+Next: <a href="Manipulation-of-Plot-Windows.html#Manipulation-of-Plot-Windows" accesskey="n" rel="next">Manipulation of Plot Windows</a>, Previous: <a href="Multiple-Plot-Windows.html#Multiple-Plot-Windows" accesskey="p" rel="prev">Multiple Plot Windows</a>, Up: <a href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" accesskey="u" rel="up">High-Level Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Manipulation-of-Plot-Objects-1"></a>
+<h4 class="subsection">15.2.6 Manipulation of Plot Objects</h4>
+<a name="index-plotting_002c-object-manipulation"></a>
+
+<a name="XREFpan"></a><dl>
+<dt><a name="index-pan"></a>Command: <em></em> <strong>pan</strong></dt>
+<dt><a name="index-pan-1"></a>Command: <em></em> <strong>pan</strong> <em>on</em></dt>
+<dt><a name="index-pan-2"></a>Command: <em></em> <strong>pan</strong> <em>off</em></dt>
+<dt><a name="index-pan-3"></a>Command: <em></em> <strong>pan</strong> <em>xon</em></dt>
+<dt><a name="index-pan-4"></a>Command: <em></em> <strong>pan</strong> <em>yon</em></dt>
+<dt><a name="index-pan-5"></a>Function File: <em></em> <strong>pan</strong> <em>(<var>hfig</var>, <var>option</var>)</em></dt>
+<dd><p>Control the interactive panning mode of a figure in the GUI.
+</p>
+<p>Given the option <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>, set the interactive
+pan mode on or off.
+</p>
+<p>With no arguments, toggle the current pan mode on or off.
+</p>
+<p>Given the option <code>&quot;xon&quot;</code> or <code>&quot;yon&quot;</code>, enable pan mode
+for the x or y axis only.
+</p>
+<p>If the first argument <var>hfig</var> is a figure, then operate on the given
+figure rather than the current figure as returned by <code>gcf</code>.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFrotate3d">rotate3d</a>, <a href="#XREFzoom">zoom</a>.
+</p></dd></dl>
+
+
+<a name="XREFrotate"></a><dl>
+<dt><a name="index-rotate"></a>Function File: <em></em> <strong>rotate</strong> <em>(<var>h</var>, <var>dir</var>, <var>alpha</var>)</em></dt>
+<dt><a name="index-rotate-1"></a>Function File: <em></em> <strong>rotate</strong> <em>(&hellip;, <var>origin</var>)</em></dt>
+<dd><p>Rotate the plot object <var>h</var> through <var>alpha</var> degrees around the line
+with direction <var>dir</var> and origin <var>origin</var>.
+</p>
+<p>The default value of <var>origin</var> is the center of the axes object that is
+the parent of <var>h</var>.
+</p>
+<p>If <var>h</var> is a vector of handles, they must all have the same parent axes
+object.
+</p>
+<p>Graphics objects that may be rotated are lines, surfaces, patches, and
+images.
+</p></dd></dl>
+
+
+<a name="XREFrotate3d"></a><dl>
+<dt><a name="index-rotate3d"></a>Command: <em></em> <strong>rotate3d</strong></dt>
+<dt><a name="index-rotate3d-1"></a>Command: <em></em> <strong>rotate3d</strong> <em>on</em></dt>
+<dt><a name="index-rotate3d-2"></a>Command: <em></em> <strong>rotate3d</strong> <em>off</em></dt>
+<dt><a name="index-rotate3d-3"></a>Function File: <em></em> <strong>rotate3d</strong> <em>(<var>hfig</var>, <var>option</var>)</em></dt>
+<dd><p>Control the interactive 3-D rotation mode of a figure in the GUI.
+</p>
+<p>Given the option <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>, set the interactive
+rotate mode on or off.
+</p>
+<p>With no arguments, toggle the current rotate mode on or off.
+</p>
+<p>If the first argument <var>hfig</var> is a figure, then operate on the given
+figure rather than the current figure as returned by <code>gcf</code>.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFpan">pan</a>, <a href="#XREFzoom">zoom</a>.
+</p></dd></dl>
+
+
+<a name="XREFzoom"></a><dl>
+<dt><a name="index-zoom"></a>Command: <em></em> <strong>zoom</strong></dt>
+<dt><a name="index-zoom-1"></a>Command: <em></em> <strong>zoom</strong> <em>(<var>factor</var>)</em></dt>
+<dt><a name="index-zoom-2"></a>Command: <em></em> <strong>zoom</strong> <em>on</em></dt>
+<dt><a name="index-zoom-3"></a>Command: <em></em> <strong>zoom</strong> <em>off</em></dt>
+<dt><a name="index-zoom-4"></a>Command: <em></em> <strong>zoom</strong> <em>xon</em></dt>
+<dt><a name="index-zoom-5"></a>Command: <em></em> <strong>zoom</strong> <em>yon</em></dt>
+<dt><a name="index-zoom-6"></a>Command: <em></em> <strong>zoom</strong> <em>out</em></dt>
+<dt><a name="index-zoom-7"></a>Command: <em></em> <strong>zoom</strong> <em>reset</em></dt>
+<dt><a name="index-zoom-8"></a>Command: <em></em> <strong>zoom</strong> <em>(<var>hfig</var>, <var>option</var>)</em></dt>
+<dd><p>Zoom the current axes object or control the interactive zoom mode of a
+figure in the GUI.
+</p>
+<p>Given a numeric argument greater than zero, zoom by the given factor.  If
+the zoom factor is greater than one, zoom in on the plot.  If the factor
+is less than one, zoom out.  If the zoom factor is a two- or three-element
+vector, then the elements specify the zoom factors for the x, y, and z
+axes respectively.
+</p>
+<p>Given the option <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>, set the interactive zoom
+mode on or off.
+</p>
+<p>With no arguments, toggle the current zoom mode on or off.
+</p>
+<p>Given the option <code>&quot;xon&quot;</code> or <code>&quot;yon&quot;</code>, enable zoom mode for the
+x or y-axis only.
+</p>
+<p>Given the option <code>&quot;out&quot;</code>, zoom to the initial zoom setting.
+</p>
+<p>Given the option <code>&quot;reset&quot;</code>, store the current zoom setting so that
+<code>zoom out</code> will return to this zoom level.
+</p>
+<p>If the first argument <var>hfig</var> is a figure, then operate on the given
+figure rather than the current figure as returned by <code>gcf</code>.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFpan">pan</a>, <a href="#XREFrotate3d">rotate3d</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Manipulation-of-Plot-Windows.html#Manipulation-of-Plot-Windows" accesskey="n" rel="next">Manipulation of Plot Windows</a>, Previous: <a href="Multiple-Plot-Windows.html#Multiple-Plot-Windows" accesskey="p" rel="prev">Multiple Plot Windows</a>, Up: <a href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" accesskey="u" rel="up">High-Level Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

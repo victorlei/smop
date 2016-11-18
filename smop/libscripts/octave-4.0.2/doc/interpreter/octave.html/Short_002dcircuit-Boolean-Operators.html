@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Short-circuit Boolean Operators</title>
+
+<meta name="description" content="GNU Octave: Short-circuit Boolean Operators">
+<meta name="keywords" content="GNU Octave: Short-circuit Boolean Operators">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Boolean-Expressions.html#Boolean-Expressions" rel="up" title="Boolean Expressions">
+<link href="Assignment-Ops.html#Assignment-Ops" rel="next" title="Assignment Ops">
+<link href="Element_002dby_002delement-Boolean-Operators.html#Element_002dby_002delement-Boolean-Operators" rel="prev" title="Element-by-element Boolean Operators">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Short_002dcircuit-Boolean-Operators"></a>
+<div class="header">
+<p>
+Previous: <a href="Element_002dby_002delement-Boolean-Operators.html#Element_002dby_002delement-Boolean-Operators" accesskey="p" rel="prev">Element-by-element Boolean Operators</a>, Up: <a href="Boolean-Expressions.html#Boolean-Expressions" accesskey="u" rel="up">Boolean Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Short_002dcircuit-Boolean-Operators-1"></a>
+<h4 class="subsection">8.5.2 Short-circuit Boolean Operators</h4>
+<a name="index-short_002dcircuit-evaluation"></a>
+
+<p>Combined with the implicit conversion to scalar values in <code>if</code> and
+<code>while</code> conditions, Octave&rsquo;s element-by-element boolean operators
+are often sufficient for performing most logical operations.  However,
+it is sometimes desirable to stop evaluating a boolean expression as
+soon as the overall truth value can be determined.  Octave&rsquo;s
+<em>short-circuit</em> boolean operators work this way.
+</p>
+<dl compact="compact">
+<dt><code><var>boolean1</var> &amp;&amp; <var>boolean2</var></code></dt>
+<dd><a name="index-_0026_0026"></a>
+<p>The expression <var>boolean1</var> is evaluated and converted to a scalar
+using the equivalent of the operation <code>all (<var>boolean1</var>(:))</code>.
+If it is false, the result of the overall expression is 0.  If it is
+true, the expression <var>boolean2</var> is evaluated and converted to a
+scalar using the equivalent of the operation <code>all
+(<var>boolean2</var>(:))</code>.  If it is true, the result of the overall expression
+is 1.  Otherwise, the result of the overall expression is 0.
+</p>
+<p><strong>Warning:</strong> there is one exception to the rule of evaluating
+<code>all (<var>boolean1</var>(:))</code>, which is when <code>boolean1</code> is the
+empty matrix.  The truth value of an empty matrix is always <code>false</code>
+so <code>[] &amp;&amp; true</code> evaluates to <code>false</code> even though
+<code>all ([])</code> is <code>true</code>.
+</p>
+</dd>
+<dt><code><var>boolean1</var> || <var>boolean2</var></code></dt>
+<dd><a name="index-_007c_007c"></a>
+<p>The expression <var>boolean1</var> is evaluated and converted to a scalar
+using the equivalent of the operation <code>all (<var>boolean1</var>(:))</code>.
+If it is true, the result of the overall expression is 1.  If it is
+false, the expression <var>boolean2</var> is evaluated and converted to a
+scalar using the equivalent of the operation <code>all
+(<var>boolean2</var>(:))</code>.  If it is true, the result of the overall expression
+is 1.  Otherwise, the result of the overall expression is 0.
+</p>
+<p><strong>Warning:</strong> the truth value of an empty matrix is always <code>false</code>,
+see the previous list item for details.
+</p></dd>
+</dl>
+
+<p>The fact that both operands may not be evaluated before determining the
+overall truth value of the expression can be important.  For example, in
+the expression
+</p>
+<div class="example">
+<pre class="example">a &amp;&amp; b++
+</pre></div>
+
+<p>the value of the variable <var>b</var> is only incremented if the variable
+<var>a</var> is nonzero.
+</p>
+<p>This can be used to write somewhat more concise code.  For example, it
+is possible write
+</p>
+<div class="example">
+<pre class="example">function f (a, b, c)
+  if (nargin &gt; 2 &amp;&amp; ischar (c))
+    &hellip;
+</pre></div>
+
+<p>instead of having to use two <code>if</code> statements to avoid attempting to
+evaluate an argument that doesn&rsquo;t exist.  For example, without the
+short-circuit feature, it would be necessary to write
+</p>
+<div class="example">
+<pre class="example">function f (a, b, c)
+  if (nargin &gt; 2)
+    if (ischar (c))
+      &hellip;
+</pre></div>
+
+<p>Writing
+</p>
+<div class="example">
+<pre class="example">function f (a, b, c)
+  if (nargin &gt; 2 &amp; ischar (c))
+    &hellip;
+</pre></div>
+
+<p>would result in an error if <code>f</code> were called with one or two
+arguments because Octave would be forced to try to evaluate both of the
+operands for the operator &lsquo;<samp>&amp;</samp>&rsquo;.
+</p>
+<p><small>MATLAB</small> has special behavior that allows the operators &lsquo;<samp>&amp;</samp>&rsquo; and
+&lsquo;<samp>|</samp>&rsquo; to short-circuit when used in the truth expression for <code>if</code> and
+<code>while</code> statements.  Octave also behaves the same way by default,
+though the use of the &lsquo;<samp>&amp;</samp>&rsquo; and &lsquo;<samp>|</samp>&rsquo; operators in this way is
+strongly discouraged.  Instead, you should use the &lsquo;<samp>&amp;&amp;</samp>&rsquo; and &lsquo;<samp>||</samp>&rsquo;
+operators that always have short-circuit behavior.
+</p>
+<p>Finally, the ternary operator (?:) is not supported in Octave.  If
+short-circuiting is not important, it can be replaced by the <code>ifelse</code>
+function.
+</p>
+<a name="XREFmerge"></a><dl>
+<dt><a name="index-merge"></a>Built-in Function: <em></em> <strong>merge</strong> <em>(<var>mask</var>, <var>tval</var>, <var>fval</var>)</em></dt>
+<dt><a name="index-ifelse"></a>Built-in Function: <em></em> <strong>ifelse</strong> <em>(<var>mask</var>, <var>tval</var>, <var>fval</var>)</em></dt>
+<dd><p>Merge elements of <var>true_val</var> and <var>false_val</var>, depending on the
+value of <var>mask</var>.
+</p>
+<p>If <var>mask</var> is a logical scalar, the other two arguments can be arbitrary
+values.  Otherwise, <var>mask</var> must be a logical array, and <var>tval</var>,
+<var>fval</var> should be arrays of matching class, or cell arrays.  In the
+scalar mask case, <var>tval</var> is returned if <var>mask</var> is true, otherwise
+<var>fval</var> is returned.
+</p>
+<p>In the array mask case, both <var>tval</var> and <var>fval</var> must be either
+scalars or arrays with dimensions equal to <var>mask</var>.  The result is
+constructed as follows:
+</p>
+<div class="example">
+<pre class="example">result(mask) = tval(mask);
+result(! mask) = fval(! mask);
+</pre></div>
+
+<p><var>mask</var> can also be arbitrary numeric type, in which case it is first
+converted to logical.
+</p>
+<p><strong>See also:</strong> <a href="Logical-Values.html#XREFlogical">logical</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFdiff">diff</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Element_002dby_002delement-Boolean-Operators.html#Element_002dby_002delement-Boolean-Operators" accesskey="p" rel="prev">Element-by-element Boolean Operators</a>, Up: <a href="Boolean-Expressions.html#Boolean-Expressions" accesskey="u" rel="up">Boolean Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

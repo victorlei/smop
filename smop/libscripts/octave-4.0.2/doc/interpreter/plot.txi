@@ -1,0 +1,2381 @@
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Plotting
+@chapter Plotting
+@cindex plotting
+@cindex graphics
+
+@menu
+* Introduction to Plotting::
+* High-Level Plotting::
+* Graphics Data Structures::
+* Advanced Plotting::
+@end menu
+
+@node Introduction to Plotting
+@section Introduction to Plotting
+
+Earlier versions of Octave provided plotting through the use of
+gnuplot.  This capability is still available.  But, a newer plotting
+capability is provided by access to OpenGL@.  Which plotting system
+is used is controlled by the @code{graphics_toolkit} function.
+@xref{Graphics Toolkits}.
+
+The function call @code{graphics_toolkit ("fltk")} selects the
+FLTK/OpenGL system, and @code{graphics_toolkit ("gnuplot")} selects the
+gnuplot system.  The two systems may be used selectively through the use
+of the @code{graphics_toolkit} property of the graphics handle for each
+figure.  This is explained in @ref{Graphics Data Structures}.
+@strong{Caution:} The FLTK toolkit uses single precision variables internally
+which limits the maximum value that can be displayed to approximately
+@math{10^{38}}.  If your data contains larger values you must use the gnuplot
+toolkit which supports values up to @math{10^{308}}.
+
+@node High-Level Plotting
+@section High-Level Plotting
+@cindex plotting, high-level
+
+Octave provides simple means to create many different types of two- and
+three-dimensional plots using high-level functions.
+
+If you need more detailed control, see @ref{Graphics Data Structures}
+and @ref{Advanced Plotting}.
+
+@menu
+* Two-Dimensional Plots::
+* Three-Dimensional Plots::
+* Plot Annotations::
+* Multiple Plots on One Page::
+* Multiple Plot Windows::
+* Manipulation of Plot Objects::
+* Manipulation of Plot Windows::
+* Use of the @code{interpreter} Property::
+* Printing and Saving Plots::
+* Interacting with Plots::
+* Test Plotting Functions::
+@end menu
+
+@node Two-Dimensional Plots
+@subsection Two-Dimensional Plots
+
+@menu
+* Axis Configuration::
+* Two-dimensional Function Plotting::
+* Two-dimensional Geometric Shapes::
+@end menu
+
+The @code{plot} function allows you to create simple x-y plots with
+linear axes.  For example,
+
+@example
+@group
+x = -10:0.1:10;
+plot (x, sin (x));
+@end group
+@end example
+
+@noindent
+displays a sine wave shown in @ref{fig:plot}.  On most systems, this
+command will open a separate plot window to display the graph.
+
+@float Figure,fig:plot
+@center @image{plot,4in}
+@caption{Simple Two-Dimensional Plot.}
+@end float
+
+@DOCSTRING(plot)
+
+The @code{plotyy} function may be used to create a plot with two
+independent y axes.
+
+@DOCSTRING(plotyy)
+
+The functions @code{semilogx}, @code{semilogy}, and @code{loglog} are
+similar to the @code{plot} function, but produce plots in which one or
+both of the axes use log scales.
+
+@DOCSTRING(semilogx)
+
+@DOCSTRING(semilogy)
+
+@DOCSTRING(loglog)
+
+The functions @code{bar}, @code{barh}, @code{stairs}, and @code{stem}
+are useful for displaying discrete data.  For example,
+
+@example
+@group
+hist (randn (10000, 1), 30);
+@end group
+@end example
+
+@noindent
+produces the histogram of 10,000 normally distributed random numbers
+shown in @ref{fig:hist}.
+
+@float Figure,fig:hist
+@center @image{hist,4in}
+@caption{Histogram.}
+@end float
+
+@DOCSTRING(bar)
+
+@DOCSTRING(barh)
+
+@DOCSTRING(hist)
+
+@DOCSTRING(stemleaf)
+
+@DOCSTRING(printd)
+
+@DOCSTRING(stairs)
+
+@DOCSTRING(stem)
+
+@DOCSTRING(stem3)
+
+@DOCSTRING(scatter)
+
+@DOCSTRING(plotmatrix)
+
+@DOCSTRING(pareto)
+
+@DOCSTRING(rose)
+
+The @code{contour}, @code{contourf} and @code{contourc} functions
+produce two-dimensional contour plots from three-dimensional data.
+
+@DOCSTRING(contour)
+
+@DOCSTRING(contourf)
+
+@DOCSTRING(contourc)
+
+@DOCSTRING(contour3)
+
+The @code{errorbar}, @code{semilogxerr}, @code{semilogyerr}, and
+@code{loglogerr} functions produce plots with error bar markers.  For
+example,
+
+@example
+@group
+x = 0:0.1:10;
+y = sin (x);
+lerr = 0.1 .* rand (size (x));
+uerr = 0.1 .* rand (size (x));
+errorbar (x, y, lerr, uerr);
+@end group
+@end example
+
+@noindent
+produces the figure shown in @ref{fig:errorbar}.
+
+@float Figure,fig:errorbar
+@center @image{errorbar,4in}
+@caption{Errorbar plot.}
+@end float
+
+@DOCSTRING(errorbar)
+
+@DOCSTRING(semilogxerr)
+
+@DOCSTRING(semilogyerr)
+
+@DOCSTRING(loglogerr)
+
+Finally, the @code{polar} function allows you to easily plot data in
+polar coordinates.  However, the display coordinates remain rectangular
+and linear.  For example,
+
+@example
+polar (0:0.1:10*pi, 0:0.1:10*pi);
+@end example
+
+@noindent
+produces the spiral plot shown in @ref{fig:polar}.
+
+@float Figure,fig:polar
+@center @image{polar,4in}
+@caption{Polar plot.}
+@end float
+
+@DOCSTRING(polar)
+
+@DOCSTRING(pie)
+
+@DOCSTRING(pie3)
+
+@DOCSTRING(quiver)
+
+@DOCSTRING(quiver3)
+
+@DOCSTRING(compass)
+
+@DOCSTRING(feather)
+
+@DOCSTRING(pcolor)
+
+@DOCSTRING(area)
+
+@DOCSTRING(fill)
+
+@DOCSTRING(comet)
+
+@DOCSTRING(comet3)
+
+@DOCSTRING(frame2im)
+
+@DOCSTRING(im2frame)
+
+@node Axis Configuration
+@subsubsection Axis Configuration
+
+The axis function may be used to change the axis limits of an existing
+plot and various other axis properties, such as the aspect ratio and the
+appearance of tic marks.
+
+@DOCSTRING(axis)
+
+Similarly the axis limits of the colormap can be changed with the caxis
+function.
+
+@DOCSTRING(caxis)
+
+The @code{xlim}, @code{ylim}, and @code{zlim} functions may be used to
+get or set individual axis limits.  Each has the same form.
+
+@c Add cross-references and function index entries for other limit functions.
+@anchor{XREFylim}
+@anchor{XREFzlim}
+@findex ylim
+@findex zlim
+@DOCSTRING(xlim)
+
+@node Two-dimensional Function Plotting
+@subsubsection Two-dimensional Function Plotting
+@cindex plotting, two-dimensional functions
+
+Octave can plot a function from a function handle, inline function, or
+string defining the function without the user needing to explicitly
+create the data to be plotted.  The function @code{fplot} also generates
+two-dimensional plots with linear axes using a function name and limits
+for the range of the x-coordinate instead of the x and y data.  For
+example,
+
+@example
+@group
+fplot (@@sin, [-10, 10], 201);
+@end group
+@end example
+
+@noindent
+produces a plot that is equivalent to the one above, but also includes a
+legend displaying the name of the plotted function.
+
+@DOCSTRING(fplot)
+
+Other functions that can create two-dimensional plots directly from a
+function include @code{ezplot}, @code{ezcontour}, @code{ezcontourf} and
+@code{ezpolar}.
+
+@DOCSTRING(ezplot)
+
+@DOCSTRING(ezcontour)
+
+@DOCSTRING(ezcontourf)
+
+@DOCSTRING(ezpolar)
+
+@node Two-dimensional Geometric Shapes
+@subsubsection Two-dimensional Geometric Shapes
+
+@DOCSTRING(rectangle)
+
+@node Three-Dimensional Plots
+@subsection Three-Dimensional Plots
+@cindex plotting, three-dimensional
+
+The function @code{mesh} produces mesh surface plots.  For example,
+
+@example
+@group
+tx = ty = linspace (-8, 8, 41)';
+[xx, yy] = meshgrid (tx, ty);
+r = sqrt (xx .^ 2 + yy .^ 2) + eps;
+tz = sin (r) ./ r;
+mesh (tx, ty, tz);
+@end group
+@end example
+
+@noindent
+produces the familiar ``sombrero'' plot shown in @ref{fig:mesh}.  Note
+the use of the function @code{meshgrid} to create matrices of X and Y
+coordinates to use for plotting the Z data.  The @code{ndgrid} function
+is similar to @code{meshgrid}, but works for N-dimensional matrices.
+
+@float Figure,fig:mesh
+@center @image{mesh,4in}
+@caption{Mesh plot.}
+@end float
+
+The @code{meshc} function is similar to @code{mesh}, but also produces a
+plot of contours for the surface.
+
+The @code{plot3} function displays arbitrary three-dimensional data,
+without requiring it to form a surface.  For example,
+
+@example
+@group
+t = 0:0.1:10*pi;
+r = linspace (0, 1, numel (t));
+z = linspace (0, 1, numel (t));
+plot3 (r.*sin(t), r.*cos(t), z);
+@end group
+@end example
+
+@noindent
+displays the spiral in three dimensions shown in @ref{fig:plot3}.
+
+@float Figure,fig:plot3
+@center @image{plot3,4in}
+@caption{Three-dimensional spiral.}
+@end float
+
+Finally, the @code{view} function changes the viewpoint for
+three-dimensional plots.
+
+@DOCSTRING(mesh)
+
+@DOCSTRING(meshc)
+
+@DOCSTRING(meshz)
+
+@DOCSTRING(hidden)
+
+@DOCSTRING(surf)
+
+@DOCSTRING(surfc)
+
+@DOCSTRING(surfl)
+
+@DOCSTRING(surfnorm)
+
+@DOCSTRING(isosurface)
+
+@DOCSTRING(isonormals)
+
+@DOCSTRING(isocolors)
+
+@DOCSTRING(shrinkfaces)
+
+@DOCSTRING(diffuse)
+
+@DOCSTRING(specular)
+
+@DOCSTRING(meshgrid)
+
+@DOCSTRING(ndgrid)
+
+@DOCSTRING(plot3)
+
+@DOCSTRING(view)
+
+@DOCSTRING(slice)
+
+@DOCSTRING(ribbon)
+
+@DOCSTRING(shading)
+
+@DOCSTRING(scatter3)
+
+@DOCSTRING(waterfall)
+
+@menu
+* Aspect Ratio::
+* Three-dimensional Function Plotting::
+* Three-dimensional Geometric Shapes::
+@end menu
+
+@node Aspect Ratio
+@subsubsection Aspect Ratio
+
+For three-dimensional plots the aspect ratio can be set for data with
+@code{daspect} and for the plot box with @code{pbaspect}.
+@xref{Axis Configuration}, for controlling the x-, y-, and z-limits for
+plotting.
+
+@DOCSTRING(daspect)
+
+@DOCSTRING(pbaspect)
+
+@node Three-dimensional Function Plotting
+@subsubsection Three-dimensional Function Plotting
+
+@DOCSTRING(ezplot3)
+
+@DOCSTRING(ezmesh)
+
+@DOCSTRING(ezmeshc)
+
+@DOCSTRING(ezsurf)
+
+@DOCSTRING(ezsurfc)
+
+@node Three-dimensional Geometric Shapes
+@subsubsection Three-dimensional Geometric Shapes
+
+@DOCSTRING(cylinder)
+
+@DOCSTRING(sphere)
+
+@DOCSTRING(ellipsoid)
+
+@node Plot Annotations
+@subsection Plot Annotations
+
+You can add titles, axis labels, legends, and arbitrary text to an
+existing plot.  For example:
+
+@example
+@group
+x = -10:0.1:10;
+plot (x, sin (x));
+title ("sin(x) for x = -10:0.1:10");
+xlabel ("x");
+ylabel ("sin (x)");
+text (pi, 0.7, "arbitrary text");
+legend ("sin (x)");
+@end group
+@end example
+
+The functions @code{grid} and @code{box} may also be used to add grid
+and border lines to the plot.  By default, the grid is off and the
+border lines are on.
+
+Finally, arrows, text and rectangular or elliptic boxes can be added to
+highlight parts of a plot using the @code{annotation} function.  Those objects
+are drawn in an invisible axes, on top of every other axes.
+
+@DOCSTRING(title)
+
+@DOCSTRING(legend)
+
+@DOCSTRING(text)
+
+See @ref{Text Properties} for the properties that you can set.
+
+@anchor{XREFylabel}
+@anchor{XREFzlabel}
+@DOCSTRING(xlabel)
+
+@DOCSTRING(clabel)
+
+@DOCSTRING(box)
+
+@DOCSTRING(grid)
+
+@DOCSTRING(colorbar)
+
+@DOCSTRING(annotation)
+
+@node Multiple Plots on One Page
+@subsection Multiple Plots on One Page
+@cindex plotting, multiple plots per figure
+
+Octave can display more than one plot in a single figure.  The simplest
+way to do this is to use the @code{subplot} function to divide the plot
+area into a series of subplot windows that are indexed by an integer.
+For example,
+
+@example
+@group
+subplot (2, 1, 1)
+fplot (@@sin, [-10, 10]);
+subplot (2, 1, 2)
+fplot (@@cos, [-10, 10]);
+@end group
+@end example
+
+@noindent
+creates a figure with two separate axes, one displaying a sine wave and
+the other a cosine wave.  The first call to subplot divides the figure
+into two plotting areas (two rows and one column) and makes the first plot
+area active.  The grid of plot areas created by @code{subplot} is
+numbered in column-major order (top to bottom, left to right).
+
+@DOCSTRING(subplot)
+
+@node Multiple Plot Windows
+@subsection Multiple Plot Windows
+@cindex plotting, multiple plot windows
+
+You can open multiple plot windows using the @code{figure} function.
+For example,
+
+@example
+@group
+figure (1);
+fplot (@@sin, [-10, 10]);
+figure (2);
+fplot (@@cos, [-10, 10]);
+@end group
+@end example
+
+@noindent
+creates two figures, with the first displaying a sine wave and
+the second a cosine wave.  Figure numbers must be positive integers.
+
+@DOCSTRING(figure)
+
+@node Manipulation of Plot Objects
+@subsection Manipulation of Plot Objects
+@cindex plotting, object manipulation
+
+@DOCSTRING(pan)
+
+@DOCSTRING(rotate)
+
+@DOCSTRING(rotate3d)
+
+@DOCSTRING(zoom)
+
+@node Manipulation of Plot Windows
+@subsection Manipulation of Plot Windows
+@cindex plotting, window manipulation
+
+By default, Octave refreshes the plot window when a prompt is printed,
+or when waiting for input.  The
+@code{drawnow} function is used to cause a plot window to be updated.
+
+@DOCSTRING(drawnow)
+
+Only figures that are modified will be updated.  The @code{refresh}
+function can also be used to cause an update of the current figure, even if
+it is not modified.
+
+@DOCSTRING(refresh)
+
+Normally, high-level plot functions like @code{plot} or @code{mesh} call
+@code{newplot} to initialize the state of the current axes so that the
+next plot is drawn in a blank window with default property settings.  To
+have two plots superimposed over one another, use the @code{hold}
+function.  For example,
+
+@example
+@group
+hold on;
+x = -10:0.1:10;
+plot (x, sin (x));
+plot (x, cos (x));
+hold off;
+@end group
+@end example
+
+@noindent
+displays sine and cosine waves on the same axes.  If the hold state is
+off, consecutive plotting commands like this will only display the last
+plot.
+
+@DOCSTRING(newplot)
+
+@DOCSTRING(hold)
+
+@DOCSTRING(ishold)
+To clear the current figure, call the @code{clf} function.  To clear the
+current axis, call the @code{cla} function.  To bring the current figure
+to the top of the window stack, call the @code{shg} function.  To delete
+a graphics object, call @code{delete} on its index.  To close the
+figure window, call the @code{close} function.
+
+@DOCSTRING(clf)
+
+@DOCSTRING(cla)
+
+@DOCSTRING(shg)
+
+@DOCSTRING(delete)
+
+@DOCSTRING(close)
+
+@DOCSTRING(closereq)
+
+@node Use of the @code{interpreter} Property
+@subsection Use of the @code{interpreter} Property
+
+All text objects---such as titles, labels, legends, and text---include
+the property @qcode{"interpreter"} that determines the manner in
+which special control sequences in the text are rendered.
+
+The interpreter property can take three values: @qcode{"none"}, @qcode{"tex"},
+@qcode{"latex"}.  If the interpreter is set to @qcode{"none"} then no special
+rendering occurs---the displayed text is a verbatim copy of the specified text.
+Currently, the @qcode{"latex"} interpreter is not implemented and is equivalent
+to @qcode{"none"}.
+
+The @qcode{"tex"} option implements a subset of @TeX{} functionality when
+rendering text.  This allows the insertion of special glyphs such as Greek
+characters or mathematical symbols.  The special characters are inserted with a
+code following a backslash (\) character, as shown in @ref{tab:extended}.
+
+Note that for on-screen display the interpreter property is honored by all
+graphics toolkits.  However for printing, @strong{only} the @qcode{"gnuplot"}
+toolkit renders @TeX{} instructions.
+
+Besides special glyphs, the formatting of text can be changed within the
+string by using the codes
+
+@multitable @columnfractions .2 .2 .6 .2
+@item @tab \bf @tab Bold font @tab
+@item @tab \it @tab Italic font @tab
+@item @tab \sl @tab Oblique Font @tab
+@item @tab \rm @tab Normal font @tab
+@end multitable
+
+These codes may be used in conjunction with the @{ and @} characters to limit
+the change to just a part of the string.  For example,
+
+@example
+xlabel ('@{\bf H@} = a @{\bf V@}')
+@end example
+
+@noindent
+where the character @qcode{'a'} will not appear in a bold font.  Note that to
+avoid having Octave interpret the backslash characters in the strings,
+the strings should be in single quotes.
+
+It is also possible to change the fontname and size within the text
+
+@multitable @columnfractions .1 .4 .6 .1
+@item @tab \fontname@{@var{fontname}@} @tab Specify the font to use @tab
+@item @tab \fontsize@{@var{size}@} @tab Specify the size of the font to
+use @tab
+@end multitable
+
+Finally, superscripting and subscripting can be controlled with the @qcode{'^'}
+and @qcode{'_'} characters.  If the @qcode{'^'} or @qcode{'_'} is followed by a
+@{ character, then all of the block surrounded by the @{ @} pair is super- or
+sub-scripted.  Without the @{ @} pair, only the character immediately following
+the @qcode{'^'} or @qcode{'_'} is super- or sub-scripted.
+
+@float Table,tab:extended
+@tex
+\vskip 6pt
+\newdimen\cola \cola=78pt
+\newdimen\colb \colb=78pt
+\newdimen\colc \colc=78pt
+\def\symtable#1#2#3{
+\hbox to \hsize {\hfill\vbox{\offinterlineskip \tabskip=0pt
+\hskip36pt #1
+\vskip6pt
+\halign{
+\vrule height2.0ex depth1.ex width 0.6pt #2\tabskip=0.3em &
+#2 \hfil & \vrule #2 & #2 \hfil & #2 \vrule &
+#2 \hfil & \vrule #2 & #2 \hfil & #2 \vrule &
+#2 \hfil & \vrule #2 & #2 \hfil & #2 \vrule
+width 0.6pt \tabskip=0pt\cr
+\noalign{\hrule height 0.6pt}
+& Code && Sym && Code && Sym && Code && Sym &\cr
+\noalign{\hrule}
+#3
+\noalign{\hrule height 0.6pt}
+}
+}\hfill}}
+\hoffset72pt
+\symtable{Greek Lowercase Letters} {#}
+{& \hbox to \cola{$\backslash$alpha }    && $\alpha$
+&& \hbox to \colb{$\backslash$beta }     && $\beta$
+&& \hbox to \colc{$\backslash$gamma}     && $\gamma$     &\cr
+& $\backslash$delta      && $\delta$
+&& $\backslash$epsilon   && $\epsilon$
+&& $\backslash$zeta      && $\zeta$      &\cr
+& $\backslash$eta        && $\eta$
+&& $\backslash$theta     && $\theta$
+&& $\backslash$vartheta  && $\vartheta$  &\cr
+& $\backslash$iota       && $\iota$
+&& $\backslash$kappa     && $\kappa$
+&& $\backslash$lambda    && $\lambda$    &\cr
+& $\backslash$mu         && $\mu$
+&& $\backslash$nu        && $\nu$
+&& $\backslash$xi        && $\xi$        &\cr
+& $\backslash$o          && $o$
+&& $\backslash$pi        && $\pi$
+&& $\backslash$varpi     && $\varpi$     &\cr
+& $\backslash$rho        && $\rho$
+&& $\backslash$sigma     && $\sigma$
+&& $\backslash$varsigma  && $\varsigma$  &\cr
+& $\backslash$tau        && $\tau$
+&& $\backslash$upsilon   && $\upsilon$
+&& $\backslash$phi       && $\phi$       &\cr
+& $\backslash$chi        && $\chi$
+&& $\backslash$psi       && $\psi$
+&& $\backslash$omega     && $\omega$     &\cr}
+\vskip12pt
+\symtable{Greek Uppercase Letters} {#}
+{& \hbox to \cola{$\backslash$Gamma}   && $\Gamma$
+&& \hbox to \colb{$\backslash$Delta}   && $\Delta$
+&& \hbox to \colc{$\backslash$Theta}   && $\Theta$      &\cr
+& $\backslash$Lambda   && $\Lambda$
+&& $\backslash$Xi      && $\Xi$
+&& $\backslash$Pi      && $\Pi$         &\cr
+& $\backslash$Sigma    && $\Sigma$
+&& $\backslash$Upsilon && $\Upsilon$
+&& $\backslash$Phi     && $\Phi$        &\cr
+& $\backslash$Psi      && $\Psi$
+&& $\backslash$Omega   && $\Omega$
+&&    &&       &\cr}
+\vskip12pt
+\symtable{Misc Symbols Type Ord} {#}
+{& \hbox to \cola{$\backslash$aleph}       && $\aleph$
+&& \hbox to \colb{$\backslash$wp}          && $\wp$
+&& \hbox to \colc{$\backslash$Re}          && $\Re$      &\cr
+& $\backslash$Im           && $\Im$
+&& $\backslash$partial     && $\partial$
+&& $\backslash$infty       && $\infty$       &\cr
+& $\backslash$prime        && $\prime$
+&& $\backslash$nabla       && $\nabla$
+&& $\backslash$surd        && $\surd$        &\cr
+& $\backslash$angle        && $\angle$
+&& $\backslash$forall      && $\forall$
+&& $\backslash$exists      && $\exists$      &\cr
+& $\backslash$neg          && $\neg$
+&& $\backslash$clubsuit    && $\clubsuit$
+&& $\backslash$diamondsuit && $\diamondsuit$ &\cr
+& $\backslash$heartsuit    && $\heartsuit$
+&& $\backslash$spadesuit   && $\spadesuit$
+&&    &&       &\cr}
+\vskip12pt
+\symtable{``Large'' Operators} {#}
+{& \hbox to \cola{$\backslash$int}   && $\int$
+&& \hbox to \colb{}   &&
+&& \hbox to \colc{}   &&       &\cr}
+\vskip12pt
+\symtable{Binary operators} {#}
+{& \hbox to \cola{$\backslash$pm}     && $\pm$
+&& \hbox to \colb{$\backslash$cdot}   && $\cdot$
+&& \hbox to \colc{$\backslash$times}  && $\times$      &\cr
+& $\backslash$ast     && $\ast$
+&& $\backslash$circ   && $\circ$
+&& $\backslash$bullet && $\bullet$     &\cr
+& $\backslash$div     && $\div$
+&& $\backslash$cap    && $\cap$
+&& $\backslash$cup    && $\cup$        &\cr
+& $\backslash$vee     && $\vee$
+&& $\backslash$wedge  && $\wedge$
+&& $\backslash$oplus  && $\oplus$      &\cr
+& $\backslash$otimes  && $\otimes$
+&& $\backslash$oslash && $\oslash$
+&&    &&      &\cr}
+@end tex
+@ifnottex
+@multitable @columnfractions .25 .25 .25 .25
+@item Greek Lowercase Letters
+@item @tab  \alpha      @tab  \beta        @tab  \gamma
+@item @tab  \delta      @tab  \epsilon     @tab  \zeta
+@item @tab  \eta        @tab  \theta       @tab  \vartheta
+@item @tab  \iota       @tab  \kappa       @tab  \lambda
+@item @tab  \mu         @tab  \nu          @tab  \xi
+@item @tab  \o          @tab  \pi          @tab  \varpi
+@item @tab  \rho        @tab  \sigma       @tab  \varsigma
+@item @tab  \tau        @tab  \upsilon     @tab  \phi
+@item @tab  \chi        @tab  \psi         @tab  \omega
+@item Greek Uppercase Letters
+@item @tab  \Gamma      @tab  \Delta       @tab  \Theta
+@item @tab  \Lambda     @tab  \Xi          @tab  \Pi
+@item @tab  \Sigma      @tab  \Upsilon     @tab  \Phi
+@item @tab  \Psi        @tab  \Omega       @tab
+@item Misc Symbols Type Ord
+@item @tab  \aleph      @tab  \wp          @tab  \Re
+@item @tab  \Im         @tab  \partial     @tab  \infty
+@item @tab  \prime      @tab  \nabla       @tab  \surd
+@item @tab  \angle      @tab  \forall      @tab  \exists
+@item @tab  \neg        @tab  \clubsuit    @tab  \diamondsuit
+@item @tab  \heartsuit  @tab  \spadesuit   @tab
+@item ``Large'' Operators
+@item @tab  \int
+@item Binary Operators
+@item @tab  \pm         @tab  \cdot        @tab  \times
+@item @tab  \ast        @tab  \circ        @tab  \bullet
+@item @tab  \div        @tab  \cap         @tab  \cup
+@item @tab  \vee        @tab  \wedge       @tab  \oplus
+@item @tab  \otimes     @tab  \oslash      @tab
+@item Relations
+@item @tab  \leq        @tab  \subset      @tab  \subseteq
+@item @tab  \in         @tab  \geq         @tab  \supset
+@item @tab  \supseteq   @tab  \ni          @tab  \mid
+@item @tab  \equiv      @tab  \sim         @tab  \approx
+@item @tab  \cong       @tab  \propto      @tab  \perp
+@item Arrows
+@item @tab  \leftarrow  @tab  \Leftarrow   @tab  \rightarrow
+@item @tab  \Rightarrow @tab  \leftrightarrow @tab  \uparrow
+@item @tab  \downarrow  @tab               @tab
+@item Openings and Closings
+@item @tab  \lfloor     @tab  \langle      @tab  \lceil
+@item @tab  \rfloor     @tab  \rangle      @tab  \rceil
+@item Alternate Names
+@item @tab  \neq
+@item Other
+@item @tab  \ldots      @tab  \0          @tab  \copyright
+@item @tab  \deg
+@end multitable
+@end ifnottex
+@caption{Available special characters in @TeX{} mode}
+@end float
+@float
+@tex
+\vskip 6pt
+\newdimen\cola \cola=78pt
+\newdimen\colb \colb=78pt
+\newdimen\colc \colc=78pt
+\def\symtable#1#2#3{\hbox to \hsize {\hfill\vbox{\offinterlineskip \tabskip=0pt
+\hskip36pt #1
+\vskip6pt
+\halign{
+\vrule height2.0ex depth1.ex width 0.6pt #2\tabskip=0.3em &
+#2 \hfil & \vrule #2 & #2 \hfil & #2 \vrule &
+#2 \hfil & \vrule #2 & #2 \hfil & #2 \vrule &
+#2 \hfil & \vrule #2 & #2 \hfil & #2 \vrule
+width 0.6pt \tabskip=0pt\cr
+\noalign{\hrule height 0.6pt}
+& Code && Sym && Code && Sym && Code && Sym &\cr
+\noalign{\hrule}
+#3
+\noalign{\hrule height 0.6pt}
+}
+}\hfill}}
+\hoffset72pt
+\vskip12pt
+\symtable{Relations} {#}
+{& \hbox to \cola{$\backslash$leq}      && $\leq$
+&& \hbox to \colb{$\backslash$subset}   && $\subset$
+&& \hbox to \colc{$\backslash$subseteq} && $\subseteq$    &\cr
+& $\backslash$in        && $\in$
+&& $\backslash$geq      && $\geq$
+&& $\backslash$supset   && $\supset$      &\cr
+& $\backslash$supseteq  && $\supseteq$
+&& $\backslash$ni       && $\ni$
+&& $\backslash$mid      && $\mid$         &\cr
+& $\backslash$equiv     && $\equiv$
+&& $\backslash$sim      && $\sim$
+&& $\backslash$approx   && $\approx$      &\cr
+& $\backslash$cong      && $\cong$
+&& $\backslash$propto   && $\propto$
+&& $\backslash$perp     && $\perp$        &\cr}
+\vskip12pt
+\symtable{Arrows} {#}
+{& \hbox to \cola{$\backslash$leftarrow}      && $\leftarrow$
+&& \hbox to \colb{$\backslash$Leftarrow}      && $\Leftarrow$
+&& \hbox to \colc{$\backslash$rightarrow}     && $\rightarrow$      &\cr
+& $\backslash$Rightarrow      && $\Rightarrow$
+&& $\backslash$leftrightarrow && $\leftrightarrow$
+&& $\backslash$uparrow        && $\uparrow$         &\cr
+& $\backslash$downarrow       && $\downarrow$
+&&   &&
+&&   &&       &\cr}
+\vskip12pt
+\symtable{Openings and Closings} {#}
+{& \hbox to \cola{$\backslash$lfloor   }    && $\lfloor$
+&& \hbox to \colb{$\backslash$langle   }    && $\langle$
+&& \hbox to \colc{$\backslash$lceil    }    && $\lceil$      &\cr
+& $\backslash$rfloor    && $\rfloor$
+&& $\backslash$rangle   && $\rangle$
+&& $\backslash$rceil    && $\rceil$      &\cr}
+\vskip12pt
+\symtable{Alternate Names} {#}
+{& \hbox to \cola{$\backslash$neq}   && $\neq$
+&& \hbox to \colb{}   &&
+&& \hbox to \colc{}   &&   &\cr}
+\vskip12pt
+\symtable{Other (not in Appendix F Tables)} {#}
+{& \hbox to \cola{$\backslash$ldots}     && $\ldots$
+&& \hbox to \colb{$\backslash$0}         && $\oslash$
+&& \hbox to \colc{$\backslash$copyright} && $\copyright$      &\cr
+& $\backslash$deg        && $^\circ$
+&&    &&
+&&    &&       &\cr}
+\vskip12pt
+\hskip36pt Table 15.1: Available special characters in \TeX\ mode (cont.)
+@end tex
+@end float
+
+A complete example showing the capabilities of the extended text is
+
+@example
+@group
+x = 0:0.01:3;
+plot (x, erf (x));
+hold on;
+plot (x,x,"r");
+axis ([0, 3, 0, 1]);
+text (0.65, 0.6175, strcat ('\leftarrow x = @{2/\surd\pi',
+' @{\fontsize@{16@}\int_@{\fontsize@{8@}0@}^@{\fontsize@{8@}x@}@}',
+' e^@{-t^2@} dt@} = 0.6175'))
+@end group
+@end example
+
+@ifnotinfo
+@noindent
+The result of which can be seen in @ref{fig:extendedtext}
+
+@float Figure,fig:extendedtext
+@center @image{extended,4in}
+@caption{Example of inclusion of text with the @TeX{} interpreter}
+@end float
+@end ifnotinfo
+
+@node Printing and Saving Plots
+@subsection Printing and Saving Plots
+@cindex plotting, saving and printing plots
+@cindex printing plots
+@cindex saving plots
+
+The @code{print} command allows you to send plots to you printer and
+to save plots in a variety of formats.  For example,
+
+@example
+print -dpsc
+@end example
+
+@noindent
+prints the current figure to a color PostScript printer.  And,
+
+@example
+print -deps foo.eps
+@end example
+
+@noindent
+saves the current figure to an encapsulated PostScript file called
+@file{foo.eps}.
+
+The different graphic toolkits have different print capabilities.  In
+particular, the OpenGL based toolkits such as @code{fltk} do not support
+the @qcode{"interpreter"} property of text objects.  This means special
+symbols drawn with the @qcode{"tex"} interpreter will appear correctly
+on-screen but will be rendered with interpreter @qcode{"none"} when printing.
+Switch graphics toolkits for printing if this is a concern.
+
+@DOCSTRING(print)
+
+@DOCSTRING(saveas)
+
+@DOCSTRING(orient)
+
+@code{print} and @code{saveas} are used when work on a plot has finished
+and the output must be in a publication-ready format.  During intermediate
+stages it is often better to save the graphics object and all of its
+associated information so that changes---to colors, axis limits, marker styles,
+etc.---can be made easily from within Octave.  The @code{hgsave}/@code{hgload}
+commands can be used to save and re-create a graphics object.
+
+@DOCSTRING(hgsave)
+
+@DOCSTRING(hgload)
+
+@node Interacting with Plots
+@subsection Interacting with Plots
+
+The user can select points on a plot with the @code{ginput} function or
+selection the position at which to place text on the plot with the
+@code{gtext} function using the mouse.  Menus may also be created
+and populated with specific user commands via the @code{uimenu} function.
+
+@DOCSTRING(ginput)
+
+@DOCSTRING(waitforbuttonpress)
+
+@DOCSTRING(gtext)
+
+@DOCSTRING(uimenu)
+
+@node Test Plotting Functions
+@subsection Test Plotting Functions
+
+The functions @code{sombrero} and @code{peaks} provide a way to check
+that plotting is working.  Typing either @code{sombrero} or @code{peaks}
+at the Octave prompt should display a three-dimensional plot.
+
+@DOCSTRING(sombrero)
+
+@DOCSTRING(peaks)
+@node Graphics Data Structures
+@section Graphics Data Structures
+@cindex graphics data structures
+
+@menu
+* Introduction to Graphics Structures::
+* Graphics Objects::
+* Graphics Object Properties::
+* Searching Properties::
+* Managing Default Properties::
+@end menu
+
+@node Introduction to Graphics Structures
+@subsection Introduction to Graphics Structures
+@cindex introduction to graphics structures
+@anchor{XREFgraphics structures}
+
+The graphics functions use pointers, which are of class graphics_handle, in
+order to address the data structures which control visual display.  A
+graphics handle may point to any one of a number of different base object
+types and these objects are the graphics data structures themselves.  The
+primitive graphic object types are: @code{figure}, @code{axes}, @code{line},
+@code{text}, @code{patch}, @code{surface}, @code{text}, and @code{image}.
+
+Each of these objects has a function by the same name, and, each of these
+functions returns a graphics handle pointing to an object of the corresponding
+type.  In addition there are several functions which operate on properties of
+the graphics objects and which also return handles: the functions @code{plot}
+and @code{plot3} return a handle pointing to an object of type line, the
+function @code{subplot} returns a handle pointing to an object of type axes,
+the function @code{fill} returns a handle pointing to an object of type patch,
+the functions @code{area}, @code{bar}, @code{barh}, @code{contour},
+@code{contourf}, @code{contour3}, @code{surf}, @code{mesh}, @code{surfc},
+@code{meshc}, @code{errorbar}, @code{quiver}, @code{quiver3}, @code{scatter},
+@code{scatter3}, @code{stair}, @code{stem}, @code{stem3} each return a handle
+to a complex data structure as documented in
+@ref{XREFdatasources,,Data Sources}.
+
+The graphics objects are arranged in a hierarchy:
+
+1. The root is at 0.  In other words, @code{get (0)} returns the properties of
+the root object.
+
+2. Below the root are @code{figure} objects.
+
+3. Below the @code{figure} objects are @code{axes} objects.
+
+4. Below the @code{axes} objects are @code{line}, @code{text}, @code{patch},
+@code{surface}, and @code{image} objects.
+
+Graphics handles may be distinguished from function handles
+(@pxref{Function Handles}) by means of the function @code{ishandle}.
+@code{ishandle} returns true if its argument is a handle of a graphics object.
+In addition, a figure or axes object may be tested using @code{isfigure} or
+@code{isaxes} respectively.  The test functions return true only if the
+argument is both a handle and of the correct type (figure or axes).
+
+The @code{whos} function can be used to show the object type of each currently
+defined graphics handle.  (Note: this is not true today, but it is, I hope,
+considered an error in whos.  It may be better to have whos just show
+graphics_handle as the class, and provide a new function which, given a
+graphics handle, returns its object type.  This could generalize the ishandle()
+functions and, in fact, replace them.)
+
+The @code{get} and @code{set} commands are used to obtain and set the values of
+properties of graphics objects.  In addition, the @code{get} command may be
+used to obtain property names.
+
+For example, the property @qcode{"type"} of the graphics object pointed to by
+the graphics handle h may be displayed by:
+
+@example
+get (h, "type")
+@end example
+
+The properties and their current values are returned by @code{get (h)}
+where h is a handle of a graphics object.  If only the names of the
+allowed properties are wanted they may be displayed by:
+@code{get (h, "")}.
+
+Thus, for example:
+
+@smallexample
+h = figure ();
+get (h, "type")
+ans = figure
+get (h, "");
+error: get: ambiguous figure property name ; possible matches:
+
+__enhanced__           hittest                resize
+__graphics_toolkit__   integerhandle          resizefcn
+__guidata__            interruptible          selected
+__modified__           inverthardcopy         selectionhighlight
+__myhandle__           keypressfcn            selectiontype
+__plot_stream__        keyreleasefcn          tag
+alphamap               menubar                toolbar
+beingdeleted           mincolormap            type
+busyaction             name                   uicontextmenu
+buttondownfcn          nextplot               units
+children               numbertitle            userdata
+clipping               outerposition          visible
+closerequestfcn        paperorientation       windowbuttondownfcn
+color                  paperposition          windowbuttonmotionfcn
+colormap               paperpositionmode      windowbuttonupfcn
+createfcn              papersize              windowkeypressfcn
+currentaxes            papertype              windowkeyreleasefcn
+currentcharacter       paperunits             windowscrollwheelfcn
+currentobject          parent                 windowstyle
+currentpoint           pointer                wvisual
+deletefcn              pointershapecdata      wvisualmode
+dockcontrols           pointershapehotspot    xdisplay
+doublebuffer           position               xvisual
+filename               renderer               xvisualmode
+handlevisibility       renderermode
+@end smallexample
+
+The root figure has index 0.  Its properties may be displayed by:
+@code{get (0, "")}.
+
+The uses of @code{get} and @code{set} are further explained in
+@ref{XREFget,,get}, @ref{XREFset,,set}.
+
+@DOCSTRING(isprop)
+
+@node Graphics Objects
+@subsection Graphics Objects
+@cindex graphics objects
+
+The hierarchy of graphics objects was explained above.
+@xref{Introduction to Graphics Structures}.  Here the
+specific objects are described, and the properties contained in
+these objects are discussed.  Keep in mind that
+graphics objects are always referenced by @dfn{handle}.
+
+@table @asis
+@c @group
+
+@item root figure
+@cindex root figure graphics object
+@cindex graphics object, root figure
+the top level of the hierarchy and the parent of all figure objects.
+The handle index of the root figure is 0.
+
+@item figure
+@cindex figure graphics object
+@cindex graphics object, figure
+A figure window.
+
+@item axes
+@cindex axes graphics object
+@cindex graphics object, axes
+A set of axes.  This object is a child of a figure object and may be a
+parent of line, text, image, patch, or surface objects.
+
+@item line
+@cindex line graphics object
+@cindex graphics object, line
+A line in two or three dimensions.
+
+@item text
+@cindex text graphics object
+@cindex graphics object, text
+Text annotations.
+
+@item image
+@cindex image graphics object
+@cindex graphics object, image
+A bitmap image.
+
+@item patch
+@cindex patch graphics object
+@cindex graphics object, patch
+A filled polygon, currently limited to two dimensions.
+
+@item surface
+@cindex surface graphics object
+@cindex graphics object, surface
+A three-dimensional surface.
+@c @end group
+@end table
+
+@subsubsection Creating Graphics Objects
+@cindex creating graphics objects
+
+You can create any graphics object primitive by calling the function of the
+same name as the object; In other words, @code{figure}, @code{axes},
+@code{line}, @code{text}, @code{image}, @code{patch}, and @code{surface}
+functions.  These fundamental graphic objects automatically become children
+of the current axes object as if @code{hold on} was in place.  Seperately, axes
+will automatically become children of the current figure object and figures
+will become children of the root object 0.
+
+If this auto-joining feature is not desired then it is important to call
+@code{newplot} first to prepare a new figure and axes for plotting.
+Alternatively, the easier way is to call a high-level graphics routine which
+will both create the plot and then populate it with low-level graphics objects.
+Instead of calling @code{line}, use @code{plot}.  Or use @code{surf} instead of
+@code{surface}.  Or use @code{fill} instead of @code{patch}.
+
+@DOCSTRING(axes)
+
+@DOCSTRING(line)
+
+@DOCSTRING(patch)
+
+@DOCSTRING(surface)
+
+@subsubsection Handle Functions
+@cindex handle functions
+
+To determine whether a variable is a graphics object index, or an index
+to an axes or figure, use the functions @code{ishandle}, @code{isaxes}, and
+@code{isfigure}.
+
+@DOCSTRING(ishandle)
+
+@DOCSTRING(ishghandle)
+
+@DOCSTRING(isaxes)
+
+@DOCSTRING(isfigure)
+
+The function @code{gcf} returns an index to the current figure object,
+or creates one if none exists.  Similarly, @code{gca} returns the
+current axes object, or creates one (and its parent figure object) if
+none exists.
+
+@DOCSTRING(gcf)
+
+@DOCSTRING(gca)
+
+@DOCSTRING(gco)
+
+The @code{get} and @code{set} functions may be used to examine and set
+properties for graphics objects.  For example,
+
+@example
+@group
+get (0)
+    @result{} ans =
+       @{
+         type = root
+         currentfigure = [](0x0)
+         children = [](0x0)
+         visible = on
+         @dots{}
+       @}
+@end group
+@end example
+
+@noindent
+returns a structure containing all the properties of the root figure.
+As with all functions in Octave, the structure is returned by value, so
+modifying it will not modify the internal root figure plot object.  To
+do that, you must use the @code{set} function.  Also, note that in this
+case, the @code{currentfigure} property is empty, which indicates that
+there is no current figure window.
+
+The @code{get} function may also be used to find the value of a single
+property.  For example,
+
+@example
+@group
+get (gca (), "xlim")
+    @result{} [ 0 1 ]
+@end group
+@end example
+
+@noindent
+returns the range of the x-axis for the current axes object in the
+current figure.
+
+To set graphics object properties, use the set function.  For example,
+
+@example
+set (gca (), "xlim", [-10, 10]);
+@end example
+
+@noindent
+sets the range of the x-axis for the current axes object in the current
+figure to @samp{[-10, 10]}.
+
+Default property values can also be queried if the @code{set} function is
+called without a value argument.  When only one argument is given (a graphic
+handle) then a structure with defaults for all properties of the given object
+type is returned.  For example,
+
+@example
+set (gca ())
+@end example
+
+@noindent
+returns a structure containing the default property values for axes objects.
+If @code{set} is called with two arguments (a graphic handle and a property
+name) then only the defaults for the requested property are returned.
+
+@DOCSTRING(get)
+
+@DOCSTRING(set)
+
+@DOCSTRING(ancestor)
+
+@DOCSTRING(allchild)
+
+@DOCSTRING(findfigs)
+
+@cindex saving graphics objects
+@cindex graphics objects, saving
+
+Figures can be printed or saved in many graphics formats with @code{print} and
+@code{saveas}.  Occasionally, however, it may be useful to save the original
+Octave handle graphic directly so that further modifications can be made such
+as modifying a title or legend.
+
+This can be accomplished with the following functions by
+
+@example
+@group
+fig_struct = hdl2struct (gcf);
+save myplot.fig -struct fig_struct;
+@dots{}
+fig_struct = load ("myplot.fig");
+struct2hdl (fig_struct);
+@end group
+@end example
+
+@DOCSTRING(hdl2struct)
+
+@DOCSTRING(struct2hdl)
+
+@DOCSTRING(copyobj)
+
+@node Graphics Object Properties
+@subsection Graphics Object Properties
+@cindex graphics object properties
+
+@menu
+* Root Figure Properties::
+* Figure Properties::
+* Axes Properties::
+* Line Properties::
+* Text Properties::
+* Image Properties::
+* Patch Properties::
+* Surface Properties::
+@end menu
+
+In this Section the graphics object properties are discussed in detail, starting
+with the root figure properties and continuing through the objects
+hierarchy.  The documentation about a specific graphics object can be displayed
+using @code{doc} function, e.g., @code{doc ("axes properties")} will show
+@ref{Axes Properties}.
+
+The allowed values for radio (string) properties can be retrieved
+programmatically or displayed using the one or
+two arguments call to @code{set} function.  @xref{XREFset, , set}.
+
+In the following documentation, default values are enclosed in @{ @}.
+
+@node Root Figure Properties
+@subsubsection Root Figure Properties
+@cindex root figure properties
+
+The @code{root figure} properties are:
+
+@include plot-rootproperties.texi
+
+
+@node Figure Properties
+@subsubsection Figure Properties
+@cindex figure properties
+
+The @code{figure} properties are:
+
+@include plot-figureproperties.texi
+
+
+@node Axes Properties
+@subsubsection Axes Properties
+@cindex axes properties
+
+The @code{axes} properties are:
+
+@include plot-axesproperties.texi
+
+
+@node Line Properties
+@subsubsection Line Properties
+@cindex line properties
+
+The @code{line} properties are:
+
+@include plot-lineproperties.texi
+
+
+@node Text Properties
+@subsubsection Text Properties
+@cindex text properties
+
+The @code{text} properties are:
+
+@include plot-textproperties.texi
+
+
+@node Image Properties
+@subsubsection Image Properties
+@cindex image properties
+
+The @code{image} properties are:
+
+@include plot-imageproperties.texi
+
+
+@node Patch Properties
+@subsubsection Patch Properties
+@cindex patch properties
+
+The @code{patch} properties are:
+
+@include plot-patchproperties.texi
+
+
+@node Surface Properties
+@subsubsection Surface Properties
+@cindex surface properties
+
+The @code{surface} properties are:
+
+@include plot-surfaceproperties.texi
+
+
+@node Searching Properties
+@subsection Searching Properties
+
+@DOCSTRING(findobj)
+
+@DOCSTRING(findall)
+@node Managing Default Properties
+@subsection Managing Default Properties
+@cindex default graphics properties
+@cindex graphics properties, default
+
+Object properties have two classes of default values, @dfn{factory
+defaults} (the initial values) and @dfn{user-defined defaults}, which
+may override the factory defaults.
+
+Although default values may be set for any object, they are set in
+parent objects and apply to child objects, of the specified object type.
+For example, setting the default @code{color} property of @code{line}
+objects to @qcode{"green"}, for the @code{root} object, will result in all
+@code{line} objects inheriting the @code{color} @qcode{"green"} as the default
+value.
+
+@example
+set (0, "defaultlinecolor", "green");
+@end example
+
+@noindent
+sets the default line color for all objects.  The rule for constructing
+the property name to set a default value is
+
+@example
+default + @var{object-type} + @var{property-name}
+@end example
+
+This rule can lead to some strange looking names, for example
+@code{defaultlinelinewidth"} specifies the default @code{linewidth}
+property for @code{line} objects.
+
+The example above used the root figure object, 0, so the default
+property value will apply to all line objects.  However, default values
+are hierarchical, so defaults set in a figure objects override those
+set in the root figure object.  Likewise, defaults set in axes objects
+override those set in figure or root figure objects.  For example,
+
+@example
+@group
+subplot (2, 1, 1);
+set (0, "defaultlinecolor", "red");
+set (1, "defaultlinecolor", "green");
+set (gca (), "defaultlinecolor", "blue");
+line (1:10, rand (1, 10));
+subplot (2, 1, 2);
+line (1:10, rand (1, 10));
+figure (2)
+line (1:10, rand (1, 10));
+@end group
+@end example
+
+@noindent
+produces two figures.  The line in first subplot window of the first
+figure is blue because it inherits its color from its parent axes
+object.  The line in the second subplot window of the first figure is
+green because it inherits its color from its parent figure object.  The
+line in the second figure window is red because it inherits its color
+from the global root figure parent object.
+
+To remove a user-defined default setting, set the default property to
+the value @qcode{"remove"}.  For example,
+
+@example
+set (gca (), "defaultlinecolor", "remove");
+@end example
+
+@noindent
+removes the user-defined default line color setting from the current axes
+object.  To quickly remove all user-defined defaults use the @code{reset}
+function.
+
+@DOCSTRING(reset)
+
+Getting the @qcode{"default"} property of an object returns a list of
+user-defined defaults set for the object.  For example,
+
+@example
+get (gca (), "default");
+@end example
+
+@noindent
+returns a list of user-defined default values for the current axes
+object.
+
+Factory default values are stored in the root figure object.  The
+command
+
+@example
+get (0, "factory");
+@end example
+
+@noindent
+returns a list of factory defaults.
+
+@node Advanced Plotting
+@section Advanced Plotting
+
+
+@menu
+* Colors::
+* Line Styles::
+* Marker Styles::
+* Callbacks::
+* Application-defined Data::
+* Object Groups::
+* Graphics Toolkits::
+@end menu
+
+
+@node Colors
+@subsection Colors
+@cindex graphics colors
+@cindex colors, graphics
+
+Colors may be specified as RGB triplets with values ranging from zero to
+one, or by name.  Recognized color names include @qcode{"blue"},
+@qcode{"black"}, @qcode{"cyan"}, @qcode{"green"}, @qcode{"magenta"},
+@qcode{"red"}, @qcode{"white"}, and @qcode{"yellow"}.
+
+@node Line Styles
+@subsection Line Styles
+@cindex line styles, graphics
+@cindex graphics line styles
+
+Line styles are specified by the following properties:
+
+@table @code
+@item linestyle
+May be one of
+
+@table @asis
+@item @qcode{"-"}
+Solid line.  [default]
+
+@c Special handling required to avoid '--' becoming single en-dash in Info
+@ifnottex
+
+@item @verb{|"--"|}
+@end ifnottex
+@iftex
+
+@item @code{"--"}
+@end iftex
+Dashed line.
+
+@item @qcode{":"}
+Dotted line.
+
+@item @qcode{"-."}
+A dash-dot line.
+
+@item @qcode{"none"}
+No line.  Points will still be marked using the current Marker Style.
+@end table
+
+@item linewidth
+A number specifying the width of the line.  The default is 1.  A value
+of 2 is twice as wide as the default, etc.
+@end table
+
+@node Marker Styles
+@subsection Marker Styles
+@cindex graphics marker styles
+@cindex marker styles, graphics
+
+Marker styles are specified by the following properties:
+
+@table @code
+@item marker
+A character indicating a plot marker to be place at each data point, or
+@qcode{"none"}, meaning no markers should be displayed.
+
+@item markeredgecolor
+The color of the edge around the marker, or @qcode{"auto"}, meaning that
+the edge color is the same as the face color.  @xref{Colors}.
+
+@item markerfacecolor
+The color of the marker, or @qcode{"none"} to indicate that the marker
+should not be filled.  @xref{Colors}.
+
+@item markersize
+A number specifying the size of the marker.  The default is 1.  A value
+of 2 is twice as large as the default, etc.
+@end table
+
+The @code{colstyle} function will parse a @code{plot}-style specification
+and will return the color, line, and marker values that would result.
+
+@DOCSTRING(colstyle)
+
+@node Callbacks
+@subsection Callbacks
+@cindex callbacks
+
+Callback functions can be associated with graphics objects and triggered
+after certain events occur.  The basic structure of all callback function
+is
+
+@example
+@group
+function mycallback (src, data)
+@dots{}
+endfunction
+@end group
+@end example
+
+@noindent
+where @code{src} gives a handle to the source of the callback, and
+@code{code} gives some event specific data.  This can then be associated
+with an object either at the objects creation or later with the
+@code{set} function.  For example,
+
+@example
+plot (x, "DeleteFcn", @@(s, e) disp ("Window Deleted"))
+@end example
+
+@noindent
+where at the moment that the plot is deleted, the message "Window
+Deleted" will be displayed.
+
+Additional user arguments can be passed to callback functions, and will
+be passed after the 2 default arguments.  For example:
+
+@example
+@group
+plot (x, "DeleteFcn", @{@@mycallback, "1"@})
+@dots{}
+function mycallback (src, data, a1)
+  fprintf ("Closing plot %d\n", a1);
+endfunction
+@end group
+@end example
+
+The basic callback functions that are available for all graphics objects
+are
+
+@itemize @bullet
+@item CreateFcn
+This is the callback that is called at the moment of the objects
+creation.  It is not called if the object is altered in any way, and so
+it only makes sense to define this callback in the function call that
+defines the object.  Callbacks that are added to @code{CreateFcn} later with
+the @code{set} function will never be executed.
+
+@item DeleteFcn
+This is the callback that is called at the moment an object is deleted.
+
+@item ButtonDownFcn
+This is the callback that is called if a mouse button is pressed while
+the pointer is over this object.  Note, that the gnuplot interface does
+not respect this callback.
+@end itemize
+
+The object and figure that the event occurred in that resulted in the
+callback being called can be found with the @code{gcbo} and @code{gcbf}
+functions.
+
+@DOCSTRING(gcbo)
+
+@DOCSTRING(gcbf)
+
+Callbacks can equally be added to properties with the @code{addlistener}
+function described below.
+
+@node Application-defined Data
+@subsection Application-defined Data
+@cindex application-defined data
+
+Octave has a provision for attaching application-defined data to a graphics
+handle.  The data can be anything which is meaningful to the application, and
+will be completely ignored by Octave.
+
+@DOCSTRING(setappdata)
+
+@DOCSTRING(getappdata)
+
+@DOCSTRING(rmappdata)
+
+@DOCSTRING(isappdata)
+
+@node Object Groups
+@subsection Object Groups
+@cindex object groups
+
+A number of Octave high level plot functions return groups of other
+graphics objects or they return graphics objects that have their
+properties linked in such a way that changes to one of the properties
+results in changes in the others.  A graphic object that groups other
+objects is an @code{hggroup}
+
+@DOCSTRING(hggroup)
+
+For example a simple use of a @code{hggroup} might be
+
+@example
+@group
+x = 0:0.1:10;
+hg = hggroup ();
+plot (x, sin (x), "color", [1, 0, 0], "parent", hg);
+hold on
+plot (x, cos (x), "color", [0, 1, 0], "parent", hg);
+set (hg, "visible", "off");
+@end group
+@end example
+
+@noindent
+which groups the two plots into a single object and controls their
+visibility directly.  The default properties of an @code{hggroup} are
+the same as the set of common properties for the other graphics
+objects.  Additional properties can be added with the @code{addproperty}
+function.
+
+@DOCSTRING(addproperty)
+
+Once a property in added to an @code{hggroup}, it is not linked to any
+other property of either the children of the group, or any other
+graphics object.  Add so to control the way in which this newly added
+property is used, the @code{addlistener} function is used to define a
+callback function that is executed when the property is altered.
+
+@DOCSTRING(addlistener)
+
+@DOCSTRING(dellistener)
+
+An example of the use of these two functions might be
+
+@example
+@group
+x = 0:0.1:10;
+hg = hggroup ();
+h = plot (x, sin (x), "color", [1, 0, 0], "parent", hg);
+addproperty ("linestyle", hg, "linelinestyle", get (h, "linestyle"));
+addlistener (hg, "linestyle", @@update_props);
+hold on
+plot (x, cos (x), "color", [0, 1, 0], "parent", hg);
+
+function update_props (h, d)
+  set (get (h, "children"), "linestyle", get (h, "linestyle"));
+endfunction
+@end group
+@end example
+
+@noindent
+that adds a @code{linestyle} property to the @code{hggroup} and
+propagating any changes its value to the children of the group.  The
+@code{linkprop} function can be used to simplify the above to be
+
+@example
+@group
+x = 0:0.1:10;
+hg = hggroup ();
+h1 = plot (x, sin (x), "color", [1, 0, 0], "parent", hg);
+addproperty ("linestyle", hg, "linelinestyle", get (h, "linestyle"));
+hold on
+h2 = plot (x, cos (x), "color", [0, 1, 0], "parent", hg);
+hlink = linkprop ([hg, h1, h2], "color");
+@end group
+@end example
+
+@DOCSTRING(linkprop)
+
+@DOCSTRING(linkaxes)
+
+These capabilities are used in a number of basic graphics objects.
+The @code{hggroup} objects created by the functions of Octave contain
+one or more graphics object and are used to:
+
+@itemize @bullet
+@item group together multiple graphics objects,
+
+@item create linked properties between different graphics objects, and
+
+@item to hide the nominal user data, from the actual data of the objects.
+@end itemize
+
+@noindent
+For example the @code{stem} function creates a stem series where each
+@code{hggroup} of the stem series contains two line objects representing
+the body and head of the stem.  The @code{ydata} property of the
+@code{hggroup} of the stem series represents the head of the stem,
+whereas the body of the stem is between the baseline and this value.  For
+example
+
+@example
+@group
+h = stem (1:4)
+get (h, "xdata")
+@result{} [  1   2   3   4]'
+get (get (h, "children")(1), "xdata")
+@result{} [  1   1 NaN   2   2 NaN   3   3 NaN   4   4 NaN]'
+@end group
+@end example
+
+@noindent
+shows the difference between the @code{xdata} of the @code{hggroup}
+of a stem series object and the underlying line.
+
+The basic properties of such group objects is that they consist of one
+or more linked @code{hggroup}, and that changes in certain properties of
+these groups are propagated to other members of the group.  Whereas,
+certain properties of the members of the group only apply to the current
+member.
+
+In addition the members of the group can also be linked to other
+graphics objects through callback functions.  For example the baseline of
+the @code{bar} or @code{stem} functions is a line object, whose length
+and position are automatically adjusted, based on changes to the
+corresponding hggroup elements.
+
+@menu
+* Data Sources in Object Groups::
+* Area Series::
+* Bar Series::
+* Contour Groups::
+* Error Bar Series::
+* Line Series::
+* Quiver Group::
+* Scatter Group::
+* Stair Group::
+* Stem Series::
+* Surface Group::
+@end menu
+
+@node Data Sources in Object Groups
+@subsubsection Data Sources in Object Groups
+@cindex data sources in object groups
+@anchor{XREFdatasources}
+All of the group objects contain data source parameters.  There are
+string parameters that contain an expression that is evaluated to update
+the relevant data property of the group when the @code{refreshdata}
+function is called.
+
+@DOCSTRING(refreshdata)
+
+@anchor{XREFlinkdata}
+@c add the description of the linkdata function here when it is written
+@c remove the explicit anchor when you add the corresponding @DOCSTRING
+@c command
+
+@node Area Series
+@subsubsection Area Series
+@cindex series objects
+@cindex area series
+
+Area series objects are created by the @code{area} function.  Each of the
+@code{hggroup} elements contains a single patch object.  The properties
+of the area series are
+
+@table @code
+@item basevalue
+The value where the base of the area plot is drawn.
+
+@item  linewidth
+@itemx linestyle
+The line width and style of the edge of the patch objects making up the
+areas.  @xref{Line Styles}.
+
+@item  edgecolor
+@itemx facecolor
+The line and fill color of the patch objects making up the areas.
+@xref{Colors}.
+
+@item  xdata
+@itemx ydata
+The x and y coordinates of the original columns of the data passed to
+@code{area} prior to the cumulative summation used in the @code{area}
+function.
+
+@item  xdatasource
+@itemx ydatasource
+Data source variables.
+@end table
+
+@node Bar Series
+@subsubsection Bar Series
+@cindex series objects
+@cindex bar series
+
+Bar series objects are created by the @code{bar} or @code{barh}
+functions.  Each @code{hggroup} element contains a single patch object.
+The properties of the bar series are
+
+@table @code
+@item  showbaseline
+@itemx baseline
+@itemx basevalue
+The property @code{showbaseline} flags whether the baseline of the bar
+series is displayed (default is @qcode{"on"}).  The handle of the graphics
+object representing the baseline is given by the @code{baseline} property and
+the y-value of the baseline by the @code{basevalue} property.
+
+Changes to any of these properties are propagated to the other members of
+the bar series and to the baseline itself.  Equally, changes in the
+properties of the base line itself are propagated to the members of the
+corresponding bar series.
+
+@item  barwidth
+@itemx barlayout
+@itemx horizontal
+The property @code{barwidth} is the width of the bar corresponding to
+the @var{width} variable passed to @code{bar} or @var{barh}.  Whether the
+bar series is @qcode{"grouped"} or @qcode{"stacked"} is determined by the
+@code{barlayout} property and whether the bars are horizontal or
+vertical by the @code{horizontal} property.
+
+Changes to any of these property are propagated to the other members of
+the bar series.
+
+@item  linewidth
+@itemx linestyle
+The line width and style of the edge of the patch objects making up the
+bars.  @xref{Line Styles}.
+
+@item  edgecolor
+@itemx facecolor
+The line and fill color of the patch objects making up the bars.  @xref{Colors}.
+
+@item xdata
+The nominal x positions of the bars.  Changes in this property and
+propagated to the other members of the bar series.
+
+@item ydata
+The y value of the bars in the @code{hggroup}.
+
+@item  xdatasource
+@itemx ydatasource
+Data source variables.
+@end table
+
+@node Contour Groups
+@subsubsection Contour Groups
+@cindex series objects
+@cindex contour series
+
+Contour group objects are created by the @code{contour}, @code{contourf}
+and @code{contour3} functions.  The are equally one of the handles returned
+by the @code{surfc} and @code{meshc} functions.  The properties of the contour
+group are
+
+@table @code
+@item contourmatrix
+A read only property that contains the data return by @code{contourc} used to
+create the contours of the plot.
+
+@item fill
+A radio property that can have the values @qcode{"on"} or @qcode{"off"} that
+flags whether the contours to plot are to be filled.
+
+@item  zlevelmode
+@itemx zlevel
+The radio property @code{zlevelmode} can have the values @qcode{"none"},
+@qcode{"auto"}, or @qcode{"manual"}.  When its value is @qcode{"none"} there is
+no z component to the plotted contours.  When its value is @qcode{"auto"} the z
+value of the plotted contours is at the same value as the contour itself.  If
+the value is @qcode{"manual"}, then the z value at which to plot the contour is
+determined by the @code{zlevel} property.
+
+@item  levellistmode
+@itemx levellist
+@itemx levelstepmode
+@itemx levelstep
+If @code{levellistmode} is @qcode{"manual"}, then the levels at which to plot
+the contours is determined by @code{levellist}.  If @code{levellistmode} is set
+to @qcode{"auto"}, then the distance between contours is determined by
+@code{levelstep}.  If both @code{levellistmode} and @code{levelstepmode} are
+set to @qcode{"auto"}, then there are assumed to be 10 equal spaced contours.
+
+@item  textlistmode
+@itemx textlist
+@itemx textstepmode
+@itemx textstep
+If @code{textlistmode} is @qcode{"manual"}, then the labeled contours
+is determined by @code{textlist}.  If @code{textlistmode} is set to
+@qcode{"auto"}, then the distance between labeled contours is determined by
+@code{textstep}.  If both @code{textlistmode} and @code{textstepmode}
+are set to @qcode{"auto"}, then there are assumed to be 10 equal spaced
+labeled contours.
+
+@item showtext
+Flag whether the contour labels are shown or not.
+
+@item labelspacing
+The distance between labels on a single contour in points.
+
+@item linewidth
+
+@item linestyle
+
+@item linecolor
+The properties of the contour lines.  The properties @code{linewidth} and
+@code{linestyle} are similar to the corresponding properties for lines.  The
+property @code{linecolor} is a color property (@pxref{Colors}), that can also
+have the values of @qcode{"none"} or @qcode{"auto"}.  If @code{linecolor} is
+@qcode{"none"}, then no contour line is drawn.  If @code{linecolor} is
+@qcode{"auto"} then the line color is determined by the colormap.
+
+@item  xdata
+@itemx ydata
+@itemx zdata
+The original x, y, and z data of the contour lines.
+
+@item  xdatasource
+@itemx ydatasource
+@itemx zdatasource
+Data source variables.
+@end table
+
+@node Error Bar Series
+@subsubsection Error Bar Series
+@cindex series objects
+@cindex error bar series
+
+Error bar series are created by the @code{errorbar} function.  Each
+@code{hggroup} element contains two line objects representing the data and
+the errorbars separately.  The properties of the error bar series are
+
+@table @code
+@item color
+The RGB color or color name of the line objects of the error bars.
+@xref{Colors}.
+
+@item  linewidth
+@itemx linestyle
+The line width and style of the line objects of the error bars.  @xref{Line
+Styles}.
+
+@item  marker
+@itemx markeredgecolor
+@itemx markerfacecolor
+@itemx markersize
+The line and fill color of the markers on the error bars.  @xref{Colors}.
+
+@item  xdata
+@itemx ydata
+@itemx ldata
+@itemx udata
+@itemx xldata
+@itemx xudata
+The original x, y, l, u, xl, xu data of the error bars.
+
+@item  xdatasource
+@itemx ydatasource
+@itemx ldatasource
+@itemx udatasource
+@itemx xldatasource
+@itemx xudatasource
+Data source variables.
+@end table
+
+@node Line Series
+@subsubsection Line Series
+@cindex series objects
+@cindex line series
+
+Line series objects are created by the @code{plot}  and @code{plot3}
+functions and are of the type @code{line}.  The properties of the
+line series with the ability to add data sources.
+
+@table @code
+@item color
+The RGB color or color name of the line objects.  @xref{Colors}.
+
+@item  linewidth
+@itemx linestyle
+The line width and style of the line objects.  @xref{Line Styles}.
+
+@item  marker
+@itemx markeredgecolor
+@itemx markerfacecolor
+@itemx markersize
+The line and fill color of the markers.  @xref{Colors}.
+
+@item  xdata
+@itemx ydata
+@itemx zdata
+The original x, y and z data.
+
+@item  xdatasource
+@itemx ydatasource
+@itemx zdatasource
+Data source variables.
+@end table
+
+@node Quiver Group
+@subsubsection Quiver Group
+@cindex group objects
+@cindex quiver group
+
+Quiver series objects are created by the @code{quiver} or @code{quiver3}
+functions.  Each @code{hggroup} element of the series contains three line
+objects as children representing the body and head of the arrow,
+together with a marker as the point of origin of the arrows.  The
+properties of the quiver series are
+
+@table @code
+@item  autoscale
+@itemx autoscalefactor
+Flag whether the length of the arrows is scaled or defined directly from
+the @var{u}, @var{v} and @var{w} data.  If the arrow length is flagged
+as being scaled by the @code{autoscale} property, then the length of the
+autoscaled arrow is controlled by the @code{autoscalefactor}.
+
+@item maxheadsize
+This property controls the size of the head of the arrows in the quiver
+series.  The default value is 0.2.
+
+@item showarrowhead
+Flag whether the arrow heads are displayed in the quiver plot.
+
+@item color
+The RGB color or color name of the line objects of the quiver.  @xref{Colors}.
+
+@item  linewidth
+@itemx linestyle
+The line width and style of the line objects of the quiver.  @xref{Line Styles}.
+
+@item  marker
+@itemx markerfacecolor
+@itemx markersize
+The line and fill color of the marker objects at the original of the
+arrows.  @xref{Colors}.
+
+@item  xdata
+@itemx ydata
+@itemx zdata
+The origins of the values of the vector field.
+
+@item  udata
+@itemx vdata
+@itemx wdata
+The values of the vector field to plot.
+
+@item  xdatasource
+@itemx ydatasource
+@itemx zdatasource
+@itemx udatasource
+@itemx vdatasource
+@itemx wdatasource
+Data source variables.
+@end table
+
+@node Scatter Group
+@subsubsection Scatter Group
+@cindex group objects
+@cindex scatter group
+
+Scatter series objects are created by the @code{scatter} or @code{scatter3}
+functions.  A single hggroup element contains as many children as there are
+points in the scatter plot, with each child representing one of the points.
+The properties of the stem series are
+
+@table @code
+@item linewidth
+The line width of the line objects of the points.  @xref{Line Styles}.
+
+@item  marker
+@itemx markeredgecolor
+@itemx markerfacecolor
+The line and fill color of the markers of the points.  @xref{Colors}.
+
+@item  xdata
+@itemx ydata
+@itemx zdata
+The original x, y and z data of the stems.
+
+@item cdata
+The color data for the points of the plot.  Each point can have a separate
+color, or a unique color can be specified.
+
+@item sizedata
+The size data for the points of the plot.  Each point can its own size or a
+unique size can be specified.
+
+@item  xdatasource
+@itemx ydatasource
+@itemx zdatasource
+@itemx cdatasource
+@itemx sizedatasource
+Data source variables.
+@end table
+
+@node Stair Group
+@subsubsection Stair Group
+@cindex group objects
+@cindex stair group
+
+Stair series objects are created by the @code{stair} function.  Each
+@code{hggroup} element of the series contains a single line object as a
+child representing the stair.  The properties of the stair series are
+
+@table @code
+@item color
+The RGB color or color name of the line objects of the stairs.  @xref{Colors}.
+
+@item  linewidth
+@itemx linestyle
+The line width and style of the line objects of the stairs.  @xref{Line Styles}.
+
+@item  marker
+@itemx markeredgecolor
+@itemx markerfacecolor
+@itemx markersize
+The line and fill color of the markers on the stairs.  @xref{Colors}.
+
+@item  xdata
+@itemx ydata
+The original x and y data of the stairs.
+
+@item  xdatasource
+@itemx ydatasource
+Data source variables.
+@end table
+
+@node Stem Series
+@subsubsection Stem Series
+@cindex series objects
+@cindex stem series
+
+Stem series objects are created by the @code{stem} or @code{stem3}
+functions.  Each @code{hggroup} element contains a single line object
+as a child representing the stems.  The properties of the stem series
+are
+
+@table @code
+@item  showbaseline
+@itemx baseline
+@itemx basevalue
+The property @code{showbaseline} flags whether the baseline of the
+stem series is displayed (default is @qcode{"on"}).  The handle of the graphics
+object representing the baseline is given by the @code{baseline}
+property and the y-value (or z-value for @code{stem3}) of the baseline
+by the @code{basevalue} property.
+
+Changes to any of these property are propagated to the other members of
+the stem series and to the baseline itself.  Equally changes in the
+properties of the base line itself are propagated to the members of the
+corresponding stem series.
+
+@item color
+The RGB color or color name of the line objects of the stems.  @xref{Colors}.
+
+@item  linewidth
+@itemx linestyle
+The line width and style of the line objects of the stems.  @xref{Line Styles}.
+
+@item  marker
+@itemx markeredgecolor
+@itemx markerfacecolor
+@itemx markersize
+The line and fill color of the markers on the stems.  @xref{Colors}.
+
+@item  xdata
+@itemx ydata
+@itemx zdata
+The original x, y and z data of the stems.
+
+@item  xdatasource
+@itemx ydatasource
+@itemx zdatasource
+Data source variables.
+@end table
+
+@node Surface Group
+@subsubsection Surface Group
+@cindex group objects
+@cindex surface group
+
+Surface group objects are created by the @code{surf} or @code{mesh}
+functions, but are equally one of the handles returned by the @code{surfc}
+or @code{meshc} functions.  The surface group is of the type @code{surface}.
+
+The properties of the surface group are
+
+@table @code
+@item edgecolor
+
+@item facecolor
+The RGB color or color name of the edges or faces of the surface.
+@xref{Colors}.
+
+@item  linewidth
+@itemx linestyle
+The line width and style of the lines on the surface.  @xref{Line Styles}.
+
+@item  marker
+@itemx markeredgecolor
+@itemx markerfacecolor
+@itemx markersize
+The line and fill color of the markers on the surface.  @xref{Colors}.
+
+@item  xdata
+@itemx ydata
+@itemx zdata
+@itemx cdata
+The original x, y, z and c data.
+
+@item  xdatasource
+@itemx ydatasource
+@itemx zdatasource
+@itemx cdatasource
+Data source variables.
+@end table
+
+@node Graphics Toolkits
+@subsection Graphics Toolkits
+@cindex graphics toolkits
+@cindex toolkits, graphics
+
+@DOCSTRING(graphics_toolkit)
+
+@DOCSTRING(available_graphics_toolkits)
+
+@DOCSTRING(loaded_graphics_toolkits)
+
+@DOCSTRING(register_graphics_toolkit)
+
+@menu
+* Customizing Toolkit Behavior::
+@end menu
+
+@node Customizing Toolkit Behavior
+@subsubsection Customizing Toolkit Behavior
+@cindex toolkit customization
+
+The specific behavior of the backend toolkit may be modified using the
+following utility functions.  Note: Not all functions apply to every
+graphics toolkit.
+
+@DOCSTRING(gnuplot_binary)

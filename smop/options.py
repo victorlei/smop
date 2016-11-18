@@ -15,20 +15,16 @@ SMOP is Small Matlab and Octave to Python compiler.
 
 SMOP takes MATLAB files and translates them to Python.  The
 name of the resulting file is derived from the name of the
-first compiled file unless explicitly set with -o .""",
+source m-file unless explicitly set with -o .""",
 
 epilog="""
-Examples:
-
-Download octave distribution to current directory
-$ wget ftp://ftp.gnu.org/ftp/octave/octave-4.0.2.tar.gz
-$ smop -a octave-4.0.2.tar.gz
-
-Hint: put into your Makefile the following rule
-
-%.py: %.m
-	$(SMOP) $^ $(FLAGS)
-	($(PYTHON) $@ && cat $@ >> libscripts.py)""",
+Example:
+    $ wget ftp://ftp.gnu.org/ftp/octave/octave-4.0.2.tar.gz
+    $ smop -a octave-4.0.2.tar.gz -g '*/scripts/*.m'
+    $ ls -1 *.py | wc
+    $ python -m py_compile *.py
+    $ ls -1 *.pyc | wc
+""",
     formatter_class=argparse.RawTextHelpFormatter,
     )
 
@@ -38,6 +34,23 @@ parser.add_argument("-a", "--archive",
 help="""Read .m files from the archive.
 Accepted formats: tar either uncompressed,
 or compressed using gzip or bz2.""")
+
+
+parser.add_argument("-g", "--glob-pattern",
+                    metavar="PATTERN",
+                    type=str,
+help="""Apply unix glob pattern to the input
+file list or to the archived files. For
+example -g 'octave-4.0.2/*.m'
+
+Quoted from fnmatch docs:
+
+Note that the filename separator ('/' on
+Unix) is not special to this
+module. [...]  Similarly, filenames
+starting with a period are not special
+for this module, and are matched by the
+* and ?  patterns.  """)
 
 parser.add_argument("-o", "--output",
                     metavar="file.py",
@@ -126,16 +139,15 @@ percent-bang comments used to write
 Octave test suite.  When disabled,
 behaves like regular comments.""")
 
-parser.add_argument("-E", "--ignore-errors",
-                    type=int,
-                    metavar="N",
-                    dest="ignore_errors",
-                    action="store",
-help="""Ignore first N exceptions.
-Other useful values are
-zero -- meaning "don't ignore errors"
-minus one --  meaning "ignore all errors" """)
-
+# parser.add_argument("-E", "--ignore-errors",
+#                     type=int,
+#                     metavar="N",
+#                     dest="ignore_errors",
+#                     action="store",
+# help="""Ignore first N exceptions.
+# Other useful values are
+# zero -- meaning "don't ignore errors"
+# minus one --  meaning "ignore all errors" """)
 
 args = parser.parse_args(namespace=sys.modules[__name__])
 

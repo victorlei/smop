@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Application-defined Data</title>
+
+<meta name="description" content="GNU Octave: Application-defined Data">
+<meta name="keywords" content="GNU Octave: Application-defined Data">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Advanced-Plotting.html#Advanced-Plotting" rel="up" title="Advanced Plotting">
+<link href="Object-Groups.html#Object-Groups" rel="next" title="Object Groups">
+<link href="Callbacks.html#Callbacks" rel="prev" title="Callbacks">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Application_002ddefined-Data"></a>
+<div class="header">
+<p>
+Next: <a href="Object-Groups.html#Object-Groups" accesskey="n" rel="next">Object Groups</a>, Previous: <a href="Callbacks.html#Callbacks" accesskey="p" rel="prev">Callbacks</a>, Up: <a href="Advanced-Plotting.html#Advanced-Plotting" accesskey="u" rel="up">Advanced Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Application_002ddefined-Data-1"></a>
+<h4 class="subsection">15.4.5 Application-defined Data</h4>
+<a name="index-application_002ddefined-data"></a>
+
+<p>Octave has a provision for attaching application-defined data to a graphics
+handle.  The data can be anything which is meaningful to the application, and
+will be completely ignored by Octave.
+</p>
+<a name="XREFsetappdata"></a><dl>
+<dt><a name="index-setappdata"></a>Function File: <em></em> <strong>setappdata</strong> <em>(<var>h</var>, <var>name</var>, <var>value</var>)</em></dt>
+<dt><a name="index-setappdata-1"></a>Function File: <em></em> <strong>setappdata</strong> <em>(<var>h</var>, <var>name1</var>, <var>value1</var>, <var>name2</var>, <var>value3</var>, &hellip;)</em></dt>
+<dd><p>Set the application data <var>name</var> to <var>value</var> for the graphics object
+with handle <var>h</var>.
+</p>
+<p><var>h</var> may also be a vector of graphics handles.  If the application data
+with the specified <var>name</var> does not exist, it is created.  Multiple
+<var>name</var>/<var>value</var> pairs can be specified at a time.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFgetappdata">getappdata</a>, <a href="#XREFisappdata">isappdata</a>, <a href="#XREFrmappdata">rmappdata</a>, <a href="GUI-Utility-Functions.html#XREFguidata">guidata</a>, <a href="Graphics-Objects.html#XREFget">get</a>, <a href="Graphics-Objects.html#XREFset">set</a>, <a href="User_002dDefined-Preferences.html#XREFgetpref">getpref</a>, <a href="User_002dDefined-Preferences.html#XREFsetpref">setpref</a>.
+</p></dd></dl>
+
+
+<a name="XREFgetappdata"></a><dl>
+<dt><a name="index-getappdata"></a>Function File: <em><var>value</var> =</em> <strong>getappdata</strong> <em>(<var>h</var>, <var>name</var>)</em></dt>
+<dt><a name="index-getappdata-1"></a>Function File: <em><var>appdata</var> =</em> <strong>getappdata</strong> <em>(<var>h</var>)</em></dt>
+<dd><p>Return the <var>value</var> of the application data <var>name</var> for the graphics
+object with handle <var>h</var>.
+</p>
+<p><var>h</var> may also be a vector of graphics handles.  If no second argument
+<var>name</var> is given then <code>getappdata</code> returns a structure,
+<var>appdata</var>, whose fields correspond to the appdata properties.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFsetappdata">setappdata</a>, <a href="#XREFisappdata">isappdata</a>, <a href="#XREFrmappdata">rmappdata</a>, <a href="GUI-Utility-Functions.html#XREFguidata">guidata</a>, <a href="Graphics-Objects.html#XREFget">get</a>, <a href="Graphics-Objects.html#XREFset">set</a>, <a href="User_002dDefined-Preferences.html#XREFgetpref">getpref</a>, <a href="User_002dDefined-Preferences.html#XREFsetpref">setpref</a>.
+</p></dd></dl>
+
+
+<a name="XREFrmappdata"></a><dl>
+<dt><a name="index-rmappdata"></a>Function File: <em></em> <strong>rmappdata</strong> <em>(<var>h</var>, <var>name</var>)</em></dt>
+<dt><a name="index-rmappdata-1"></a>Function File: <em></em> <strong>rmappdata</strong> <em>(<var>h</var>, <var>name1</var>, <var>name2</var>, &hellip;)</em></dt>
+<dd><p>Delete the application data <var>name</var> from the graphics object with handle
+<var>h</var>.
+</p>
+<p><var>h</var> may also be a vector of graphics handles.  Multiple application data
+names may be supplied to delete several properties at once.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFsetappdata">setappdata</a>, <a href="#XREFgetappdata">getappdata</a>, <a href="#XREFisappdata">isappdata</a>.
+</p></dd></dl>
+
+
+<a name="XREFisappdata"></a><dl>
+<dt><a name="index-isappdata"></a>Function File: <em><var>valid</var> =</em> <strong>isappdata</strong> <em>(<var>h</var>, <var>name</var>)</em></dt>
+<dd><p>Return true if the named application data, <var>name</var>, exists for the
+graphics object with handle <var>h</var>.
+</p>
+<p><var>h</var> may also be a vector of graphics handles.
+</p>
+<p><strong>See also:</strong> <a href="#XREFgetappdata">getappdata</a>, <a href="#XREFsetappdata">setappdata</a>, <a href="#XREFrmappdata">rmappdata</a>, <a href="GUI-Utility-Functions.html#XREFguidata">guidata</a>, <a href="Graphics-Objects.html#XREFget">get</a>, <a href="Graphics-Objects.html#XREFset">set</a>, <a href="User_002dDefined-Preferences.html#XREFgetpref">getpref</a>, <a href="User_002dDefined-Preferences.html#XREFsetpref">setpref</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Object-Groups.html#Object-Groups" accesskey="n" rel="next">Object Groups</a>, Previous: <a href="Callbacks.html#Callbacks" accesskey="p" rel="prev">Callbacks</a>, Up: <a href="Advanced-Plotting.html#Advanced-Plotting" accesskey="u" rel="up">Advanced Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

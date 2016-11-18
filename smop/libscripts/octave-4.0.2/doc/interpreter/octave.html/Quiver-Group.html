@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Quiver Group</title>
+
+<meta name="description" content="GNU Octave: Quiver Group">
+<meta name="keywords" content="GNU Octave: Quiver Group">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Object-Groups.html#Object-Groups" rel="up" title="Object Groups">
+<link href="Scatter-Group.html#Scatter-Group" rel="next" title="Scatter Group">
+<link href="Line-Series.html#Line-Series" rel="prev" title="Line Series">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Quiver-Group"></a>
+<div class="header">
+<p>
+Next: <a href="Scatter-Group.html#Scatter-Group" accesskey="n" rel="next">Scatter Group</a>, Previous: <a href="Line-Series.html#Line-Series" accesskey="p" rel="prev">Line Series</a>, Up: <a href="Object-Groups.html#Object-Groups" accesskey="u" rel="up">Object Groups</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Quiver-Group-1"></a>
+<h4 class="subsubsection">15.4.6.7 Quiver Group</h4>
+<a name="index-group-objects"></a>
+<a name="index-quiver-group"></a>
+
+<p>Quiver series objects are created by the <code>quiver</code> or <code>quiver3</code>
+functions.  Each <code>hggroup</code> element of the series contains three line
+objects as children representing the body and head of the arrow,
+together with a marker as the point of origin of the arrows.  The
+properties of the quiver series are
+</p>
+<dl compact="compact">
+<dt><code>autoscale</code></dt>
+<dt><code>autoscalefactor</code></dt>
+<dd><p>Flag whether the length of the arrows is scaled or defined directly from
+the <var>u</var>, <var>v</var> and <var>w</var> data.  If the arrow length is flagged
+as being scaled by the <code>autoscale</code> property, then the length of the
+autoscaled arrow is controlled by the <code>autoscalefactor</code>.
+</p>
+</dd>
+<dt><code>maxheadsize</code></dt>
+<dd><p>This property controls the size of the head of the arrows in the quiver
+series.  The default value is 0.2.
+</p>
+</dd>
+<dt><code>showarrowhead</code></dt>
+<dd><p>Flag whether the arrow heads are displayed in the quiver plot.
+</p>
+</dd>
+<dt><code>color</code></dt>
+<dd><p>The RGB color or color name of the line objects of the quiver.  See <a href="Colors.html#Colors">Colors</a>.
+</p>
+</dd>
+<dt><code>linewidth</code></dt>
+<dt><code>linestyle</code></dt>
+<dd><p>The line width and style of the line objects of the quiver.  See <a href="Line-Styles.html#Line-Styles">Line Styles</a>.
+</p>
+</dd>
+<dt><code>marker</code></dt>
+<dt><code>markerfacecolor</code></dt>
+<dt><code>markersize</code></dt>
+<dd><p>The line and fill color of the marker objects at the original of the
+arrows.  See <a href="Colors.html#Colors">Colors</a>.
+</p>
+</dd>
+<dt><code>xdata</code></dt>
+<dt><code>ydata</code></dt>
+<dt><code>zdata</code></dt>
+<dd><p>The origins of the values of the vector field.
+</p>
+</dd>
+<dt><code>udata</code></dt>
+<dt><code>vdata</code></dt>
+<dt><code>wdata</code></dt>
+<dd><p>The values of the vector field to plot.
+</p>
+</dd>
+<dt><code>xdatasource</code></dt>
+<dt><code>ydatasource</code></dt>
+<dt><code>zdatasource</code></dt>
+<dt><code>udatasource</code></dt>
+<dt><code>vdatasource</code></dt>
+<dt><code>wdatasource</code></dt>
+<dd><p>Data source variables.
+</p></dd>
+</dl>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+# Copyright (C) 2004-2015 John W. Eaton
+#
+# This file is part of Octave.
+#
+# Octave is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 3 of the License, or (at
+# your option) any later version.
+#
+# Octave is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Octave; see the file COPYING.  If not, see
+# <http://www.gnu.org/licenses/>.
+
+# NOTE: if this file changes, you must run bootstrap and configure to
+# rebuild the source file lists for Make.
+
+# types
+#
+# key typename object-type header fwd-decl-ok scalar-zero
+#
+#   S:  scalar
+#   M:  matrix
+#   DM: diagonal matrix
+#   ND: N-d array
+#   SM: sparse matrix
+#
+sm SparseMatrix SM dSparse.h YES 0.0
+scm SparseComplexMatrix SM CSparse.h YES 0.0
+sbm SparseBoolMatrix SM boolSparse.h YES false
+b bool S NONE NO false
+bm boolMatrix M boolMatrix.h YES false
+s double S NONE NO 0.0
+cs Complex S oct-cmplx.h NO 0.0
+m Matrix M dMatrix.h YES 0.0
+cm ComplexMatrix M CMatrix.h YES 0.0
+# ops
+# result_t_1 result_t_2 lhs_t rhs_t op-type lhs_conv rhs_conv headers ...
+#
+# op-type is one of
+#
+#  B: binary ops, + - * /
+#  C: comparison ops, < <= == != >= >
+#  E: == != (Only one of C or E can be used!!)
+#  L: logical ops, & |
+#
+cm scm sm cs BCL NONE real boolSparse.h
+cm scm cs sm BCL real NONE boolSparse.h
+cm scm scm s BCL real NONE boolSparse.h
+cm scm s scm BCL NONE real boolSparse.h
+scm scm scm sm BCL real NONE boolSparse.h
+scm scm sm scm BCL NONE real boolSparse.h
+m sm m sm BCL NONE NONE boolSparse.h
+cm scm m scm BCL NONE real boolSparse.h
+cm scm cm sm BCL real NONE boolSparse.h
+cm scm cm scm BCL real real boolSparse.h
+m sm sm m BCL NONE NONE boolSparse.h
+cm scm scm m BCL real NONE boolSparse.h
+cm scm sm cm BCL NONE real boolSparse.h
+cm scm scm cm BCL real real boolSparse.h
+bm sbm bm sbm EL
+bm sbm sbm bm EL

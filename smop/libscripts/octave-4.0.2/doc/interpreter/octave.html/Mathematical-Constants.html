@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Mathematical Constants</title>
+
+<meta name="description" content="GNU Octave: Mathematical Constants">
+<meta name="keywords" content="GNU Octave: Mathematical Constants">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arithmetic.html#Arithmetic" rel="up" title="Arithmetic">
+<link href="Linear-Algebra.html#Linear-Algebra" rel="next" title="Linear Algebra">
+<link href="Coordinate-Transformations.html#Coordinate-Transformations" rel="prev" title="Coordinate Transformations">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Mathematical-Constants"></a>
+<div class="header">
+<p>
+Previous: <a href="Coordinate-Transformations.html#Coordinate-Transformations" accesskey="p" rel="prev">Coordinate Transformations</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Mathematical-Constants-1"></a>
+<h3 class="section">17.9 Mathematical Constants</h3>
+
+<a name="XREFe"></a><dl>
+<dt><a name="index-e"></a>Built-in Function: <em></em> <strong>e</strong></dt>
+<dt><a name="index-e-1"></a>Built-in Function: <em></em> <strong>e</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-e-2"></a>Built-in Function: <em></em> <strong>e</strong> <em>(<var>n</var>, <var>m</var>)</em></dt>
+<dt><a name="index-e-3"></a>Built-in Function: <em></em> <strong>e</strong> <em>(<var>n</var>, <var>m</var>, <var>k</var>, &hellip;)</em></dt>
+<dt><a name="index-e-4"></a>Built-in Function: <em></em> <strong>e</strong> <em>(&hellip;, <var>class</var>)</em></dt>
+<dd><p>Return a scalar, matrix, or N-dimensional array whose elements are all equal
+to the base of natural logarithms.
+</p>
+<p>The constant
+&lsquo;<samp>e</samp>&rsquo; satisfies the equation <code>log</code> (e) = 1.
+</p>
+<p>When called with no arguments, return a scalar with the value <em>e</em>.
+</p>
+<p>When called with a single argument, return a square matrix with the dimension
+specified.
+</p>
+<p>When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+</p>
+<p>The optional argument <var>class</var> specifies the return type and may be
+either <code>&quot;double&quot;</code> or <code>&quot;single&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="Exponents-and-Logarithms.html#XREFlog">log</a>, <a href="Exponents-and-Logarithms.html#XREFexp">exp</a>, <a href="#XREFpi">pi</a>, <a href="#XREFI">I</a>.
+</p></dd></dl>
+
+
+<a name="XREFpi"></a><dl>
+<dt><a name="index-pi"></a>Built-in Function: <em></em> <strong>pi</strong></dt>
+<dt><a name="index-pi-1"></a>Built-in Function: <em></em> <strong>pi</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-pi-2"></a>Built-in Function: <em></em> <strong>pi</strong> <em>(<var>n</var>, <var>m</var>)</em></dt>
+<dt><a name="index-pi-3"></a>Built-in Function: <em></em> <strong>pi</strong> <em>(<var>n</var>, <var>m</var>, <var>k</var>, &hellip;)</em></dt>
+<dt><a name="index-pi-4"></a>Built-in Function: <em></em> <strong>pi</strong> <em>(&hellip;, <var>class</var>)</em></dt>
+<dd><p>Return a scalar, matrix, or N-dimensional array whose elements are all equal
+to the ratio of the circumference of a circle to its
+diameter.
+</p>
+<p>Internally, <code>pi</code> is computed as &lsquo;<samp>4.0 * atan (1.0)</samp>&rsquo;.
+</p>
+<p>When called with no arguments, return a scalar with the value of
+pi.
+</p>
+<p>When called with a single argument, return a square matrix with the dimension
+specified.
+</p>
+<p>When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+</p>
+<p>The optional argument <var>class</var> specifies the return type and may be
+either <code>&quot;double&quot;</code> or <code>&quot;single&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFe">e</a>, <a href="#XREFI">I</a>.
+</p></dd></dl>
+
+
+<a name="XREFI"></a><a name="index-i"></a>
+<a name="index-j"></a>
+<a name="index-J"></a>
+
+<dl>
+<dt><a name="index-I"></a>Built-in Function: <em></em> <strong>I</strong></dt>
+<dt><a name="index-I-1"></a>Built-in Function: <em></em> <strong>I</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-I-2"></a>Built-in Function: <em></em> <strong>I</strong> <em>(<var>n</var>, <var>m</var>)</em></dt>
+<dt><a name="index-I-3"></a>Built-in Function: <em></em> <strong>I</strong> <em>(<var>n</var>, <var>m</var>, <var>k</var>, &hellip;)</em></dt>
+<dt><a name="index-I-4"></a>Built-in Function: <em></em> <strong>I</strong> <em>(&hellip;, <var>class</var>)</em></dt>
+<dd><p>Return a scalar, matrix, or N-dimensional array whose elements are all equal
+to the pure imaginary unit, defined as
+<code>sqrt&nbsp;<span class="nolinebreak">(-1)</span></code><!-- /@w -->.
+</p>
+<p>I, and its equivalents i, j, and J, are functions so any of the names may
+be reused for other purposes (such as i for a counter variable).
+</p>
+<p>When called with no arguments, return a scalar with the value <em>i</em>.
+</p>
+<p>When called with a single argument, return a square matrix with the dimension
+specified.
+</p>
+<p>When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+</p>
+<p>The optional argument <var>class</var> specifies the return type and may be
+either <code>&quot;double&quot;</code> or <code>&quot;single&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFe">e</a>, <a href="#XREFpi">pi</a>, <a href="Exponents-and-Logarithms.html#XREFlog">log</a>, <a href="Exponents-and-Logarithms.html#XREFexp">exp</a>.
+</p></dd></dl>
+
+
+<a name="XREFInf"></a><a name="index-inf"></a>
+
+<dl>
+<dt><a name="index-Inf"></a>Built-in Function: <em></em> <strong>Inf</strong></dt>
+<dt><a name="index-Inf-1"></a>Built-in Function: <em></em> <strong>Inf</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-Inf-2"></a>Built-in Function: <em></em> <strong>Inf</strong> <em>(<var>n</var>, <var>m</var>)</em></dt>
+<dt><a name="index-Inf-3"></a>Built-in Function: <em></em> <strong>Inf</strong> <em>(<var>n</var>, <var>m</var>, <var>k</var>, &hellip;)</em></dt>
+<dt><a name="index-Inf-4"></a>Built-in Function: <em></em> <strong>Inf</strong> <em>(&hellip;, <var>class</var>)</em></dt>
+<dd><p>Return a scalar, matrix or N-dimensional array whose elements are all equal
+to the IEEE representation for positive infinity.
+</p>
+<p>Infinity is produced when results are too large to be represented using the
+IEEE floating point format for numbers.  Two common examples which produce
+infinity are division by zero and overflow.
+</p>
+<div class="example">
+<pre class="example">[ 1/0 e^800 ]
+&rArr; Inf   Inf
+</pre></div>
+
+<p>When called with no arguments, return a scalar with the value &lsquo;<samp>Inf</samp>&rsquo;.
+</p>
+<p>When called with a single argument, return a square matrix with the dimension
+specified.
+</p>
+<p>When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+</p>
+<p>The optional argument <var>class</var> specifies the return type and may be
+either <code>&quot;double&quot;</code> or <code>&quot;single&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="Finding-Elements-and-Checking-Conditions.html#XREFisinf">isinf</a>, <a href="#XREFNaN">NaN</a>.
+</p></dd></dl>
+
+
+<a name="XREFNaN"></a><a name="index-nan"></a>
+
+<dl>
+<dt><a name="index-NaN"></a>Built-in Function: <em></em> <strong>NaN</strong></dt>
+<dt><a name="index-NaN-1"></a>Built-in Function: <em></em> <strong>NaN</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-NaN-2"></a>Built-in Function: <em></em> <strong>NaN</strong> <em>(<var>n</var>, <var>m</var>)</em></dt>
+<dt><a name="index-NaN-3"></a>Built-in Function: <em></em> <strong>NaN</strong> <em>(<var>n</var>, <var>m</var>, <var>k</var>, &hellip;)</em></dt>
+<dt><a name="index-NaN-4"></a>Built-in Function: <em></em> <strong>NaN</strong> <em>(&hellip;, <var>class</var>)</em></dt>
+<dd><p>Return a scalar, matrix, or N-dimensional array whose elements are all equal
+to the IEEE symbol NaN (Not a Number).
+</p>
+<p>NaN is the result of operations which do not produce a well defined numerical
+result.  Common operations which produce a NaN are arithmetic with infinity
+(Inf - Inf), zero divided by zero (0/0),
+and any operation involving another NaN value (5 + NaN).
+</p>
+<p>Note that NaN always compares not equal to NaN (NaN != NaN).  This behavior
+is specified by the IEEE standard for floating point arithmetic.  To find
+NaN values, use the <code>isnan</code> function.
+</p>
+<p>When called with no arguments, return a scalar with the value &lsquo;<samp>NaN</samp>&rsquo;.
+</p>
+<p>When called with a single argument, return a square matrix with the dimension
+specified.
+</p>
+<p>When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+</p>
+
+<p>The optional argument <var>class</var> specifies the return type and may be
+either <code>&quot;double&quot;</code> or <code>&quot;single&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="Finding-Elements-and-Checking-Conditions.html#XREFisnan">isnan</a>, <a href="#XREFInf">Inf</a>.
+</p></dd></dl>
+
+
+<a name="XREFeps"></a><dl>
+<dt><a name="index-eps"></a>Built-in Function: <em></em> <strong>eps</strong></dt>
+<dt><a name="index-eps-1"></a>Built-in Function: <em></em> <strong>eps</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-eps-2"></a>Built-in Function: <em></em> <strong>eps</strong> <em>(<var>n</var>, <var>m</var>)</em></dt>
+<dt><a name="index-eps-3"></a>Built-in Function: <em></em> <strong>eps</strong> <em>(<var>n</var>, <var>m</var>, <var>k</var>, &hellip;)</em></dt>
+<dt><a name="index-eps-4"></a>Built-in Function: <em></em> <strong>eps</strong> <em>(&hellip;, <var>class</var>)</em></dt>
+<dd><p>Return a scalar, matrix or N-dimensional array whose elements are all eps,
+the machine precision.
+</p>
+<p>More precisely, <code>eps</code> is the relative spacing between any two adjacent
+numbers in the machine&rsquo;s floating point system.  This number is obviously
+system dependent.  On machines that support IEEE floating point arithmetic,
+<code>eps</code> is approximately
+2.2204e-16 for double precision and 1.1921e-07
+for single precision.
+</p>
+<p>When called with no arguments, return a scalar with the value
+<code>eps (1.0)</code>.
+</p>
+<p>Given a single argument <var>x</var>, return the distance between <var>x</var> and the
+next largest value.
+</p>
+<p>When called with more than one argument the first two arguments are taken as
+the number of rows and columns and any further arguments specify additional
+matrix dimensions.  The optional argument <var>class</var> specifies the return
+type and may be either <code>&quot;double&quot;</code> or <code>&quot;single&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrealmax">realmax</a>, <a href="#XREFrealmin">realmin</a>, <a href="Integer-Data-Types.html#XREFintmax">intmax</a>, <a href="Bit-Manipulations.html#XREFbitmax">bitmax</a>.
+</p></dd></dl>
+
+
+<a name="XREFrealmax"></a><dl>
+<dt><a name="index-realmax"></a>Built-in Function: <em></em> <strong>realmax</strong></dt>
+<dt><a name="index-realmax-1"></a>Built-in Function: <em></em> <strong>realmax</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-realmax-2"></a>Built-in Function: <em></em> <strong>realmax</strong> <em>(<var>n</var>, <var>m</var>)</em></dt>
+<dt><a name="index-realmax-3"></a>Built-in Function: <em></em> <strong>realmax</strong> <em>(<var>n</var>, <var>m</var>, <var>k</var>, &hellip;)</em></dt>
+<dt><a name="index-realmax-4"></a>Built-in Function: <em></em> <strong>realmax</strong> <em>(&hellip;, <var>class</var>)</em></dt>
+<dd><p>Return a scalar, matrix, or N-dimensional array whose elements are all equal
+to the largest floating point number that is representable.
+</p>
+<p>The actual value is system dependent.  On machines that support IEEE
+floating point arithmetic, <code>realmax</code> is approximately
+1.7977e+308 for double precision and 3.4028e+38
+for single precision.
+</p>
+<p>When called with no arguments, return a scalar with the value
+<code>realmax (<code>&quot;double&quot;</code>)</code>.
+</p>
+<p>When called with a single argument, return a square matrix with the dimension
+specified.
+</p>
+<p>When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+</p>
+<p>The optional argument <var>class</var> specifies the return type and may be
+either <code>&quot;double&quot;</code> or <code>&quot;single&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrealmin">realmin</a>, <a href="Integer-Data-Types.html#XREFintmax">intmax</a>, <a href="Bit-Manipulations.html#XREFbitmax">bitmax</a>, <a href="#XREFeps">eps</a>.
+</p></dd></dl>
+
+
+<a name="XREFrealmin"></a><dl>
+<dt><a name="index-realmin"></a>Built-in Function: <em></em> <strong>realmin</strong></dt>
+<dt><a name="index-realmin-1"></a>Built-in Function: <em></em> <strong>realmin</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-realmin-2"></a>Built-in Function: <em></em> <strong>realmin</strong> <em>(<var>n</var>, <var>m</var>)</em></dt>
+<dt><a name="index-realmin-3"></a>Built-in Function: <em></em> <strong>realmin</strong> <em>(<var>n</var>, <var>m</var>, <var>k</var>, &hellip;)</em></dt>
+<dt><a name="index-realmin-4"></a>Built-in Function: <em></em> <strong>realmin</strong> <em>(&hellip;, <var>class</var>)</em></dt>
+<dd><p>Return a scalar, matrix, or N-dimensional array whose elements are all equal
+to the smallest normalized floating point number that is representable.
+</p>
+<p>The actual value is system dependent.  On machines that support
+IEEE floating point arithmetic, <code>realmin</code> is approximately
+2.2251e-308 for double precision and 1.1755e-38
+for single precision.
+</p>
+<p>When called with no arguments, return a scalar with the value
+<code>realmin (<code>&quot;double&quot;</code>)</code>.
+</p>
+<p>When called with a single argument, return a square matrix with the dimension
+specified.
+</p>
+<p>When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+</p>
+<p>The optional argument <var>class</var> specifies the return type and may be
+either <code>&quot;double&quot;</code> or <code>&quot;single&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrealmax">realmax</a>, <a href="Integer-Data-Types.html#XREFintmin">intmin</a>, <a href="#XREFeps">eps</a>.
+</p></dd></dl>
+
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Coordinate-Transformations.html#Coordinate-Transformations" accesskey="p" rel="prev">Coordinate Transformations</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

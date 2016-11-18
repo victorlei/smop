@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>Octave C++ Classes: Differential Algebraic Equations</title>
+
+<meta name="description" content="Octave C++ Classes: Differential Algebraic Equations">
+<meta name="keywords" content="Octave C++ Classes: Differential Algebraic Equations">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Error-Handling.html#Error-Handling" rel="next" title="Error Handling">
+<link href="Ordinary-Differential-Equations.html#Ordinary-Differential-Equations" rel="prev" title="Ordinary Differential Equations">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Differential-Algebraic-Equations"></a>
+<div class="header">
+<p>
+Next: <a href="Error-Handling.html#Error-Handling" accesskey="n" rel="next">Error Handling</a>, Previous: <a href="Ordinary-Differential-Equations.html#Ordinary-Differential-Equations" accesskey="p" rel="prev">Ordinary Differential Equations</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Differential-Algebraic-Equations-1"></a>
+<h2 class="chapter">12 Differential Algebraic Equations</h2>
+<a name="index-DAE"></a>
+
+<dl>
+<dt><a name="index-DAE-1"></a>: <em></em> <strong>DAE</strong> <em>(void)</em></dt>
+<dt><a name="index-DAE-2"></a>: <em></em> <strong>DAE</strong> <em>(int <var>n</var>)</em></dt>
+<dt><a name="index-DAE-3"></a>: <em></em> <strong>DAE</strong> <em>(const ColumnVector &amp;<var>x</var>, double <var>time</var>, DAEFunc &amp;<var>f</var>)</em></dt>
+<dt><a name="index-DAE-4"></a>: <em></em> <strong>DAE</strong> <em>(const ColumnVector &amp;<var>x</var>, ColumnVector &amp;<var>xdot</var>, double <var>time</var>, DAEFunc &amp;<var>f</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-deriv"></a>: <em>ColumnVector</em> <strong>deriv</strong> <em>(void)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-initialize-1"></a>: <em>virtual void</em> <strong>initialize</strong> <em>(const ColumnVector &amp;<var>x</var>, double <var>t</var>)</em></dt>
+<dt><a name="index-initialize-2"></a>: <em>virtual void</em> <strong>initialize</strong> <em>(const ColumnVector &amp;<var>x</var>, ColumnVector &amp;<var>xdot</var>, double <var>t</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-integrate-8"></a>: <em>ColumnVector</em> <strong>integrate</strong> <em>(double <var>t</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-integrate-9"></a>: <em>Matrix</em> <strong>integrate</strong> <em>(const ColumnVector &amp;<var>tout</var>, Matrix &amp;<var>xdot_out</var>)</em></dt>
+<dt><a name="index-integrate-10"></a>: <em>Matrix</em> <strong>integrate</strong> <em>(const ColumnVector &amp;<var>tout</var>, Matrix &amp;<var>xdot_out</var>, const ColumnVector &amp;<var>tcrit</var>)</em></dt>
+</dl>
+
+
+
+
+</body>
+</html>

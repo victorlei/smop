@@ -1,6 +1,7 @@
 # SMOP -- Simple Matlab/Octave to Python compiler
 # Copyright 2011-2016 Victor Leikehman
 
+import fnmatch
 import tarfile
 import sys
 import traceback
@@ -27,9 +28,9 @@ def main():
     if not options.filelist and not options.archive:
         options.parser.print_help()
         return
-    if options.archive:
+    if not options.filelist and options.archive:
         tar = tarfile.open(options.archive)
-        options.filelist += tar.getnames()
+        options.filelist = tar.getnames()
     else:
         tar = None
     if options.output == "-":
@@ -38,6 +39,9 @@ def main():
         fp = open(options.output, "w")
     else:
         fp = None
+    if options.glob_pattern:
+        options.filelist = fnmatch.filter(options.filelist,
+                                          options.glob_pattern)
     for i, options.filename in enumerate(options.filelist):
         try:
             if options.verbose:
@@ -75,10 +79,6 @@ def main():
         except:
             print 40*"="
             traceback.print_exc()
-            if not options.ignore_errors:
-                return
-            options.ignore_errors -= 1
-
 
 if __name__ == "__main__":
     main()

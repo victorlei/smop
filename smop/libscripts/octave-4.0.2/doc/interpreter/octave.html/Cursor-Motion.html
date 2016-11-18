@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Cursor Motion</title>
+
+<meta name="description" content="GNU Octave: Cursor Motion">
+<meta name="keywords" content="GNU Octave: Cursor Motion">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Command-Line-Editing.html#Command-Line-Editing" rel="up" title="Command Line Editing">
+<link href="Killing-and-Yanking.html#Killing-and-Yanking" rel="next" title="Killing and Yanking">
+<link href="Command-Line-Editing.html#Command-Line-Editing" rel="prev" title="Command Line Editing">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Cursor-Motion"></a>
+<div class="header">
+<p>
+Next: <a href="Killing-and-Yanking.html#Killing-and-Yanking" accesskey="n" rel="next">Killing and Yanking</a>, Up: <a href="Command-Line-Editing.html#Command-Line-Editing" accesskey="u" rel="up">Command Line Editing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Cursor-Motion-1"></a>
+<h4 class="subsection">2.4.1 Cursor Motion</h4>
+
+<p>The following commands allow you to position the cursor.
+</p>
+<dl compact="compact">
+<dt><kbd>C-b</kbd></dt>
+<dd><p>Move back one character.
+</p>
+</dd>
+<dt><kbd>C-f</kbd></dt>
+<dd><p>Move forward one character.
+</p>
+</dd>
+<dt><kbd><span class="key">BACKSPACE</span></kbd></dt>
+<dd><p>Delete the character to the left of the cursor.
+</p>
+</dd>
+<dt><kbd><span class="key">DEL</span></kbd></dt>
+<dd><p>Delete the character underneath the cursor.
+</p>
+</dd>
+<dt><kbd>C-d</kbd></dt>
+<dd><p>Delete the character underneath the cursor.
+</p>
+</dd>
+<dt><kbd>M-f</kbd></dt>
+<dd><p>Move forward a word.
+</p>
+</dd>
+<dt><kbd>M-b</kbd></dt>
+<dd><p>Move backward a word.
+</p>
+</dd>
+<dt><kbd>C-a</kbd></dt>
+<dd><p>Move to the start of the line.
+</p>
+</dd>
+<dt><kbd>C-e</kbd></dt>
+<dd><p>Move to the end of the line.
+</p>
+</dd>
+<dt><kbd>C-l</kbd></dt>
+<dd><p>Clear the screen, reprinting the current line at the top.
+</p>
+</dd>
+<dt><kbd>C-_</kbd></dt>
+<dt><kbd>C-/</kbd></dt>
+<dd><p>Undo the last action.  You can undo all the way back to an empty line.
+</p>
+</dd>
+<dt><kbd>M-r</kbd></dt>
+<dd><p>Undo all changes made to this line.  This is like typing the &lsquo;undo&rsquo;
+command enough times to get back to the beginning.
+</p></dd>
+</dl>
+
+<p>The above table describes the most basic possible keystrokes that you need
+in order to do editing of the input line.  On most terminals, you can
+also use the left and right arrow keys in place of <kbd>C-f</kbd> and <kbd>C-b</kbd>
+to move forward and backward.
+</p>
+<p>Notice how <kbd>C-f</kbd> moves forward a character, while <kbd>M-f</kbd> moves
+forward a word.  It is a loose convention that control keystrokes
+operate on characters while meta keystrokes operate on words.
+</p>
+<a name="index-clearing-the-screen"></a>
+
+<p>The function <code>clc</code> will allow you to clear the screen from within
+Octave programs.
+</p>
+<a name="XREFclc"></a><dl>
+<dt><a name="index-clc"></a>Built-in Function: <em></em> <strong>clc</strong> <em>()</em></dt>
+<dt><a name="index-home"></a>Built-in Function: <em></em> <strong>home</strong> <em>()</em></dt>
+<dd><p>Clear the terminal screen and move the cursor to the upper left corner.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Killing-and-Yanking.html#Killing-and-Yanking" accesskey="n" rel="next">Killing and Yanking</a>, Up: <a href="Command-Line-Editing.html#Command-Line-Editing" accesskey="u" rel="up">Command Line Editing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

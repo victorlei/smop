@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Script Files</title>
+
+<meta name="description" content="GNU Octave: Script Files">
+<meta name="keywords" content="GNU Octave: Script Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Functions-and-Scripts.html#Functions-and-Scripts" rel="up" title="Functions and Scripts">
+<link href="Function-Handles-Anonymous-Functions-Inline-Functions.html#Function-Handles-Anonymous-Functions-Inline-Functions" rel="next" title="Function Handles Anonymous Functions Inline Functions">
+<link href="Function-Precedence.html#Function-Precedence" rel="prev" title="Function Precedence">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Script-Files"></a>
+<div class="header">
+<p>
+Next: <a href="Function-Handles-Anonymous-Functions-Inline-Functions.html#Function-Handles-Anonymous-Functions-Inline-Functions" accesskey="n" rel="next">Function Handles Anonymous Functions Inline Functions</a>, Previous: <a href="Function-Files.html#Function-Files" accesskey="p" rel="prev">Function Files</a>, Up: <a href="Functions-and-Scripts.html#Functions-and-Scripts" accesskey="u" rel="up">Functions and Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Script-Files-1"></a>
+<h3 class="section">11.10 Script Files</h3>
+
+<p>A script file is a file containing (almost) any sequence of Octave
+commands.  It is read and evaluated just as if you had typed each
+command at the Octave prompt, and provides a convenient way to perform a
+sequence of commands that do not logically belong inside a function.
+</p>
+<p>Unlike a function file, a script file must <em>not</em> begin with the
+keyword <code>function</code>.  If it does, Octave will assume that it is a
+function file, and that it defines a single function that should be
+evaluated as soon as it is defined.
+</p>
+<p>A script file also differs from a function file in that the variables
+named in a script file are not local variables, but are in the same
+scope as the other variables that are visible on the command line.
+</p>
+<p>Even though a script file may not begin with the <code>function</code>
+keyword, it is possible to define more than one function in a single
+script file and load (but not execute) all of them at once.  To do
+this, the first token in the file (ignoring comments and other white
+space) must be something other than <code>function</code>.  If you have no
+other statements to evaluate, you can use a statement that has no
+effect, like this:
+</p>
+<div class="example">
+<pre class="example"># Prevent Octave from thinking that this
+# is a function file:
+
+1;
+
+# Define function one:
+
+function one ()
+  &hellip;
+</pre></div>
+
+<p>To have Octave read and compile these functions into an internal form,
+you need to make sure that the file is in Octave&rsquo;s load path
+(accessible through the <code>path</code> function), then simply type the
+base name of the file that contains the commands.  (Octave uses the
+same rules to search for script files as it does to search for
+function files.)
+</p>
+<p>If the first token in a file (ignoring comments) is <code>function</code>,
+Octave will compile the function and try to execute it, printing a
+message warning about any non-whitespace characters that appear after
+the function definition.
+</p>
+<p>Note that Octave does not try to look up the definition of any identifier
+until it needs to evaluate it.  This means that Octave will compile the
+following statements if they appear in a script file, or are typed at
+the command line,
+</p>
+<div class="example">
+<pre class="example"># not a function file:
+1;
+function foo ()
+  do_something ();
+endfunction
+function do_something ()
+  do_something_else ();
+endfunction
+</pre></div>
+
+<p>even though the function <code>do_something</code> is not defined before it is
+referenced in the function <code>foo</code>.  This is not an error because
+Octave does not need to resolve all symbols that are referenced by a
+function until the function is actually evaluated.
+</p>
+<p>Since Octave doesn&rsquo;t look for definitions until they are needed, the
+following code will always print &lsquo;<samp>bar = 3</samp>&rsquo; whether it is typed
+directly on the command line, read from a script file, or is part of a
+function body, even if there is a function or script file called
+<samp>bar.m</samp> in Octave&rsquo;s path.
+</p>
+<div class="example">
+<pre class="example">eval (&quot;bar = 3&quot;);
+bar
+</pre></div>
+
+<p>Code like this appearing within a function body could fool Octave if
+definitions were resolved as the function was being compiled.  It would
+be virtually impossible to make Octave clever enough to evaluate this
+code in a consistent fashion.  The parser would have to be able to
+perform the call to <code>eval</code> at compile time, and that would be
+impossible unless all the references in the string to be evaluated could
+also be resolved, and requiring that would be too restrictive (the
+string might come from user input, or depend on things that are not
+known until the function is evaluated).
+</p>
+<p>Although Octave normally executes commands from script files that have
+the name <samp><var>file</var>.m</samp>, you can use the function <code>source</code> to
+execute commands from any file.
+</p>
+<a name="XREFsource"></a><dl>
+<dt><a name="index-source"></a>Built-in Function: <em></em> <strong>source</strong> <em>(<var>file</var>)</em></dt>
+<dd><p>Parse and execute the contents of <var>file</var>.
+</p>
+<p>This is equivalent to executing commands from a script file, but without
+requiring the file to be named <samp><var>file</var>.m</samp>.
+</p>
+<p><strong>See also:</strong> <a href="Calling-a-Function-by-its-Name.html#XREFrun">run</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Function-Handles-Anonymous-Functions-Inline-Functions.html#Function-Handles-Anonymous-Functions-Inline-Functions" accesskey="n" rel="next">Function Handles Anonymous Functions Inline Functions</a>, Previous: <a href="Function-Files.html#Function-Files" accesskey="p" rel="prev">Function Files</a>, Up: <a href="Functions-and-Scripts.html#Functions-and-Scripts" accesskey="u" rel="up">Functions and Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

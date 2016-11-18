@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Line Properties</title>
+
+<meta name="description" content="GNU Octave: Line Properties">
+<meta name="keywords" content="GNU Octave: Line Properties">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Graphics-Object-Properties.html#Graphics-Object-Properties" rel="up" title="Graphics Object Properties">
+<link href="Text-Properties.html#Text-Properties" rel="next" title="Text Properties">
+<link href="Axes-Properties.html#Axes-Properties" rel="prev" title="Axes Properties">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Line-Properties"></a>
+<div class="header">
+<p>
+Next: <a href="Text-Properties.html#Text-Properties" accesskey="n" rel="next">Text Properties</a>, Previous: <a href="Axes-Properties.html#Axes-Properties" accesskey="p" rel="prev">Axes Properties</a>, Up: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="u" rel="up">Graphics Object Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Line-Properties-1"></a>
+<h4 class="subsubsection">15.3.3.4 Line Properties</h4>
+<a name="index-line-properties"></a>
+
+<p>The <code>line</code> properties are:
+</p>
+
+
+<dl compact="compact">
+<dd>
+<a name="XREFline_005f_005fmodified_005f_005f"></a><a name="index-line-_005f_005fmodified_005f_005f"></a>
+</dd>
+<dt><code>__modified__</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFlinebeingdeleted"></a><a name="index-line-beingdeleted"></a>
+</dd>
+<dt><code>beingdeleted</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd>
+
+
+<a name="XREFlinebusyaction"></a><a name="index-line-busyaction"></a>
+</dd>
+<dt><code>busyaction</code>: <code>&quot;cancel&quot;</code> | {<code>&quot;queue&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFlinebuttondownfcn"></a><a name="index-line-buttondownfcn"></a>
+</dd>
+<dt><code>buttondownfcn</code>: string | function handle, def. <code>[](0x0)</code></dt>
+<dd>
+
+
+<a name="XREFlinechildren"></a><a name="index-line-children"></a>
+</dd>
+<dt><code>children</code> (read-only): vector of graphics handles, def. <code>[](0x1)</code></dt>
+<dd><p><code>children</code> is unused.
+</p>
+
+<a name="XREFlineclipping"></a><a name="index-line-clipping"></a>
+</dd>
+<dt><code>clipping</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p>If <code>clipping</code> is <code>&quot;on&quot;</code>, the line is clipped in its parent axes limits.
+</p>
+
+<a name="XREFlinecolor"></a><a name="index-line-color"></a>
+</dd>
+<dt><code>color</code>: colorspec, def. <code>[0   0   0]</code></dt>
+<dd><p>Color of the line object.  See <a href="Colors.html#Colors">colorspec</a>.
+</p>
+
+<a name="XREFlinecreatefcn"></a><a name="index-line-createfcn"></a>
+</dd>
+<dt><code>createfcn</code>: string | function handle, def. <code>[](0x0)</code></dt>
+<dd><p>Callback function executed immediately after line has been created.  Function is set by using default property on root object, e.g., <code>set (0, &quot;defaultlinecreatefcn&quot;, 'disp (&quot;line created!&quot;)')</code>.
+</p>
+
+<a name="XREFlinedeletefcn"></a><a name="index-line-deletefcn"></a>
+</dd>
+<dt><code>deletefcn</code>: string | function handle, def. <code>[](0x0)</code></dt>
+<dd><p>Callback function executed immediately before line is deleted.
+</p>
+
+<a name="XREFlinedisplayname"></a><a name="index-line-displayname"></a>
+</dd>
+<dt><code>displayname</code>: string | cell array of strings, def. <code>&quot;&quot;</code></dt>
+<dd><p>Text for the legend entry corresponding to this line.
+</p>
+
+<a name="XREFlineerasemode"></a><a name="index-line-erasemode"></a>
+</dd>
+<dt><code>erasemode</code>: <code>&quot;background&quot;</code> | <code>&quot;none&quot;</code> | {<code>&quot;normal&quot;</code>} | <code>&quot;xor&quot;</code></dt>
+<dd><p><code>erasemode</code> is unused.
+</p>
+
+<a name="XREFlinehandlevisibility"></a><a name="index-line-handlevisibility"></a>
+</dd>
+<dt><code>handlevisibility</code>: <code>&quot;callback&quot;</code> | <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p>If <code>handlevisibility</code> is <code>&quot;off&quot;</code>, the line&rsquo;s handle is not visible in its parent&rsquo;s &quot;children&quot; property.
+</p>
+
+<a name="XREFlinehittest"></a><a name="index-line-hittest"></a>
+</dd>
+<dt><code>hittest</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFlineinterpreter"></a><a name="index-line-interpreter"></a>
+</dd>
+<dt><code>interpreter</code>: <code>&quot;latex&quot;</code> | <code>&quot;none&quot;</code> | {<code>&quot;tex&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFlineinterruptible"></a><a name="index-line-interruptible"></a>
+</dd>
+<dt><code>interruptible</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFlinelinestyle"></a><a name="index-line-linestyle"></a>
+</dd>
+<dt><code>linestyle</code>: {<code>&quot;-&quot;</code>} | <code>&quot;--&quot;</code> | <code>&quot;-.&quot;</code> | <code>&quot;:&quot;</code> | <code>&quot;none&quot;</code></dt>
+<dd><p>See <a href="Line-Styles.html#Line-Styles">Line Styles</a>.
+</p>
+
+<a name="XREFlinelinewidth"></a><a name="index-line-linewidth"></a>
+</dd>
+<dt><code>linewidth</code>: def. <code>0.50000</code></dt>
+<dd><p>Width of the line object measured in points.
+</p>
+
+<a name="XREFlinemarker"></a><a name="index-line-marker"></a>
+</dd>
+<dt><code>marker</code>: <code>&quot;*&quot;</code> | <code>&quot;+&quot;</code> | <code>&quot;.&quot;</code> | <code>&quot;&lt;&quot;</code> | <code>&quot;&gt;&quot;</code> | <code>&quot;^&quot;</code> | <code>&quot;d&quot;</code> | <code>&quot;diamond&quot;</code> | <code>&quot;h&quot;</code> | <code>&quot;hexagram&quot;</code> | {<code>&quot;none&quot;</code>} | <code>&quot;o&quot;</code> | <code>&quot;p&quot;</code> | <code>&quot;pentagram&quot;</code> | <code>&quot;s&quot;</code> | <code>&quot;square&quot;</code> | <code>&quot;v&quot;</code> | <code>&quot;x&quot;</code></dt>
+<dd><p>Shape of the marker for each data point.  See <a href="Marker-Styles.html#Marker-Styles">Marker Styles</a>.
+</p>
+
+<a name="XREFlinemarkeredgecolor"></a><a name="index-line-markeredgecolor"></a>
+</dd>
+<dt><code>markeredgecolor</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;none&quot;</code></dt>
+<dd><p>Color of the edge of the markers.  When set to <code>&quot;auto&quot;</code>, the marker edges have the same color as the line.  If set to <code>&quot;none&quot;</code>, no marker edges are displayed.  This property can also be set to any color.  See <a href="Colors.html#Colors">colorspec</a>.
+</p>
+
+<a name="XREFlinemarkerfacecolor"></a><a name="index-line-markerfacecolor"></a>
+</dd>
+<dt><code>markerfacecolor</code>: <code>&quot;auto&quot;</code> | {<code>&quot;none&quot;</code>}</dt>
+<dd><p>Color of the face of the markers.  When set to <code>&quot;auto&quot;</code>, the marker faces have the same color as the line.  If set to <code>&quot;none&quot;</code>, the marker faces are not displayed.  This property can also be set to any color.  See <a href="Colors.html#Colors">colorspec</a>.
+</p>
+
+<a name="XREFlinemarkersize"></a><a name="index-line-markersize"></a>
+</dd>
+<dt><code>markersize</code>: scalar, def. <code>6</code></dt>
+<dd><p>Size of the markers measured in points.
+</p>
+
+<a name="XREFlineparent"></a><a name="index-line-parent"></a>
+</dd>
+<dt><code>parent</code>: graphics handle</dt>
+<dd><p>Handle of the parent graphics object.
+</p>
+
+<a name="XREFlineselected"></a><a name="index-line-selected"></a>
+</dd>
+<dt><code>selected</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd>
+
+
+<a name="XREFlineselectionhighlight"></a><a name="index-line-selectionhighlight"></a>
+</dd>
+<dt><code>selectionhighlight</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFlinetag"></a><a name="index-line-tag"></a>
+</dd>
+<dt><code>tag</code>: string, def. <code>&quot;&quot;</code></dt>
+<dd><p>A user-defined string to label the graphics object.
+</p>
+
+<a name="XREFlinetype"></a><a name="index-line-type"></a>
+</dd>
+<dt><code>type</code> (read-only): string</dt>
+<dd><p>Class name of the graphics object.  <code>type</code> is always <code>&quot;line&quot;</code>
+</p>
+
+<a name="XREFlineuicontextmenu"></a><a name="index-line-uicontextmenu"></a>
+</dd>
+<dt><code>uicontextmenu</code>: graphics handle, def. <code>[](0x0)</code></dt>
+<dd><p>Graphics handle of the uicontextmenu object that is currently associated to this line object.
+</p>
+
+<a name="XREFlineuserdata"></a><a name="index-line-userdata"></a>
+</dd>
+<dt><code>userdata</code>: Any Octave data, def. <code>[](0x0)</code></dt>
+<dd><p>User-defined data to associate with the graphics object.
+</p>
+
+<a name="XREFlinevisible"></a><a name="index-line-visible"></a>
+</dd>
+<dt><code>visible</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p>If <code>visible</code> is <code>&quot;off&quot;</code>, the line is not rendered on screen.
+</p>
+
+<a name="XREFlinexdata"></a><a name="index-line-xdata"></a>
+</dd>
+<dt><code>xdata</code>: vector, def. <code>[0   1]</code></dt>
+<dd><p>Vector of x data to be plotted.
+</p>
+
+<a name="XREFlinexdatasource"></a><a name="index-line-xdatasource"></a>
+</dd>
+<dt><code>xdatasource</code>: string, def. <code>&quot;&quot;</code></dt>
+<dd><p>Name of a vector in the current base workspace to use as x data.
+</p>
+
+<a name="XREFlineydata"></a><a name="index-line-ydata"></a>
+</dd>
+<dt><code>ydata</code>: vector, def. <code>[0   1]</code></dt>
+<dd><p>Vector of y data to be plotted.
+</p>
+
+<a name="XREFlineydatasource"></a><a name="index-line-ydatasource"></a>
+</dd>
+<dt><code>ydatasource</code>: string, def. <code>&quot;&quot;</code></dt>
+<dd><p>Name of a vector in the current base workspace to use as y data.
+</p>
+
+<a name="XREFlinezdata"></a><a name="index-line-zdata"></a>
+</dd>
+<dt><code>zdata</code>: vector, def. <code>[](0x0)</code></dt>
+<dd><p>Vector of z data to be plotted.
+</p>
+
+<a name="XREFlinezdatasource"></a><a name="index-line-zdatasource"></a>
+</dd>
+<dt><code>zdatasource</code>: string, def. <code>&quot;&quot;</code></dt>
+<dd><p>Name of a vector in the current base workspace to use as z data.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Text-Properties.html#Text-Properties" accesskey="n" rel="next">Text Properties</a>, Previous: <a href="Axes-Properties.html#Axes-Properties" accesskey="p" rel="prev">Axes Properties</a>, Up: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="u" rel="up">Graphics Object Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

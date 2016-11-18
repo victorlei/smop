@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Finding Roots</title>
+
+<meta name="description" content="GNU Octave: Finding Roots">
+<meta name="keywords" content="GNU Octave: Finding Roots">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Polynomial-Manipulations.html#Polynomial-Manipulations" rel="up" title="Polynomial Manipulations">
+<link href="Products-of-Polynomials.html#Products-of-Polynomials" rel="next" title="Products of Polynomials">
+<link href="Evaluating-Polynomials.html#Evaluating-Polynomials" rel="prev" title="Evaluating Polynomials">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Finding-Roots"></a>
+<div class="header">
+<p>
+Next: <a href="Products-of-Polynomials.html#Products-of-Polynomials" accesskey="n" rel="next">Products of Polynomials</a>, Previous: <a href="Evaluating-Polynomials.html#Evaluating-Polynomials" accesskey="p" rel="prev">Evaluating Polynomials</a>, Up: <a href="Polynomial-Manipulations.html#Polynomial-Manipulations" accesskey="u" rel="up">Polynomial Manipulations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Finding-Roots-1"></a>
+<h3 class="section">28.2 Finding Roots</h3>
+
+<p>Octave can find the roots of a given polynomial.  This is done by computing
+the companion matrix of the polynomial (see the <code>compan</code> function
+for a definition), and then finding its eigenvalues.
+</p>
+<a name="XREFroots"></a><dl>
+<dt><a name="index-roots"></a>Function File: <em></em> <strong>roots</strong> <em>(<var>c</var>)</em></dt>
+<dd>
+<p>Compute the roots of the polynomial <var>c</var>.
+</p>
+<p>For a vector <var>c</var> with <em>N</em> components, return the roots of the
+polynomial
+</p>
+<div class="example">
+<pre class="example">c(1) * x^(N-1) + &hellip; + c(N-1) * x + c(N)
+</pre></div>
+
+
+<p>As an example, the following code finds the roots of the quadratic
+polynomial
+</p>
+<div class="example">
+<pre class="example">p(x) = x^2 - 5.
+</pre></div>
+
+
+<div class="example">
+<pre class="example">c = [1, 0, -5];
+roots (c)
+&rArr;  2.2361
+&rArr; -2.2361
+</pre></div>
+
+<p>Note that the true result is
+<em>+/- sqrt(5)</em>
+which is roughly
+<em>+/- 2.2361</em>.
+</p>
+<p><strong>See also:</strong> <a href="Miscellaneous-Functions.html#XREFpoly">poly</a>, <a href="#XREFcompan">compan</a>, <a href="Solvers.html#XREFfzero">fzero</a>.
+</p></dd></dl>
+
+
+<a name="XREFpolyeig"></a><dl>
+<dt><a name="index-polyeig"></a>Function File: <em><var>z</var> =</em> <strong>polyeig</strong> <em>(<var>C0</var>, <var>C1</var>, &hellip;, <var>Cl</var>)</em></dt>
+<dt><a name="index-polyeig-1"></a>Function File: <em>[<var>v</var>, <var>z</var>] =</em> <strong>polyeig</strong> <em>(<var>C0</var>, <var>C1</var>, &hellip;, <var>Cl</var>)</em></dt>
+<dd>
+<p>Solve the polynomial eigenvalue problem of degree <var>l</var>.
+</p>
+<p>Given an <var>n*n</var> matrix polynomial
+</p>
+<p><code><var>C</var>(s) = <var>C0</var> + <var>C1</var> s + &hellip; + <var>Cl</var> s^l</code>
+</p>
+<p><code>polyeig</code> solves the eigenvalue problem
+</p>
+<p><code>(<var>C0</var> + <var>C1</var> + &hellip; + <var>Cl</var>)v = 0</code>.
+</p>
+<p>Note that the eigenvalues <var>z</var> are the zeros of the matrix polynomial.
+<var>z</var> is a row vector with <var>n*l</var> elements.  <var>v</var> is a matrix
+(<var>n</var> x <var>n</var>*<var>l</var>) with columns that correspond to the
+eigenvectors.
+</p>
+
+<p><strong>See also:</strong> <a href="Basic-Matrix-Functions.html#XREFeig">eig</a>, <a href="Sparse-Linear-Algebra.html#XREFeigs">eigs</a>, <a href="#XREFcompan">compan</a>.
+</p></dd></dl>
+
+
+<a name="XREFcompan"></a><dl>
+<dt><a name="index-compan"></a>Function File: <em></em> <strong>compan</strong> <em>(<var>c</var>)</em></dt>
+<dd><p>Compute the companion matrix corresponding to polynomial coefficient vector
+<var>c</var>.
+</p>
+<p>The companion matrix is
+</p>
+<div class="smallexample">
+<pre class="smallexample">     _                                                        _
+    |  -c(2)/c(1)   -c(3)/c(1)  &hellip;  -c(N)/c(1)  -c(N+1)/c(1)  |
+    |       1            0      &hellip;       0             0      |
+    |       0            1      &hellip;       0             0      |
+A = |       .            .      .         .             .      |
+    |       .            .       .        .             .      |
+    |       .            .        .       .             .      |
+    |_      0            0      &hellip;       1             0     _|
+</pre></div>
+
+<p>The eigenvalues of the companion matrix are equal to the roots of the
+polynomial.
+</p>
+<p><strong>See also:</strong> <a href="#XREFroots">roots</a>, <a href="Miscellaneous-Functions.html#XREFpoly">poly</a>, <a href="Basic-Matrix-Functions.html#XREFeig">eig</a>.
+</p></dd></dl>
+
+
+<a name="XREFmpoles"></a><dl>
+<dt><a name="index-mpoles"></a>Function File: <em>[<var>multp</var>, <var>idxp</var>] =</em> <strong>mpoles</strong> <em>(<var>p</var>)</em></dt>
+<dt><a name="index-mpoles-1"></a>Function File: <em>[<var>multp</var>, <var>idxp</var>] =</em> <strong>mpoles</strong> <em>(<var>p</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-mpoles-2"></a>Function File: <em>[<var>multp</var>, <var>idxp</var>] =</em> <strong>mpoles</strong> <em>(<var>p</var>, <var>tol</var>, <var>reorder</var>)</em></dt>
+<dd><p>Identify unique poles in <var>p</var> and their associated multiplicity.
+</p>
+<p>The output is ordered from largest pole to smallest pole.
+</p>
+<p>If the relative difference of two poles is less than <var>tol</var> then they are
+considered to be multiples.  The default value for <var>tol</var> is 0.001.
+</p>
+<p>If the optional parameter <var>reorder</var> is zero, poles are not sorted.
+</p>
+<p>The output <var>multp</var> is a vector specifying the multiplicity of the poles.
+<code><var>multp</var>(n)</code> refers to the multiplicity of the Nth pole
+<code><var>p</var>(<var>idxp</var>(n))</code>.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">p = [2 3 1 1 2];
+[m, n] = mpoles (p)
+   &rArr; m = [1; 1; 2; 1; 2]
+   &rArr; n = [2; 5; 1; 4; 3]
+   &rArr; p(n) = [3, 2, 2, 1, 1]
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Products-of-Polynomials.html#XREFresidue">residue</a>, <a href="Miscellaneous-Functions.html#XREFpoly">poly</a>, <a href="#XREFroots">roots</a>, <a href="Products-of-Polynomials.html#XREFconv">conv</a>, <a href="Products-of-Polynomials.html#XREFdeconv">deconv</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Products-of-Polynomials.html#Products-of-Polynomials" accesskey="n" rel="next">Products of Polynomials</a>, Previous: <a href="Evaluating-Polynomials.html#Evaluating-Polynomials" accesskey="p" rel="prev">Evaluating Polynomials</a>, Up: <a href="Polynomial-Manipulations.html#Polynomial-Manipulations" accesskey="u" rel="up">Polynomial Manipulations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

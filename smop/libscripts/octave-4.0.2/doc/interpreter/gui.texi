@@ -1,0 +1,725 @@
+@c DO NOT EDIT!  Generated automatically by munge-texi.pl.
+
+@c Copyright (C) 2012-2015 Rik Wehbring
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node GUI Development
+@chapter GUI Development
+
+Octave is principally a batch or command-line language.  However, it does
+offer some features for constructing graphical interfaces that interact with
+users.
+
+The GUI elements available are I/O dialogs, a progress bar, and UI elements
+for plot windows.  For example, rather than hardcoding a filename for output
+results a script can open a dialog box and allow the user to choose a file.
+Similarly, if a calculation is expected to take a long time a script can
+display a progress bar.  The various UI elements can be used to fully customize
+the plot window with menubars, context menus, 
+
+Several utility functions make it possible to store private data for use with
+a GUI which will not pollute the user's variable space.
+
+Finally, a program written in Octave might want to have long term storage of
+preferences or state variables.  This can be done with user-defined
+preferences.
+
+@menu
+* I/O Dialogs::
+* Progress Bar::
+* UI Elements::
+* GUI Utility Functions::
+* User-Defined Preferences::
+@end menu
+
+@node I/O Dialogs
+@section I/O Dialogs
+
+Simple dialog menus are available for choosing directories or files.  They
+return a string variable which can then be used with any command requiring
+a file name.
+
+@c uigetdir scripts/gui/uigetdir.m
+@anchor{XREFuigetdir}
+@deftypefn  {Function File} {@var{dirname} =} uigetdir ()
+@deftypefnx {Function File} {@var{dirname} =} uigetdir (@var{init_path})
+@deftypefnx {Function File} {@var{dirname} =} uigetdir (@var{init_path}, @var{dialog_name})
+Open a GUI dialog for selecting a directory.
+
+If @var{init_path} is not given the current working directory is used.
+
+@var{dialog_name} may be used to customize the dialog title.
+@seealso{@ref{XREFuigetfile,,uigetfile}, @ref{XREFuiputfile,,uiputfile}}
+@end deftypefn
+
+
+@c uigetfile scripts/gui/uigetfile.m
+@anchor{XREFuigetfile}
+@deftypefn  {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uigetfile ()
+@deftypefnx {Function File} {[@dots{}] =} uigetfile (@var{flt})
+@deftypefnx {Function File} {[@dots{}] =} uigetfile (@var{flt}, @var{dialog_name})
+@deftypefnx {Function File} {[@dots{}] =} uigetfile (@var{flt}, @var{dialog_name}, @var{default_file})
+@deftypefnx {Function File} {[@dots{}] =} uigetfile (@dots{}, "Position", [@var{px} @var{py}])
+@deftypefnx {Function File} {[@dots{}] =} uigetfile (@dots{}, "MultiSelect", @var{mode})
+
+Open a GUI dialog for selecting a file and return the filename @var{fname},
+the path to this file @var{fpath}, and the filter index @var{fltidx}.
+
+@var{flt} contains a (list of) file filter string(s) in one of the following
+formats:
+
+@table @asis
+@item @qcode{"/path/to/filename.ext"}
+If a filename is given then the file extension is extracted and used as
+filter.  In addition, the path is selected as current path and the filename
+is selected as default file.  Example: @code{uigetfile ("myfun.m")}
+
+@item A single file extension @qcode{"*.ext"}
+Example: @code{uigetfile ("*.ext")}
+
+@item A 2-column cell array
+containing a file extension in the first column and a brief description in
+the second column.
+Example: @code{uigetfile (@{"*.ext", "My Description";"*.xyz",
+"XYZ-Format"@})}
+
+The filter string can also contain a semicolon separated list of filter
+extensions.
+Example: @code{uigetfile (@{"*.gif;*.png;*.jpg", "Supported Picture
+Formats"@})}
+@end table
+
+@var{dialog_name} can be used to customize the dialog title.
+
+If @var{default_file} is given then it will be selected in the GUI dialog.
+If, in addition, a path is given it is also used as current path.
+
+The screen position of the GUI dialog can be set using the
+@qcode{"Position"} key and a 2-element vector containing the pixel
+coordinates.  Two or more files can be selected when setting the
+@qcode{"MultiSelect"} key to @qcode{"on"}.  In that case @var{fname} is a
+cell array containing the files.
+@seealso{@ref{XREFuiputfile,,uiputfile}, @ref{XREFuigetdir,,uigetdir}}
+@end deftypefn
+
+
+@c uiputfile scripts/gui/uiputfile.m
+@anchor{XREFuiputfile}
+@deftypefn  {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile ()
+@deftypefnx {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile (@var{flt})
+@deftypefnx {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile (@var{flt}, @var{dialog_name})
+@deftypefnx {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile (@var{flt}, @var{dialog_name}, @var{default_file})
+Open a GUI dialog for selecting a file.
+
+@var{flt} contains a (list of) file filter string(s) in one of the following
+formats:
+
+@table @asis
+@item @qcode{"/path/to/filename.ext"}
+If a filename is given the file extension is extracted and used as filter.
+In addition the path is selected as current path and the filename is
+selected as default file.  Example: @code{uiputfile ("myfun.m")}
+
+@item @qcode{"*.ext"}
+A single file extension.
+Example: @code{uiputfile ("*.ext")}
+
+@item @code{@{"*.ext", "My Description"@}}
+A 2-column cell array containing the file extension in the 1st column and
+a brief description in the 2nd column.
+Example: @code{uiputfile (@{"*.ext","My Description";"*.xyz",
+"XYZ-Format"@})}
+@end table
+
+The filter string can also contain a semicolon separated list of filter
+extensions.
+Example: @code{uiputfile (@{"*.gif;*.png;*.jpg",
+"Supported Picture Formats"@})}
+
+@var{dialog_name} can be used to customize the dialog title.
+If @var{default_file} is given it is preselected in the GUI dialog.
+If, in addition, a path is given it is also used as current path.
+@seealso{@ref{XREFuigetfile,,uigetfile}, @ref{XREFuigetdir,,uigetdir}}
+@end deftypefn
+
+
+@node Progress Bar
+@section Progress Bar
+@cindex Progress Bar
+
+@c waitbar scripts/gui/waitbar.m
+@anchor{XREFwaitbar}
+@deftypefn  {Function File} {@var{h} =} waitbar (@var{frac})
+@deftypefnx {Function File} {@var{h} =} waitbar (@var{frac}, @var{msg})
+@deftypefnx {Function File} {@var{h} =} waitbar (@dots{}, "FigureProperty", "Value", @dots{})
+@deftypefnx {Function File} {} waitbar (@var{frac})
+@deftypefnx {Function File} {} waitbar (@var{frac}, @var{hwbar})
+@deftypefnx {Function File} {} waitbar (@var{frac}, @var{hwbar}, @var{msg})
+Return a handle @var{h} to a new waitbar object.
+
+The waitbar is filled to fraction @var{frac} which must be in the range
+[0, 1].
+
+The optional message @var{msg} is centered and displayed above the waitbar.
+
+The appearance of the waitbar figure window can be configured by passing
+property/value pairs to the function.
+
+When called with a single input the current waitbar, if it exists, is
+updated to the new value @var{frac}.  If there are multiple outstanding
+waitbars they can be updated individually by passing the handle @var{hwbar}
+of the specific waitbar to modify.
+@end deftypefn
+
+
+@node UI Elements
+@section UI Elements
+
+The @nospell{ui*} series of functions work best with the @code{qt} graphics
+toolkit, although some functionality is available with the @code{fltk} toolkit.
+There is no support for the @code{gnuplot} toolkit.
+
+@c uicontextmenu scripts/gui/uicontextmenu.m
+@anchor{XREFuicontextmenu}
+@deftypefn {Function File} {@var{hui} =} uicontextmenu (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uicontextmenu (@var{h}, @var{property}, @var{value}, @dots{})
+
+Create a uicontextmenu object and return a handle to it.
+
+If @var{h} is omitted then a uicontextmenu for the current figure is
+created. If no figure is available, a new figure is created first. 
+
+If @var{h} is given then a uicontextmenu relative to @var{h} is created. 
+
+Any provided property value pairs will override the default values of the created 
+uicontextmenu object.
+
+Examples:
+
+@example
+@group
+% create figure and uicontextmenu
+f = figure;
+c = uicontextmenu (f);
+
+% create menus in the context menu
+m1 = uimenu ("parent",c,"label","Menu item 1","callback","disp('menu item 1')");
+m2 = uimenu ("parent",c,"label","Menu item 2","callback","disp('menu item 2')");
+
+% set the context menu for the figure
+set (f, "uicontextmenu", c);
+@end group
+@end example
+@seealso{@ref{XREFfigure,,figure}, @ref{XREFuimenu,,uimenu}}
+@end deftypefn
+
+
+@c uicontrol scripts/gui/uicontrol.m
+@anchor{XREFuicontrol}
+@deftypefn  {Function File} {@var{hui} =} uicontrol (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uicontrol (@var{parent}, @var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {} uicontrol (@var{h})
+
+Create a uicontrol object and return a handle to it.
+
+uicontrols are used to create simple interactive controls such as push buttons, checkboxes, edit and list controls.
+
+If @var{parent} is omitted then a uicontrol for the current figure is
+created. If no figure is available, a new figure is created first. 
+
+If @var{parent} is given then a uicontrol relative to @var{parent} is created. 
+
+Any provided property value pairs will override the default values of the created 
+uicontrol object. 
+
+Control of the type of uicontrol created is through the use of the @var{style} property.
+If no style property is provided, a push button will be created.
+
+Valid styles for uicontrol are:
+
+@table @asis
+@item @qcode{"checkbox"}
+Create a checkbox control that allows user on/off selection.
+
+@item @qcode{"edit"}
+Create a edit control that allows user input of single or multiple lines of text.
+
+@item @qcode{"listbox"}
+Create a listbox control that displays a lit of items and allows user slelection of 
+single or multiple items.
+
+@item @qcode{"popupmenu"}
+Create a popupmenu control that displays a list of options that can be selected 
+when the user clicks on the control.
+
+@item @qcode{"pushbutton"}
+Create a push button control that allows user to press to cause an action.
+
+@item @qcode{"radiobutton"}
+Create a radio button control intended to be used for mutually exclusive input in a group of
+of radiobutton controls.
+
+@item @qcode{"slider"}
+Create a slider control that allows user selection from a range of values by sliding 
+knob on the control.
+
+@item @qcode{"text"}
+Create a static text control to display single or multiple lines of text.
+
+@item @qcode{"togglebutton"}
+Create a toggle button control that appears like a push button but allows the user to 
+select between two states.
+
+@end table
+
+Examples:
+
+@example
+@group
+% create figure and panel on it
+f = figure;
+% create a button (default style)
+b1 = uicontrol (f, "string", "A Button", "position",[10 10 150 40]);
+% create an edit control
+e1 = uicontrol (f, "style", "edit", "string", "editable text", "position",[10 60 300 40]);
+% create a checkbox
+c1 = uicontrol (f, "style", "checkbox", "string", "a checkbox", "position",[10 120 150 40]);
+@end group
+@end example
+@seealso{@ref{XREFfigure,,figure}, @ref{XREFuipanel,,uipanel}}
+@end deftypefn
+
+
+@c uipanel scripts/gui/uipanel.m
+@anchor{XREFuipanel}
+@deftypefn  {Function File} {@var{hui} =} uipanel (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uipanel (@var{parent}, "@var{property}, @var{value}, @dots{})
+
+Create a uipanel object and return a handle to it.
+
+uipanels are used as containers to group other uicontrol objects.
+
+If @var{parent} is omitted then a uipanel for the current figure is
+created. If no figure is available, a new figure is created first. 
+
+If @var{parent} is given then a uipanel relative to @var{parent} is created. 
+
+Any provided property value pairs will override the default values of the created 
+uipanel object.
+
+Examples:
+
+@example
+@group
+% create figure and panel on it
+f = figure;
+p = uipanel ("title", "Panel Title", "position", [.25 .25 .5 .5]);
+
+% add two buttons to the panel
+b1 = uicontrol ("parent", p, "string", "A Button", "position",[18 10 150 36]);
+b2 = uicontrol ("parent", p, "string", "Another Button", "position",[18 60 150 36]);
+
+@end group
+@end example
+@seealso{@ref{XREFfigure,,figure}, @ref{XREFuicontrol,,uicontrol}}
+@end deftypefn
+
+
+@c uipushtool scripts/gui/uipushtool.m
+@anchor{XREFuipushtool}
+@deftypefn  {Function File} {@var{hui} =} uipushtool (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uipushtool (@var{parent}, @var{property}, @var{value}, @dots{})
+
+Create a uipushtool object and return a handle to it.
+
+uipushtools are buttons that appear on a figure toolbar. The button is created with a border that
+is shown when the user hovers over the button. An image can be set using the cdata property.
+
+If @var{parent} is omitted then a uipushtool for the current figure is
+created. If no figure is available, a new figure is created first.  If a figure is
+available, but does not contain a uitoolbar, a uitoolbar will be created.
+
+If @var{parent} is given then a uipushtools is created on the @var{parent} uitoolbar. 
+
+Any provided property value pairs will override the default values of the created 
+uipushtool object.
+
+Examples:
+
+@example
+@group
+% create figure without a default toolbar
+f = figure ("toolbar", "none");
+% create empty toolbar
+t = uitoolbar (f);
+% create a 19x19x3 black square
+img=zeros(19,19,3);
+% add pushtool button to toolbar
+b = uipushtool (t, "cdata", img);
+@end group
+@end example
+@seealso{@ref{XREFfigure,,figure}, @ref{XREFuitoolbar,,uitoolbar}, @ref{XREFuitoggletool,,uitoggletool}}
+@end deftypefn
+
+
+@c uitoggletool scripts/gui/uitoggletool.m
+@anchor{XREFuitoggletool}
+@deftypefn  {Function File} {@var{hui} =} uitoggletool (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uitoggletool (@var{parent}, @var{property}, @var{value}, @dots{})
+
+Create a uitoggletool object and return a handle to it.
+
+uitoggletool are togglebuttons that appear on a figure toolbar. The button is created with a border that
+is shown when the user hovers over the button. An image can be set using the cdata property.
+
+If @var{parent} is omitted then a uitoggletool for the current figure is
+created. If no figure is available, a new figure is created first.  If a figure is
+available, but does not contain a uitoolbar, a uitoolbar will be created.
+
+If @var{parent} is given then a uitoggletool is created on the @var{parent} uitoolbar. 
+
+Any provided property value pairs will override the default values of the created 
+uitoggletool object.
+
+Examples:
+
+@example
+@group
+% create figure without a default toolbar
+f = figure ("toolbar", "none");
+% create empty toolbar
+t = uitoolbar (f);
+% create a 19x19x3 black square
+img=zeros(19,19,3);
+% add uitoggletool button to toolbar
+b = uitoggletool (t, "cdata", img);
+@end group
+@end example
+@seealso{@ref{XREFfigure,,figure}, @ref{XREFuitoolbar,,uitoolbar}, @ref{XREFuipushtool,,uipushtool}}
+@end deftypefn
+
+
+@c uitoolbar scripts/gui/uitoolbar.m
+@anchor{XREFuitoolbar}
+@deftypefn  {Function File} {@var{hui} =} uitoolbar (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uitoolbar (@var{parent}, @var{property}, @var{value}, @dots{})
+
+Create a uitoolbar object and return a handle to it. A uitoolbar displays uitoggletool and uipushtool buttons.
+
+If @var{parent} is omitted then a uitoolbar for the current figure is
+created. If no figure is available, a new figure is created first. 
+
+If @var{parent} is given then a uitoolbar relative to @var{parent} is created. 
+
+Any provided property value pairs will override the default values of the created 
+uitoolbar object. 
+
+Examples:
+
+@example
+@group
+% create figure without a default toolbar 
+f = figure ("toolbar", "none");
+% create empty toolbar
+t = uitoolbar (f);
+@end group
+@end example
+@seealso{@ref{XREFfigure,,figure}, @ref{XREFuitoggletool,,uitoggletool}, @ref{XREFuipushtool,,uipushtool}}
+@end deftypefn
+
+
+@node GUI Utility Functions
+@section GUI Utility Functions
+
+These functions do not implement a GUI element but are useful when developing
+programs that do.  The functions @code{uiwait}, @code{uiresume}, and
+@code{waitfor} are only available with the @code{qt} or @code{fltk} toolkits.
+
+@c desktop scripts/miscellaneous/desktop.m
+@anchor{XREFdesktop}
+@deftypefn {Function File} {@var{used} =} desktop ("-inuse")
+Return true if the desktop (GUI) is currently in use.
+@seealso{@ref{XREFisguirunning,,isguirunning}}
+@end deftypefn
+
+
+@c guidata scripts/gui/guidata.m
+@anchor{XREFguidata}
+@deftypefn  {Function File} {@var{data} =} guidata (@var{h})
+@deftypefnx {Function File} {} guidata (@var{h}, @var{data})
+Query or set user-custom GUI data.
+
+The GUI data is stored in the figure handle @var{h}.  If @var{h} is not a
+figure handle then it's parent figure will be used for storage.
+
+@var{data} must be a single object which means it is usually preferable
+for it to be a data container such as a cell array or struct so that
+additional data items can be added easily.
+
+@seealso{@ref{XREFgetappdata,,getappdata}, @ref{XREFsetappdata,,setappdata}, @ref{XREFget,,get}, @ref{XREFset,,set}, @ref{XREFgetpref,,getpref}, @ref{XREFsetpref,,setpref}}
+@end deftypefn
+
+
+@c guihandles scripts/gui/guihandles.m
+@anchor{XREFguihandles}
+@deftypefn  {Function File} {@var{hdata} =} guihandles (@var{h})
+@deftypefnx {Function File} {@var{hdata} =} guihandles
+Return a structure of object handles for the figure associated with
+handle @var{h}.
+
+If no handle is specified the current figure returned by @code{gcf} is used.
+
+The fieldname for each entry of @var{hdata} is taken from the @qcode{"tag"}
+property of the graphic object.  If the tag is empty then the handle is not
+returned.  If there are multiple graphic objects with the same tag then
+the entry in @var{hdata} will be a vector of handles.  @code{guihandles}
+includes all possible handles, including those for
+which @qcode{"HandleVisibility"} is @qcode{"off"}.
+@seealso{@ref{XREFguidata,,guidata}, @ref{XREFfindobj,,findobj}, @ref{XREFfindall,,findall}, @ref{XREFallchild,,allchild}}
+@end deftypefn
+
+
+@c have_window_system libinterp/corefcn/sysdep.cc
+@anchor{XREFhave_window_system}
+@deftypefn {Built-in Function} {} have_window_system ()
+Return true if a window system is available (X11, Windows, or Apple OS X)
+and false otherwise.
+@seealso{@ref{XREFisguirunning,,isguirunning}}
+@end deftypefn
+
+
+@c isguirunning libinterp/octave.cc
+@anchor{XREFisguirunning}
+@deftypefn {Built-in Function} {} isguirunning ()
+Return true if Octave is running in GUI mode and false otherwise.
+@seealso{@ref{XREFhave_window_system,,have_window_system}}
+@end deftypefn
+
+
+@c uiwait scripts/gui/uiwait.m
+@anchor{XREFuiwait}
+@deftypefn  {Function File} {} uiwait
+@deftypefnx {Function File} {} uiwait (@var{h})
+@deftypefnx {Function File} {} uiwait (@var{h}, @var{timeout})
+Suspend program execution until the figure with handle @var{h} is deleted
+or @code{uiresume} is called.
+
+When no figure handle is specified this function uses the current figure.
+If the figure handle is invalid or there is no current figure, this
+functions returns immediately.
+
+When specified, @var{timeout} defines the number of seconds to wait
+for the figure deletion or the @code{uiresume} call.  The timeout value
+must be at least 1.  If a smaller value is specified, a warning is issued
+and a timeout value of 1 is used instead.  If a non-integer value is
+specified, it is truncated towards 0.  If @var{timeout} is not specified,
+the program execution is suspended indefinitely.
+@seealso{@ref{XREFuiresume,,uiresume}, @ref{XREFwaitfor,,waitfor}}
+@end deftypefn
+
+
+@c uiresume scripts/gui/uiresume.m
+@anchor{XREFuiresume}
+@deftypefn {Function File} {} uiresume (@var{h})
+Resume program execution suspended with @code{uiwait}.
+
+The handle @var{h} must be the same as the on specified in @code{uiwait}.
+If the handle is invalid or there is no @code{uiwait} call pending for the
+figure with handle @var{h}, this function does nothing.
+@seealso{@ref{XREFuiwait,,uiwait}}
+@end deftypefn
+
+
+@c waitfor libinterp/corefcn/graphics.cc
+@anchor{XREFwaitfor}
+@deftypefn  {Built-in Function} {} waitfor (@var{h})
+@deftypefnx {Built-in Function} {} waitfor (@var{h}, @var{prop})
+@deftypefnx {Built-in Function} {} waitfor (@var{h}, @var{prop}, @var{value})
+@deftypefnx {Built-in Function} {} waitfor (@dots{}, "timeout", @var{timeout})
+Suspend the execution of the current program until a condition is
+satisfied on the graphics handle @var{h}.
+
+While the program is suspended graphics events are still processed normally,
+allowing callbacks to modify the state of graphics objects.  This function
+is reentrant and can be called from a callback, while another @code{waitfor}
+call is pending at the top-level.
+
+In the first form, program execution is suspended until the graphics object
+@var{h} is destroyed.  If the graphics handle is invalid, the function
+returns immediately.
+
+In the second form, execution is suspended until the graphics object is
+destroyed or the property named @var{prop} is modified.  If the graphics
+handle is invalid or the property does not exist, the function returns
+immediately.
+
+In the third form, execution is suspended until the graphics object is
+destroyed or the property named @var{prop} is set to @var{value}.  The
+function @code{isequal} is used to compare property values.  If the graphics
+handle is invalid, the property does not exist or the property is already
+set to @var{value}, the function returns immediately.
+
+An optional timeout can be specified using the property @code{timeout}.
+This timeout value is the number of seconds to wait for the condition to be
+true.  @var{timeout} must be at least 1. If a smaller value is specified, a
+warning is issued and a value of 1 is used instead.  If the timeout value is
+not an integer, it is truncated towards 0.
+
+To define a condition on a property named @code{timeout}, use the string
+@code{\timeout} instead.
+
+In all cases, typing CTRL-C stops program execution immediately.
+@seealso{@ref{XREFwaitforbuttonpress,,waitforbuttonpress}, @ref{XREFisequal,,isequal}}
+@end deftypefn
+
+
+@node User-Defined Preferences
+@section User-Defined Preferences
+
+@c getpref scripts/prefs/getpref.m
+@anchor{XREFgetpref}
+@deftypefn  {Function File} {} getpref (@var{group}, @var{pref})
+@deftypefnx {Function File} {} getpref (@var{group}, @var{pref}, @var{default})
+@deftypefnx {Function File} {} getpref (@var{group})
+Return the preference value corresponding to the named preference @var{pref}
+in the preference group @var{group}.
+
+The named preference group must be a character string.
+
+If @var{pref} does not exist in @var{group} and @var{default} is
+specified, return @var{default}.
+
+The preference @var{pref} may be a character string or a cell array of
+character strings.
+
+The corresponding default value @var{default} may be any value, or, if
+@var{pref} is a cell array of strings, @var{default} must be a cell array
+of values with the same size as @var{pref}.
+
+If neither @var{pref} nor @var{default} are specified, return a structure
+of preferences for the preference group @var{group}.
+
+If no arguments are specified, return a structure containing all groups of
+preferences and their values.
+@seealso{@ref{XREFaddpref,,addpref}, @ref{XREFsetpref,,setpref}, @ref{XREFispref,,ispref}, @ref{XREFrmpref,,rmpref}}
+@end deftypefn
+
+
+@c setpref scripts/prefs/setpref.m
+@anchor{XREFsetpref}
+@deftypefn {Function File} {} setpref (@var{group}, @var{pref}, @var{val})
+Set a preference @var{pref} to the given @var{val} in the named preference
+group @var{group}.
+
+The named preference group must be a character string.
+
+The preference @var{pref} may be a character string or a cell array of
+character strings.
+
+The corresponding value @var{val} may be any value, or, if @var{pref} is a
+cell array of strings, @var{val} must be a cell array of values with the
+same size as @var{pref}.
+
+If the named preference or group does not exist, it is added.
+@seealso{@ref{XREFaddpref,,addpref}, @ref{XREFgetpref,,getpref}, @ref{XREFispref,,ispref}, @ref{XREFrmpref,,rmpref}}
+@end deftypefn
+
+
+@c addpref scripts/prefs/addpref.m
+@anchor{XREFaddpref}
+@deftypefn {Function File} {} addpref (@var{group}, @var{pref}, @var{val})
+Add a preference @var{pref} and associated value @var{val} to the named
+preference group @var{group}.
+
+The named preference group must be a character string.
+
+The preference @var{pref} may be a character string or a cell array of
+character strings.
+
+The corresponding value @var{val} may be any value, or, if @var{pref} is a
+cell array of strings, @var{val} must be a cell array of values with the
+same size as @var{pref}.
+@seealso{@ref{XREFsetpref,,setpref}, @ref{XREFgetpref,,getpref}, @ref{XREFispref,,ispref}, @ref{XREFrmpref,,rmpref}}
+@end deftypefn
+
+
+@c rmpref scripts/prefs/rmpref.m
+@anchor{XREFrmpref}
+@deftypefn  {Function File} {} rmpref (@var{group}, @var{pref})
+@deftypefnx {Function File} {} rmpref (@var{group})
+Remove the named preference @var{pref} from the preference group @var{group}.
+
+The named preference group must be a character string.
+
+The preference @var{pref} may be a character string or cell array of strings.
+
+If @var{pref} is not specified, remove the preference group @var{group}.
+
+It is an error to remove a nonexistent preference or group.
+@seealso{@ref{XREFaddpref,,addpref}, @ref{XREFispref,,ispref}, @ref{XREFsetpref,,setpref}, @ref{XREFgetpref,,getpref}}
+@end deftypefn
+
+
+@c ispref scripts/prefs/ispref.m
+@anchor{XREFispref}
+@deftypefn  {Function File} {} ispref (@var{group}, @var{pref})
+@deftypefnx {Function File} {} ispref (@var{group})
+Return true if the named preference @var{pref} exists in the preference
+group @var{group}.
+
+The named preference group must be a character string.
+
+The preference @var{pref} may be a character string or a cell array of
+character strings.
+
+If @var{pref} is not specified, return true if the preference group
+@var{group} exists.
+@seealso{@ref{XREFgetpref,,getpref}, @ref{XREFaddpref,,addpref}, @ref{XREFsetpref,,setpref}, @ref{XREFrmpref,,rmpref}}
+@end deftypefn
+
+
+@c prefdir scripts/prefs/prefdir.m
+@anchor{XREFprefdir}
+@deftypefn  {Command} {} prefdir
+@deftypefnx {Command} {@var{dir} =} prefdir
+Return the directory that contains the preferences for Octave.
+
+Examples:
+
+Display the preferences directory
+
+@example
+prefdir
+@end example
+
+Change to the preferences folder
+
+@example
+cd (prefdir)
+@end example
+@seealso{@ref{XREFgetpref,,getpref}, @ref{XREFsetpref,,setpref}, @ref{XREFaddpref,,addpref}, @ref{XREFrmpref,,rmpref}, @ref{XREFispref,,ispref}}
+@end deftypefn
+
+
+@c preferences scripts/prefs/preferences.m
+@anchor{XREFpreferences}
+@deftypefn {Command} {} preferences
+Display the GUI preferences dialog window for Octave.
+@end deftypefn
+
+

@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: General Guidelines</title>
+
+<meta name="description" content="GNU Octave: General Guidelines">
+<meta name="keywords" content="GNU Octave: General Guidelines">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Contributing-Guidelines.html#Contributing-Guidelines" rel="up" title="Contributing Guidelines">
+<link href="Octave-Sources-_0028m_002dfiles_0029.html#Octave-Sources-_0028m_002dfiles_0029" rel="next" title="Octave Sources (m-files)">
+<link href="Basics-of-Generating-a-Changeset.html#Basics-of-Generating-a-Changeset" rel="prev" title="Basics of Generating a Changeset">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="General-Guidelines"></a>
+<div class="header">
+<p>
+Next: <a href="Octave-Sources-_0028m_002dfiles_0029.html#Octave-Sources-_0028m_002dfiles_0029" accesskey="n" rel="next">Octave Sources (m-files)</a>, Previous: <a href="Basics-of-Generating-a-Changeset.html#Basics-of-Generating-a-Changeset" accesskey="p" rel="prev">Basics of Generating a Changeset</a>, Up: <a href="Contributing-Guidelines.html#Contributing-Guidelines" accesskey="u" rel="up">Contributing Guidelines</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="General-Guidelines-1"></a>
+<h3 class="section">D.4 General Guidelines</h3>
+
+<p>All Octave&rsquo;s sources are distributed under the GNU General Public License
+(GPL).  Currently, Octave uses GPL version 3.  For details about this
+license, see <a href="http://www.gnu.org/licenses/gpl.html">http://www.gnu.org/licenses/gpl.html</a>.  Therefore,
+whenever you create a new source file, it should have the following
+comment header (use appropriate year, name and comment marks):
+</p>
+<div class="example">
+<pre class="example">## Copyright (C) 1996-2015 John W. Eaton &lt;jwe@octave.org&gt;
+##
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 3 of the License, or
+## (at your option) any later version.
+##
+## Octave is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with Octave; see the file COPYING.  If not,
+## see &lt;http://www.gnu.org/licenses/&gt;.
+</pre></div>
+
+<p>Always include commit messages in changesets.  After making your source
+changes, record and briefly describe the changes in your commit message.
+You should have previously configured your <samp>.hgrc</samp> (or
+<samp>Mercurial.ini</samp> on Windows) with your name and email, which will
+be automatically added to your commit message.  Your commit message
+should have a brief one-line explanation of what the commit does.  If you
+are patching a bug, this one-line explanation should mention the bug
+number at the end.  If your change is small and only touches one file then
+this is typically sufficient.  If you are modifying several files, or
+several parts of one file, you should enumerate your changes roughly
+following the GNU coding standards for changelogs, as in the following
+example:
+</p>
+<div class="example">
+<pre class="example">look for methods before constructors
+
+* symtab.cc (symbol_table::fcn_info::fcn_info_rep::find):
+Look for class methods before constructors, contrary to MATLAB
+documentation.
+
+* test/ctor-vs-method: New directory of test classes.
+* test/test_ctor_vs_method.m: New file.
+* test/Makefile.am: Include ctor-vs-method/module.mk.
+(FCN_FILES): Include test_ctor_vs_method.m in the list.
+</pre></div>
+
+<p>In this example, the names of the file changed is listed first, and in
+parentheses the name of the function in that file that was modified.  There
+is no need to mention the function for m-files that only contain one function.
+The commit message should describe what was changed, not why it was changed.
+Any explanation for why a change is needed should appear as comments in the
+code, particularly if there is something that might not be obvious to someone
+reading it later.
+</p>
+<p>When submitting code which addresses a known bug on the Octave bug
+tracker (<a href="http://bugs.octave.org">http://bugs.octave.org</a>), please add &rsquo;(bug #XXXXX)&rsquo; to the
+first line of the commit messages.  For example:
+</p>
+<div class="example">
+<pre class="example">Fix bug for complex input for gradient (bug #34292).
+</pre></div>
+
+<p>The preferred comment mark for places that may need further attention is
+<code>FIXME:</code>.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Octave-Sources-_0028m_002dfiles_0029.html#Octave-Sources-_0028m_002dfiles_0029" accesskey="n" rel="next">Octave Sources (m-files)</a>, Previous: <a href="Basics-of-Generating-a-Changeset.html#Basics-of-Generating-a-Changeset" accesskey="p" rel="prev">Basics of Generating a Changeset</a>, Up: <a href="Contributing-Guidelines.html#Contributing-Guidelines" accesskey="u" rel="up">Contributing Guidelines</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

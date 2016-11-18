@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Functions of Multiple Variables</title>
+
+<meta name="description" content="GNU Octave: Functions of Multiple Variables">
+<meta name="keywords" content="GNU Octave: Functions of Multiple Variables">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Numerical-Integration.html#Numerical-Integration" rel="up" title="Numerical Integration">
+<link href="Differential-Equations.html#Differential-Equations" rel="next" title="Differential Equations">
+<link href="Orthogonal-Collocation.html#Orthogonal-Collocation" rel="prev" title="Orthogonal Collocation">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Functions-of-Multiple-Variables"></a>
+<div class="header">
+<p>
+Previous: <a href="Orthogonal-Collocation.html#Orthogonal-Collocation" accesskey="p" rel="prev">Orthogonal Collocation</a>, Up: <a href="Numerical-Integration.html#Numerical-Integration" accesskey="u" rel="up">Numerical Integration</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Functions-of-Multiple-Variables-1"></a>
+<h3 class="section">23.3 Functions of Multiple Variables</h3>
+
+<p>Octave does not have built-in functions for computing the integral of
+functions of multiple variables directly.  It is possible, however, to
+compute the integral of a function of multiple variables using the
+existing functions for one-dimensional integrals.
+</p>
+<p>To illustrate how the integration can be performed, we will integrate
+the function
+</p>
+<div class="example">
+<pre class="example">f(x, y) = sin(pi*x*y)*sqrt(x*y)
+</pre></div>
+
+<p>for <em>x</em> and <em>y</em> between 0 and 1.
+</p>
+<p>The first approach creates a function that integrates <em>f</em> with
+respect to <em>x</em>, and then integrates that function with respect to
+<em>y</em>.  Because <code>quad</code> is written in Fortran it cannot be called
+recursively.  This means that <code>quad</code> cannot integrate a function
+that calls <code>quad</code>, and hence cannot be used to perform the double
+integration.  Any of the other integrators, however, can be used which is
+what the following code demonstrates.
+</p>
+<div class="example">
+<pre class="example">function q = g(y)
+  q = ones (size (y));
+  for i = 1:length (y)
+    f = @(x) sin (pi*x.*y(i)) .* sqrt (x.*y(i));
+    q(i) = quadgk (f, 0, 1);
+  endfor
+endfunction
+
+I = quadgk (&quot;g&quot;, 0, 1)
+      &rArr; 0.30022
+</pre></div>
+
+<p>The above process can be simplified with the <code>dblquad</code> and
+<code>triplequad</code> functions for integrals over two and three
+variables.  For example:
+</p>
+<div class="example">
+<pre class="example">I = dblquad (@(x, y) sin (pi*x.*y) .* sqrt (x.*y), 0, 1, 0, 1)
+      &rArr; 0.30022
+</pre></div>
+
+<a name="XREFdblquad"></a><dl>
+<dt><a name="index-dblquad"></a>Function File: <em></em> <strong>dblquad</strong> <em>(<var>f</var>, <var>xa</var>, <var>xb</var>, <var>ya</var>, <var>yb</var>)</em></dt>
+<dt><a name="index-dblquad-1"></a>Function File: <em></em> <strong>dblquad</strong> <em>(<var>f</var>, <var>xa</var>, <var>xb</var>, <var>ya</var>, <var>yb</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-dblquad-2"></a>Function File: <em></em> <strong>dblquad</strong> <em>(<var>f</var>, <var>xa</var>, <var>xb</var>, <var>ya</var>, <var>yb</var>, <var>tol</var>, <var>quadf</var>)</em></dt>
+<dt><a name="index-dblquad-3"></a>Function File: <em></em> <strong>dblquad</strong> <em>(<var>f</var>, <var>xa</var>, <var>xb</var>, <var>ya</var>, <var>yb</var>, <var>tol</var>, <var>quadf</var>, &hellip;)</em></dt>
+<dd><p>Numerically evaluate the double integral of <var>f</var>.
+</p>
+<p><var>f</var> is a function handle, inline function, or string containing the name
+of the function to evaluate.  The function <var>f</var> must have the form
+<em>z = f(x,y)</em> where <var>x</var> is a vector and <var>y</var> is a scalar.  It
+should return a vector of the same length and orientation as <var>x</var>.
+</p>
+<p><var>xa</var>, <var>ya</var> and <var>xb</var>, <var>yb</var> are the lower and upper limits of
+integration for x and y respectively.  The underlying integrator determines
+whether infinite bounds are accepted.
+</p>
+<p>The optional argument <var>tol</var> defines the absolute tolerance used to
+integrate each sub-integral.  The default value is <em>1e^{-6}</em>.
+</p>
+<p>The optional argument <var>quadf</var> specifies which underlying integrator
+function to use.  Any choice but <code>quad</code> is available and the default
+is <code>quadcc</code>.
+</p>
+<p>Additional arguments, are passed directly to <var>f</var>.  To use the default
+value for <var>tol</var> or <var>quadf</var> one may pass <code>':'</code> or an empty
+matrix ([]).
+</p>
+<p><strong>See also:</strong> <a href="#XREFtriplequad">triplequad</a>, <a href="Functions-of-One-Variable.html#XREFquad">quad</a>, <a href="Functions-of-One-Variable.html#XREFquadv">quadv</a>, <a href="Functions-of-One-Variable.html#XREFquadl">quadl</a>, <a href="Functions-of-One-Variable.html#XREFquadgk">quadgk</a>, <a href="Functions-of-One-Variable.html#XREFquadcc">quadcc</a>, <a href="Functions-of-One-Variable.html#XREFtrapz">trapz</a>.
+</p></dd></dl>
+
+
+<a name="XREFtriplequad"></a><dl>
+<dt><a name="index-triplequad"></a>Function File: <em></em> <strong>triplequad</strong> <em>(<var>f</var>, <var>xa</var>, <var>xb</var>, <var>ya</var>, <var>yb</var>, <var>za</var>, <var>zb</var>)</em></dt>
+<dt><a name="index-triplequad-1"></a>Function File: <em></em> <strong>triplequad</strong> <em>(<var>f</var>, <var>xa</var>, <var>xb</var>, <var>ya</var>, <var>yb</var>, <var>za</var>, <var>zb</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-triplequad-2"></a>Function File: <em></em> <strong>triplequad</strong> <em>(<var>f</var>, <var>xa</var>, <var>xb</var>, <var>ya</var>, <var>yb</var>, <var>za</var>, <var>zb</var>, <var>tol</var>, <var>quadf</var>)</em></dt>
+<dt><a name="index-triplequad-3"></a>Function File: <em></em> <strong>triplequad</strong> <em>(<var>f</var>, <var>xa</var>, <var>xb</var>, <var>ya</var>, <var>yb</var>, <var>za</var>, <var>zb</var>, <var>tol</var>, <var>quadf</var>, &hellip;)</em></dt>
+<dd><p>Numerically evaluate the triple integral of <var>f</var>.
+</p>
+<p><var>f</var> is a function handle, inline function, or string containing the name
+of the function to evaluate.  The function <var>f</var> must have the form
+<em>w = f(x,y,z)</em> where either <var>x</var> or <var>y</var> is a vector and the
+remaining inputs are scalars.  It should return a vector of the same length
+and orientation as <var>x</var> or <var>y</var>.
+</p>
+<p><var>xa</var>, <var>ya</var>, <var>za</var> and <var>xb</var>, <var>yb</var>, <var>zb</var> are the lower
+and upper limits of integration for x, y, and z respectively.  The
+underlying integrator determines whether infinite bounds are accepted.
+</p>
+<p>The optional argument <var>tol</var> defines the absolute tolerance used to
+integrate each sub-integral.  The default value is 1e-6.
+</p>
+<p>The optional argument <var>quadf</var> specifies which underlying integrator
+function to use.  Any choice but <code>quad</code> is available and the default
+is <code>quadcc</code>.
+</p>
+<p>Additional arguments, are passed directly to <var>f</var>.  To use the default
+value for <var>tol</var> or <var>quadf</var> one may pass <code>':'</code> or an empty
+matrix ([]).
+</p>
+<p><strong>See also:</strong> <a href="#XREFdblquad">dblquad</a>, <a href="Functions-of-One-Variable.html#XREFquad">quad</a>, <a href="Functions-of-One-Variable.html#XREFquadv">quadv</a>, <a href="Functions-of-One-Variable.html#XREFquadl">quadl</a>, <a href="Functions-of-One-Variable.html#XREFquadgk">quadgk</a>, <a href="Functions-of-One-Variable.html#XREFquadcc">quadcc</a>, <a href="Functions-of-One-Variable.html#XREFtrapz">trapz</a>.
+</p></dd></dl>
+
+
+<p>The above mentioned approach works, but is fairly slow, and that problem
+increases exponentially with the dimensionality of the integral.  Another
+possible solution is to use Orthogonal Collocation as described in the
+previous section (see <a href="Orthogonal-Collocation.html#Orthogonal-Collocation">Orthogonal Collocation</a>).  The integral of a function
+<em>f(x,y)</em> for <em>x</em> and <em>y</em> between 0 and 1 can be approximated
+using <em>n</em> points by
+the sum over <code>i=1:n</code> and <code>j=1:n</code> of <code>q(i)*q(j)*f(r(i),r(j))</code>,
+where <em>q</em> and <em>r</em> is as returned by <code>colloc (n)</code>.  The
+generalization to more than two variables is straight forward.  The
+following code computes the studied integral using <em>n=8</em> points.
+</p>
+<div class="example">
+<pre class="example">f = @(x,y) sin (pi*x*y') .* sqrt (x*y');
+n = 8;
+[t, ~, ~, q] = colloc (n);
+I = q'*f(t,t)*q;
+      &rArr; 0.30022
+</pre></div>
+
+<p>It should be noted that the number of points determines the quality
+of the approximation.  If the integration needs to be performed between
+<em>a</em> and <em>b</em>, instead of 0 and 1, then a change of variables is needed.
+</p>
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Orthogonal-Collocation.html#Orthogonal-Collocation" accesskey="p" rel="prev">Orthogonal Collocation</a>, Up: <a href="Numerical-Integration.html#Numerical-Integration" accesskey="u" rel="up">Numerical Integration</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

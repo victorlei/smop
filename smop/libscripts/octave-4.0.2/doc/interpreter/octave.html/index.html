@@ -1,0 +1,2151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Top</title>
+
+<meta name="description" content="GNU Octave: Top">
+<meta name="keywords" content="GNU Octave: Top">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="../dir/index.html" rel="up" title="(dir)">
+<link href="Preface.html#Preface" rel="next" title="Preface">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<h1 class="settitle" align="center">GNU Octave</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Copyright &copy; 1996-2016 John W. Eaton.
+</p>
+<p>Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+</p>
+<p>Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that
+the entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+</p>
+<p>Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for
+modified versions.
+</p>
+
+<a name="SEC_Contents"></a>
+<h2 class="contents-heading">Table of Contents</h2>
+
+<div class="contents">
+
+<ul class="no-bullet">
+  <li><a name="toc-Preface-1" href="Preface.html#Preface">Preface</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Acknowledgements-1" href="Acknowledgements.html#Acknowledgements">Acknowledgements</a></li>
+    <li><a name="toc-Citing-Octave-in-Publications-1" href="Citing-Octave-in-Publications.html#Citing-Octave-in-Publications">Citing Octave in Publications</a></li>
+    <li><a name="toc-How-You-Can-Contribute-to-Octave-1" href="How-You-Can-Contribute-to-Octave.html#How-You-Can-Contribute-to-Octave">How You Can Contribute to Octave</a></li>
+    <li><a name="toc-Distribution-1" href="Distribution.html#Distribution">Distribution</a></li>
+  </ul></li>
+  <li><a name="toc-A-Brief-Introduction-to-Octave" href="Introduction.html#Introduction">1 A Brief Introduction to Octave</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Running-Octave-1" href="Running-Octave.html#Running-Octave">1.1 Running Octave</a></li>
+    <li><a name="toc-Simple-Examples-1" href="Simple-Examples.html#Simple-Examples">1.2 Simple Examples</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Elementary-Calculations" href="Simple-Examples.html#Elementary-Calculations">1.2.1 Elementary Calculations</a></li>
+      <li><a name="toc-Creating-a-Matrix" href="Simple-Examples.html#Creating-a-Matrix">1.2.2 Creating a Matrix</a></li>
+      <li><a name="toc-Matrix-Arithmetic" href="Simple-Examples.html#Matrix-Arithmetic">1.2.3 Matrix Arithmetic</a></li>
+      <li><a name="toc-Solving-Systems-of-Linear-Equations" href="Simple-Examples.html#Solving-Systems-of-Linear-Equations">1.2.4 Solving Systems of Linear Equations</a></li>
+      <li><a name="toc-Integrating-Differential-Equations" href="Simple-Examples.html#Integrating-Differential-Equations">1.2.5 Integrating Differential Equations</a></li>
+      <li><a name="toc-Producing-Graphical-Output" href="Simple-Examples.html#Producing-Graphical-Output">1.2.6 Producing Graphical Output</a></li>
+      <li><a name="toc-Editing-What-You-Have-Typed" href="Simple-Examples.html#Editing-What-You-Have-Typed">1.2.7 Editing What You Have Typed</a></li>
+      <li><a name="toc-Help-and-Documentation" href="Simple-Examples.html#Help-and-Documentation">1.2.8 Help and Documentation</a></li>
+    </ul></li>
+    <li><a name="toc-Conventions-1" href="Conventions.html#Conventions">1.3 Conventions</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Fonts-1" href="Fonts.html#Fonts">1.3.1 Fonts</a></li>
+      <li><a name="toc-Evaluation-Notation-1" href="Evaluation-Notation.html#Evaluation-Notation">1.3.2 Evaluation Notation</a></li>
+      <li><a name="toc-Printing-Notation-1" href="Printing-Notation.html#Printing-Notation">1.3.3 Printing Notation</a></li>
+      <li><a name="toc-Error-Messages-1" href="Error-Messages.html#Error-Messages">1.3.4 Error Messages</a></li>
+      <li><a name="toc-Format-of-Descriptions-1" href="Format-of-Descriptions.html#Format-of-Descriptions">1.3.5 Format of Descriptions</a>
+      <ul class="no-bullet">
+        <li><a name="toc-A-Sample-Function-Description-1" href="A-Sample-Function-Description.html#A-Sample-Function-Description">1.3.5.1 A Sample Function Description</a></li>
+        <li><a name="toc-A-Sample-Command-Description-1" href="A-Sample-Command-Description.html#A-Sample-Command-Description">1.3.5.2 A Sample Command Description</a></li>
+      </ul></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Getting-Started-1" href="Getting-Started.html#Getting-Started">2 Getting Started</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Invoking-Octave-from-the-Command-Line-1" href="Invoking-Octave-from-the-Command-Line.html#Invoking-Octave-from-the-Command-Line">2.1 Invoking Octave from the Command Line</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Command-Line-Options-1" href="Command-Line-Options.html#Command-Line-Options">2.1.1 Command Line Options</a></li>
+      <li><a name="toc-Startup-Files-1" href="Startup-Files.html#Startup-Files">2.1.2 Startup Files</a></li>
+    </ul></li>
+    <li><a name="toc-Quitting-Octave-1" href="Quitting-Octave.html#Quitting-Octave">2.2 Quitting Octave</a></li>
+    <li><a name="toc-Commands-for-Getting-Help" href="Getting-Help.html#Getting-Help">2.3 Commands for Getting Help</a></li>
+    <li><a name="toc-Command-Line-Editing-1" href="Command-Line-Editing.html#Command-Line-Editing">2.4 Command Line Editing</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Cursor-Motion-1" href="Cursor-Motion.html#Cursor-Motion">2.4.1 Cursor Motion</a></li>
+      <li><a name="toc-Killing-and-Yanking-1" href="Killing-and-Yanking.html#Killing-and-Yanking">2.4.2 Killing and Yanking</a></li>
+      <li><a name="toc-Commands-For-Changing-Text" href="Commands-For-Text.html#Commands-For-Text">2.4.3 Commands For Changing Text</a></li>
+      <li><a name="toc-Letting-Readline-Type-For-You" href="Commands-For-Completion.html#Commands-For-Completion">2.4.4 Letting Readline Type For You</a></li>
+      <li><a name="toc-Commands-For-Manipulating-The-History" href="Commands-For-History.html#Commands-For-History">2.4.5 Commands For Manipulating The History</a></li>
+      <li><a name="toc-Customizing-readline-1" href="Customizing-readline.html#Customizing-readline">2.4.6 Customizing <code>readline</code></a></li>
+      <li><a name="toc-Customizing-the-Prompt-1" href="Customizing-the-Prompt.html#Customizing-the-Prompt">2.4.7 Customizing the Prompt</a></li>
+      <li><a name="toc-Diary-and-Echo-Commands-1" href="Diary-and-Echo-Commands.html#Diary-and-Echo-Commands">2.4.8 Diary and Echo Commands</a></li>
+    </ul></li>
+    <li><a name="toc-How-Octave-Reports-Errors" href="Errors.html#Errors">2.5 How Octave Reports Errors</a></li>
+    <li><a name="toc-Executable-Octave-Programs-1" href="Executable-Octave-Programs.html#Executable-Octave-Programs">2.6 Executable Octave Programs</a></li>
+    <li><a name="toc-Comments-in-Octave-Programs" href="Comments.html#Comments">2.7 Comments in Octave Programs</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Single-Line-Comments-1" href="Single-Line-Comments.html#Single-Line-Comments">2.7.1 Single Line Comments</a></li>
+      <li><a name="toc-Block-Comments-1" href="Block-Comments.html#Block-Comments">2.7.2 Block Comments</a></li>
+      <li><a name="toc-Comments-and-the-Help-System-1" href="Comments-and-the-Help-System.html#Comments-and-the-Help-System">2.7.3 Comments and the Help System</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Data-Types-1" href="Data-Types.html#Data-Types">3 Data Types</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Built_002din-Data-Types-1" href="Built_002din-Data-Types.html#Built_002din-Data-Types">3.1 Built-in Data Types</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Numeric-Objects-1" href="Numeric-Objects.html#Numeric-Objects">3.1.1 Numeric Objects</a></li>
+      <li><a name="toc-Missing-Data-1" href="Missing-Data.html#Missing-Data">3.1.2 Missing Data</a></li>
+      <li><a name="toc-String-Objects-1" href="String-Objects.html#String-Objects">3.1.3 String Objects</a></li>
+      <li><a name="toc-Data-Structure-Objects-1" href="Data-Structure-Objects.html#Data-Structure-Objects">3.1.4 Data Structure Objects</a></li>
+      <li><a name="toc-Cell-Array-Objects-1" href="Cell-Array-Objects.html#Cell-Array-Objects">3.1.5 Cell Array Objects</a></li>
+    </ul></li>
+    <li><a name="toc-User_002ddefined-Data-Types-1" href="User_002ddefined-Data-Types.html#User_002ddefined-Data-Types">3.2 User-defined Data Types</a></li>
+    <li><a name="toc-Object-Sizes-1" href="Object-Sizes.html#Object-Sizes">3.3 Object Sizes</a></li>
+  </ul></li>
+  <li><a name="toc-Numeric-Data-Types-1" href="Numeric-Data-Types.html#Numeric-Data-Types">4 Numeric Data Types</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Matrices-1" href="Matrices.html#Matrices">4.1 Matrices</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Empty-Matrices-1" href="Empty-Matrices.html#Empty-Matrices">4.1.1 Empty Matrices</a></li>
+    </ul></li>
+    <li><a name="toc-Ranges-1" href="Ranges.html#Ranges">4.2 Ranges</a></li>
+    <li><a name="toc-Single-Precision-Data-Types-1" href="Single-Precision-Data-Types.html#Single-Precision-Data-Types">4.3 Single Precision Data Types</a></li>
+    <li><a name="toc-Integer-Data-Types-1" href="Integer-Data-Types.html#Integer-Data-Types">4.4 Integer Data Types</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Integer-Arithmetic-1" href="Integer-Arithmetic.html#Integer-Arithmetic">4.4.1 Integer Arithmetic</a></li>
+    </ul></li>
+    <li><a name="toc-Bit-Manipulations-1" href="Bit-Manipulations.html#Bit-Manipulations">4.5 Bit Manipulations</a></li>
+    <li><a name="toc-Logical-Values-1" href="Logical-Values.html#Logical-Values">4.6 Logical Values</a></li>
+    <li><a name="toc-Promotion-and-Demotion-of-Data-Types-1" href="Promotion-and-Demotion-of-Data-Types.html#Promotion-and-Demotion-of-Data-Types">4.7 Promotion and Demotion of Data Types</a></li>
+    <li><a name="toc-Predicates-for-Numeric-Objects-1" href="Predicates-for-Numeric-Objects.html#Predicates-for-Numeric-Objects">4.8 Predicates for Numeric Objects</a></li>
+  </ul></li>
+  <li><a name="toc-Strings-1" href="Strings.html#Strings">5 Strings</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Escape-Sequences-in-String-Constants-1" href="Escape-Sequences-in-String-Constants.html#Escape-Sequences-in-String-Constants">5.1 Escape Sequences in String Constants</a></li>
+    <li><a name="toc-Character-Arrays-1" href="Character-Arrays.html#Character-Arrays">5.2 Character Arrays</a></li>
+    <li><a name="toc-Creating-Strings-1" href="Creating-Strings.html#Creating-Strings">5.3 Creating Strings</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Concatenating-Strings-1" href="Concatenating-Strings.html#Concatenating-Strings">5.3.1 Concatenating Strings</a></li>
+      <li><a name="toc-Converting-Numerical-Data-to-Strings-1" href="Converting-Numerical-Data-to-Strings.html#Converting-Numerical-Data-to-Strings">5.3.2 Converting Numerical Data to Strings</a></li>
+    </ul></li>
+    <li><a name="toc-Comparing-Strings-1" href="Comparing-Strings.html#Comparing-Strings">5.4 Comparing Strings</a></li>
+    <li><a name="toc-Manipulating-Strings-1" href="Manipulating-Strings.html#Manipulating-Strings">5.5 Manipulating Strings</a></li>
+    <li><a name="toc-String-Conversions-1" href="String-Conversions.html#String-Conversions">5.6 String Conversions</a></li>
+    <li><a name="toc-Character-Class-Functions-1" href="Character-Class-Functions.html#Character-Class-Functions">5.7 Character Class Functions</a></li>
+  </ul></li>
+  <li><a name="toc-Data-Containers-1" href="Data-Containers.html#Data-Containers">6 Data Containers</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Structures-1" href="Structures.html#Structures">6.1 Structures</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Basic-Usage-and-Examples-1" href="Basic-Usage-and-Examples.html#Basic-Usage-and-Examples">6.1.1 Basic Usage and Examples</a></li>
+      <li><a name="toc-Structure-Arrays-1" href="Structure-Arrays.html#Structure-Arrays">6.1.2 Structure Arrays</a></li>
+      <li><a name="toc-Creating-Structures-1" href="Creating-Structures.html#Creating-Structures">6.1.3 Creating Structures</a></li>
+      <li><a name="toc-Manipulating-Structures-1" href="Manipulating-Structures.html#Manipulating-Structures">6.1.4 Manipulating Structures</a></li>
+      <li><a name="toc-Processing-Data-in-Structures-1" href="Processing-Data-in-Structures.html#Processing-Data-in-Structures">6.1.5 Processing Data in Structures</a></li>
+    </ul></li>
+    <li><a name="toc-Cell-Arrays-1" href="Cell-Arrays.html#Cell-Arrays">6.2 Cell Arrays</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Basic-Usage-of-Cell-Arrays-1" href="Basic-Usage-of-Cell-Arrays.html#Basic-Usage-of-Cell-Arrays">6.2.1 Basic Usage of Cell Arrays</a></li>
+      <li><a name="toc-Creating-Cell-Arrays-1" href="Creating-Cell-Arrays.html#Creating-Cell-Arrays">6.2.2 Creating Cell Arrays</a></li>
+      <li><a name="toc-Indexing-Cell-Arrays-1" href="Indexing-Cell-Arrays.html#Indexing-Cell-Arrays">6.2.3 Indexing Cell Arrays</a></li>
+      <li><a name="toc-Cell-Arrays-of-Strings-1" href="Cell-Arrays-of-Strings.html#Cell-Arrays-of-Strings">6.2.4 Cell Arrays of Strings</a></li>
+      <li><a name="toc-Processing-Data-in-Cell-Arrays-1" href="Processing-Data-in-Cell-Arrays.html#Processing-Data-in-Cell-Arrays">6.2.5 Processing Data in Cell Arrays</a></li>
+    </ul></li>
+    <li><a name="toc-Comma-Separated-Lists-1" href="Comma-Separated-Lists.html#Comma-Separated-Lists">6.3 Comma Separated Lists</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Comma-Separated-Lists-Generated-from-Cell-Arrays-1" href="Comma-Separated-Lists-Generated-from-Cell-Arrays.html#Comma-Separated-Lists-Generated-from-Cell-Arrays">6.3.1 Comma Separated Lists Generated from Cell Arrays</a></li>
+      <li><a name="toc-Comma-Separated-Lists-Generated-from-Structure-Arrays-1" href="Comma-Separated-Lists-Generated-from-Structure-Arrays.html#Comma-Separated-Lists-Generated-from-Structure-Arrays">6.3.2 Comma Separated Lists Generated from Structure Arrays</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Variables-1" href="Variables.html#Variables">7 Variables</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Global-Variables-1" href="Global-Variables.html#Global-Variables">7.1 Global Variables</a></li>
+    <li><a name="toc-Persistent-Variables-1" href="Persistent-Variables.html#Persistent-Variables">7.2 Persistent Variables</a></li>
+    <li><a name="toc-Status-of-Variables-1" href="Status-of-Variables.html#Status-of-Variables">7.3 Status of Variables</a></li>
+  </ul></li>
+  <li><a name="toc-Expressions-1" href="Expressions.html#Expressions">8 Expressions</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Index-Expressions-1" href="Index-Expressions.html#Index-Expressions">8.1 Index Expressions</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Advanced-Indexing-1" href="Advanced-Indexing.html#Advanced-Indexing">8.1.1 Advanced Indexing</a></li>
+    </ul></li>
+    <li><a name="toc-Calling-Functions-1" href="Calling-Functions.html#Calling-Functions">8.2 Calling Functions</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Call-by-Value-1" href="Call-by-Value.html#Call-by-Value">8.2.1 Call by Value</a></li>
+      <li><a name="toc-Recursion-1" href="Recursion.html#Recursion">8.2.2 Recursion</a></li>
+    </ul></li>
+    <li><a name="toc-Arithmetic-Operators" href="Arithmetic-Ops.html#Arithmetic-Ops">8.3 Arithmetic Operators</a></li>
+    <li><a name="toc-Comparison-Operators" href="Comparison-Ops.html#Comparison-Ops">8.4 Comparison Operators</a></li>
+    <li><a name="toc-Boolean-Expressions-1" href="Boolean-Expressions.html#Boolean-Expressions">8.5 Boolean Expressions</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Element_002dby_002delement-Boolean-Operators-1" href="Element_002dby_002delement-Boolean-Operators.html#Element_002dby_002delement-Boolean-Operators">8.5.1 Element-by-element Boolean Operators</a></li>
+      <li><a name="toc-Short_002dcircuit-Boolean-Operators-1" href="Short_002dcircuit-Boolean-Operators.html#Short_002dcircuit-Boolean-Operators">8.5.2 Short-circuit Boolean Operators</a></li>
+    </ul></li>
+    <li><a name="toc-Assignment-Expressions" href="Assignment-Ops.html#Assignment-Ops">8.6 Assignment Expressions</a></li>
+    <li><a name="toc-Increment-Operators" href="Increment-Ops.html#Increment-Ops">8.7 Increment Operators</a></li>
+    <li><a name="toc-Operator-Precedence-1" href="Operator-Precedence.html#Operator-Precedence">8.8 Operator Precedence</a></li>
+  </ul></li>
+  <li><a name="toc-Evaluation-1" href="Evaluation.html#Evaluation">9 Evaluation</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Calling-a-Function-by-its-Name-1" href="Calling-a-Function-by-its-Name.html#Calling-a-Function-by-its-Name">9.1 Calling a Function by its Name</a></li>
+    <li><a name="toc-Evaluation-in-a-Different-Context-1" href="Evaluation-in-a-Different-Context.html#Evaluation-in-a-Different-Context">9.2 Evaluation in a Different Context</a></li>
+  </ul></li>
+  <li><a name="toc-Statements-1" href="Statements.html#Statements">10 Statements</a>
+  <ul class="no-bullet">
+    <li><a name="toc-The-if-Statement-1" href="The-if-Statement.html#The-if-Statement">10.1 The if Statement</a></li>
+    <li><a name="toc-The-switch-Statement-1" href="The-switch-Statement.html#The-switch-Statement">10.2 The switch Statement</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Notes-for-the-C-Programmer-1" href="Notes-for-the-C-Programmer.html#Notes-for-the-C-Programmer">10.2.1 Notes for the C Programmer</a></li>
+    </ul></li>
+    <li><a name="toc-The-while-Statement-1" href="The-while-Statement.html#The-while-Statement">10.3 The while Statement</a></li>
+    <li><a name="toc-The-do_002duntil-Statement-1" href="The-do_002duntil-Statement.html#The-do_002duntil-Statement">10.4 The do-until Statement</a></li>
+    <li><a name="toc-The-for-Statement-1" href="The-for-Statement.html#The-for-Statement">10.5 The for Statement</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Looping-Over-Structure-Elements-1" href="Looping-Over-Structure-Elements.html#Looping-Over-Structure-Elements">10.5.1 Looping Over Structure Elements</a></li>
+    </ul></li>
+    <li><a name="toc-The-break-Statement-1" href="The-break-Statement.html#The-break-Statement">10.6 The break Statement</a></li>
+    <li><a name="toc-The-continue-Statement-1" href="The-continue-Statement.html#The-continue-Statement">10.7 The continue Statement</a></li>
+    <li><a name="toc-The-unwind_005fprotect-Statement-1" href="The-unwind_005fprotect-Statement.html#The-unwind_005fprotect-Statement">10.8 The unwind_protect Statement</a></li>
+    <li><a name="toc-The-try-Statement-1" href="The-try-Statement.html#The-try-Statement">10.9 The try Statement</a></li>
+    <li><a name="toc-Continuation-Lines-1" href="Continuation-Lines.html#Continuation-Lines">10.10 Continuation Lines</a></li>
+  </ul></li>
+  <li><a name="toc-Functions-and-Scripts-1" href="Functions-and-Scripts.html#Functions-and-Scripts">11 Functions and Scripts</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Introduction-to-Function-and-Script-Files-1" href="Introduction-to-Function-and-Script-Files.html#Introduction-to-Function-and-Script-Files">11.1 Introduction to Function and Script Files</a></li>
+    <li><a name="toc-Defining-Functions-1" href="Defining-Functions.html#Defining-Functions">11.2 Defining Functions</a></li>
+    <li><a name="toc-Multiple-Return-Values-1" href="Multiple-Return-Values.html#Multiple-Return-Values">11.3 Multiple Return Values</a></li>
+    <li><a name="toc-Variable_002dlength-Argument-Lists-1" href="Variable_002dlength-Argument-Lists.html#Variable_002dlength-Argument-Lists">11.4 Variable-length Argument Lists</a></li>
+    <li><a name="toc-Ignoring-Arguments-1" href="Ignoring-Arguments.html#Ignoring-Arguments">11.5 Ignoring Arguments</a></li>
+    <li><a name="toc-Variable_002dlength-Return-Lists-1" href="Variable_002dlength-Return-Lists.html#Variable_002dlength-Return-Lists">11.6 Variable-length Return Lists</a></li>
+    <li><a name="toc-Returning-from-a-Function-1" href="Returning-from-a-Function.html#Returning-from-a-Function">11.7 Returning from a Function</a></li>
+    <li><a name="toc-Default-Arguments-1" href="Default-Arguments.html#Default-Arguments">11.8 Default Arguments</a></li>
+    <li><a name="toc-Function-Files-1" href="Function-Files.html#Function-Files">11.9 Function Files</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Manipulating-the-Load-Path-1" href="Manipulating-the-Load-Path.html#Manipulating-the-Load-Path">11.9.1 Manipulating the Load Path</a></li>
+      <li><a name="toc-Subfunctions-1" href="Subfunctions.html#Subfunctions">11.9.2 Subfunctions</a></li>
+      <li><a name="toc-Private-Functions-1" href="Private-Functions.html#Private-Functions">11.9.3 Private Functions</a></li>
+      <li><a name="toc-Nested-Functions-1" href="Nested-Functions.html#Nested-Functions">11.9.4 Nested Functions</a></li>
+      <li><a name="toc-Overloading-and-Autoloading-1" href="Overloading-and-Autoloading.html#Overloading-and-Autoloading">11.9.5 Overloading and Autoloading</a></li>
+      <li><a name="toc-Function-Locking-1" href="Function-Locking.html#Function-Locking">11.9.6 Function Locking</a></li>
+      <li><a name="toc-Function-Precedence-1" href="Function-Precedence.html#Function-Precedence">11.9.7 Function Precedence</a></li>
+    </ul></li>
+    <li><a name="toc-Script-Files-1" href="Script-Files.html#Script-Files">11.10 Script Files</a></li>
+    <li><a name="toc-Function-Handles_002c-Anonymous-Functions_002c-Inline-Functions" href="Function-Handles-Anonymous-Functions-Inline-Functions.html#Function-Handles-Anonymous-Functions-Inline-Functions">11.11 Function Handles, Anonymous Functions, Inline Functions</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Function-Handles-1" href="Function-Handles.html#Function-Handles">11.11.1 Function Handles</a></li>
+      <li><a name="toc-Anonymous-Functions-1" href="Anonymous-Functions.html#Anonymous-Functions">11.11.2 Anonymous Functions</a></li>
+      <li><a name="toc-Inline-Functions-1" href="Inline-Functions.html#Inline-Functions">11.11.3 Inline Functions</a></li>
+    </ul></li>
+    <li><a name="toc-Commands-1" href="Commands.html#Commands">11.12 Commands</a></li>
+    <li><a name="toc-Organization-of-Functions-Distributed-with-Octave" href="Organization-of-Functions.html#Organization-of-Functions">11.13 Organization of Functions Distributed with Octave</a></li>
+  </ul></li>
+  <li><a name="toc-Errors-and-Warnings-1" href="Errors-and-Warnings.html#Errors-and-Warnings">12 Errors and Warnings</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Handling-Errors-1" href="Handling-Errors.html#Handling-Errors">12.1 Handling Errors</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Raising-Errors-1" href="Raising-Errors.html#Raising-Errors">12.1.1 Raising Errors</a></li>
+      <li><a name="toc-Catching-Errors-1" href="Catching-Errors.html#Catching-Errors">12.1.2 Catching Errors</a></li>
+      <li><a name="toc-Recovering-From-Errors-1" href="Recovering-From-Errors.html#Recovering-From-Errors">12.1.3 Recovering From Errors</a></li>
+    </ul></li>
+    <li><a name="toc-Handling-Warnings-1" href="Handling-Warnings.html#Handling-Warnings">12.2 Handling Warnings</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Issuing-Warnings-1" href="Issuing-Warnings.html#Issuing-Warnings">12.2.1 Issuing Warnings</a></li>
+      <li><a name="toc-Enabling-and-Disabling-Warnings-1" href="Enabling-and-Disabling-Warnings.html#Enabling-and-Disabling-Warnings">12.2.2 Enabling and Disabling Warnings</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Debugging-1" href="Debugging.html#Debugging">13 Debugging</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Entering-Debug-Mode-1" href="Entering-Debug-Mode.html#Entering-Debug-Mode">13.1 Entering Debug Mode</a></li>
+    <li><a name="toc-Leaving-Debug-Mode-1" href="Leaving-Debug-Mode.html#Leaving-Debug-Mode">13.2 Leaving Debug Mode</a></li>
+    <li><a name="toc-Breakpoints-1" href="Breakpoints.html#Breakpoints">13.3 Breakpoints</a></li>
+    <li><a name="toc-Debug-Mode-1" href="Debug-Mode.html#Debug-Mode">13.4 Debug Mode</a></li>
+    <li><a name="toc-Call-Stack-1" href="Call-Stack.html#Call-Stack">13.5 Call Stack</a></li>
+    <li><a name="toc-Profiling-1" href="Profiling.html#Profiling">13.6 Profiling</a></li>
+    <li><a name="toc-Profiler-Example-1" href="Profiler-Example.html#Profiler-Example">13.7 Profiler Example</a></li>
+  </ul></li>
+  <li><a name="toc-Input-and-Output-1" href="Input-and-Output.html#Input-and-Output">14 Input and Output</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Basic-Input-and-Output-1" href="Basic-Input-and-Output.html#Basic-Input-and-Output">14.1 Basic Input and Output</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Terminal-Output-1" href="Terminal-Output.html#Terminal-Output">14.1.1 Terminal Output</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Paging-Screen-Output-1" href="Paging-Screen-Output.html#Paging-Screen-Output">14.1.1.1 Paging Screen Output</a></li>
+      </ul></li>
+      <li><a name="toc-Terminal-Input-1" href="Terminal-Input.html#Terminal-Input">14.1.2 Terminal Input</a></li>
+      <li><a name="toc-Simple-File-I_002fO-1" href="Simple-File-I_002fO.html#Simple-File-I_002fO">14.1.3 Simple File I/O</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Saving-Data-on-Unexpected-Exits-1" href="Saving-Data-on-Unexpected-Exits.html#Saving-Data-on-Unexpected-Exits">14.1.3.1 Saving Data on Unexpected Exits</a></li>
+      </ul></li>
+    </ul></li>
+    <li><a name="toc-C_002dStyle-I_002fO-Functions-1" href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions">14.2 C-Style I/O Functions</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Opening-and-Closing-Files-1" href="Opening-and-Closing-Files.html#Opening-and-Closing-Files">14.2.1 Opening and Closing Files</a></li>
+      <li><a name="toc-Simple-Output-1" href="Simple-Output.html#Simple-Output">14.2.2 Simple Output</a></li>
+      <li><a name="toc-Line_002dOriented-Input-1" href="Line_002dOriented-Input.html#Line_002dOriented-Input">14.2.3 Line-Oriented Input</a></li>
+      <li><a name="toc-Formatted-Output-1" href="Formatted-Output.html#Formatted-Output">14.2.4 Formatted Output</a></li>
+      <li><a name="toc-Output-Conversion-for-Matrices-1" href="Output-Conversion-for-Matrices.html#Output-Conversion-for-Matrices">14.2.5 Output Conversion for Matrices</a></li>
+      <li><a name="toc-Output-Conversion-Syntax-1" href="Output-Conversion-Syntax.html#Output-Conversion-Syntax">14.2.6 Output Conversion Syntax</a></li>
+      <li><a name="toc-Table-of-Output-Conversions-1" href="Table-of-Output-Conversions.html#Table-of-Output-Conversions">14.2.7 Table of Output Conversions</a></li>
+      <li><a name="toc-Integer-Conversions-1" href="Integer-Conversions.html#Integer-Conversions">14.2.8 Integer Conversions</a></li>
+      <li><a name="toc-Floating_002dPoint-Conversions-1" href="Floating_002dPoint-Conversions.html#Floating_002dPoint-Conversions">14.2.9 Floating-Point Conversions</a></li>
+      <li><a name="toc-Other-Output-Conversions-1" href="Other-Output-Conversions.html#Other-Output-Conversions">14.2.10 Other Output Conversions</a></li>
+      <li><a name="toc-Formatted-Input-1" href="Formatted-Input.html#Formatted-Input">14.2.11 Formatted Input</a></li>
+      <li><a name="toc-Input-Conversion-Syntax-1" href="Input-Conversion-Syntax.html#Input-Conversion-Syntax">14.2.12 Input Conversion Syntax</a></li>
+      <li><a name="toc-Table-of-Input-Conversions-1" href="Table-of-Input-Conversions.html#Table-of-Input-Conversions">14.2.13 Table of Input Conversions</a></li>
+      <li><a name="toc-Numeric-Input-Conversions-1" href="Numeric-Input-Conversions.html#Numeric-Input-Conversions">14.2.14 Numeric Input Conversions</a></li>
+      <li><a name="toc-String-Input-Conversions-1" href="String-Input-Conversions.html#String-Input-Conversions">14.2.15 String Input Conversions</a></li>
+      <li><a name="toc-Binary-I_002fO-1" href="Binary-I_002fO.html#Binary-I_002fO">14.2.16 Binary I/O</a></li>
+      <li><a name="toc-Temporary-Files-1" href="Temporary-Files.html#Temporary-Files">14.2.17 Temporary Files</a></li>
+      <li><a name="toc-End-of-File-and-Errors" href="EOF-and-Errors.html#EOF-and-Errors">14.2.18 End of File and Errors</a></li>
+      <li><a name="toc-File-Positioning-1" href="File-Positioning.html#File-Positioning">14.2.19 File Positioning</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Plotting-1" href="Plotting.html#Plotting">15 Plotting</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Introduction-to-Plotting-1" href="Introduction-to-Plotting.html#Introduction-to-Plotting">15.1 Introduction to Plotting</a></li>
+    <li><a name="toc-High_002dLevel-Plotting-1" href="High_002dLevel-Plotting.html#High_002dLevel-Plotting">15.2 High-Level Plotting</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Two_002dDimensional-Plots-1" href="Two_002dDimensional-Plots.html#Two_002dDimensional-Plots">15.2.1 Two-Dimensional Plots</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Axis-Configuration-1" href="Axis-Configuration.html#Axis-Configuration">15.2.1.1 Axis Configuration</a></li>
+        <li><a name="toc-Two_002ddimensional-Function-Plotting-1" href="Two_002ddimensional-Function-Plotting.html#Two_002ddimensional-Function-Plotting">15.2.1.2 Two-dimensional Function Plotting</a></li>
+        <li><a name="toc-Two_002ddimensional-Geometric-Shapes-1" href="Two_002ddimensional-Geometric-Shapes.html#Two_002ddimensional-Geometric-Shapes">15.2.1.3 Two-dimensional Geometric Shapes</a></li>
+      </ul></li>
+      <li><a name="toc-Three_002dDimensional-Plots-1" href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots">15.2.2 Three-Dimensional Plots</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Aspect-Ratio-1" href="Aspect-Ratio.html#Aspect-Ratio">15.2.2.1 Aspect Ratio</a></li>
+        <li><a name="toc-Three_002ddimensional-Function-Plotting-1" href="Three_002ddimensional-Function-Plotting.html#Three_002ddimensional-Function-Plotting">15.2.2.2 Three-dimensional Function Plotting</a></li>
+        <li><a name="toc-Three_002ddimensional-Geometric-Shapes-1" href="Three_002ddimensional-Geometric-Shapes.html#Three_002ddimensional-Geometric-Shapes">15.2.2.3 Three-dimensional Geometric Shapes</a></li>
+      </ul></li>
+      <li><a name="toc-Plot-Annotations-1" href="Plot-Annotations.html#Plot-Annotations">15.2.3 Plot Annotations</a></li>
+      <li><a name="toc-Multiple-Plots-on-One-Page-1" href="Multiple-Plots-on-One-Page.html#Multiple-Plots-on-One-Page">15.2.4 Multiple Plots on One Page</a></li>
+      <li><a name="toc-Multiple-Plot-Windows-1" href="Multiple-Plot-Windows.html#Multiple-Plot-Windows">15.2.5 Multiple Plot Windows</a></li>
+      <li><a name="toc-Manipulation-of-Plot-Objects-1" href="Manipulation-of-Plot-Objects.html#Manipulation-of-Plot-Objects">15.2.6 Manipulation of Plot Objects</a></li>
+      <li><a name="toc-Manipulation-of-Plot-Windows-1" href="Manipulation-of-Plot-Windows.html#Manipulation-of-Plot-Windows">15.2.7 Manipulation of Plot Windows</a></li>
+      <li><a name="toc-Use-of-the-interpreter-Property-1" href="Use-of-the-interpreter-Property.html#Use-of-the-interpreter-Property">15.2.8 Use of the <code>interpreter</code> Property</a></li>
+      <li><a name="toc-Printing-and-Saving-Plots-1" href="Printing-and-Saving-Plots.html#Printing-and-Saving-Plots">15.2.9 Printing and Saving Plots</a></li>
+      <li><a name="toc-Interacting-with-Plots-1" href="Interacting-with-Plots.html#Interacting-with-Plots">15.2.10 Interacting with Plots</a></li>
+      <li><a name="toc-Test-Plotting-Functions-1" href="Test-Plotting-Functions.html#Test-Plotting-Functions">15.2.11 Test Plotting Functions</a></li>
+    </ul></li>
+    <li><a name="toc-Graphics-Data-Structures-1" href="Graphics-Data-Structures.html#Graphics-Data-Structures">15.3 Graphics Data Structures</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Introduction-to-Graphics-Structures-1" href="Introduction-to-Graphics-Structures.html#Introduction-to-Graphics-Structures">15.3.1 Introduction to Graphics Structures</a></li>
+      <li><a name="toc-Graphics-Objects-1" href="Graphics-Objects.html#Graphics-Objects">15.3.2 Graphics Objects</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Creating-Graphics-Objects" href="Graphics-Objects.html#Creating-Graphics-Objects">15.3.2.1 Creating Graphics Objects</a></li>
+        <li><a name="toc-Handle-Functions" href="Graphics-Objects.html#Handle-Functions">15.3.2.2 Handle Functions</a></li>
+      </ul></li>
+      <li><a name="toc-Graphics-Object-Properties-1" href="Graphics-Object-Properties.html#Graphics-Object-Properties">15.3.3 Graphics Object Properties</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Root-Figure-Properties-1" href="Root-Figure-Properties.html#Root-Figure-Properties">15.3.3.1 Root Figure Properties</a></li>
+        <li><a name="toc-Figure-Properties-1" href="Figure-Properties.html#Figure-Properties">15.3.3.2 Figure Properties</a></li>
+        <li><a name="toc-Axes-Properties-1" href="Axes-Properties.html#Axes-Properties">15.3.3.3 Axes Properties</a></li>
+        <li><a name="toc-Line-Properties-1" href="Line-Properties.html#Line-Properties">15.3.3.4 Line Properties</a></li>
+        <li><a name="toc-Text-Properties-1" href="Text-Properties.html#Text-Properties">15.3.3.5 Text Properties</a></li>
+        <li><a name="toc-Image-Properties-1" href="Image-Properties.html#Image-Properties">15.3.3.6 Image Properties</a></li>
+        <li><a name="toc-Patch-Properties-1" href="Patch-Properties.html#Patch-Properties">15.3.3.7 Patch Properties</a></li>
+        <li><a name="toc-Surface-Properties-1" href="Surface-Properties.html#Surface-Properties">15.3.3.8 Surface Properties</a></li>
+      </ul></li>
+      <li><a name="toc-Searching-Properties-1" href="Searching-Properties.html#Searching-Properties">15.3.4 Searching Properties</a></li>
+      <li><a name="toc-Managing-Default-Properties-1" href="Managing-Default-Properties.html#Managing-Default-Properties">15.3.5 Managing Default Properties</a></li>
+    </ul></li>
+    <li><a name="toc-Advanced-Plotting-1" href="Advanced-Plotting.html#Advanced-Plotting">15.4 Advanced Plotting</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Colors-1" href="Colors.html#Colors">15.4.1 Colors</a></li>
+      <li><a name="toc-Line-Styles-1" href="Line-Styles.html#Line-Styles">15.4.2 Line Styles</a></li>
+      <li><a name="toc-Marker-Styles-1" href="Marker-Styles.html#Marker-Styles">15.4.3 Marker Styles</a></li>
+      <li><a name="toc-Callbacks-1" href="Callbacks.html#Callbacks">15.4.4 Callbacks</a></li>
+      <li><a name="toc-Application_002ddefined-Data-1" href="Application_002ddefined-Data.html#Application_002ddefined-Data">15.4.5 Application-defined Data</a></li>
+      <li><a name="toc-Object-Groups-1" href="Object-Groups.html#Object-Groups">15.4.6 Object Groups</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Data-Sources-in-Object-Groups-1" href="Data-Sources-in-Object-Groups.html#Data-Sources-in-Object-Groups">15.4.6.1 Data Sources in Object Groups</a></li>
+        <li><a name="toc-Area-Series-1" href="Area-Series.html#Area-Series">15.4.6.2 Area Series</a></li>
+        <li><a name="toc-Bar-Series-1" href="Bar-Series.html#Bar-Series">15.4.6.3 Bar Series</a></li>
+        <li><a name="toc-Contour-Groups-1" href="Contour-Groups.html#Contour-Groups">15.4.6.4 Contour Groups</a></li>
+        <li><a name="toc-Error-Bar-Series-1" href="Error-Bar-Series.html#Error-Bar-Series">15.4.6.5 Error Bar Series</a></li>
+        <li><a name="toc-Line-Series-1" href="Line-Series.html#Line-Series">15.4.6.6 Line Series</a></li>
+        <li><a name="toc-Quiver-Group-1" href="Quiver-Group.html#Quiver-Group">15.4.6.7 Quiver Group</a></li>
+        <li><a name="toc-Scatter-Group-1" href="Scatter-Group.html#Scatter-Group">15.4.6.8 Scatter Group</a></li>
+        <li><a name="toc-Stair-Group-1" href="Stair-Group.html#Stair-Group">15.4.6.9 Stair Group</a></li>
+        <li><a name="toc-Stem-Series-1" href="Stem-Series.html#Stem-Series">15.4.6.10 Stem Series</a></li>
+        <li><a name="toc-Surface-Group-1" href="Surface-Group.html#Surface-Group">15.4.6.11 Surface Group</a></li>
+      </ul></li>
+      <li><a name="toc-Graphics-Toolkits-1" href="Graphics-Toolkits.html#Graphics-Toolkits">15.4.7 Graphics Toolkits</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Customizing-Toolkit-Behavior-1" href="Customizing-Toolkit-Behavior.html#Customizing-Toolkit-Behavior">15.4.7.1 Customizing Toolkit Behavior</a></li>
+      </ul></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Matrix-Manipulation-1" href="Matrix-Manipulation.html#Matrix-Manipulation">16 Matrix Manipulation</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Finding-Elements-and-Checking-Conditions-1" href="Finding-Elements-and-Checking-Conditions.html#Finding-Elements-and-Checking-Conditions">16.1 Finding Elements and Checking Conditions</a></li>
+    <li><a name="toc-Rearranging-Matrices-1" href="Rearranging-Matrices.html#Rearranging-Matrices">16.2 Rearranging Matrices</a></li>
+    <li><a name="toc-Special-Utility-Matrices-1" href="Special-Utility-Matrices.html#Special-Utility-Matrices">16.3 Special Utility Matrices</a></li>
+    <li><a name="toc-Famous-Matrices-1" href="Famous-Matrices.html#Famous-Matrices">16.4 Famous Matrices</a></li>
+  </ul></li>
+  <li><a name="toc-Arithmetic-1" href="Arithmetic.html#Arithmetic">17 Arithmetic</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Exponents-and-Logarithms-1" href="Exponents-and-Logarithms.html#Exponents-and-Logarithms">17.1 Exponents and Logarithms</a></li>
+    <li><a name="toc-Complex-Arithmetic-1" href="Complex-Arithmetic.html#Complex-Arithmetic">17.2 Complex Arithmetic</a></li>
+    <li><a name="toc-Trigonometry-1" href="Trigonometry.html#Trigonometry">17.3 Trigonometry</a></li>
+    <li><a name="toc-Sums-and-Products-1" href="Sums-and-Products.html#Sums-and-Products">17.4 Sums and Products</a></li>
+    <li><a name="toc-Utility-Functions-1" href="Utility-Functions.html#Utility-Functions">17.5 Utility Functions</a></li>
+    <li><a name="toc-Special-Functions-1" href="Special-Functions.html#Special-Functions">17.6 Special Functions</a></li>
+    <li><a name="toc-Rational-Approximations-1" href="Rational-Approximations.html#Rational-Approximations">17.7 Rational Approximations</a></li>
+    <li><a name="toc-Coordinate-Transformations-1" href="Coordinate-Transformations.html#Coordinate-Transformations">17.8 Coordinate Transformations</a></li>
+    <li><a name="toc-Mathematical-Constants-1" href="Mathematical-Constants.html#Mathematical-Constants">17.9 Mathematical Constants</a></li>
+  </ul></li>
+  <li><a name="toc-Linear-Algebra-1" href="Linear-Algebra.html#Linear-Algebra">18 Linear Algebra</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Techniques-Used-for-Linear-Algebra-1" href="Techniques-Used-for-Linear-Algebra.html#Techniques-Used-for-Linear-Algebra">18.1 Techniques Used for Linear Algebra</a></li>
+    <li><a name="toc-Basic-Matrix-Functions-1" href="Basic-Matrix-Functions.html#Basic-Matrix-Functions">18.2 Basic Matrix Functions</a></li>
+    <li><a name="toc-Matrix-Factorizations-1" href="Matrix-Factorizations.html#Matrix-Factorizations">18.3 Matrix Factorizations</a></li>
+    <li><a name="toc-Functions-of-a-Matrix-1" href="Functions-of-a-Matrix.html#Functions-of-a-Matrix">18.4 Functions of a Matrix</a></li>
+    <li><a name="toc-Specialized-Solvers-1" href="Specialized-Solvers.html#Specialized-Solvers">18.5 Specialized Solvers</a></li>
+  </ul></li>
+  <li><a name="toc-Vectorization-and-Faster-Code-Execution-1" href="Vectorization-and-Faster-Code-Execution.html#Vectorization-and-Faster-Code-Execution">19 Vectorization and Faster Code Execution</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Basic-Vectorization-1" href="Basic-Vectorization.html#Basic-Vectorization">19.1 Basic Vectorization</a></li>
+    <li><a name="toc-Broadcasting-1" href="Broadcasting.html#Broadcasting">19.2 Broadcasting</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Broadcasting-and-Legacy-Code" href="Broadcasting.html#Broadcasting-and-Legacy-Code">19.2.1 Broadcasting and Legacy Code</a></li>
+    </ul></li>
+    <li><a name="toc-Function-Application-1" href="Function-Application.html#Function-Application">19.3 Function Application</a></li>
+    <li><a name="toc-Accumulation-1" href="Accumulation.html#Accumulation">19.4 Accumulation</a></li>
+    <li><a name="toc-JIT-Compiler-1" href="JIT-Compiler.html#JIT-Compiler">19.5 JIT Compiler</a></li>
+    <li><a name="toc-Miscellaneous-Techniques-1" href="Miscellaneous-Techniques.html#Miscellaneous-Techniques">19.6 Miscellaneous Techniques</a></li>
+    <li><a name="toc-Examples-1" href="Examples.html#Examples">19.7 Examples</a></li>
+  </ul></li>
+  <li><a name="toc-Nonlinear-Equations-1" href="Nonlinear-Equations.html#Nonlinear-Equations">20 Nonlinear Equations</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Solvers-1" href="Solvers.html#Solvers">20.1 Solvers</a></li>
+    <li><a name="toc-Minimizers-1" href="Minimizers.html#Minimizers">20.2 Minimizers</a></li>
+  </ul></li>
+  <li><a name="toc-Diagonal-and-Permutation-Matrices-1" href="Diagonal-and-Permutation-Matrices.html#Diagonal-and-Permutation-Matrices">21 Diagonal and Permutation Matrices</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Creating-and-Manipulating-Diagonal_002fPermutation-Matrices" href="Basic-Usage.html#Basic-Usage">21.1 Creating and Manipulating Diagonal/Permutation Matrices</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Creating-Diagonal-Matrices-1" href="Creating-Diagonal-Matrices.html#Creating-Diagonal-Matrices">21.1.1 Creating Diagonal Matrices</a></li>
+      <li><a name="toc-Creating-Permutation-Matrices-1" href="Creating-Permutation-Matrices.html#Creating-Permutation-Matrices">21.1.2 Creating Permutation Matrices</a></li>
+      <li><a name="toc-Explicit-and-Implicit-Conversions-1" href="Explicit-and-Implicit-Conversions.html#Explicit-and-Implicit-Conversions">21.1.3 Explicit and Implicit Conversions</a></li>
+    </ul></li>
+    <li><a name="toc-Linear-Algebra-with-Diagonal_002fPermutation-Matrices" href="Matrix-Algebra.html#Matrix-Algebra">21.2 Linear Algebra with Diagonal/Permutation Matrices</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Expressions-Involving-Diagonal-Matrices-1" href="Expressions-Involving-Diagonal-Matrices.html#Expressions-Involving-Diagonal-Matrices">21.2.1 Expressions Involving Diagonal Matrices</a></li>
+      <li><a name="toc-Expressions-Involving-Permutation-Matrices-1" href="Expressions-Involving-Permutation-Matrices.html#Expressions-Involving-Permutation-Matrices">21.2.2 Expressions Involving Permutation Matrices</a></li>
+    </ul></li>
+    <li><a name="toc-Functions-That-Are-Aware-of-These-Matrices" href="Function-Support.html#Function-Support">21.3 Functions That Are Aware of These Matrices</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Diagonal-Matrix-Functions-1" href="Diagonal-Matrix-Functions.html#Diagonal-Matrix-Functions">21.3.1 Diagonal Matrix Functions</a></li>
+      <li><a name="toc-Permutation-Matrix-Functions-1" href="Permutation-Matrix-Functions.html#Permutation-Matrix-Functions">21.3.2 Permutation Matrix Functions</a></li>
+    </ul></li>
+    <li><a name="toc-Examples-of-Usage" href="Example-Code.html#Example-Code">21.4 Examples of Usage</a></li>
+    <li><a name="toc-Differences-in-Treatment-of-Zero-Elements" href="Zeros-Treatment.html#Zeros-Treatment">21.5 Differences in Treatment of Zero Elements</a></li>
+  </ul></li>
+  <li><a name="toc-Sparse-Matrices-1" href="Sparse-Matrices.html#Sparse-Matrices">22 Sparse Matrices</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Creation-and-Manipulation-of-Sparse-Matrices" href="Basics.html#Basics">22.1 Creation and Manipulation of Sparse Matrices</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Storage-of-Sparse-Matrices-1" href="Storage-of-Sparse-Matrices.html#Storage-of-Sparse-Matrices">22.1.1 Storage of Sparse Matrices</a></li>
+      <li><a name="toc-Creating-Sparse-Matrices-1" href="Creating-Sparse-Matrices.html#Creating-Sparse-Matrices">22.1.2 Creating Sparse Matrices</a></li>
+      <li><a name="toc-Finding-Information-about-Sparse-Matrices" href="Information.html#Information">22.1.3 Finding Information about Sparse Matrices</a></li>
+      <li><a name="toc-Basic-Operators-and-Functions-on-Sparse-Matrices" href="Operators-and-Functions.html#Operators-and-Functions">22.1.4 Basic Operators and Functions on Sparse Matrices</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Sparse-Functions-1" href="Sparse-Functions.html#Sparse-Functions">22.1.4.1 Sparse Functions</a></li>
+        <li><a name="toc-Return-Types-of-Operators-and-Functions-1" href="Return-Types-of-Operators-and-Functions.html#Return-Types-of-Operators-and-Functions">22.1.4.2 Return Types of Operators and Functions</a></li>
+        <li><a name="toc-Mathematical-Considerations-1" href="Mathematical-Considerations.html#Mathematical-Considerations">22.1.4.3 Mathematical Considerations</a></li>
+      </ul></li>
+    </ul></li>
+    <li><a name="toc-Linear-Algebra-on-Sparse-Matrices" href="Sparse-Linear-Algebra.html#Sparse-Linear-Algebra">22.2 Linear Algebra on Sparse Matrices</a></li>
+    <li><a name="toc-Iterative-Techniques-Applied-to-Sparse-Matrices" href="Iterative-Techniques.html#Iterative-Techniques">22.3 Iterative Techniques Applied to Sparse Matrices</a></li>
+    <li><a name="toc-Real-Life-Example-using-Sparse-Matrices" href="Real-Life-Example.html#Real-Life-Example">22.4 Real Life Example using Sparse Matrices</a></li>
+  </ul></li>
+  <li><a name="toc-Numerical-Integration-1" href="Numerical-Integration.html#Numerical-Integration">23 Numerical Integration</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Functions-of-One-Variable-1" href="Functions-of-One-Variable.html#Functions-of-One-Variable">23.1 Functions of One Variable</a></li>
+    <li><a name="toc-Orthogonal-Collocation-1" href="Orthogonal-Collocation.html#Orthogonal-Collocation">23.2 Orthogonal Collocation</a></li>
+    <li><a name="toc-Functions-of-Multiple-Variables-1" href="Functions-of-Multiple-Variables.html#Functions-of-Multiple-Variables">23.3 Functions of Multiple Variables</a></li>
+  </ul></li>
+  <li><a name="toc-Differential-Equations-1" href="Differential-Equations.html#Differential-Equations">24 Differential Equations</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Ordinary-Differential-Equations-1" href="Ordinary-Differential-Equations.html#Ordinary-Differential-Equations">24.1 Ordinary Differential Equations</a></li>
+    <li><a name="toc-Differential_002dAlgebraic-Equations-1" href="Differential_002dAlgebraic-Equations.html#Differential_002dAlgebraic-Equations">24.2 Differential-Algebraic Equations</a></li>
+  </ul></li>
+  <li><a name="toc-Optimization-1" href="Optimization.html#Optimization">25 Optimization</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Linear-Programming-1" href="Linear-Programming.html#Linear-Programming">25.1 Linear Programming</a></li>
+    <li><a name="toc-Quadratic-Programming-1" href="Quadratic-Programming.html#Quadratic-Programming">25.2 Quadratic Programming</a></li>
+    <li><a name="toc-Nonlinear-Programming-1" href="Nonlinear-Programming.html#Nonlinear-Programming">25.3 Nonlinear Programming</a></li>
+    <li><a name="toc-Linear-Least-Squares-1" href="Linear-Least-Squares.html#Linear-Least-Squares">25.4 Linear Least Squares</a></li>
+  </ul></li>
+  <li><a name="toc-Statistics-1" href="Statistics.html#Statistics">26 Statistics</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Descriptive-Statistics-1" href="Descriptive-Statistics.html#Descriptive-Statistics">26.1 Descriptive Statistics</a></li>
+    <li><a name="toc-Basic-Statistical-Functions-1" href="Basic-Statistical-Functions.html#Basic-Statistical-Functions">26.2 Basic Statistical Functions</a></li>
+    <li><a name="toc-Statistical-Plots-1" href="Statistical-Plots.html#Statistical-Plots">26.3 Statistical Plots</a></li>
+    <li><a name="toc-Correlation-and-Regression-Analysis-1" href="Correlation-and-Regression-Analysis.html#Correlation-and-Regression-Analysis">26.4 Correlation and Regression Analysis</a></li>
+    <li><a name="toc-Distributions-1" href="Distributions.html#Distributions">26.5 Distributions</a></li>
+    <li><a name="toc-Tests-1" href="Tests.html#Tests">26.6 Tests</a></li>
+    <li><a name="toc-Random-Number-Generation-1" href="Random-Number-Generation.html#Random-Number-Generation">26.7 Random Number Generation</a></li>
+  </ul></li>
+  <li><a name="toc-Sets-1" href="Sets.html#Sets">27 Sets</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Set-Operations-1" href="Set-Operations.html#Set-Operations">27.1 Set Operations</a></li>
+  </ul></li>
+  <li><a name="toc-Polynomial-Manipulations-1" href="Polynomial-Manipulations.html#Polynomial-Manipulations">28 Polynomial Manipulations</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Evaluating-Polynomials-1" href="Evaluating-Polynomials.html#Evaluating-Polynomials">28.1 Evaluating Polynomials</a></li>
+    <li><a name="toc-Finding-Roots-1" href="Finding-Roots.html#Finding-Roots">28.2 Finding Roots</a></li>
+    <li><a name="toc-Products-of-Polynomials-1" href="Products-of-Polynomials.html#Products-of-Polynomials">28.3 Products of Polynomials</a></li>
+    <li><a name="toc-Derivatives-_002f-Integrals-_002f-Transforms-1" href="Derivatives-_002f-Integrals-_002f-Transforms.html#Derivatives-_002f-Integrals-_002f-Transforms">28.4 Derivatives / Integrals / Transforms</a></li>
+    <li><a name="toc-Polynomial-Interpolation-1" href="Polynomial-Interpolation.html#Polynomial-Interpolation">28.5 Polynomial Interpolation</a></li>
+    <li><a name="toc-Miscellaneous-Functions-1" href="Miscellaneous-Functions.html#Miscellaneous-Functions">28.6 Miscellaneous Functions</a></li>
+  </ul></li>
+  <li><a name="toc-Interpolation-1" href="Interpolation.html#Interpolation">29 Interpolation</a>
+  <ul class="no-bullet">
+    <li><a name="toc-One_002ddimensional-Interpolation-1" href="One_002ddimensional-Interpolation.html#One_002ddimensional-Interpolation">29.1 One-dimensional Interpolation</a></li>
+    <li><a name="toc-Multi_002ddimensional-Interpolation-1" href="Multi_002ddimensional-Interpolation.html#Multi_002ddimensional-Interpolation">29.2 Multi-dimensional Interpolation</a></li>
+  </ul></li>
+  <li><a name="toc-Geometry-1" href="Geometry.html#Geometry">30 Geometry</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Delaunay-Triangulation-1" href="Delaunay-Triangulation.html#Delaunay-Triangulation">30.1 Delaunay Triangulation</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Plotting-the-Triangulation-1" href="Plotting-the-Triangulation.html#Plotting-the-Triangulation">30.1.1 Plotting the Triangulation</a></li>
+      <li><a name="toc-Identifying-Points-in-Triangulation-1" href="Identifying-Points-in-Triangulation.html#Identifying-Points-in-Triangulation">30.1.2 Identifying Points in Triangulation</a></li>
+    </ul></li>
+    <li><a name="toc-Voronoi-Diagrams-1" href="Voronoi-Diagrams.html#Voronoi-Diagrams">30.2 Voronoi Diagrams</a></li>
+    <li><a name="toc-Convex-Hull-1" href="Convex-Hull.html#Convex-Hull">30.3 Convex Hull</a></li>
+    <li><a name="toc-Interpolation-on-Scattered-Data-1" href="Interpolation-on-Scattered-Data.html#Interpolation-on-Scattered-Data">30.4 Interpolation on Scattered Data</a></li>
+  </ul></li>
+  <li><a name="toc-Signal-Processing-1" href="Signal-Processing.html#Signal-Processing">31 Signal Processing</a></li>
+  <li><a name="toc-Image-Processing-1" href="Image-Processing.html#Image-Processing">32 Image Processing</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Loading-and-Saving-Images-1" href="Loading-and-Saving-Images.html#Loading-and-Saving-Images">32.1 Loading and Saving Images</a></li>
+    <li><a name="toc-Displaying-Images-1" href="Displaying-Images.html#Displaying-Images">32.2 Displaying Images</a></li>
+    <li><a name="toc-Representing-Images-1" href="Representing-Images.html#Representing-Images">32.3 Representing Images</a></li>
+    <li><a name="toc-Plotting-on-top-of-Images-1" href="Plotting-on-top-of-Images.html#Plotting-on-top-of-Images">32.4 Plotting on top of Images</a></li>
+    <li><a name="toc-Color-Conversion-1" href="Color-Conversion.html#Color-Conversion">32.5 Color Conversion</a></li>
+  </ul></li>
+  <li><a name="toc-Audio-Processing-1" href="Audio-Processing.html#Audio-Processing">33 Audio Processing</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Audio-File-Utilities-1" href="Audio-File-Utilities.html#Audio-File-Utilities">33.1 Audio File Utilities</a></li>
+    <li><a name="toc-Audio-Device-Information-1" href="Audio-Device-Information.html#Audio-Device-Information">33.2 Audio Device Information</a></li>
+    <li><a name="toc-Audio-Player-1" href="Audio-Player.html#Audio-Player">33.3 Audio Player</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Playback-1" href="Playback.html#Playback">33.3.1 Playback</a></li>
+      <li><a name="toc-Properties" href="Player-Properties.html#Player-Properties">33.3.2 Properties</a></li>
+    </ul></li>
+    <li><a name="toc-Audio-Recorder-1" href="Audio-Recorder.html#Audio-Recorder">33.4 Audio Recorder</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Recording-1" href="Recording.html#Recording">33.4.1 Recording</a></li>
+      <li><a name="toc-Data-Retrieval-1" href="Data-Retrieval.html#Data-Retrieval">33.4.2 Data Retrieval</a></li>
+      <li><a name="toc-Properties-1" href="Recorder-Properties.html#Recorder-Properties">33.4.3 Properties</a></li>
+    </ul></li>
+    <li><a name="toc-Audio-Data-Processing-1" href="Audio-Data-Processing.html#Audio-Data-Processing">33.5 Audio Data Processing</a></li>
+  </ul></li>
+  <li><a name="toc-Object-Oriented-Programming-1" href="Object-Oriented-Programming.html#Object-Oriented-Programming">34 Object Oriented Programming</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Creating-a-Class-1" href="Creating-a-Class.html#Creating-a-Class">34.1 Creating a Class</a></li>
+    <li><a name="toc-Manipulating-Classes-1" href="Manipulating-Classes.html#Manipulating-Classes">34.2 Manipulating Classes</a></li>
+    <li><a name="toc-Indexing-Objects-1" href="Indexing-Objects.html#Indexing-Objects">34.3 Indexing Objects</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Defining-Indexing-And-Indexed-Assignment-1" href="Defining-Indexing-And-Indexed-Assignment.html#Defining-Indexing-And-Indexed-Assignment">34.3.1 Defining Indexing And Indexed Assignment</a></li>
+      <li><a name="toc-Indexed-Assignment-Optimization-1" href="Indexed-Assignment-Optimization.html#Indexed-Assignment-Optimization">34.3.2 Indexed Assignment Optimization</a></li>
+    </ul></li>
+    <li><a name="toc-Overloading-Objects-1" href="Overloading-Objects.html#Overloading-Objects">34.4 Overloading Objects</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Function-Overloading-1" href="Function-Overloading.html#Function-Overloading">34.4.1 Function Overloading</a></li>
+      <li><a name="toc-Operator-Overloading-1" href="Operator-Overloading.html#Operator-Overloading">34.4.2 Operator Overloading</a></li>
+      <li><a name="toc-Precedence-of-Objects-1" href="Precedence-of-Objects.html#Precedence-of-Objects">34.4.3 Precedence of Objects</a></li>
+    </ul></li>
+    <li><a name="toc-Inheritance-and-Aggregation-1" href="Inheritance-and-Aggregation.html#Inheritance-and-Aggregation">34.5 Inheritance and Aggregation</a></li>
+  </ul></li>
+  <li><a name="toc-GUI-Development-1" href="GUI-Development.html#GUI-Development">35 GUI Development</a>
+  <ul class="no-bullet">
+    <li><a name="toc-I_002fO-Dialogs-1" href="I_002fO-Dialogs.html#I_002fO-Dialogs">35.1 I/O Dialogs</a></li>
+    <li><a name="toc-Progress-Bar-1" href="Progress-Bar.html#Progress-Bar">35.2 Progress Bar</a></li>
+    <li><a name="toc-UI-Elements-1" href="UI-Elements.html#UI-Elements">35.3 UI Elements</a></li>
+    <li><a name="toc-GUI-Utility-Functions-1" href="GUI-Utility-Functions.html#GUI-Utility-Functions">35.4 GUI Utility Functions</a></li>
+    <li><a name="toc-User_002dDefined-Preferences-1" href="User_002dDefined-Preferences.html#User_002dDefined-Preferences">35.5 User-Defined Preferences</a></li>
+  </ul></li>
+  <li><a name="toc-System-Utilities-1" href="System-Utilities.html#System-Utilities">36 System Utilities</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Timing-Utilities-1" href="Timing-Utilities.html#Timing-Utilities">36.1 Timing Utilities</a></li>
+    <li><a name="toc-Filesystem-Utilities-1" href="Filesystem-Utilities.html#Filesystem-Utilities">36.2 Filesystem Utilities</a></li>
+    <li><a name="toc-File-Archiving-Utilities-1" href="File-Archiving-Utilities.html#File-Archiving-Utilities">36.3 File Archiving Utilities</a></li>
+    <li><a name="toc-Networking-Utilities-1" href="Networking-Utilities.html#Networking-Utilities">36.4 Networking Utilities</a>
+    <ul class="no-bullet">
+      <li><a name="toc-FTP-Objects-1" href="FTP-Objects.html#FTP-Objects">36.4.1 FTP Objects</a></li>
+      <li><a name="toc-URL-Manipulation-1" href="URL-Manipulation.html#URL-Manipulation">36.4.2 URL Manipulation</a></li>
+      <li><a name="toc-Base64-and-Binary-Data-Transmission-1" href="Base64-and-Binary-Data-Transmission.html#Base64-and-Binary-Data-Transmission">36.4.3 Base64 and Binary Data Transmission</a></li>
+    </ul></li>
+    <li><a name="toc-Controlling-Subprocesses-1" href="Controlling-Subprocesses.html#Controlling-Subprocesses">36.5 Controlling Subprocesses</a></li>
+    <li><a name="toc-Process_002c-Group_002c-and-User-IDs" href="Process-ID-Information.html#Process-ID-Information">36.6 Process, Group, and User IDs</a></li>
+    <li><a name="toc-Environment-Variables-1" href="Environment-Variables.html#Environment-Variables">36.7 Environment Variables</a></li>
+    <li><a name="toc-Current-Working-Directory-1" href="Current-Working-Directory.html#Current-Working-Directory">36.8 Current Working Directory</a></li>
+    <li><a name="toc-Password-Database-Functions-1" href="Password-Database-Functions.html#Password-Database-Functions">36.9 Password Database Functions</a></li>
+    <li><a name="toc-Group-Database-Functions-1" href="Group-Database-Functions.html#Group-Database-Functions">36.10 Group Database Functions</a></li>
+    <li><a name="toc-System-Information-1" href="System-Information.html#System-Information">36.11 System Information</a></li>
+    <li><a name="toc-Hashing-Functions-1" href="Hashing-Functions.html#Hashing-Functions">36.12 Hashing Functions</a></li>
+  </ul></li>
+  <li><a name="toc-Java-Interface-1" href="Java-Interface.html#Java-Interface">37 Java Interface</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Java-Interface-Functions-1" href="Java-Interface-Functions.html#Java-Interface-Functions">37.1 Java Interface Functions</a></li>
+    <li><a name="toc-Dialog-Box-Functions-1" href="Dialog-Box-Functions.html#Dialog-Box-Functions">37.2 Dialog Box Functions</a></li>
+    <li><a name="toc-FAQ-_002d-Frequently-asked-Questions-1" href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions">37.3 FAQ - Frequently asked Questions</a>
+    <ul class="no-bullet">
+      <li><a name="toc-How-to-distinguish-between-Octave-and-Matlab_003f-1" href="How-to-distinguish-between-Octave-and-Matlab_003f.html#How-to-distinguish-between-Octave-and-Matlab_003f">37.3.1 How to distinguish between Octave and Matlab?</a></li>
+      <li><a name="toc-How-to-make-Java-classes-available-to-Octave_003f" href="How-to-make-Java-classes-available_003f.html#How-to-make-Java-classes-available_003f">37.3.2 How to make Java classes available to Octave?</a></li>
+      <li><a name="toc-How-to-create-an-instance-of-a-Java-class_003f-1" href="How-to-create-an-instance-of-a-Java-class_003f.html#How-to-create-an-instance-of-a-Java-class_003f">37.3.3 How to create an instance of a Java class?</a></li>
+      <li><a name="toc-How-can-I-handle-memory-limitations_003f-1" href="How-can-I-handle-memory-limitations_003f.html#How-can-I-handle-memory-limitations_003f">37.3.4 How can I handle memory limitations?</a></li>
+      <li><a name="toc-Which-TeX-symbols-are-implemented-in-dialog-functions_003f-1" href="Which-TeX-symbols-are-implemented-in-dialog-functions_003f.html#Which-TeX-symbols-are-implemented-in-dialog-functions_003f">37.3.5 Which TeX symbols are implemented in dialog functions?</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Packages-1" href="Packages.html#Packages">38 Packages</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Installing-and-Removing-Packages-1" href="Installing-and-Removing-Packages.html#Installing-and-Removing-Packages">38.1 Installing and Removing Packages</a></li>
+    <li><a name="toc-Using-Packages-1" href="Using-Packages.html#Using-Packages">38.2 Using Packages</a></li>
+    <li><a name="toc-Administrating-Packages-1" href="Administrating-Packages.html#Administrating-Packages">38.3 Administrating Packages</a></li>
+    <li><a name="toc-Creating-Packages-1" href="Creating-Packages.html#Creating-Packages">38.4 Creating Packages</a>
+    <ul class="no-bullet">
+      <li><a name="toc-The-DESCRIPTION-File-1" href="The-DESCRIPTION-File.html#The-DESCRIPTION-File">38.4.1 The DESCRIPTION File</a></li>
+      <li><a name="toc-The-INDEX-File-1" href="The-INDEX-File.html#The-INDEX-File">38.4.2 The INDEX File</a></li>
+      <li><a name="toc-PKG_005fADD-and-PKG_005fDEL-Directives-1" href="PKG_005fADD-and-PKG_005fDEL-Directives.html#PKG_005fADD-and-PKG_005fDEL-Directives">38.4.3 PKG_ADD and PKG_DEL Directives</a></li>
+      <li><a name="toc-Missing-Components-1" href="Missing-Components.html#Missing-Components">38.4.4 Missing Components</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-External-Code-Interface-1" href="External-Code-Interface.html#External-Code-Interface">Appendix A External Code Interface</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Oct_002dFiles-1" href="Oct_002dFiles.html#Oct_002dFiles">A.1 Oct-Files</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Getting-Started-with-Oct_002dFiles-1" href="Getting-Started-with-Oct_002dFiles.html#Getting-Started-with-Oct_002dFiles">A.1.1 Getting Started with Oct-Files</a></li>
+      <li><a name="toc-Matrices-and-Arrays-in-Oct_002dFiles-1" href="Matrices-and-Arrays-in-Oct_002dFiles.html#Matrices-and-Arrays-in-Oct_002dFiles">A.1.2 Matrices and Arrays in Oct-Files</a></li>
+      <li><a name="toc-Character-Strings-in-Oct_002dFiles-1" href="Character-Strings-in-Oct_002dFiles.html#Character-Strings-in-Oct_002dFiles">A.1.3 Character Strings in Oct-Files</a></li>
+      <li><a name="toc-Cell-Arrays-in-Oct_002dFiles-1" href="Cell-Arrays-in-Oct_002dFiles.html#Cell-Arrays-in-Oct_002dFiles">A.1.4 Cell Arrays in Oct-Files</a></li>
+      <li><a name="toc-Structures-in-Oct_002dFiles-1" href="Structures-in-Oct_002dFiles.html#Structures-in-Oct_002dFiles">A.1.5 Structures in Oct-Files</a></li>
+      <li><a name="toc-Sparse-Matrices-in-Oct_002dFiles-1" href="Sparse-Matrices-in-Oct_002dFiles.html#Sparse-Matrices-in-Oct_002dFiles">A.1.6 Sparse Matrices in Oct-Files</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Array-and-Sparse-Class-Differences-1" href="Array-and-Sparse-Class-Differences.html#Array-and-Sparse-Class-Differences">A.1.6.1 Array and Sparse Class Differences</a></li>
+        <li><a name="toc-Creating-Sparse-Matrices-in-Oct_002dFiles-1" href="Creating-Sparse-Matrices-in-Oct_002dFiles.html#Creating-Sparse-Matrices-in-Oct_002dFiles">A.1.6.2 Creating Sparse Matrices in Oct-Files</a></li>
+        <li><a name="toc-Using-Sparse-Matrices-in-Oct_002dFiles-1" href="Using-Sparse-Matrices-in-Oct_002dFiles.html#Using-Sparse-Matrices-in-Oct_002dFiles">A.1.6.3 Using Sparse Matrices in Oct-Files</a></li>
+      </ul></li>
+      <li><a name="toc-Accessing-Global-Variables-in-Oct_002dFiles-1" href="Accessing-Global-Variables-in-Oct_002dFiles.html#Accessing-Global-Variables-in-Oct_002dFiles">A.1.7 Accessing Global Variables in Oct-Files</a></li>
+      <li><a name="toc-Calling-Octave-Functions-from-Oct_002dFiles-1" href="Calling-Octave-Functions-from-Oct_002dFiles.html#Calling-Octave-Functions-from-Oct_002dFiles">A.1.8 Calling Octave Functions from Oct-Files</a></li>
+      <li><a name="toc-Calling-External-Code-from-Oct_002dFiles-1" href="Calling-External-Code-from-Oct_002dFiles.html#Calling-External-Code-from-Oct_002dFiles">A.1.9 Calling External Code from Oct-Files</a></li>
+      <li><a name="toc-Allocating-Local-Memory-in-Oct_002dFiles-1" href="Allocating-Local-Memory-in-Oct_002dFiles.html#Allocating-Local-Memory-in-Oct_002dFiles">A.1.10 Allocating Local Memory in Oct-Files</a></li>
+      <li><a name="toc-Input-Parameter-Checking-in-Oct_002dFiles-1" href="Input-Parameter-Checking-in-Oct_002dFiles.html#Input-Parameter-Checking-in-Oct_002dFiles">A.1.11 Input Parameter Checking in Oct-Files</a></li>
+      <li><a name="toc-Exception-and-Error-Handling-in-Oct_002dFiles-1" href="Exception-and-Error-Handling-in-Oct_002dFiles.html#Exception-and-Error-Handling-in-Oct_002dFiles">A.1.12 Exception and Error Handling in Oct-Files</a></li>
+      <li><a name="toc-Documentation-and-Test-of-Oct_002dFiles-1" href="Documentation-and-Test-of-Oct_002dFiles.html#Documentation-and-Test-of-Oct_002dFiles">A.1.13 Documentation and Test of Oct-Files</a></li>
+    </ul></li>
+    <li><a name="toc-Mex_002dFiles-1" href="Mex_002dFiles.html#Mex_002dFiles">A.2 Mex-Files</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Getting-Started-with-Mex_002dFiles-1" href="Getting-Started-with-Mex_002dFiles.html#Getting-Started-with-Mex_002dFiles">A.2.1 Getting Started with Mex-Files</a></li>
+      <li><a name="toc-Working-with-Matrices-and-Arrays-in-Mex_002dFiles-1" href="Working-with-Matrices-and-Arrays-in-Mex_002dFiles.html#Working-with-Matrices-and-Arrays-in-Mex_002dFiles">A.2.2 Working with Matrices and Arrays in Mex-Files</a></li>
+      <li><a name="toc-Character-Strings-in-Mex_002dFiles-1" href="Character-Strings-in-Mex_002dFiles.html#Character-Strings-in-Mex_002dFiles">A.2.3 Character Strings in Mex-Files</a></li>
+      <li><a name="toc-Cell-Arrays-with-Mex_002dFiles-1" href="Cell-Arrays-with-Mex_002dFiles.html#Cell-Arrays-with-Mex_002dFiles">A.2.4 Cell Arrays with Mex-Files</a></li>
+      <li><a name="toc-Structures-with-Mex_002dFiles-1" href="Structures-with-Mex_002dFiles.html#Structures-with-Mex_002dFiles">A.2.5 Structures with Mex-Files</a></li>
+      <li><a name="toc-Sparse-Matrices-with-Mex_002dFiles-1" href="Sparse-Matrices-with-Mex_002dFiles.html#Sparse-Matrices-with-Mex_002dFiles">A.2.6 Sparse Matrices with Mex-Files</a></li>
+      <li><a name="toc-Calling-Other-Functions-in-Mex_002dFiles-1" href="Calling-Other-Functions-in-Mex_002dFiles.html#Calling-Other-Functions-in-Mex_002dFiles">A.2.7 Calling Other Functions in Mex-Files</a></li>
+    </ul></li>
+    <li><a name="toc-Standalone-Programs-1" href="Standalone-Programs.html#Standalone-Programs">A.3 Standalone Programs</a></li>
+  </ul></li>
+  <li><a name="toc-Test-and-Demo-Functions-1" href="Test-and-Demo-Functions.html#Test-and-Demo-Functions">Appendix B Test and Demo Functions</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Test-Functions-1" href="Test-Functions.html#Test-Functions">B.1 Test Functions</a></li>
+    <li><a name="toc-Demonstration-Functions-1" href="Demonstration-Functions.html#Demonstration-Functions">B.2 Demonstration Functions</a></li>
+  </ul></li>
+  <li><a name="toc-Tips-and-Standards-1" href="Tips-and-Standards.html#Tips-and-Standards">Appendix C Tips and Standards</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Writing-Clean-Octave-Programs" href="Style-Tips.html#Style-Tips">C.1 Writing Clean Octave Programs</a></li>
+    <li><a name="toc-Tips-on-Writing-Comments" href="Comment-Tips.html#Comment-Tips">C.2 Tips on Writing Comments</a></li>
+    <li><a name="toc-Conventional-Headers-for-Octave-Functions" href="Function-Headers.html#Function-Headers">C.3 Conventional Headers for Octave Functions</a></li>
+    <li><a name="toc-Tips-for-Documentation-Strings" href="Documentation-Tips.html#Documentation-Tips">C.4 Tips for Documentation Strings</a></li>
+  </ul></li>
+  <li><a name="toc-Contributing-Guidelines-1" href="Contributing-Guidelines.html#Contributing-Guidelines">Appendix D Contributing Guidelines</a>
+  <ul class="no-bullet">
+    <li><a name="toc-How-to-Contribute-1" href="How-to-Contribute.html#How-to-Contribute">D.1 How to Contribute</a></li>
+    <li><a name="toc-Building-the-Development-Sources-1" href="Building-the-Development-Sources.html#Building-the-Development-Sources">D.2 Building the Development Sources</a></li>
+    <li><a name="toc-Basics-of-Generating-a-Changeset-1" href="Basics-of-Generating-a-Changeset.html#Basics-of-Generating-a-Changeset">D.3 Basics of Generating a Changeset</a></li>
+    <li><a name="toc-General-Guidelines-1" href="General-Guidelines.html#General-Guidelines">D.4 General Guidelines</a></li>
+    <li><a name="toc-Octave-Sources-_0028m_002dfiles_0029-1" href="Octave-Sources-_0028m_002dfiles_0029.html#Octave-Sources-_0028m_002dfiles_0029">D.5 Octave Sources (m-files)</a></li>
+    <li><a name="toc-C_002b_002b-Sources-1" href="C_002b_002b-Sources.html#C_002b_002b-Sources">D.6 C++ Sources</a></li>
+    <li><a name="toc-Other-Sources-1" href="Other-Sources.html#Other-Sources">D.7 Other Sources</a></li>
+  </ul></li>
+  <li><a name="toc-Obsolete-Functions-1" href="Obsolete-Functions.html#Obsolete-Functions">Appendix E Obsolete Functions</a></li>
+  <li><a name="toc-Known-Causes-of-Trouble" href="Trouble.html#Trouble">Appendix F Known Causes of Trouble</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Actual-Bugs-We-Haven_0027t-Fixed-Yet" href="Actual-Bugs.html#Actual-Bugs">F.1 Actual Bugs We Haven&rsquo;t Fixed Yet</a></li>
+    <li><a name="toc-Reporting-Bugs-1" href="Reporting-Bugs.html#Reporting-Bugs">F.2 Reporting Bugs</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Have-You-Found-a-Bug_003f" href="Bug-Criteria.html#Bug-Criteria">F.2.1 Have You Found a Bug?</a></li>
+      <li><a name="toc-Where-to-Report-Bugs" href="Bug-Tracker.html#Bug-Tracker">F.2.2 Where to Report Bugs</a></li>
+      <li><a name="toc-How-to-Report-Bugs" href="Bug-Reporting.html#Bug-Reporting">F.2.3 How to Report Bugs</a></li>
+      <li><a name="toc-Sending-Patches-for-Octave" href="Sending-Patches.html#Sending-Patches">F.2.4 Sending Patches for Octave</a></li>
+    </ul></li>
+    <li><a name="toc-How-To-Get-Help-with-Octave" href="Service.html#Service">F.3 How To Get Help with Octave</a></li>
+  </ul></li>
+  <li><a name="toc-Installing-Octave" href="Installation.html#Installation">Appendix G Installing Octave</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Build-Dependencies-1" href="Build-Dependencies.html#Build-Dependencies">G.1 Build Dependencies</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Obtaining-the-Dependencies-Automatically-1" href="Obtaining-the-Dependencies-Automatically.html#Obtaining-the-Dependencies-Automatically">G.1.1 Obtaining the Dependencies Automatically</a></li>
+      <li><a name="toc-Build-Tools-1" href="Build-Tools.html#Build-Tools">G.1.2 Build Tools</a></li>
+      <li><a name="toc-External-Packages-1" href="External-Packages.html#External-Packages">G.1.3 External Packages</a></li>
+    </ul></li>
+    <li><a name="toc-Running-Configure-and-Make-1" href="Running-Configure-and-Make.html#Running-Configure-and-Make">G.2 Running Configure and Make</a></li>
+    <li><a name="toc-Compiling-Octave-with-64_002dbit-Indexing-1" href="Compiling-Octave-with-64_002dbit-Indexing.html#Compiling-Octave-with-64_002dbit-Indexing">G.3 Compiling Octave with 64-bit Indexing</a></li>
+    <li><a name="toc-Installation-Problems-1" href="Installation-Problems.html#Installation-Problems">G.4 Installation Problems</a></li>
+  </ul></li>
+  <li><a name="toc-Emacs-Octave-Support-1" href="Emacs-Octave-Support.html#Emacs-Octave-Support">Appendix H Emacs Octave Support</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Installing-EOS-1" href="Installing-EOS.html#Installing-EOS">H.1 Installing EOS</a></li>
+    <li><a name="toc-Using-Octave-Mode-1" href="Using-Octave-Mode.html#Using-Octave-Mode">H.2 Using Octave Mode</a></li>
+    <li><a name="toc-Running-Octave-from-Within-Emacs-1" href="Running-Octave-from-Within-Emacs.html#Running-Octave-from-Within-Emacs">H.3 Running Octave from Within Emacs</a></li>
+    <li><a name="toc-Using-the-Emacs-Info-Reader-for-Octave-1" href="Using-the-Emacs-Info-Reader-for-Octave.html#Using-the-Emacs-Info-Reader-for-Octave">H.4 Using the Emacs Info Reader for Octave</a></li>
+  </ul></li>
+  <li><a name="toc-Grammar-and-Parser-1" href="Grammar-and-Parser.html#Grammar-and-Parser">Appendix I Grammar and Parser</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Keywords-1" href="Keywords.html#Keywords">I.1 Keywords</a></li>
+    <li><a name="toc-Parser-1" href="Parser.html#Parser">I.2 Parser</a></li>
+  </ul></li>
+  <li><a name="toc-GNU-GENERAL-PUBLIC-LICENSE" href="Copying.html#Copying">Appendix J GNU GENERAL PUBLIC LICENSE</a></li>
+  <li><a name="toc-Concept-Index-1" href="Concept-Index.html#Concept-Index">Concept Index</a></li>
+  <li><a name="toc-Function-Index-1" href="Function-Index.html#Function-Index">Function Index</a></li>
+  <li><a name="toc-Operator-Index-1" href="Operator-Index.html#Operator-Index">Operator Index</a></li>
+</ul>
+</div>
+
+
+<a name="Top"></a>
+<div class="header">
+<p>
+Next: <a href="Preface.html#Preface" accesskey="n" rel="next">Preface</a>, Up: <a href="../dir/index.html" accesskey="u" rel="up">(dir)</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="SEC_Top"></a>
+
+<p>This manual documents how to run, install and port GNU Octave, as well
+as its new features and incompatibilities, and how to report bugs.
+It corresponds to GNU Octave version 4.0.2.
+</p>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Preface.html#Preface" accesskey="1">Preface</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Introduction.html#Introduction" accesskey="2">Introduction</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">A brief introduction to Octave.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Getting-Started.html#Getting-Started" accesskey="3">Getting Started</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Data-Types.html#Data-Types" accesskey="4">Data Types</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Numeric-Data-Types.html#Numeric-Data-Types" accesskey="5">Numeric Data Types</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Strings.html#Strings" accesskey="6">Strings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Data-Containers.html#Data-Containers" accesskey="7">Data Containers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Variables.html#Variables" accesskey="8">Variables</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Expressions.html#Expressions" accesskey="9">Expressions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Evaluation.html#Evaluation">Evaluation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Statements.html#Statements">Statements</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Looping and program flow control.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Functions-and-Scripts.html#Functions-and-Scripts">Functions and Scripts</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Errors-and-Warnings.html#Errors-and-Warnings">Errors and Warnings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Debugging.html#Debugging">Debugging</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Input-and-Output.html#Input-and-Output">Input and Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Plotting.html#Plotting">Plotting</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Matrix-Manipulation.html#Matrix-Manipulation">Matrix Manipulation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Arithmetic.html#Arithmetic">Arithmetic</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Linear-Algebra.html#Linear-Algebra">Linear Algebra</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Vectorization-and-Faster-Code-Execution.html#Vectorization-and-Faster-Code-Execution">Vectorization and Faster Code Execution</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Nonlinear-Equations.html#Nonlinear-Equations">Nonlinear Equations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Diagonal-and-Permutation-Matrices.html#Diagonal-and-Permutation-Matrices">Diagonal and Permutation Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Sparse-Matrices.html#Sparse-Matrices">Sparse Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Numerical-Integration.html#Numerical-Integration">Numerical Integration</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Differential-Equations.html#Differential-Equations">Differential Equations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Optimization.html#Optimization">Optimization</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Statistics.html#Statistics">Statistics</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Sets.html#Sets">Sets</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Polynomial-Manipulations.html#Polynomial-Manipulations">Polynomial Manipulations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Interpolation.html#Interpolation">Interpolation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Geometry.html#Geometry">Geometry</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Signal-Processing.html#Signal-Processing">Signal Processing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Image-Processing.html#Image-Processing">Image Processing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Audio-Processing.html#Audio-Processing">Audio Processing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Object-Oriented-Programming.html#Object-Oriented-Programming">Object Oriented Programming</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="GUI-Development.html#GUI-Development">GUI Development</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="System-Utilities.html#System-Utilities">System Utilities</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Java-Interface.html#Java-Interface">Java Interface</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Packages.html#Packages">Packages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="External-Code-Interface.html#External-Code-Interface">External Code Interface</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Test-and-Demo-Functions.html#Test-and-Demo-Functions">Test and Demo Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Tips-and-Standards.html#Tips-and-Standards">Tips and Standards</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Contributing-Guidelines.html#Contributing-Guidelines">Contributing Guidelines</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Obsolete-Functions.html#Obsolete-Functions">Obsolete Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Trouble.html#Trouble">Trouble</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">If you have trouble installing Octave.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Installation.html#Installation">Installation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to configure, compile and install Octave.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Emacs-Octave-Support.html#Emacs-Octave-Support">Emacs Octave Support</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Grammar-and-Parser.html#Grammar-and-Parser">Grammar and Parser</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Copying.html#Copying">Copying</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The GNU General Public License.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Concept-Index.html#Concept-Index">Concept Index</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">An item for each concept.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Function-Index.html#Function-Index">Function Index</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">An item for each documented function.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Operator-Index.html#Operator-Index">Operator Index</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">An item for each documented operator.
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+</pre></th></tr><tr><th colspan="3" align="left" valign="top"><pre class="menu-comment"> &mdash; The Detailed Node Listing &mdash;
+
+Preface
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Acknowledgements.html#Acknowledgements">Acknowledgements</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Citing-Octave-in-Publications.html#Citing-Octave-in-Publications">Citing Octave in Publications</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="How-You-Can-Contribute-to-Octave.html#How-You-Can-Contribute-to-Octave">How You Can Contribute to Octave</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Distribution.html#Distribution">Distribution</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Introduction
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Running-Octave.html#Running-Octave">Running Octave</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Simple-Examples.html#Simple-Examples">Simple Examples</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Conventions.html#Conventions">Conventions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Conventions
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Fonts.html#Fonts">Fonts</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Evaluation-Notation.html#Evaluation-Notation">Evaluation Notation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Printing-Notation.html#Printing-Notation">Printing Notation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Error-Messages.html#Error-Messages">Error Messages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Format-of-Descriptions.html#Format-of-Descriptions">Format of Descriptions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Format of Descriptions
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="A-Sample-Function-Description.html#A-Sample-Function-Description">A Sample Function Description</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="A-Sample-Command-Description.html#A-Sample-Command-Description">A Sample Command Description</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Getting Started
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Invoking-Octave-from-the-Command-Line.html#Invoking-Octave-from-the-Command-Line">Invoking Octave from the Command Line</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Quitting-Octave.html#Quitting-Octave">Quitting Octave</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Getting-Help.html#Getting-Help">Getting Help</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Command-Line-Editing.html#Command-Line-Editing">Command Line Editing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Errors.html#Errors">Errors</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Executable-Octave-Programs.html#Executable-Octave-Programs">Executable Octave Programs</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Comments.html#Comments">Comments</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Invoking Octave from the Command Line
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Command-Line-Options.html#Command-Line-Options">Command Line Options</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Startup-Files.html#Startup-Files">Startup Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Command Line Editing
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Cursor-Motion.html#Cursor-Motion">Cursor Motion</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Killing-and-Yanking.html#Killing-and-Yanking">Killing and Yanking</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Commands-For-Text.html#Commands-For-Text">Commands For Text</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Commands-For-Completion.html#Commands-For-Completion">Commands For Completion</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Commands-For-History.html#Commands-For-History">Commands For History</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Customizing-readline.html#Customizing-readline">Customizing readline</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Customizing-the-Prompt.html#Customizing-the-Prompt">Customizing the Prompt</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Diary-and-Echo-Commands.html#Diary-and-Echo-Commands">Diary and Echo Commands</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Comments
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Single-Line-Comments.html#Single-Line-Comments">Single Line Comments</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Block-Comments.html#Block-Comments">Block Comments</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Comments-and-the-Help-System.html#Comments-and-the-Help-System">Comments and the Help System</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Data Types
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Built_002din-Data-Types.html#Built_002din-Data-Types">Built-in Data Types</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="User_002ddefined-Data-Types.html#User_002ddefined-Data-Types">User-defined Data Types</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Object-Sizes.html#Object-Sizes">Object Sizes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Built-in Data Types
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Numeric-Objects.html#Numeric-Objects">Numeric Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Missing-Data.html#Missing-Data">Missing Data</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="String-Objects.html#String-Objects">String Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Data-Structure-Objects.html#Data-Structure-Objects">Data Structure Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Cell-Array-Objects.html#Cell-Array-Objects">Cell Array Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Numeric Data Types
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Matrices.html#Matrices">Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Ranges.html#Ranges">Ranges</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Single-Precision-Data-Types.html#Single-Precision-Data-Types">Single Precision Data Types</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Integer-Data-Types.html#Integer-Data-Types">Integer Data Types</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Bit-Manipulations.html#Bit-Manipulations">Bit Manipulations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Logical-Values.html#Logical-Values">Logical Values</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Promotion-and-Demotion-of-Data-Types.html#Promotion-and-Demotion-of-Data-Types">Promotion and Demotion of Data Types</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Predicates-for-Numeric-Objects.html#Predicates-for-Numeric-Objects">Predicates for Numeric Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Matrices
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Empty-Matrices.html#Empty-Matrices">Empty Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Integer Data Types
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Integer-Arithmetic.html#Integer-Arithmetic">Integer Arithmetic</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Strings
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Escape-Sequences-in-String-Constants.html#Escape-Sequences-in-String-Constants">Escape Sequences in String Constants</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Character-Arrays.html#Character-Arrays">Character Arrays</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Creating-Strings.html#Creating-Strings">Creating Strings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Comparing-Strings.html#Comparing-Strings">Comparing Strings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Manipulating-Strings.html#Manipulating-Strings">Manipulating Strings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="String-Conversions.html#String-Conversions">String Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Character-Class-Functions.html#Character-Class-Functions">Character Class Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Creating Strings
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Concatenating-Strings.html#Concatenating-Strings">Concatenating Strings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Converting-Numerical-Data-to-Strings.html#Converting-Numerical-Data-to-Strings">Converting Numerical Data to Strings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Data Containers
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Structures.html#Structures">Structures</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Cell-Arrays.html#Cell-Arrays">Cell Arrays</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Comma-Separated-Lists.html#Comma-Separated-Lists">Comma Separated Lists</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Structures
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Basic-Usage-and-Examples.html#Basic-Usage-and-Examples">Basic Usage and Examples</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Structure-Arrays.html#Structure-Arrays">Structure Arrays</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Creating-Structures.html#Creating-Structures">Creating Structures</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Manipulating-Structures.html#Manipulating-Structures">Manipulating Structures</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Processing-Data-in-Structures.html#Processing-Data-in-Structures">Processing Data in Structures</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Cell Arrays
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Basic-Usage-of-Cell-Arrays.html#Basic-Usage-of-Cell-Arrays">Basic Usage of Cell Arrays</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Creating-Cell-Arrays.html#Creating-Cell-Arrays">Creating Cell Arrays</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Indexing-Cell-Arrays.html#Indexing-Cell-Arrays">Indexing Cell Arrays</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Cell-Arrays-of-Strings.html#Cell-Arrays-of-Strings">Cell Arrays of Strings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Processing-Data-in-Cell-Arrays.html#Processing-Data-in-Cell-Arrays">Processing Data in Cell Arrays</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Comma Separated Lists
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Comma-Separated-Lists-Generated-from-Cell-Arrays.html#Comma-Separated-Lists-Generated-from-Cell-Arrays">Comma Separated Lists Generated from Cell Arrays</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Comma-Separated-Lists-Generated-from-Structure-Arrays.html#Comma-Separated-Lists-Generated-from-Structure-Arrays">Comma Separated Lists Generated from Structure Arrays</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Variables
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Global-Variables.html#Global-Variables">Global Variables</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Persistent-Variables.html#Persistent-Variables">Persistent Variables</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Status-of-Variables.html#Status-of-Variables">Status of Variables</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Expressions
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Index-Expressions.html#Index-Expressions">Index Expressions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Calling-Functions.html#Calling-Functions">Calling Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Arithmetic-Ops.html#Arithmetic-Ops">Arithmetic Ops</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Comparison-Ops.html#Comparison-Ops">Comparison Ops</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Boolean-Expressions.html#Boolean-Expressions">Boolean Expressions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Assignment-Ops.html#Assignment-Ops">Assignment Ops</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Increment-Ops.html#Increment-Ops">Increment Ops</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Operator-Precedence.html#Operator-Precedence">Operator Precedence</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Index Expressions
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Advanced-Indexing.html#Advanced-Indexing">Advanced Indexing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Calling Functions
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Call-by-Value.html#Call-by-Value">Call by Value</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Recursion.html#Recursion">Recursion</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Boolean Expressions
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Element_002dby_002delement-Boolean-Operators.html#Element_002dby_002delement-Boolean-Operators">Element-by-element Boolean Operators</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Short_002dcircuit-Boolean-Operators.html#Short_002dcircuit-Boolean-Operators">Short-circuit Boolean Operators</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Evaluation
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Calling-a-Function-by-its-Name.html#Calling-a-Function-by-its-Name">Calling a Function by its Name</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Evaluation-in-a-Different-Context.html#Evaluation-in-a-Different-Context">Evaluation in a Different Context</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Statements
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="The-if-Statement.html#The-if-Statement">The if Statement</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="The-switch-Statement.html#The-switch-Statement">The switch Statement</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="The-while-Statement.html#The-while-Statement">The while Statement</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="The-do_002duntil-Statement.html#The-do_002duntil-Statement">The do-until Statement</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="The-for-Statement.html#The-for-Statement">The for Statement</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="The-break-Statement.html#The-break-Statement">The break Statement</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="The-continue-Statement.html#The-continue-Statement">The continue Statement</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="The-unwind_005fprotect-Statement.html#The-unwind_005fprotect-Statement">The unwind_protect Statement</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="The-try-Statement.html#The-try-Statement">The try Statement</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Continuation-Lines.html#Continuation-Lines">Continuation Lines</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+The switch Statement
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Notes-for-the-C-Programmer.html#Notes-for-the-C-Programmer">Notes for the C Programmer</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+The for Statement
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Looping-Over-Structure-Elements.html#Looping-Over-Structure-Elements">Looping Over Structure Elements</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Functions and Scripts
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Introduction-to-Function-and-Script-Files.html#Introduction-to-Function-and-Script-Files">Introduction to Function and Script Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Defining-Functions.html#Defining-Functions">Defining Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Multiple-Return-Values.html#Multiple-Return-Values">Multiple Return Values</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Variable_002dlength-Argument-Lists.html#Variable_002dlength-Argument-Lists">Variable-length Argument Lists</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Ignoring-Arguments.html#Ignoring-Arguments">Ignoring Arguments</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Variable_002dlength-Return-Lists.html#Variable_002dlength-Return-Lists">Variable-length Return Lists</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Returning-from-a-Function.html#Returning-from-a-Function">Returning from a Function</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Default-Arguments.html#Default-Arguments">Default Arguments</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Function-Files.html#Function-Files">Function Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Script-Files.html#Script-Files">Script Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Function-Handles-Anonymous-Functions-Inline-Functions.html#Function-Handles-Anonymous-Functions-Inline-Functions">Function Handles Anonymous Functions Inline Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Commands.html#Commands">Commands</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Organization-of-Functions.html#Organization-of-Functions">Organization of Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Function Files
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Manipulating-the-Load-Path.html#Manipulating-the-Load-Path">Manipulating the Load Path</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Subfunctions.html#Subfunctions">Subfunctions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Private-Functions.html#Private-Functions">Private Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Nested-Functions.html#Nested-Functions">Nested Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Overloading-and-Autoloading.html#Overloading-and-Autoloading">Overloading and Autoloading</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Function-Locking.html#Function-Locking">Function Locking</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Function-Precedence.html#Function-Precedence">Function Precedence</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Function Handles Anonymous Functions Inline Functions
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Function-Handles.html#Function-Handles">Function Handles</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Anonymous-Functions.html#Anonymous-Functions">Anonymous Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Inline-Functions.html#Inline-Functions">Inline Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Errors and Warnings
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Handling-Errors.html#Handling-Errors">Handling Errors</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Handling-Warnings.html#Handling-Warnings">Handling Warnings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Handling Errors
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Raising-Errors.html#Raising-Errors">Raising Errors</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Catching-Errors.html#Catching-Errors">Catching Errors</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Recovering-From-Errors.html#Recovering-From-Errors">Recovering From Errors</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Handling Warnings
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Issuing-Warnings.html#Issuing-Warnings">Issuing Warnings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Enabling-and-Disabling-Warnings.html#Enabling-and-Disabling-Warnings">Enabling and Disabling Warnings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Debugging
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Entering-Debug-Mode.html#Entering-Debug-Mode">Entering Debug Mode</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Leaving-Debug-Mode.html#Leaving-Debug-Mode">Leaving Debug Mode</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Breakpoints.html#Breakpoints">Breakpoints</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Debug-Mode.html#Debug-Mode">Debug Mode</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Call-Stack.html#Call-Stack">Call Stack</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Profiling.html#Profiling">Profiling</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Profiler-Example.html#Profiler-Example">Profiler Example</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Input and Output
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Basic-Input-and-Output.html#Basic-Input-and-Output">Basic Input and Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions">C-Style I/O Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Basic Input and Output
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Terminal-Output.html#Terminal-Output">Terminal Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Terminal-Input.html#Terminal-Input">Terminal Input</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Simple-File-I_002fO.html#Simple-File-I_002fO">Simple File I/O</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Terminal Output
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Paging-Screen-Output.html#Paging-Screen-Output">Paging Screen Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Simple File I/O
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Saving-Data-on-Unexpected-Exits.html#Saving-Data-on-Unexpected-Exits">Saving Data on Unexpected Exits</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+C-Style I/O Functions
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Opening-and-Closing-Files.html#Opening-and-Closing-Files">Opening and Closing Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Simple-Output.html#Simple-Output">Simple Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Line_002dOriented-Input.html#Line_002dOriented-Input">Line-Oriented Input</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Formatted-Output.html#Formatted-Output">Formatted Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Output-Conversion-for-Matrices.html#Output-Conversion-for-Matrices">Output Conversion for Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Output-Conversion-Syntax.html#Output-Conversion-Syntax">Output Conversion Syntax</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Table-of-Output-Conversions.html#Table-of-Output-Conversions">Table of Output Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Integer-Conversions.html#Integer-Conversions">Integer Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Floating_002dPoint-Conversions.html#Floating_002dPoint-Conversions">Floating-Point Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Other-Output-Conversions.html#Other-Output-Conversions">Other Output Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Formatted-Input.html#Formatted-Input">Formatted Input</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Input-Conversion-Syntax.html#Input-Conversion-Syntax">Input Conversion Syntax</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Table-of-Input-Conversions.html#Table-of-Input-Conversions">Table of Input Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Numeric-Input-Conversions.html#Numeric-Input-Conversions">Numeric Input Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="String-Input-Conversions.html#String-Input-Conversions">String Input Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Binary-I_002fO.html#Binary-I_002fO">Binary I/O</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Temporary-Files.html#Temporary-Files">Temporary Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="EOF-and-Errors.html#EOF-and-Errors">EOF and Errors</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="File-Positioning.html#File-Positioning">File Positioning</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Plotting
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Introduction-to-Plotting.html#Introduction-to-Plotting">Introduction to Plotting</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="High_002dLevel-Plotting.html#High_002dLevel-Plotting">High-Level Plotting</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Graphics-Data-Structures.html#Graphics-Data-Structures">Graphics Data Structures</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Advanced-Plotting.html#Advanced-Plotting">Advanced Plotting</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+High-Level Plotting
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Two_002dDimensional-Plots.html#Two_002dDimensional-Plots">Two-Dimensional Plots</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots">Three-Dimensional Plots</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Plot-Annotations.html#Plot-Annotations">Plot Annotations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Multiple-Plots-on-One-Page.html#Multiple-Plots-on-One-Page">Multiple Plots on One Page</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Multiple-Plot-Windows.html#Multiple-Plot-Windows">Multiple Plot Windows</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Manipulation-of-Plot-Objects.html#Manipulation-of-Plot-Objects">Manipulation of Plot Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Manipulation-of-Plot-Windows.html#Manipulation-of-Plot-Windows">Manipulation of Plot Windows</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Use-of-the-interpreter-Property.html#Use-of-the-interpreter-Property">Use of the <code>interpreter</code> Property</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Printing-and-Saving-Plots.html#Printing-and-Saving-Plots">Printing and Saving Plots</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Interacting-with-Plots.html#Interacting-with-Plots">Interacting with Plots</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Test-Plotting-Functions.html#Test-Plotting-Functions">Test Plotting Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Two-Dimensional Plots
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Axis-Configuration.html#Axis-Configuration">Axis Configuration</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Two_002ddimensional-Function-Plotting.html#Two_002ddimensional-Function-Plotting">Two-dimensional Function Plotting</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Two_002ddimensional-Geometric-Shapes.html#Two_002ddimensional-Geometric-Shapes">Two-dimensional Geometric Shapes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Three-Dimensional Plots
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Aspect-Ratio.html#Aspect-Ratio">Aspect Ratio</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Three_002ddimensional-Function-Plotting.html#Three_002ddimensional-Function-Plotting">Three-dimensional Function Plotting</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Three_002ddimensional-Geometric-Shapes.html#Three_002ddimensional-Geometric-Shapes">Three-dimensional Geometric Shapes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Graphics Data Structures
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Introduction-to-Graphics-Structures.html#Introduction-to-Graphics-Structures">Introduction to Graphics Structures</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Graphics-Objects.html#Graphics-Objects">Graphics Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Graphics-Object-Properties.html#Graphics-Object-Properties">Graphics Object Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Searching-Properties.html#Searching-Properties">Searching Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Managing-Default-Properties.html#Managing-Default-Properties">Managing Default Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Graphics Object Properties
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Root-Figure-Properties.html#Root-Figure-Properties">Root Figure Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Figure-Properties.html#Figure-Properties">Figure Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Axes-Properties.html#Axes-Properties">Axes Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Line-Properties.html#Line-Properties">Line Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Text-Properties.html#Text-Properties">Text Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Image-Properties.html#Image-Properties">Image Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Patch-Properties.html#Patch-Properties">Patch Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Surface-Properties.html#Surface-Properties">Surface Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Advanced Plotting
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Colors.html#Colors">Colors</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Line-Styles.html#Line-Styles">Line Styles</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Marker-Styles.html#Marker-Styles">Marker Styles</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Callbacks.html#Callbacks">Callbacks</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Application_002ddefined-Data.html#Application_002ddefined-Data">Application-defined Data</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Object-Groups.html#Object-Groups">Object Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Graphics-Toolkits.html#Graphics-Toolkits">Graphics Toolkits</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Object Groups
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Data-Sources-in-Object-Groups.html#Data-Sources-in-Object-Groups">Data Sources in Object Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Area-Series.html#Area-Series">Area Series</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Bar-Series.html#Bar-Series">Bar Series</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Contour-Groups.html#Contour-Groups">Contour Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Error-Bar-Series.html#Error-Bar-Series">Error Bar Series</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Line-Series.html#Line-Series">Line Series</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Quiver-Group.html#Quiver-Group">Quiver Group</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Scatter-Group.html#Scatter-Group">Scatter Group</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Stair-Group.html#Stair-Group">Stair Group</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Stem-Series.html#Stem-Series">Stem Series</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Surface-Group.html#Surface-Group">Surface Group</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Graphics Toolkits
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Customizing-Toolkit-Behavior.html#Customizing-Toolkit-Behavior">Customizing Toolkit Behavior</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Matrix Manipulation
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Finding-Elements-and-Checking-Conditions.html#Finding-Elements-and-Checking-Conditions">Finding Elements and Checking Conditions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Rearranging-Matrices.html#Rearranging-Matrices">Rearranging Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Special-Utility-Matrices.html#Special-Utility-Matrices">Special Utility Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Famous-Matrices.html#Famous-Matrices">Famous Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Arithmetic
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Exponents-and-Logarithms.html#Exponents-and-Logarithms">Exponents and Logarithms</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Complex-Arithmetic.html#Complex-Arithmetic">Complex Arithmetic</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Trigonometry.html#Trigonometry">Trigonometry</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Sums-and-Products.html#Sums-and-Products">Sums and Products</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Utility-Functions.html#Utility-Functions">Utility Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Special-Functions.html#Special-Functions">Special Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Rational-Approximations.html#Rational-Approximations">Rational Approximations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Coordinate-Transformations.html#Coordinate-Transformations">Coordinate Transformations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Mathematical-Constants.html#Mathematical-Constants">Mathematical Constants</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Linear Algebra
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Techniques-Used-for-Linear-Algebra.html#Techniques-Used-for-Linear-Algebra">Techniques Used for Linear Algebra</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Basic-Matrix-Functions.html#Basic-Matrix-Functions">Basic Matrix Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Matrix-Factorizations.html#Matrix-Factorizations">Matrix Factorizations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Functions-of-a-Matrix.html#Functions-of-a-Matrix">Functions of a Matrix</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Specialized-Solvers.html#Specialized-Solvers">Specialized Solvers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Vectorization and Faster Code Execution
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Basic-Vectorization.html#Basic-Vectorization">Basic Vectorization</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Basic techniques for code optimization
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Broadcasting.html#Broadcasting">Broadcasting</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Broadcasting operations
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Function-Application.html#Function-Application">Function Application</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Applying functions to arrays, cells, and structs
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Accumulation.html#Accumulation">Accumulation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Accumulation functions
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="JIT-Compiler.html#JIT-Compiler">JIT Compiler</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Just-In-Time Compiler for loops
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Miscellaneous-Techniques.html#Miscellaneous-Techniques">Miscellaneous Techniques</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Other techniques for speeding up code
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Examples.html#Examples">Examples</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Nonlinear Equations
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Solvers.html#Solvers">Solvers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Minimizers.html#Minimizers">Minimizers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Diagonal and Permutation Matrices
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Basic-Usage.html#Basic-Usage">Basic Usage</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Creation and Manipulation of Diagonal/Permutation Matrices
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Matrix-Algebra.html#Matrix-Algebra">Matrix Algebra</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Linear Algebra with Diagonal/Permutation Matrices
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Function-Support.html#Function-Support">Function Support</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Functions That Are Aware of These Matrices
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Example-Code.html#Example-Code">Example Code</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Examples of Usage
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Zeros-Treatment.html#Zeros-Treatment">Zeros Treatment</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Differences in Treatment of Zero Elements
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Basic Usage
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Creating-Diagonal-Matrices.html#Creating-Diagonal-Matrices">Creating Diagonal Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Creating-Permutation-Matrices.html#Creating-Permutation-Matrices">Creating Permutation Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Explicit-and-Implicit-Conversions.html#Explicit-and-Implicit-Conversions">Explicit and Implicit Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Matrix Algebra
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Expressions-Involving-Diagonal-Matrices.html#Expressions-Involving-Diagonal-Matrices">Expressions Involving Diagonal Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Expressions-Involving-Permutation-Matrices.html#Expressions-Involving-Permutation-Matrices">Expressions Involving Permutation Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Function Support
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Diagonal-Matrix-Functions.html#Diagonal-Matrix-Functions">Diagonal Matrix Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Permutation-Matrix-Functions.html#Permutation-Matrix-Functions">Permutation Matrix Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Sparse Matrices
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Basics.html#Basics">Basics</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Creation and Manipulation of Sparse Matrices
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Sparse-Linear-Algebra.html#Sparse-Linear-Algebra">Sparse Linear Algebra</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Linear Algebra on Sparse Matrices
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Iterative-Techniques.html#Iterative-Techniques">Iterative Techniques</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Iterative Techniques
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Real-Life-Example.html#Real-Life-Example">Real Life Example</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Using Sparse Matrices
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Basics
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Storage-of-Sparse-Matrices.html#Storage-of-Sparse-Matrices">Storage of Sparse Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Creating-Sparse-Matrices.html#Creating-Sparse-Matrices">Creating Sparse Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Information.html#Information">Information</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Operators-and-Functions.html#Operators-and-Functions">Operators and Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Operators and Functions
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Sparse-Functions.html#Sparse-Functions">Sparse Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Return-Types-of-Operators-and-Functions.html#Return-Types-of-Operators-and-Functions">Return Types of Operators and Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Mathematical-Considerations.html#Mathematical-Considerations">Mathematical Considerations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Numerical Integration
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Functions-of-One-Variable.html#Functions-of-One-Variable">Functions of One Variable</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Orthogonal-Collocation.html#Orthogonal-Collocation">Orthogonal Collocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Functions-of-Multiple-Variables.html#Functions-of-Multiple-Variables">Functions of Multiple Variables</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Differential Equations
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Ordinary-Differential-Equations.html#Ordinary-Differential-Equations">Ordinary Differential Equations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Differential_002dAlgebraic-Equations.html#Differential_002dAlgebraic-Equations">Differential-Algebraic Equations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Optimization
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Linear-Programming.html#Linear-Programming">Linear Programming</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Quadratic-Programming.html#Quadratic-Programming">Quadratic Programming</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Nonlinear-Programming.html#Nonlinear-Programming">Nonlinear Programming</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Linear-Least-Squares.html#Linear-Least-Squares">Linear Least Squares</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Statistics
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Descriptive-Statistics.html#Descriptive-Statistics">Descriptive Statistics</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Basic-Statistical-Functions.html#Basic-Statistical-Functions">Basic Statistical Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Statistical-Plots.html#Statistical-Plots">Statistical Plots</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Correlation-and-Regression-Analysis.html#Correlation-and-Regression-Analysis">Correlation and Regression Analysis</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Distributions.html#Distributions">Distributions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Tests.html#Tests">Tests</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Random-Number-Generation.html#Random-Number-Generation">Random Number Generation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Sets
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Set-Operations.html#Set-Operations">Set Operations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Polynomial Manipulations
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Evaluating-Polynomials.html#Evaluating-Polynomials">Evaluating Polynomials</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Finding-Roots.html#Finding-Roots">Finding Roots</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Products-of-Polynomials.html#Products-of-Polynomials">Products of Polynomials</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Derivatives-_002f-Integrals-_002f-Transforms.html#Derivatives-_002f-Integrals-_002f-Transforms">Derivatives / Integrals / Transforms</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Polynomial-Interpolation.html#Polynomial-Interpolation">Polynomial Interpolation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Miscellaneous-Functions.html#Miscellaneous-Functions">Miscellaneous Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Interpolation
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="One_002ddimensional-Interpolation.html#One_002ddimensional-Interpolation">One-dimensional Interpolation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Multi_002ddimensional-Interpolation.html#Multi_002ddimensional-Interpolation">Multi-dimensional Interpolation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Geometry
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Delaunay-Triangulation.html#Delaunay-Triangulation">Delaunay Triangulation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Voronoi-Diagrams.html#Voronoi-Diagrams">Voronoi Diagrams</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Convex-Hull.html#Convex-Hull">Convex Hull</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Interpolation-on-Scattered-Data.html#Interpolation-on-Scattered-Data">Interpolation on Scattered Data</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Delaunay Triangulation
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Plotting-the-Triangulation.html#Plotting-the-Triangulation">Plotting the Triangulation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Identifying-Points-in-Triangulation.html#Identifying-Points-in-Triangulation">Identifying Points in Triangulation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Image Processing
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Loading-and-Saving-Images.html#Loading-and-Saving-Images">Loading and Saving Images</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Displaying-Images.html#Displaying-Images">Displaying Images</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Representing-Images.html#Representing-Images">Representing Images</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Plotting-on-top-of-Images.html#Plotting-on-top-of-Images">Plotting on top of Images</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Color-Conversion.html#Color-Conversion">Color Conversion</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Audio Processing
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Audio-File-Utilities.html#Audio-File-Utilities">Audio File Utilities</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Audio-Device-Information.html#Audio-Device-Information">Audio Device Information</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Audio-Player.html#Audio-Player">Audio Player</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Audio-Recorder.html#Audio-Recorder">Audio Recorder</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Audio-Data-Processing.html#Audio-Data-Processing">Audio Data Processing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Audio Player
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Playback.html#Playback">Playback</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Player-Properties.html#Player-Properties">Player Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Audio Recorder
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Recording.html#Recording">Recording</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Data-Retrieval.html#Data-Retrieval">Data Retrieval</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Recorder-Properties.html#Recorder-Properties">Recorder Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Object Oriented Programming
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Creating-a-Class.html#Creating-a-Class">Creating a Class</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Manipulating-Classes.html#Manipulating-Classes">Manipulating Classes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Indexing-Objects.html#Indexing-Objects">Indexing Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Overloading-Objects.html#Overloading-Objects">Overloading Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Inheritance-and-Aggregation.html#Inheritance-and-Aggregation">Inheritance and Aggregation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Indexing Objects
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Defining-Indexing-And-Indexed-Assignment.html#Defining-Indexing-And-Indexed-Assignment">Defining Indexing And Indexed Assignment</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Indexed-Assignment-Optimization.html#Indexed-Assignment-Optimization">Indexed Assignment Optimization</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Overloading Objects
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Function-Overloading.html#Function-Overloading">Function Overloading</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Operator-Overloading.html#Operator-Overloading">Operator Overloading</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Precedence-of-Objects.html#Precedence-of-Objects">Precedence of Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+GUI Development
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="I_002fO-Dialogs.html#I_002fO-Dialogs">I/O Dialogs</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Progress-Bar.html#Progress-Bar">Progress Bar</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="UI-Elements.html#UI-Elements">UI Elements</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="GUI-Utility-Functions.html#GUI-Utility-Functions">GUI Utility Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="User_002dDefined-Preferences.html#User_002dDefined-Preferences">User-Defined Preferences</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+System Utilities
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Timing-Utilities.html#Timing-Utilities">Timing Utilities</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Filesystem-Utilities.html#Filesystem-Utilities">Filesystem Utilities</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="File-Archiving-Utilities.html#File-Archiving-Utilities">File Archiving Utilities</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Networking-Utilities.html#Networking-Utilities">Networking Utilities</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Controlling-Subprocesses.html#Controlling-Subprocesses">Controlling Subprocesses</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Process-ID-Information.html#Process-ID-Information">Process ID Information</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Environment-Variables.html#Environment-Variables">Environment Variables</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Current-Working-Directory.html#Current-Working-Directory">Current Working Directory</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Password-Database-Functions.html#Password-Database-Functions">Password Database Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Group-Database-Functions.html#Group-Database-Functions">Group Database Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="System-Information.html#System-Information">System Information</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Hashing-Functions.html#Hashing-Functions">Hashing Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Networking Utilities
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="FTP-Objects.html#FTP-Objects">FTP Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="URL-Manipulation.html#URL-Manipulation">URL Manipulation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Base64-and-Binary-Data-Transmission.html#Base64-and-Binary-Data-Transmission">Base64 and Binary Data Transmission</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Java Interface
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Java-Interface-Functions.html#Java-Interface-Functions">Java Interface Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Dialog-Box-Functions.html#Dialog-Box-Functions">Dialog Box Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions">FAQ - Frequently asked Questions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+FAQ - Frequently asked Questions
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="How-to-distinguish-between-Octave-and-Matlab_003f.html#How-to-distinguish-between-Octave-and-Matlab_003f">How to distinguish between Octave and Matlab?</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="How-to-make-Java-classes-available_003f.html#How-to-make-Java-classes-available_003f">How to make Java classes available?</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="How-to-create-an-instance-of-a-Java-class_003f.html#How-to-create-an-instance-of-a-Java-class_003f">How to create an instance of a Java class?</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="How-can-I-handle-memory-limitations_003f.html#How-can-I-handle-memory-limitations_003f">How can I handle memory limitations?</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Which-TeX-symbols-are-implemented-in-dialog-functions_003f.html#Which-TeX-symbols-are-implemented-in-dialog-functions_003f">Which TeX symbols are implemented in dialog functions?</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Packages
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Installing-and-Removing-Packages.html#Installing-and-Removing-Packages">Installing and Removing Packages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Using-Packages.html#Using-Packages">Using Packages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Administrating-Packages.html#Administrating-Packages">Administrating Packages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Creating-Packages.html#Creating-Packages">Creating Packages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Creating Packages
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="The-DESCRIPTION-File.html#The-DESCRIPTION-File">The DESCRIPTION File</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="The-INDEX-File.html#The-INDEX-File">The INDEX File</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="PKG_005fADD-and-PKG_005fDEL-Directives.html#PKG_005fADD-and-PKG_005fDEL-Directives">PKG_ADD and PKG_DEL Directives</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Missing-Components.html#Missing-Components">Missing Components</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+External Code Interface
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Oct_002dFiles.html#Oct_002dFiles">Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Mex_002dFiles.html#Mex_002dFiles">Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Standalone-Programs.html#Standalone-Programs">Standalone Programs</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Oct-Files
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Getting-Started-with-Oct_002dFiles.html#Getting-Started-with-Oct_002dFiles">Getting Started with Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Matrices-and-Arrays-in-Oct_002dFiles.html#Matrices-and-Arrays-in-Oct_002dFiles">Matrices and Arrays in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Character-Strings-in-Oct_002dFiles.html#Character-Strings-in-Oct_002dFiles">Character Strings in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Cell-Arrays-in-Oct_002dFiles.html#Cell-Arrays-in-Oct_002dFiles">Cell Arrays in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Structures-in-Oct_002dFiles.html#Structures-in-Oct_002dFiles">Structures in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Sparse-Matrices-in-Oct_002dFiles.html#Sparse-Matrices-in-Oct_002dFiles">Sparse Matrices in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Accessing-Global-Variables-in-Oct_002dFiles.html#Accessing-Global-Variables-in-Oct_002dFiles">Accessing Global Variables in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Calling-Octave-Functions-from-Oct_002dFiles.html#Calling-Octave-Functions-from-Oct_002dFiles">Calling Octave Functions from Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Calling-External-Code-from-Oct_002dFiles.html#Calling-External-Code-from-Oct_002dFiles">Calling External Code from Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Allocating-Local-Memory-in-Oct_002dFiles.html#Allocating-Local-Memory-in-Oct_002dFiles">Allocating Local Memory in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Input-Parameter-Checking-in-Oct_002dFiles.html#Input-Parameter-Checking-in-Oct_002dFiles">Input Parameter Checking in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Exception-and-Error-Handling-in-Oct_002dFiles.html#Exception-and-Error-Handling-in-Oct_002dFiles">Exception and Error Handling in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Documentation-and-Test-of-Oct_002dFiles.html#Documentation-and-Test-of-Oct_002dFiles">Documentation and Test of Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Sparse Matrices in Oct-Files
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Array-and-Sparse-Class-Differences.html#Array-and-Sparse-Class-Differences">Array and Sparse Class Differences</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Creating-Sparse-Matrices-in-Oct_002dFiles.html#Creating-Sparse-Matrices-in-Oct_002dFiles">Creating Sparse Matrices in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Using-Sparse-Matrices-in-Oct_002dFiles.html#Using-Sparse-Matrices-in-Oct_002dFiles">Using Sparse Matrices in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Mex-Files
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Getting-Started-with-Mex_002dFiles.html#Getting-Started-with-Mex_002dFiles">Getting Started with Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Working-with-Matrices-and-Arrays-in-Mex_002dFiles.html#Working-with-Matrices-and-Arrays-in-Mex_002dFiles">Working with Matrices and Arrays in Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Character-Strings-in-Mex_002dFiles.html#Character-Strings-in-Mex_002dFiles">Character Strings in Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Cell-Arrays-with-Mex_002dFiles.html#Cell-Arrays-with-Mex_002dFiles">Cell Arrays with Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Structures-with-Mex_002dFiles.html#Structures-with-Mex_002dFiles">Structures with Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Sparse-Matrices-with-Mex_002dFiles.html#Sparse-Matrices-with-Mex_002dFiles">Sparse Matrices with Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Calling-Other-Functions-in-Mex_002dFiles.html#Calling-Other-Functions-in-Mex_002dFiles">Calling Other Functions in Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Test and Demo Functions
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Test-Functions.html#Test-Functions">Test Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Demonstration-Functions.html#Demonstration-Functions">Demonstration Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Tips and Standards
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Style-Tips.html#Style-Tips">Style Tips</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Writing clean and robust programs.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Comment-Tips.html#Comment-Tips">Comment Tips</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Conventions for writing comments.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Function-Headers.html#Function-Headers">Function Headers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Standard headers for functions.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Documentation-Tips.html#Documentation-Tips">Documentation Tips</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Writing readable documentation strings.
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Contributing Guidelines
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="How-to-Contribute.html#How-to-Contribute">How to Contribute</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Building-the-Development-Sources.html#Building-the-Development-Sources">Building the Development Sources</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Basics-of-Generating-a-Changeset.html#Basics-of-Generating-a-Changeset">Basics of Generating a Changeset</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="General-Guidelines.html#General-Guidelines">General Guidelines</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Octave-Sources-_0028m_002dfiles_0029.html#Octave-Sources-_0028m_002dfiles_0029">Octave Sources (m-files)</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="C_002b_002b-Sources.html#C_002b_002b-Sources">C++ Sources</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Other-Sources.html#Other-Sources">Other Sources</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Trouble
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Actual-Bugs.html#Actual-Bugs">Actual Bugs</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Bugs we will fix later.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Reporting-Bugs.html#Reporting-Bugs">Reporting Bugs</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Service.html#Service">Service</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Reporting Bugs
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Bug-Criteria.html#Bug-Criteria">Bug Criteria</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Bug-Tracker.html#Bug-Tracker">Bug Tracker</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Where to submit your bug report.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Bug-Reporting.html#Bug-Reporting">Bug Reporting</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to report a bug effectively.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Sending-Patches.html#Sending-Patches">Sending Patches</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to send a patch for Octave.
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Installation
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Build-Dependencies.html#Build-Dependencies">Build Dependencies</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Running-Configure-and-Make.html#Running-Configure-and-Make">Running Configure and Make</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Compiling-Octave-with-64_002dbit-Indexing.html#Compiling-Octave-with-64_002dbit-Indexing">Compiling Octave with 64-bit Indexing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Installation-Problems.html#Installation-Problems">Installation Problems</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Build Dependencies
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Obtaining-the-Dependencies-Automatically.html#Obtaining-the-Dependencies-Automatically">Obtaining the Dependencies Automatically</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Build-Tools.html#Build-Tools">Build Tools</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="External-Packages.html#External-Packages">External Packages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Emacs Octave Support
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Installing-EOS.html#Installing-EOS">Installing EOS</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Using-Octave-Mode.html#Using-Octave-Mode">Using Octave Mode</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Running-Octave-from-Within-Emacs.html#Running-Octave-from-Within-Emacs">Running Octave from Within Emacs</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Using-the-Emacs-Info-Reader-for-Octave.html#Using-the-Emacs-Info-Reader-for-Octave">Using the Emacs Info Reader for Octave</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
+Grammar and Parser
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Keywords.html#Keywords">Keywords</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Parser.html#Parser">Parser</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Preface.html#Preface" accesskey="n" rel="next">Preface</a>, Up: <a href="../dir/index.html" accesskey="u" rel="up">(dir)</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

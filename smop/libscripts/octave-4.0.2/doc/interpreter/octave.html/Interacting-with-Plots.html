@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Interacting with Plots</title>
+
+<meta name="description" content="GNU Octave: Interacting with Plots">
+<meta name="keywords" content="GNU Octave: Interacting with Plots">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" rel="up" title="High-Level Plotting">
+<link href="Test-Plotting-Functions.html#Test-Plotting-Functions" rel="next" title="Test Plotting Functions">
+<link href="Printing-and-Saving-Plots.html#Printing-and-Saving-Plots" rel="prev" title="Printing and Saving Plots">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Interacting-with-Plots"></a>
+<div class="header">
+<p>
+Next: <a href="Test-Plotting-Functions.html#Test-Plotting-Functions" accesskey="n" rel="next">Test Plotting Functions</a>, Previous: <a href="Printing-and-Saving-Plots.html#Printing-and-Saving-Plots" accesskey="p" rel="prev">Printing and Saving Plots</a>, Up: <a href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" accesskey="u" rel="up">High-Level Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Interacting-with-Plots-1"></a>
+<h4 class="subsection">15.2.10 Interacting with Plots</h4>
+
+<p>The user can select points on a plot with the <code>ginput</code> function or
+selection the position at which to place text on the plot with the
+<code>gtext</code> function using the mouse.  Menus may also be created
+and populated with specific user commands via the <code>uimenu</code> function.
+</p>
+<a name="XREFginput"></a><dl>
+<dt><a name="index-ginput"></a>Function File: <em>[<var>x</var>, <var>y</var>, <var>buttons</var>] =</em> <strong>ginput</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-ginput-1"></a>Function File: <em>[<var>x</var>, <var>y</var>, <var>buttons</var>] =</em> <strong>ginput</strong> <em>()</em></dt>
+<dd><p>Return the position and type of mouse button clicks and/or key strokes
+in the current figure window.
+</p>
+<p>If <var>n</var> is defined, then capture <var>n</var> events before returning.
+When <var>n</var> is not defined <code>ginput</code> will loop until the return key
+<tt class="key">RET</tt> is pressed.
+</p>
+<p>The return values <var>x</var>, <var>y</var> are the coordinates where the mouse
+was clicked in the units of the current axes.  The return value <var>button</var>
+is 1, 2, or 3 for the left, middle, or right button.  If a key is pressed
+the ASCII value is returned in <var>button</var>.
+</p>
+<p>Implementation Note: <code>ginput</code> is intenteded for 2-D plots.  For 3-D
+plots see the <var>currentpoint</var> property of the current axes which can be
+transformed with knowledge of the current <code>view</code> into data units.
+</p>
+<p><strong>See also:</strong> <a href="#XREFgtext">gtext</a>, <a href="#XREFwaitforbuttonpress">waitforbuttonpress</a>.
+</p></dd></dl>
+
+
+<a name="XREFwaitforbuttonpress"></a><dl>
+<dt><a name="index-waitforbuttonpress"></a>Function File: <em></em> <strong>waitforbuttonpress</strong> <em>()</em></dt>
+<dt><a name="index-waitforbuttonpress-1"></a>Function File: <em><var>b</var> =</em> <strong>waitforbuttonpress</strong> <em>()</em></dt>
+<dd><p>Wait for mouse click or key press over the current figure window.
+</p>
+<p>The return value of <var>b</var> is 0 if a mouse button was pressed or 1 if a
+key was pressed.
+</p>
+<p><strong>See also:</strong> <a href="GUI-Utility-Functions.html#XREFwaitfor">waitfor</a>, <a href="#XREFginput">ginput</a>, <a href="Terminal-Input.html#XREFkbhit">kbhit</a>.
+</p></dd></dl>
+
+
+<a name="XREFgtext"></a><dl>
+<dt><a name="index-gtext"></a>Function File: <em></em> <strong>gtext</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-gtext-1"></a>Function File: <em></em> <strong>gtext</strong> <em>({<var>s1</var>, <var>s2</var>, &hellip;})</em></dt>
+<dt><a name="index-gtext-2"></a>Function File: <em></em> <strong>gtext</strong> <em>({<var>s1</var>; <var>s2</var>; &hellip;})</em></dt>
+<dt><a name="index-gtext-3"></a>Function File: <em></em> <strong>gtext</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-gtext-4"></a>Function File: <em><var>h</var> =</em> <strong>gtext</strong> <em>(&hellip;)</em></dt>
+<dd><p>Place text on the current figure using the mouse.
+</p>
+<p>The text is defined by the string <var>s</var>.  If <var>s</var> is a cell string
+organized as a row vector then each string of the cell array is written to a
+separate line.  If <var>s</var> is organized as a column vector then one string
+element of the cell array is placed for every mouse click.
+</p>
+<p>Optional property/value pairs are passed directly to the underlying text
+objects.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created
+text object(s).
+</p>
+<p><strong>See also:</strong> <a href="#XREFginput">ginput</a>, <a href="Plot-Annotations.html#XREFtext">text</a>.
+</p></dd></dl>
+
+
+<a name="XREFuimenu"></a><dl>
+<dt><a name="index-uimenu"></a>Function File: <em><var>hui</var> =</em> <strong>uimenu</strong> <em>(<var>property</var>, <var>value</var>, &hellip;)</em></dt>
+<dt><a name="index-uimenu-1"></a>Function File: <em><var>hui</var> =</em> <strong>uimenu</strong> <em>(<var>h</var>, <var>property</var>, <var>value</var>, &hellip;)</em></dt>
+<dd><p>Create a uimenu object and return a handle to it.
+</p>
+<p>If <var>h</var> is omitted then a top-level menu for the current figure is
+created.  If <var>h</var> is given then a submenu relative to <var>h</var> is created.
+</p>
+<p>uimenu objects have the following specific properties:
+</p>
+<dl compact="compact">
+<dt><code>&quot;accelerator&quot;</code></dt>
+<dd><p>A string containing the key combination together with CTRL to execute this
+menu entry (e.g., <code>&quot;x&quot;</code> for CTRL+x).
+</p>
+</dd>
+<dt><code>&quot;callback&quot;</code></dt>
+<dd><p>Is the function called when this menu entry is executed.  It can be either a
+function string (e.g., <code>&quot;myfun&quot;</code>), a function handle (e.g., @myfun)
+or a cell array containing the function handle and arguments for the
+callback function (e.g., {@myfun, arg1, arg2}).
+</p>
+</dd>
+<dt><code>&quot;checked&quot;</code></dt>
+<dd><p>Can be set <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>.  Sets a mark at this menu entry.
+</p>
+</dd>
+<dt><code>&quot;enable&quot;</code></dt>
+<dd><p>Can be set <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>.  If disabled the menu entry
+cannot be selected and it is grayed out.
+</p>
+</dd>
+<dt><code>&quot;foregroundcolor&quot;</code></dt>
+<dd><p>A color value setting the text color for this menu entry.
+</p>
+</dd>
+<dt><code>&quot;label&quot;</code></dt>
+<dd><p>A string containing the label for this menu entry.  A <code>&quot;&amp;&quot;</code>-symbol
+can be used to mark the <code>&quot;accelerator&quot;</code> character (e.g.,
+<code>&quot;E&amp;xit&quot;</code>)
+</p>
+</dd>
+<dt><code>&quot;position&quot;</code></dt>
+<dd><p>An scalar value containing the relative menu position.  The entry with the
+lowest value is at the first position starting from left or top.
+</p>
+</dd>
+<dt><code>&quot;separator&quot;</code></dt>
+<dd><p>Can be set <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>.  If enabled it draws a separator
+line above the current position.  It is ignored for top level entries.
+</p>
+</dd>
+</dl>
+
+<p>Examples:
+</p>
+<div class="example">
+<pre class="example">f = uimenu (&quot;label&quot;, &quot;&amp;File&quot;, &quot;accelerator&quot;, &quot;f&quot;);
+e = uimenu (&quot;label&quot;, &quot;&amp;Edit&quot;, &quot;accelerator&quot;, &quot;e&quot;);
+uimenu (f, &quot;label&quot;, &quot;Close&quot;, &quot;accelerator&quot;, &quot;q&quot;, ...
+           &quot;callback&quot;, &quot;close (gcf)&quot;);
+uimenu (e, &quot;label&quot;, &quot;Toggle &amp;Grid&quot;, &quot;accelerator&quot;, &quot;g&quot;, ...
+           &quot;callback&quot;, &quot;grid (gca)&quot;);
+</pre></div>
+
+<p><strong>See also:</strong> <a href="Multiple-Plot-Windows.html#XREFfigure">figure</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Test-Plotting-Functions.html#Test-Plotting-Functions" accesskey="n" rel="next">Test Plotting Functions</a>, Previous: <a href="Printing-and-Saving-Plots.html#Printing-and-Saving-Plots" accesskey="p" rel="prev">Printing and Saving Plots</a>, Up: <a href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" accesskey="u" rel="up">High-Level Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

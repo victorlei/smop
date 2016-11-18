@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Increment Ops</title>
+
+<meta name="description" content="GNU Octave: Increment Ops">
+<meta name="keywords" content="GNU Octave: Increment Ops">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Expressions.html#Expressions" rel="up" title="Expressions">
+<link href="Operator-Precedence.html#Operator-Precedence" rel="next" title="Operator Precedence">
+<link href="Assignment-Ops.html#Assignment-Ops" rel="prev" title="Assignment Ops">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Increment-Ops"></a>
+<div class="header">
+<p>
+Next: <a href="Operator-Precedence.html#Operator-Precedence" accesskey="n" rel="next">Operator Precedence</a>, Previous: <a href="Assignment-Ops.html#Assignment-Ops" accesskey="p" rel="prev">Assignment Ops</a>, Up: <a href="Expressions.html#Expressions" accesskey="u" rel="up">Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Increment-Operators"></a>
+<h3 class="section">8.7 Increment Operators</h3>
+
+<p><em>Increment operators</em> increase or decrease the value of a variable
+by 1.  The operator to increment a variable is written as &lsquo;<samp>++</samp>&rsquo;.  It
+may be used to increment a variable either before or after taking its
+value.
+</p>
+<p>For example, to pre-increment the variable <var>x</var>, you would write
+<code>++<var>x</var></code>.  This would add one to <var>x</var> and then return the new
+value of <var>x</var> as the result of the expression.  It is exactly the
+same as the expression <code><var>x</var> = <var>x</var> + 1</code>.
+</p>
+<p>To post-increment a variable <var>x</var>, you would write <code><var>x</var>++</code>.
+This adds one to the variable <var>x</var>, but returns the value that
+<var>x</var> had prior to incrementing it.  For example, if <var>x</var> is equal
+to 2, the result of the expression <code><var>x</var>++</code> is 2, and the new
+value of <var>x</var> is 3.
+</p>
+<p>For matrix and vector arguments, the increment and decrement operators
+work on each element of the operand.
+</p>
+<p>Here is a list of all the increment and decrement expressions.
+</p>
+<dl compact="compact">
+<dt><code>++<var>x</var></code></dt>
+<dd><a name="index-_002b_002b"></a>
+<p>This expression increments the variable <var>x</var>.  The value of the
+expression is the <em>new</em> value of <var>x</var>.  It is equivalent to the
+expression <code><var>x</var> = <var>x</var> + 1</code>.
+</p>
+</dd>
+<dt><code>--<var>x</var></code></dt>
+<dd><a name="index-_002d_002d"></a>
+<p>This expression decrements the variable <var>x</var>.  The value of the
+expression is the <em>new</em> value of <var>x</var>.  It is equivalent to the
+expression <code><var>x</var> = <var>x</var> - 1</code>.
+</p>
+</dd>
+<dt><code><var>x</var>++</code></dt>
+<dd><a name="index-_002b_002b-1"></a>
+<p>This expression causes the variable <var>x</var> to be incremented.  The
+value of the expression is the <em>old</em> value of <var>x</var>.
+</p>
+</dd>
+<dt><code><var>x</var>--</code></dt>
+<dd><a name="index-_002d_002d-1"></a>
+<p>This expression causes the variable <var>x</var> to be decremented.  The
+value of the expression is the <em>old</em> value of <var>x</var>.
+</p></dd>
+</dl>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Operator-Precedence.html#Operator-Precedence" accesskey="n" rel="next">Operator Precedence</a>, Previous: <a href="Assignment-Ops.html#Assignment-Ops" accesskey="p" rel="prev">Assignment Ops</a>, Up: <a href="Expressions.html#Expressions" accesskey="u" rel="up">Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

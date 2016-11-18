@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>Octave C++ Classes: Nonlinear Programming</title>
+
+<meta name="description" content="Octave C++ Classes: Nonlinear Programming">
+<meta name="keywords" content="Octave C++ Classes: Nonlinear Programming">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Optimization.html#Optimization" rel="up" title="Optimization">
+<link href="Quadrature.html#Quadrature" rel="next" title="Quadrature">
+<link href="Quadratic-Programming.html#Quadratic-Programming" rel="prev" title="Quadratic Programming">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Nonlinear-Programming"></a>
+<div class="header">
+<p>
+Previous: <a href="Quadratic-Programming.html#Quadratic-Programming" accesskey="p" rel="prev">Quadratic Programming</a>, Up: <a href="Optimization.html#Optimization" accesskey="u" rel="up">Optimization</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Nonlinear-Programming-1"></a>
+<h3 class="section">9.6 Nonlinear Programming</h3>
+<a name="index-NLP"></a>
+<a name="index-nonlinear-programming"></a>
+
+<dl>
+<dt><a name="index-NLP-1"></a>: <em></em> <strong>NLP</strong> <em>(void)</em></dt>
+<dt><a name="index-NLP-2"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>)</em></dt>
+<dt><a name="index-NLP-3"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const Bounds &amp;<var>b</var>)</em></dt>
+<dt><a name="index-NLP-4"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const Bounds &amp;<var>b</var>, const LinConst &amp;<var>lc</var>)</em></dt>
+<dt><a name="index-NLP-5"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const Bounds &amp;<var>b</var>, const LinConst &amp;<var>lc</var>, const NLConst &amp;<var>nlc</var>)</em></dt>
+<dt><a name="index-NLP-6"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const LinConst &amp;<var>lc</var>)</em></dt>
+<dt><a name="index-NLP-7"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const LinConst &amp;<var>lc</var>, const NLConst &amp;<var>nlc</var>)</em></dt>
+<dt><a name="index-NLP-8"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const NLConst &amp;<var>nlc</var>)</em></dt>
+<dt><a name="index-NLP-9"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const Bounds &amp;<var>b</var>, const NLConst &amp;<var>nlc</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d-33"></a>: <em>NLP&amp;</em> <strong>operator =</strong> <em>(const NLP &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-size-2"></a>: <em>int</em> <strong>size</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-minimize-9"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(void)</em></dt>
+<dt><a name="index-minimize-10"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(double &amp;<var>objf</var>)</em></dt>
+<dt><a name="index-minimize-11"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(double &amp;<var>objf</var>, int &amp;<var>inform</var>)</em></dt>
+<dt><a name="index-minimize-12"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(double &amp;<var>objf</var>, int &amp;<var>inform</var>, ColumnVector &amp;<var>lambda</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-minimize-13"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(const ColumnVector &amp;<var>x</var>)</em></dt>
+<dt><a name="index-minimize-14"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(const ColumnVector &amp;<var>x</var>, double &amp;<var>objf</var>)</em></dt>
+<dt><a name="index-minimize-15"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(const ColumnVector &amp;<var>x</var>, double &amp;<var>objf</var>, int &amp;<var>inform</var>)</em></dt>
+<dt><a name="index-minimize-16"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(const ColumnVector &amp;<var>x</var>, double &amp;<var>objf</var>, int &amp;<var>inform</var>, ColumnVector &amp;<var>lambda</var>)</em></dt>
+</dl>
+
+
+
+
+</body>
+</html>

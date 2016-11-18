@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Entering Debug Mode</title>
+
+<meta name="description" content="GNU Octave: Entering Debug Mode">
+<meta name="keywords" content="GNU Octave: Entering Debug Mode">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Debugging.html#Debugging" rel="up" title="Debugging">
+<link href="Leaving-Debug-Mode.html#Leaving-Debug-Mode" rel="next" title="Leaving Debug Mode">
+<link href="Debugging.html#Debugging" rel="prev" title="Debugging">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Entering-Debug-Mode"></a>
+<div class="header">
+<p>
+Next: <a href="Leaving-Debug-Mode.html#Leaving-Debug-Mode" accesskey="n" rel="next">Leaving Debug Mode</a>, Up: <a href="Debugging.html#Debugging" accesskey="u" rel="up">Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Entering-Debug-Mode-1"></a>
+<h3 class="section">13.1 Entering Debug Mode</h3>
+
+<p>There are two basic means of interrupting the execution of an Octave
+script.  These are breakpoints (see <a href="Breakpoints.html#Breakpoints">Breakpoints</a>), discussed in the next
+section, and interruption based on some condition.
+</p>
+<p>Octave supports three means to stop execution based on the values set in
+the functions <code>debug_on_interrupt</code>, <code>debug_on_warning</code>, and
+<code>debug_on_error</code>.
+</p>
+<a name="XREFdebug_005fon_005finterrupt"></a><dl>
+<dt><a name="index-debug_005fon_005finterrupt"></a>Built-in Function: <em><var>val</var> =</em> <strong>debug_on_interrupt</strong> <em>()</em></dt>
+<dt><a name="index-debug_005fon_005finterrupt-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>debug_on_interrupt</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-debug_005fon_005finterrupt-2"></a>Built-in Function: <em></em> <strong>debug_on_interrupt</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that controls whether Octave will try
+to enter debugging mode when it receives an interrupt signal (typically
+generated with <kbd>C-c</kbd>).
+</p>
+<p>If a second interrupt signal is received before reaching the debugging mode,
+a normal interrupt will occur.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdebug_005fon_005ferror">debug_on_error</a>, <a href="#XREFdebug_005fon_005fwarning">debug_on_warning</a>.
+</p></dd></dl>
+
+
+<a name="XREFdebug_005fon_005fwarning"></a><dl>
+<dt><a name="index-debug_005fon_005fwarning"></a>Built-in Function: <em><var>val</var> =</em> <strong>debug_on_warning</strong> <em>()</em></dt>
+<dt><a name="index-debug_005fon_005fwarning-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>debug_on_warning</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-debug_005fon_005fwarning-2"></a>Built-in Function: <em></em> <strong>debug_on_warning</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that controls whether Octave will try
+to enter the debugger when a warning is encountered.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdebug_005fon_005ferror">debug_on_error</a>, <a href="#XREFdebug_005fon_005finterrupt">debug_on_interrupt</a>.
+</p></dd></dl>
+
+
+<a name="XREFdebug_005fon_005ferror"></a><dl>
+<dt><a name="index-debug_005fon_005ferror"></a>Built-in Function: <em><var>val</var> =</em> <strong>debug_on_error</strong> <em>()</em></dt>
+<dt><a name="index-debug_005fon_005ferror-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>debug_on_error</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-debug_005fon_005ferror-2"></a>Built-in Function: <em></em> <strong>debug_on_error</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that controls whether Octave will try
+to enter the debugger when an error is encountered.
+</p>
+<p>This will also inhibit printing of the normal traceback message (you will
+only see the top-level error message).
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdebug_005fon_005fwarning">debug_on_warning</a>, <a href="#XREFdebug_005fon_005finterrupt">debug_on_interrupt</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Leaving-Debug-Mode.html#Leaving-Debug-Mode" accesskey="n" rel="next">Leaving Debug Mode</a>, Up: <a href="Debugging.html#Debugging" accesskey="u" rel="up">Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

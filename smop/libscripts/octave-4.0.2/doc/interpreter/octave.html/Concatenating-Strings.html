@@ -1,0 +1,318 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Concatenating Strings</title>
+
+<meta name="description" content="GNU Octave: Concatenating Strings">
+<meta name="keywords" content="GNU Octave: Concatenating Strings">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Creating-Strings.html#Creating-Strings" rel="up" title="Creating Strings">
+<link href="Converting-Numerical-Data-to-Strings.html#Converting-Numerical-Data-to-Strings" rel="next" title="Converting Numerical Data to Strings">
+<link href="Creating-Strings.html#Creating-Strings" rel="prev" title="Creating Strings">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Concatenating-Strings"></a>
+<div class="header">
+<p>
+Next: <a href="Converting-Numerical-Data-to-Strings.html#Converting-Numerical-Data-to-Strings" accesskey="n" rel="next">Converting Numerical Data to Strings</a>, Up: <a href="Creating-Strings.html#Creating-Strings" accesskey="u" rel="up">Creating Strings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Concatenating-Strings-1"></a>
+<h4 class="subsection">5.3.1 Concatenating Strings</h4>
+
+<p>Strings can be concatenated using matrix notation
+(see <a href="Strings.html#Strings">Strings</a>, <a href="Character-Arrays.html#Character-Arrays">Character Arrays</a>) which is often the most natural
+method.  For example:
+</p>
+<div class="example">
+<pre class="example">fullname = [fname &quot;.txt&quot;];
+email = [&quot;&lt;&quot; user &quot;@&quot; domain &quot;&gt;&quot;];
+</pre></div>
+
+<p>In each case it is easy to see what the final string will look like.  This
+method is also the most efficient.  When using matrix concatenation the parser
+immediately begins joining the strings without having to process
+the overhead of a function call and the input validation of the associated
+function.
+</p>
+<p>Nevertheless, there are several other functions for concatenating string
+objects which can be useful in specific circumstances: <code>char</code>,
+<code>strvcat</code>, <code>strcat</code>, and <code>cstrcat</code>.  Finally, the general
+purpose concatenation functions can be used: see <a href="Rearranging-Matrices.html#XREFcat">cat</a>,
+<a href="Rearranging-Matrices.html#XREFhorzcat">horzcat</a>, and <a href="Rearranging-Matrices.html#XREFvertcat">vertcat</a>.
+</p>
+<ul>
+<li> All string concatenation functions except <code>cstrcat</code>
+convert numerical input into character data by taking the corresponding ASCII
+character for each element, as in the following example:
+
+<div class="example">
+<pre class="example">char ([98, 97, 110, 97, 110, 97])
+   &rArr; banana
+</pre></div>
+
+</li><li> <code>char</code> and <code>strvcat</code>
+concatenate vertically, while <code>strcat</code> and <code>cstrcat</code> concatenate
+horizontally.  For example:
+
+<div class="example">
+<pre class="example">char (&quot;an apple&quot;, &quot;two pears&quot;)
+    &rArr; an apple
+       two pears
+</pre><pre class="example">
+
+</pre><pre class="example">strcat (&quot;oc&quot;, &quot;tave&quot;, &quot; is&quot;, &quot; good&quot;, &quot; for you&quot;)
+     &rArr; octave is good for you
+</pre></div>
+
+</li><li> <code>char</code> generates an empty row in the output
+for each empty string in the input.  <code>strvcat</code>, on the other hand,
+eliminates empty strings.
+
+<div class="example">
+<pre class="example">char (&quot;orange&quot;, &quot;green&quot;, &quot;&quot;, &quot;red&quot;)
+    &rArr; orange
+       green
+
+       red
+</pre><pre class="example">
+
+</pre><pre class="example">strvcat (&quot;orange&quot;, &quot;green&quot;, &quot;&quot;, &quot;red&quot;)
+    &rArr; orange
+       green
+       red
+</pre></div>
+
+</li><li> All string concatenation functions except <code>cstrcat</code> also accept cell
+array data (see <a href="Cell-Arrays.html#Cell-Arrays">Cell Arrays</a>).  <code>char</code> and
+<code>strvcat</code> convert cell arrays into character arrays, while <code>strcat</code>
+concatenates within the cells of the cell arrays:
+
+<div class="example">
+<pre class="example">char ({&quot;red&quot;, &quot;green&quot;, &quot;&quot;, &quot;blue&quot;})
+     &rArr; red
+        green
+
+        blue
+</pre><pre class="example">
+
+</pre><pre class="example">strcat ({&quot;abc&quot;; &quot;ghi&quot;}, {&quot;def&quot;; &quot;jkl&quot;})
+     &rArr;
+        {
+          [1,1] = abcdef
+          [2,1] = ghijkl
+        }
+</pre></div>
+
+</li><li> <code>strcat</code> removes trailing white space in the arguments (except
+within cell arrays), while <code>cstrcat</code> leaves white space untouched.  Both
+kinds of behavior can be useful as can be seen in the examples:
+
+<div class="example">
+<pre class="example">strcat ([&quot;dir1&quot;;&quot;directory2&quot;], [&quot;/&quot;;&quot;/&quot;], [&quot;file1&quot;;&quot;file2&quot;])
+     &rArr; dir1/file1
+        directory2/file2
+</pre><pre class="example">
+
+cstrcat ([&quot;thirteen apples&quot;; &quot;a banana&quot;], [&quot; 5$&quot;;&quot; 1$&quot;])
+      &rArr; thirteen apples 5$
+         a banana        1$
+</pre></div>
+
+<p>Note that in the above example for <code>cstrcat</code>, the white space originates
+from the internal representation of the strings in a string array
+(see <a href="Character-Arrays.html#Character-Arrays">Character Arrays</a>).
+</p></li></ul>
+
+<a name="XREFchar"></a><dl>
+<dt><a name="index-char"></a>Built-in Function: <em></em> <strong>char</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-char-1"></a>Built-in Function: <em></em> <strong>char</strong> <em>(<var>x</var>, &hellip;)</em></dt>
+<dt><a name="index-char-2"></a>Built-in Function: <em></em> <strong>char</strong> <em>(<var>s1</var>, <var>s2</var>, &hellip;)</em></dt>
+<dt><a name="index-char-3"></a>Built-in Function: <em></em> <strong>char</strong> <em>(<var>cell_array</var>)</em></dt>
+<dd><p>Create a string array from one or more numeric matrices, character
+matrices, or cell arrays.
+</p>
+<p>Arguments are concatenated vertically.  The returned values are padded with
+blanks as needed to make each row of the string array have the same length.
+Empty input strings are significant and will concatenated in the output.
+</p>
+<p>For numerical input, each element is converted to the corresponding ASCII
+character.  A range error results if an input is outside the ASCII range
+(0-255).
+</p>
+<p>For cell arrays, each element is concatenated separately.  Cell arrays
+converted through <code>char</code> can mostly be converted back with
+<code>cellstr</code>.  For example:
+</p>
+<div class="example">
+<pre class="example">char ([97, 98, 99], &quot;&quot;, {&quot;98&quot;, &quot;99&quot;, 100}, &quot;str1&quot;, [&quot;ha&quot;, &quot;lf&quot;])
+   &rArr; [&quot;abc    &quot;
+       &quot;       &quot;
+       &quot;98     &quot;
+       &quot;99     &quot;
+       &quot;d      &quot;
+       &quot;str1   &quot;
+       &quot;half   &quot;]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFstrvcat">strvcat</a>, <a href="Cell-Arrays-of-Strings.html#XREFcellstr">cellstr</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrvcat"></a><dl>
+<dt><a name="index-strvcat"></a>Built-in Function: <em></em> <strong>strvcat</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-strvcat-1"></a>Built-in Function: <em></em> <strong>strvcat</strong> <em>(<var>x</var>, &hellip;)</em></dt>
+<dt><a name="index-strvcat-2"></a>Built-in Function: <em></em> <strong>strvcat</strong> <em>(<var>s1</var>, <var>s2</var>, &hellip;)</em></dt>
+<dt><a name="index-strvcat-3"></a>Built-in Function: <em></em> <strong>strvcat</strong> <em>(<var>cell_array</var>)</em></dt>
+<dd><p>Create a character array from one or more numeric matrices, character
+matrices, or cell arrays.
+</p>
+<p>Arguments are concatenated vertically.  The returned values are padded with
+blanks as needed to make each row of the string array have the same length.
+Unlike <code>char</code>, empty strings are removed and will not appear in the
+output.
+</p>
+<p>For numerical input, each element is converted to the corresponding ASCII
+character.  A range error results if an input is outside the ASCII range
+(0-255).
+</p>
+<p>For cell arrays, each element is concatenated separately.  Cell arrays
+converted through <code>strvcat</code> can mostly be converted back with
+<code>cellstr</code>.  For example:
+</p>
+<div class="example">
+<pre class="example">strvcat ([97, 98, 99], &quot;&quot;, {&quot;98&quot;, &quot;99&quot;, 100}, &quot;str1&quot;, [&quot;ha&quot;, &quot;lf&quot;])
+      &rArr; [&quot;abc    &quot;
+          &quot;98     &quot;
+          &quot;99     &quot;
+          &quot;d      &quot;
+          &quot;str1   &quot;
+          &quot;half   &quot;]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFchar">char</a>, <a href="#XREFstrcat">strcat</a>, <a href="#XREFcstrcat">cstrcat</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrcat"></a><dl>
+<dt><a name="index-strcat"></a>Function File: <em></em> <strong>strcat</strong> <em>(<var>s1</var>, <var>s2</var>, &hellip;)</em></dt>
+<dd><p>Return a string containing all the arguments concatenated
+horizontally.
+</p>
+<p>If the arguments are cell strings, <code>strcat</code> returns a cell string
+with the individual cells concatenated.  For numerical input, each element
+is converted to the corresponding ASCII character.  Trailing white space
+for any character string input is eliminated before the strings are
+concatenated.  Note that cell string values do <strong>not</strong> have
+whitespace trimmed.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">strcat (&quot;|&quot;, &quot; leading space is preserved&quot;, &quot;|&quot;)
+    &rArr; | leading space is preserved|
+</pre></div>
+
+<div class="example">
+<pre class="example">strcat (&quot;|&quot;, &quot;trailing space is eliminated &quot;, &quot;|&quot;)
+    &rArr; |trailing space is eliminated|
+</pre></div>
+
+<div class="example">
+<pre class="example">strcat (&quot;homogeneous space |&quot;, &quot;  &quot;, &quot;| is also eliminated&quot;)
+    &rArr; homogeneous space || is also eliminated
+</pre></div>
+
+<div class="example">
+<pre class="example">s = [ &quot;ab&quot;; &quot;cde&quot; ];
+strcat (s, s, s)
+    &rArr;
+        &quot;ababab   &quot;
+        &quot;cdecdecde&quot;
+</pre></div>
+
+<div class="example">
+<pre class="example">s = { &quot;ab&quot;; &quot;cd &quot; };
+strcat (s, s, s)
+    &rArr;
+        {
+          [1,1] = ababab
+          [2,1] = cd cd cd
+        }
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFcstrcat">cstrcat</a>, <a href="#XREFchar">char</a>, <a href="#XREFstrvcat">strvcat</a>.
+</p></dd></dl>
+
+
+<a name="XREFcstrcat"></a><dl>
+<dt><a name="index-cstrcat"></a>Function File: <em></em> <strong>cstrcat</strong> <em>(<var>s1</var>, <var>s2</var>, &hellip;)</em></dt>
+<dd><p>Return a string containing all the arguments concatenated horizontally
+with trailing white space preserved.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">cstrcat (&quot;ab   &quot;, &quot;cd&quot;)
+      &rArr; &quot;ab   cd&quot;
+</pre></div>
+
+<div class="example">
+<pre class="example">s = [ &quot;ab&quot;; &quot;cde&quot; ];
+cstrcat (s, s, s)
+      &rArr; &quot;ab ab ab &quot;
+         &quot;cdecdecde&quot;
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFstrcat">strcat</a>, <a href="#XREFchar">char</a>, <a href="#XREFstrvcat">strvcat</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Converting-Numerical-Data-to-Strings.html#Converting-Numerical-Data-to-Strings" accesskey="n" rel="next">Converting Numerical Data to Strings</a>, Up: <a href="Creating-Strings.html#Creating-Strings" accesskey="u" rel="up">Creating Strings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,523 @@
+@c DO NOT EDIT!  Generated automatically by munge-texi.pl.
+
+@c Copyright (C) 2007-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Interpolation
+@chapter Interpolation
+
+@menu
+* One-dimensional Interpolation::
+* Multi-dimensional Interpolation::
+@end menu
+
+@node One-dimensional Interpolation
+@section One-dimensional Interpolation
+
+Octave supports several methods for one-dimensional interpolation, most
+of which are described in this section.  @ref{Polynomial Interpolation}
+and @ref{Interpolation on Scattered Data} describe additional methods.
+
+@c interp1 scripts/general/interp1.m
+@anchor{XREFinterp1}
+@deftypefn  {Function File} {@var{yi} =} interp1 (@var{x}, @var{y}, @var{xi})
+@deftypefnx {Function File} {@var{yi} =} interp1 (@var{y}, @var{xi})
+@deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, @var{method})
+@deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, @var{extrap})
+@deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, "left")
+@deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, "right")
+@deftypefnx {Function File} {@var{pp} =} interp1 (@dots{}, "pp")
+
+One-dimensional interpolation.
+
+Interpolate input data to determine the value of @var{yi} at the points
+@var{xi}.  If not specified, @var{x} is taken to be the indices of @var{y}
+(@code{1:length (@var{y})}).  If @var{y} is a matrix or an N-dimensional
+array, the interpolation is performed on each column of @var{y}.
+
+The interpolation @var{method} is one of:
+
+@table @asis
+@item @qcode{"nearest"}
+Return the nearest neighbor.
+
+@item @qcode{"previous"}
+Return the previous neighbor.
+
+@item @qcode{"next"}
+Return the next neighbor.
+
+@item @qcode{"linear"} (default)
+Linear interpolation from nearest neighbors.
+
+@item @qcode{"pchip"}
+Piecewise cubic Hermite interpolating polynomial---shape-preserving
+interpolation with smooth first derivative.
+
+@item @qcode{"cubic"}
+Cubic interpolation (same as @qcode{"pchip"}).
+
+@item @qcode{"spline"}
+Cubic spline interpolation---smooth first and second derivatives
+throughout the curve.
+@end table
+
+Adding '*' to the start of any method above forces @code{interp1}
+to assume that @var{x} is uniformly spaced, and only @code{@var{x}(1)}
+and @code{@var{x}(2)} are referenced.  This is usually faster,
+and is never slower.  The default method is @qcode{"linear"}.
+
+If @var{extrap} is the string @qcode{"extrap"}, then extrapolate values
+beyond the endpoints using the current @var{method}.  If @var{extrap} is a
+number, then replace values beyond the endpoints with that number.  When
+unspecified, @var{extrap} defaults to @code{NA}.
+
+If the string argument @qcode{"pp"} is specified, then @var{xi} should not
+be supplied and @code{interp1} returns a piecewise polynomial object.  This
+object can later be used with @code{ppval} to evaluate the interpolation.
+There is an equivalence, such that @code{ppval (interp1 (@var{x},
+@var{y}, @var{method}, @qcode{"pp"}), @var{xi}) == interp1 (@var{x}, @var{y},
+@var{xi}, @var{method}, @qcode{"extrap"})}.
+
+Duplicate points in @var{x} specify a discontinuous interpolant.  There
+may be at most 2 consecutive points with the same value.
+If @var{x} is increasing, the default discontinuous interpolant is
+right-continuous.  If @var{x} is decreasing, the default discontinuous
+interpolant is left-continuous.
+The continuity condition of the interpolant may be specified by using
+the options @qcode{"left"} or @qcode{"right"} to select a left-continuous
+or right-continuous interpolant, respectively.
+Discontinuous interpolation is only allowed for @qcode{"nearest"} and
+@qcode{"linear"} methods; in all other cases, the @var{x}-values must be
+unique.
+
+An example of the use of @code{interp1} is
+
+@example
+@group
+xf = [0:0.05:10];
+yf = sin (2*pi*xf/5);
+xp = [0:10];
+yp = sin (2*pi*xp/5);
+lin = interp1 (xp, yp, xf);
+near = interp1 (xp, yp, xf, "nearest");
+pch = interp1 (xp, yp, xf, "pchip");
+spl = interp1 (xp, yp, xf, "spline");
+plot (xf,yf,"r", xf,near,"g", xf,lin,"b", xf,pch,"c", xf,spl,"m",
+      xp,yp,"r*");
+legend ("original", "nearest", "linear", "pchip", "spline");
+@end group
+@end example
+
+@seealso{@ref{XREFpchip,,pchip}, @ref{XREFspline,,spline}, @ref{XREFinterpft,,interpft}, @ref{XREFinterp2,,interp2}, @ref{XREFinterp3,,interp3}, @ref{XREFinterpn,,interpn}}
+@end deftypefn
+
+
+There are some important differences between the various interpolation
+methods.  The @qcode{"spline"} method enforces that both the first and second
+derivatives of the interpolated values have a continuous derivative,
+whereas the other methods do not.  This means that the results of the
+@qcode{"spline"} method are generally smoother.  If the function to be
+interpolated is in fact smooth, then @qcode{"spline"} will give excellent
+results.  However, if the function to be evaluated is in some manner
+discontinuous, then @qcode{"pchip"} interpolation might give better results.
+
+This can be demonstrated by the code
+
+@example
+@group
+t = -2:2;
+dt = 1;
+ti =-2:0.025:2;
+dti = 0.025;
+y = sign (t);
+ys = interp1 (t,y,ti,"spline");
+yp = interp1 (t,y,ti,"pchip");
+ddys = diff (diff (ys)./dti) ./ dti;
+ddyp = diff (diff (yp)./dti) ./ dti;
+figure (1);
+plot (ti,ys,"r-", ti,yp,"g-");
+legend ("spline", "pchip", 4);
+figure (2);
+plot (ti,ddys,"r+", ti,ddyp,"g*");
+legend ("spline", "pchip");
+@end group
+@end example
+
+@ifnotinfo
+@noindent
+The result of which can be seen in @ref{fig:interpderiv1} and
+@ref{fig:interpderiv2}.
+
+@float Figure,fig:interpderiv1
+@center @image{interpderiv1,4in}
+@caption{Comparison of @qcode{"pchip"} and @qcode{"spline"} interpolation methods for a
+step function}
+@end float
+
+@float Figure,fig:interpderiv2
+@center @image{interpderiv2,4in}
+@caption{Comparison of the second derivative of the @qcode{"pchip"} and @qcode{"spline"}
+interpolation methods for a step function}
+@end float
+@end ifnotinfo
+
+Fourier interpolation, is a resampling technique where a signal is
+converted to the frequency domain, padded with zeros and then
+reconverted to the time domain.
+
+@c interpft scripts/general/interpft.m
+@anchor{XREFinterpft}
+@deftypefn  {Function File} {} interpft (@var{x}, @var{n})
+@deftypefnx {Function File} {} interpft (@var{x}, @var{n}, @var{dim})
+
+Fourier interpolation.
+
+If @var{x} is a vector then @var{x} is resampled with @var{n} points.  The
+data in @var{x} is assumed to be equispaced.  If @var{x} is a matrix or an
+N-dimensional array, the interpolation is performed on each column of
+@var{x}.
+
+If @var{dim} is specified, then interpolate along the dimension @var{dim}.
+
+@code{interpft} assumes that the interpolated function is periodic, and so
+assumptions are made about the endpoints of the interpolation.
+@seealso{@ref{XREFinterp1,,interp1}}
+@end deftypefn
+
+
+There are two significant limitations on Fourier interpolation.  First,
+the function signal is assumed to be periodic, and so non-periodic
+signals will be poorly represented at the edges.  Second, both the
+signal and its interpolation are required to be sampled at equispaced
+points.  An example of the use of @code{interpft} is
+
+@example
+@group
+t = 0 : 0.3 : pi; dt = t(2)-t(1);
+n = length (t); k = 100;
+ti = t(1) + [0 : k-1]*dt*n/k;
+y = sin (4*t + 0.3) .* cos (3*t - 0.1);
+yp = sin (4*ti + 0.3) .* cos (3*ti - 0.1);
+plot (ti, yp, "g", ti, interp1 (t, y, ti, "spline"), "b", ...
+      ti, interpft (y, k), "c", t, y, "r+");
+legend ("sin(4t+0.3)cos(3t-0.1)", "spline", "interpft", "data");
+@end group
+@end example
+
+@noindent
+@ifinfo
+which demonstrates the poor behavior of Fourier interpolation for non-periodic
+functions.
+@end ifinfo
+@ifnotinfo
+which demonstrates the poor behavior of Fourier interpolation for non-periodic
+functions, as can be seen in @ref{fig:interpft}.
+
+@float Figure,fig:interpft
+@center @image{interpft,4in}
+@caption{Comparison of @code{interp1} and @code{interpft} for non-periodic data}
+@end float
+@end ifnotinfo
+
+In addition, the support functions @code{spline} and @code{lookup} that
+underlie the @code{interp1} function can be called directly.
+
+@c spline scripts/polynomial/spline.m
+@anchor{XREFspline}
+@deftypefn  {Function File} {@var{pp} =} spline (@var{x}, @var{y})
+@deftypefnx {Function File} {@var{yi} =} spline (@var{x}, @var{y}, @var{xi})
+Return the cubic spline interpolant of points @var{x} and @var{y}.
+
+When called with two arguments, return the piecewise polynomial @var{pp}
+that may be used with @code{ppval} to evaluate the polynomial at specific
+points.
+
+When called with a third input argument, @code{spline} evaluates the spline
+at the points @var{xi}.  The third calling form
+@code{spline (@var{x}, @var{y}, @var{xi})} is equivalent to
+@code{ppval (spline (@var{x}, @var{y}), @var{xi})}.
+
+The variable @var{x} must be a vector of length @var{n}.
+
+@var{y} can be either a vector or array.  If @var{y} is a vector it must
+have a length of either @var{n} or @code{@var{n} + 2}.  If the length of
+@var{y} is @var{n}, then the @qcode{"not-a-knot"} end condition is used.
+If the length of @var{y} is @code{@var{n} + 2}, then the first and last
+values of the vector @var{y} are the values of the first derivative of the
+cubic spline at the endpoints.
+
+If @var{y} is an array, then the size of @var{y} must have the form
+@tex
+$$[s_1, s_2, \cdots, s_k, n]$$
+@end tex
+@ifnottex
+@code{[@var{s1}, @var{s2}, @dots{}, @var{sk}, @var{n}]}
+@end ifnottex
+or
+@tex
+$$[s_1, s_2, \cdots, s_k, n + 2].$$
+@end tex
+@ifnottex
+@code{[@var{s1}, @var{s2}, @dots{}, @var{sk}, @var{n} + 2]}.
+@end ifnottex
+The array is reshaped internally to a matrix where the leading
+dimension is given by
+@tex
+$$s_1 s_2 \cdots s_k$$
+@end tex
+@ifnottex
+@code{@var{s1} * @var{s2} * @dots{} * @var{sk}}
+@end ifnottex
+and each row of this matrix is then treated separately.  Note that this is
+exactly the opposite of @code{interp1} but is done for @sc{matlab}
+compatibility.
+
+@seealso{@ref{XREFpchip,,pchip}, @ref{XREFppval,,ppval}, @ref{XREFmkpp,,mkpp}, @ref{XREFunmkpp,,unmkpp}}
+@end deftypefn
+
+
+@node Multi-dimensional Interpolation
+@section Multi-dimensional Interpolation
+
+There are three multi-dimensional interpolation functions in Octave, with
+similar capabilities.  Methods using Delaunay tessellation are described
+in @ref{Interpolation on Scattered Data}.
+
+@c interp2 scripts/general/interp2.m
+@anchor{XREFinterp2}
+@deftypefn  {Function File} {@var{zi} =} interp2 (@var{x}, @var{y}, @var{z}, @var{xi}, @var{yi})
+@deftypefnx {Function File} {@var{zi} =} interp2 (@var{z}, @var{xi}, @var{yi})
+@deftypefnx {Function File} {@var{zi} =} interp2 (@var{z}, @var{n})
+@deftypefnx {Function File} {@var{zi} =} interp2 (@var{z})
+@deftypefnx {Function File} {@var{zi} =} interp2 (@dots{}, @var{method})
+@deftypefnx {Function File} {@var{zi} =} interp2 (@dots{}, @var{method}, @var{extrap})
+
+Two-dimensional interpolation.
+
+Interpolate reference data @var{x}, @var{y}, @var{z} to determine @var{zi}
+at the coordinates @var{xi}, @var{yi}.  The reference data @var{x}, @var{y}
+can be matrices, as returned by @code{meshgrid}, in which case the sizes of
+@var{x}, @var{y}, and @var{z} must be equal.  If @var{x}, @var{y} are
+vectors describing a grid then @code{length (@var{x}) == columns (@var{z})}
+and @code{length (@var{y}) == rows (@var{z})}.  In either case the input
+data must be strictly monotonic.
+
+If called without @var{x}, @var{y}, and just a single reference data matrix
+@var{z}, the 2-D region
+@code{@var{x} = 1:columns (@var{z}), @var{y} = 1:rows (@var{z})} is assumed.
+This saves memory if the grid is regular and the distance between points is
+not important.
+
+If called with a single reference data matrix @var{z} and a refinement
+value @var{n}, then perform interpolation over a grid where each original
+interval has been recursively subdivided @var{n} times.  This results in
+@code{2^@var{n}-1} additional points for every interval in the original
+grid.  If @var{n} is omitted a value of 1 is used.  As an example, the
+interval [0,1] with @code{@var{n}==2} results in a refined interval with
+points at [0, 1/4, 1/2, 3/4, 1].
+
+The interpolation @var{method} is one of:
+
+@table @asis
+@item @qcode{"nearest"}
+Return the nearest neighbor.
+
+@item @qcode{"linear"} (default)
+Linear interpolation from nearest neighbors.
+
+@item @qcode{"pchip"}
+Piecewise cubic Hermite interpolating polynomial---shape-preserving
+interpolation with smooth first derivative.
+
+@item @qcode{"cubic"}
+Cubic interpolation (same as @qcode{"pchip"}).
+
+@item @qcode{"spline"}
+Cubic spline interpolation---smooth first and second derivatives
+throughout the curve.
+@end table
+
+@var{extrap} is a scalar number.  It replaces values beyond the endpoints
+with @var{extrap}.  Note that if @var{extrapval} is used, @var{method} must
+be specified as well.  If @var{extrap} is omitted and the @var{method} is
+@qcode{"spline"}, then the extrapolated values of the @qcode{"spline"} are
+used.  Otherwise the default @var{extrap} value for any other @var{method}
+is @qcode{"NA"}.
+@seealso{@ref{XREFinterp1,,interp1}, @ref{XREFinterp3,,interp3}, @ref{XREFinterpn,,interpn}, @ref{XREFmeshgrid,,meshgrid}}
+@end deftypefn
+
+
+@c interp3 scripts/general/interp3.m
+@anchor{XREFinterp3}
+@deftypefn  {Function File} {@var{vi} =} interp3 (@var{x}, @var{y}, @var{z}, @var{v}, @var{xi}, @var{yi}, @var{zi})
+@deftypefnx {Function File} {@var{vi} =} interp3 (@var{v}, @var{xi}, @var{yi}, @var{zi})
+@deftypefnx {Function File} {@var{vi} =} interp3 (@var{v}, @var{n})
+@deftypefnx {Function File} {@var{vi} =} interp3 (@var{v})
+@deftypefnx {Function File} {@var{vi} =} interp3 (@dots{}, @var{method})
+@deftypefnx {Function File} {@var{vi} =} interp3 (@dots{}, @var{method}, @var{extrapval})
+
+Three-dimensional interpolation.
+
+Interpolate reference data @var{x}, @var{y}, @var{z}, @var{v} to determine
+@var{vi} at the coordinates @var{xi}, @var{yi}, @var{zi}.  The reference
+data @var{x}, @var{y}, @var{z} can be matrices, as returned by
+@code{meshgrid}, in which case the sizes of @var{x}, @var{y}, @var{z}, and
+@var{v} must be equal.  If @var{x}, @var{y}, @var{z} are vectors describing
+a cubic grid then @code{length (@var{x}) == columns (@var{v})},
+@code{length (@var{y}) == rows (@var{v})}, and
+@code{length (@var{z}) == size (@var{v}, 3)}.  In either case the input
+data must be strictly monotonic.
+
+If called without @var{x}, @var{y}, @var{z}, and just a single reference
+data matrix @var{v}, the 3-D region
+@code{@var{x} = 1:columns (@var{v}), @var{y} = 1:rows (@var{v}),
+@var{z} = 1:size (@var{v}, 3)} is assumed.
+This saves memory if the grid is regular and the distance between points is
+not important.
+
+If called with a single reference data matrix @var{v} and a refinement
+value @var{n}, then perform interpolation over a 3-D grid where each original
+interval has been recursively subdivided @var{n} times.  This results in
+@code{2^@var{n}-1} additional points for every interval in the original
+grid.  If @var{n} is omitted a value of 1 is used.  As an example, the
+interval [0,1] with @code{@var{n}==2} results in a refined interval with
+points at [0, 1/4, 1/2, 3/4, 1].
+
+The interpolation @var{method} is one of:
+
+@table @asis
+@item @qcode{"nearest"}
+Return the nearest neighbor.
+
+@item @qcode{"linear"} (default)
+Linear interpolation from nearest neighbors.
+
+@item @qcode{"cubic"}
+Piecewise cubic Hermite interpolating polynomial---shape-preserving
+interpolation with smooth first derivative (not implemented yet).
+
+@item @qcode{"spline"}
+Cubic spline interpolation---smooth first and second derivatives
+throughout the curve.
+@end table
+
+@var{extrapval} is a scalar number.  It replaces values beyond the endpoints
+with @var{extrapval}.  Note that if @var{extrapval} is used, @var{method}
+must be specified as well.  If @var{extrapval} is omitted and the
+@var{method} is @qcode{"spline"}, then the extrapolated values of the
+@qcode{"spline"} are used.  Otherwise the default @var{extrapval} value for
+any other @var{method} is @qcode{"NA"}.
+@seealso{@ref{XREFinterp1,,interp1}, @ref{XREFinterp2,,interp2}, @ref{XREFinterpn,,interpn}, @ref{XREFmeshgrid,,meshgrid}}
+@end deftypefn
+
+
+@c interpn scripts/general/interpn.m
+@anchor{XREFinterpn}
+@deftypefn  {Function File} {@var{vi} =} interpn (@var{x1}, @var{x2}, @dots{}, @var{v}, @var{y1}, @var{y2}, @dots{})
+@deftypefnx {Function File} {@var{vi} =} interpn (@var{v}, @var{y1}, @var{y2}, @dots{})
+@deftypefnx {Function File} {@var{vi} =} interpn (@var{v}, @var{m})
+@deftypefnx {Function File} {@var{vi} =} interpn (@var{v})
+@deftypefnx {Function File} {@var{vi} =} interpn (@dots{}, @var{method})
+@deftypefnx {Function File} {@var{vi} =} interpn (@dots{}, @var{method}, @var{extrapval})
+
+Perform @var{n}-dimensional interpolation, where @var{n} is at least two.
+
+Each element of the @var{n}-dimensional array @var{v} represents a value
+at a location given by the parameters @var{x1}, @var{x2}, @dots{}, @var{xn}.
+The parameters @var{x1}, @var{x2}, @dots{}, @var{xn} are either
+@var{n}-dimensional arrays of the same size as the array @var{v} in
+the @qcode{"ndgrid"} format or vectors.  The parameters @var{y1}, etc.
+respect a similar format to @var{x1}, etc., and they represent the points
+at which the array @var{vi} is interpolated.
+
+If @var{x1}, @dots{}, @var{xn} are omitted, they are assumed to be
+@code{x1 = 1 : size (@var{v}, 1)}, etc.  If @var{m} is specified, then
+the interpolation adds a point half way between each of the interpolation
+points.  This process is performed @var{m} times.  If only @var{v} is
+specified, then @var{m} is assumed to be @code{1}.
+
+The interpolation @var{method} is one of:
+
+@table @asis
+@item @qcode{"nearest"}
+Return the nearest neighbor.
+
+@item @qcode{"linear"} (default)
+Linear interpolation from nearest neighbors.
+
+@item @qcode{"pchip"}
+Piecewise cubic Hermite interpolating polynomial---shape-preserving
+interpolation with smooth first derivative (not implemented yet).
+
+@item @qcode{"cubic"}
+Cubic interpolation (same as @qcode{"pchip"} [not implemented yet]).
+
+@item @qcode{"spline"}
+Cubic spline interpolation---smooth first and second derivatives
+throughout the curve.
+@end table
+
+The default method is @qcode{"linear"}.
+
+@var{extrapval} is a scalar number.  It replaces values beyond the endpoints
+with @var{extrapval}.  Note that if @var{extrapval} is used, @var{method}
+must be specified as well.  If @var{extrapval} is omitted and the
+@var{method} is @qcode{"spline"}, then the extrapolated values of the
+@qcode{"spline"} are used.  Otherwise the default @var{extrapval} value for
+any other @var{method} is @qcode{"NA"}.
+@seealso{@ref{XREFinterp1,,interp1}, @ref{XREFinterp2,,interp2}, @ref{XREFinterp3,,interp3}, @ref{XREFspline,,spline}, @ref{XREFndgrid,,ndgrid}}
+@end deftypefn
+
+
+A significant difference between @code{interpn} and the other two
+multi-dimensional interpolation functions is the fashion in which the
+dimensions are treated.  For @code{interp2} and @code{interp3}, the y-axis is
+considered to be the columns of the matrix, whereas the x-axis corresponds to
+the rows of the array.  As Octave indexes arrays in column major order, the
+first dimension of any array is the columns, and so @code{interpn} effectively
+reverses the 'x' and 'y' dimensions.  Consider the example,
+
+@example
+@group
+x = y = z = -1:1;
+f = @@(x,y,z) x.^2 - y - z.^2;
+[xx, yy, zz] = meshgrid (x, y, z);
+v = f (xx,yy,zz);
+xi = yi = zi = -1:0.1:1;
+[xxi, yyi, zzi] = meshgrid (xi, yi, zi);
+vi = interp3 (x, y, z, v, xxi, yyi, zzi, "spline");
+[xxi, yyi, zzi] = ndgrid (xi, yi, zi);
+vi2 = interpn (x, y, z, v, xxi, yyi, zzi, "spline");
+mesh (zi, yi, squeeze (vi2(1,:,:)));
+@end group
+@end example
+
+@noindent
+where @code{vi} and @code{vi2} are identical.  The reversal of the
+dimensions is treated in the @code{meshgrid} and @code{ndgrid} functions
+respectively.
+@ifnotinfo
+The result of this code can be seen in @ref{fig:interpn}.
+
+@float Figure,fig:interpn
+@center @image{interpn,4in}
+@caption{Demonstration of the use of @code{interpn}}
+@end float
+@end ifnotinfo
+

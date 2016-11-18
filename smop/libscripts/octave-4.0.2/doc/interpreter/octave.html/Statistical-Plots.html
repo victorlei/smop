@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Statistical Plots</title>
+
+<meta name="description" content="GNU Octave: Statistical Plots">
+<meta name="keywords" content="GNU Octave: Statistical Plots">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Statistics.html#Statistics" rel="up" title="Statistics">
+<link href="Correlation-and-Regression-Analysis.html#Correlation-and-Regression-Analysis" rel="next" title="Correlation and Regression Analysis">
+<link href="Basic-Statistical-Functions.html#Basic-Statistical-Functions" rel="prev" title="Basic Statistical Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Statistical-Plots"></a>
+<div class="header">
+<p>
+Next: <a href="Correlation-and-Regression-Analysis.html#Correlation-and-Regression-Analysis" accesskey="n" rel="next">Correlation and Regression Analysis</a>, Previous: <a href="Basic-Statistical-Functions.html#Basic-Statistical-Functions" accesskey="p" rel="prev">Basic Statistical Functions</a>, Up: <a href="Statistics.html#Statistics" accesskey="u" rel="up">Statistics</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Statistical-Plots-1"></a>
+<h3 class="section">26.3 Statistical Plots</h3>
+
+
+<p>Octave can create Quantile Plots (QQ-Plots), and Probability Plots
+(PP-Plots).  These are simple graphical tests for determining if a
+data set comes from a certain distribution.
+</p>
+<p>Note that Octave can also show histograms of data
+using the <code>hist</code> function as described in
+<a href="Two_002dDimensional-Plots.html#Two_002dDimensional-Plots">Two-Dimensional Plots</a>.
+</p>
+<a name="XREFqqplot"></a><dl>
+<dt><a name="index-qqplot"></a>Function File: <em>[<var>q</var>, <var>s</var>] =</em> <strong>qqplot</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-qqplot-1"></a>Function File: <em>[<var>q</var>, <var>s</var>] =</em> <strong>qqplot</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-qqplot-2"></a>Function File: <em>[<var>q</var>, <var>s</var>] =</em> <strong>qqplot</strong> <em>(<var>x</var>, <var>dist</var>)</em></dt>
+<dt><a name="index-qqplot-3"></a>Function File: <em>[<var>q</var>, <var>s</var>] =</em> <strong>qqplot</strong> <em>(<var>x</var>, <var>y</var>, <var>params</var>)</em></dt>
+<dt><a name="index-qqplot-4"></a>Function File: <em></em> <strong>qqplot</strong> <em>(&hellip;)</em></dt>
+<dd><p>Perform a QQ-plot (quantile plot).
+</p>
+<p>If F is the CDF of the distribution <var>dist</var> with parameters
+<var>params</var> and G its inverse, and <var>x</var> a sample vector of length
+<var>n</var>, the QQ-plot graphs ordinate <var>s</var>(<var>i</var>) = <var>i</var>-th
+largest element of x versus abscissa <var>q</var>(<var>i</var>f) = G((<var>i</var> -
+0.5)/<var>n</var>).
+</p>
+<p>If the sample comes from F, except for a transformation of location
+and scale, the pairs will approximately follow a straight line.
+</p>
+<p>If the second argument is a vector <var>y</var> the empirical CDF of <var>y</var>
+is used as <var>dist</var>.
+</p>
+<p>The default for <var>dist</var> is the standard normal distribution.  The
+optional argument <var>params</var> contains a list of parameters of
+<var>dist</var>.  For example, for a quantile plot of the uniform
+distribution on [2,4] and <var>x</var>, use
+</p>
+<div class="example">
+<pre class="example">qqplot (x, &quot;unif&quot;, 2, 4)
+</pre></div>
+
+<p><var>dist</var> can be any string for which a function <var>distinv</var> or
+<var>dist_inv</var> exists that calculates the inverse CDF of distribution
+<var>dist</var>.
+</p>
+<p>If no output arguments are given, the data are plotted directly.
+</p></dd></dl>
+
+
+<a name="XREFppplot"></a><dl>
+<dt><a name="index-ppplot"></a>Function File: <em>[<var>p</var>, <var>y</var>] =</em> <strong>ppplot</strong> <em>(<var>x</var>, <var>dist</var>, <var>params</var>)</em></dt>
+<dd><p>Perform a PP-plot (probability plot).
+</p>
+<p>If F is the CDF of the distribution <var>dist</var> with parameters
+<var>params</var> and <var>x</var> a sample vector of length <var>n</var>, the PP-plot
+graphs ordinate <var>y</var>(<var>i</var>) = F (<var>i</var>-th largest element of
+<var>x</var>) versus abscissa <var>p</var>(<var>i</var>) = (<var>i</var> - 0.5)/<var>n</var>.  If
+the sample comes from F, the pairs will approximately follow a straight
+line.
+</p>
+<p>The default for <var>dist</var> is the standard normal distribution.
+</p>
+<p>The optional argument <var>params</var> contains a list of parameters of
+<var>dist</var>.
+</p>
+<p>For example, for a probability plot of the uniform distribution on [2,4]
+and <var>x</var>, use
+</p>
+<div class="example">
+<pre class="example">ppplot (x, &quot;uniform&quot;, 2, 4)
+</pre></div>
+
+<p><var>dist</var> can be any string for which a function <var>dist_cdf</var> that
+calculates the CDF of distribution <var>dist</var> exists.
+</p>
+<p>If no output is requested then the data are plotted immediately.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Correlation-and-Regression-Analysis.html#Correlation-and-Regression-Analysis" accesskey="n" rel="next">Correlation and Regression Analysis</a>, Previous: <a href="Basic-Statistical-Functions.html#Basic-Statistical-Functions" accesskey="p" rel="prev">Basic Statistical Functions</a>, Up: <a href="Statistics.html#Statistics" accesskey="u" rel="up">Statistics</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

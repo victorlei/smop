@@ -1,0 +1,370 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Running Configure and Make</title>
+
+<meta name="description" content="GNU Octave: Running Configure and Make">
+<meta name="keywords" content="GNU Octave: Running Configure and Make">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Installation.html#Installation" rel="up" title="Installation">
+<link href="Compiling-Octave-with-64_002dbit-Indexing.html#Compiling-Octave-with-64_002dbit-Indexing" rel="next" title="Compiling Octave with 64-bit Indexing">
+<link href="External-Packages.html#External-Packages" rel="prev" title="External Packages">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Running-Configure-and-Make"></a>
+<div class="header">
+<p>
+Next: <a href="Compiling-Octave-with-64_002dbit-Indexing.html#Compiling-Octave-with-64_002dbit-Indexing" accesskey="n" rel="next">Compiling Octave with 64-bit Indexing</a>, Previous: <a href="Build-Dependencies.html#Build-Dependencies" accesskey="p" rel="prev">Build Dependencies</a>, Up: <a href="Installation.html#Installation" accesskey="u" rel="up">Installation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Running-Configure-and-Make-1"></a>
+<h3 class="section">G.2 Running Configure and Make</h3>
+
+<ul>
+<li> Run the shell script <samp>configure</samp>.  This will determine the features
+your system has (or doesn&rsquo;t have) and create a file named
+<samp>Makefile</samp> from each of the files named <samp>Makefile.in</samp>.
+
+<p>Here is a summary of the configure options that are most frequently used
+when building Octave:
+</p>
+<dl compact="compact">
+<dt><code>--help</code></dt>
+<dd><p>Print a summary of the options recognized by the configure script.
+</p>
+</dd>
+<dt><code>--prefix=<var>prefix</var></code></dt>
+<dd><p>Install Octave in subdirectories below <var>prefix</var>.  The default value
+of <var>prefix</var> is <samp>/usr/local</samp>.
+</p>
+</dd>
+<dt><code>--srcdir=<var>dir</var></code></dt>
+<dd><p>Look for Octave sources in the directory <var>dir</var>.
+</p>
+</dd>
+<dt><code>--enable-64</code></dt>
+<dd><p>This is an <strong>experimental</strong> option to enable Octave to use 64-bit
+integers for array dimensions and indexing on 64-bit platforms.  You
+probably don&rsquo;t want to use this option unless you know what you are
+doing.  See <a href="Compiling-Octave-with-64_002dbit-Indexing.html#Compiling-Octave-with-64_002dbit-Indexing">Compiling Octave with 64-bit Indexing</a>, for more details
+about building Octave with this option.
+</p>
+</dd>
+<dt><code>--enable-bounds-check</code></dt>
+<dd><p>Enable bounds checking for indexing operators in the internal array
+classes.  This option is primarily used for debugging Octave.  Building
+Octave with this option has a negative impact on performance and is not
+recommended for general use.
+</p>
+</dd>
+<dt><code>--disable-docs</code></dt>
+<dd><p>Disable building all forms of the documentation (Info, PDF, HTML).  The
+default is to build documentation, but your system will need functioning
+Texinfo and TeX installs for this to succeed.
+</p>
+</dd>
+<dt><code>--enable-float-truncate</code></dt>
+<dd><p>This option allows for truncation of intermediate floating point results
+in calculations.  It is only necessary for certain platforms.
+</p>
+</dd>
+<dt><code>--enable-readline</code></dt>
+<dd><p>Use the readline library to provide for editing of the command line in
+terminal environments.  This option is on by default.
+</p>
+</dd>
+<dt><code>--enable-shared</code></dt>
+<dd><p>Create shared libraries (this is the default).  If you are planning to
+use the dynamic loading features, you will probably want to use this
+option.  It will make your <samp>.oct</samp> files much smaller and on some
+systems it may be necessary to build shared libraries in order to use
+dynamically linked functions.
+</p>
+<p>You may also want to build a shared version of <code>libstdc++</code>, if your
+system doesn&rsquo;t already have one.
+</p>
+</dd>
+<dt><code>--enable-dl</code></dt>
+<dd><p>Use <code>dlopen</code> and friends to make Octave capable of dynamically
+linking externally compiled functions (this is the default if
+<samp>--enable-shared</samp> is specified).  This option only works on
+systems that actually have these functions.  If you plan on using this
+feature, you should probably also use <samp>--enable-shared</samp> to reduce
+the size of your <samp>.oct</samp> files.
+</p>
+</dd>
+<dt><code>--with-blas=&lt;lib&gt;</code></dt>
+<dd><p>By default, configure looks for the best <small>BLAS</small> matrix libraries on
+your system, including optimized implementations such as the free ATLAS
+3.0, as well as vendor-tuned libraries.  (The use of an optimized
+<small>BLAS</small> will generally result in several-times faster matrix
+operations.)  Use this option to specify a particular <small>BLAS</small> library
+that Octave should use.
+</p>
+</dd>
+<dt><code>--with-lapack=&lt;lib&gt;</code></dt>
+<dd><p>By default, configure looks for the best <small>LAPACK</small> matrix libraries on
+your system, including optimized implementations such as the free ATLAS
+3.0, as well as vendor-tuned libraries.  (The use of an optimized
+<small>LAPACK</small> will generally result in several-times faster matrix
+operations.)  Use this option to specify a particular <small>LAPACK</small>
+library that Octave should use.
+</p>
+</dd>
+<dt><code>--with-magick=&lt;lib&gt;</code></dt>
+<dd><p>Select the library to use for image I/O.  The two possible values are
+<code>&quot;GraphicsMagick&quot;</code> (default) or <code>&quot;ImageMagick&quot;</code>.
+</p>
+</dd>
+<dt><code>--with-sepchar=&lt;char&gt;</code></dt>
+<dd><p>Use &lt;char&gt; as the path separation character.  This option can help when
+running Octave on non-Unix systems.
+</p>
+</dd>
+<dt><code>--without-amd</code></dt>
+<dd><p>Don&rsquo;t use <small>AMD</small>, disable some sparse matrix functionality.
+</p>
+</dd>
+<dt><code>--without-camd</code></dt>
+<dd><p>Don&rsquo;t use <small>CAMD</small>, disable some sparse matrix functionality.
+</p>
+</dd>
+<dt><code>--without-colamd</code></dt>
+<dd><p>Don&rsquo;t use <small>COLAMD</small>, disable some sparse matrix functionality.
+</p>
+</dd>
+<dt><code>--without-ccolamd</code></dt>
+<dd><p>Don&rsquo;t use <small>CCOLAMD</small>, disable some sparse matrix functionality.
+</p>
+</dd>
+<dt><code>--without-cholmod</code></dt>
+<dd><p>Don&rsquo;t use <small>CHOLMOD</small>, disable some sparse matrix functionality.
+</p>
+</dd>
+<dt><code>--without-curl</code></dt>
+<dd><p>Don&rsquo;t use the cURL library, disable the ftp objects, <code>urlread</code> and
+<code>urlwrite</code> functions.
+</p>
+</dd>
+<dt><code>--without-cxsparse</code></dt>
+<dd><p>Don&rsquo;t use <small>CXSPARSE</small>, disable some sparse matrix functionality.
+</p>
+</dd>
+<dt><code>--without-fftw3</code></dt>
+<dd><p>Use the included <small>FFTPACK</small> library for computing Fast Fourier
+Transforms instead of the <small>FFTW3</small> library.
+</p>
+</dd>
+<dt><code>--without-fftw3f</code></dt>
+<dd><p>Use the included <small>FFTPACK</small> library for computing Fast Fourier
+Transforms instead of the <small>FFTW3</small> library when operating on single
+precision (float) values.
+</p>
+</dd>
+<dt><code>--without-glpk</code></dt>
+<dd><p>Don&rsquo;t use the <small>GLPK</small> library for linear programming.
+</p>
+</dd>
+<dt><code>--without-hdf5</code></dt>
+<dd><p>Don&rsquo;t use the <small>HDF5</small> library, disable reading and writing of
+<small>HDF5</small> files.
+</p>
+</dd>
+<dt><code>--without-opengl</code></dt>
+<dd><p>Don&rsquo;t use OpenGL, disable native graphics toolkit for plotting.  You
+will need <code>gnuplot</code> installed in order to make plots.
+</p>
+</dd>
+<dt><code>--without-qhull</code></dt>
+<dd><p>Don&rsquo;t use Qhull, disable <code>delaunay</code>, <code>convhull</code>, and
+related functions.
+</p>
+</dd>
+<dt><code>--without-qrupdate</code></dt>
+<dd><p>Don&rsquo;t use <small>QRUPDATE</small>, disable QR and Cholesky update functions.
+</p>
+</dd>
+<dt><code>--without-umfpack</code></dt>
+<dd><p>Don&rsquo;t use <small>UMFPACK</small>, disable some sparse matrix functionality.
+</p>
+</dd>
+<dt><code>--without-zlib</code></dt>
+<dd><p>Don&rsquo;t use the zlib library, disable data file compression and support
+for recent MAT file formats.
+</p>
+</dd>
+<dt><code>--without-framework-carbon</code></dt>
+<dd><p>Don&rsquo;t use framework Carbon headers, libraries, or specific source code
+even if the configure test succeeds (the default is to use Carbon
+framework if available).  This is a platform specific configure option
+for Mac systems.
+</p>
+</dd>
+<dt><code>--without-framework-opengl</code></dt>
+<dd><p>Don&rsquo;t use framework OpenGL headers, libraries, or specific source code
+even if the configure test succeeds.  If this option is given then
+OpenGL headers and libraries in standard system locations are tested
+(the default value is <samp>--with-framework-opengl</samp>).  This is a
+platform specific configure option for Mac systems.
+</p>
+</dd>
+</dl>
+
+<p>See the file <samp>INSTALL</samp> for more general information about the
+command line options used by configure.  That file also contains
+instructions for compiling in a directory other than the one where
+the source is located.
+</p>
+</li><li> Run make.
+
+<p>You will need a recent version of GNU Make as Octave relies on certain
+features not generally available in all versions of make.  Modifying
+Octave&rsquo;s makefiles to work with other make programs is probably not
+worth your time; instead, we simply recommend installing GNU Make.
+</p>
+<p>There are currently two options for plotting in Octave: (1) the external
+program gnuplot, or (2) the internal graphics engine using OpenGL and
+FLTK.  Gnuplot is a command-driven interactive function plotting
+program.  Gnuplot is copyrighted, but freely distributable.  As of
+Octave release 3.4, gnuplot is the default option for plotting.  But,
+the internal graphics engine is nearly 100% compatible, certainly for
+most ordinary plots, and users are encouraged to test it.  It is
+anticipated that the internal engine will become the default option at
+the next major release of Octave.
+</p>
+<p>To compile Octave, you will need a recent version of <code>g++</code> or other
+ANSI C++ compiler.  In addition, you will need a Fortran 77 compiler or
+<code>f2c</code>.  If you use <code>f2c</code>, you will need a script like
+<code>fort77</code> that works like a normal Fortran compiler by combining
+<code>f2c</code> with your C compiler in a single script.
+</p>
+<p>If you plan to modify the parser you will also need GNU <code>bison</code> and
+<code>flex</code>.  If you modify the documentation, you will need GNU
+Texinfo.
+</p>
+<p>GNU Make, <code>gcc</code> (and <code>libstdc++</code>), <code>gnuplot</code>,
+<code>bison</code>, <code>flex</code>, and Texinfo are all available from many
+anonymous ftp archives.  The primary site is <a href="ftp.gnu.org">ftp.gnu.org</a>, but it
+is often very busy.  A list of sites that mirror the software on
+<a href="ftp.gnu.org">ftp.gnu.org</a> is available by anonymous ftp from
+<a href="ftp://ftp.gnu.org/pub/gnu/GNUinfo/FTP">ftp://ftp.gnu.org/pub/gnu/GNUinfo/FTP</a>.
+</p>
+<p>Octave requires approximately 1.4 GB of disk storage to unpack and
+compile from source (significantly less, 400 MB, if you don&rsquo;t compile
+with debugging symbols).  To compile without debugging symbols try the
+command
+</p>
+<div class="example">
+<pre class="example">make CFLAGS=-O CXXFLAGS=-O LDFLAGS=
+</pre></div>
+
+<p>instead of just <code>make</code>.
+</p>
+</li><li> If you encounter errors while compiling Octave, first
+see <a href="Installation-Problems.html#Installation-Problems">Installation Problems</a> for a list of
+known problems and if there is a workaround or solution for
+your problem.  If not, see
+<a href="Trouble.html#Trouble">Trouble</a>
+for information about how to report bugs.
+
+</li><li> Once you have successfully compiled Octave, run <code>make install</code>.
+
+<p>This will install a copy of Octave, its libraries, and its documentation
+in the destination directory.  As distributed, Octave is installed in
+the following directories.  In the table below, <var>prefix</var> defaults to
+<samp>/usr/local</samp>, <var>version</var> stands for the current version number
+of the interpreter, and <var>arch</var> is the type of computer on which
+Octave is installed (for example, &lsquo;<samp>i586-unknown-gnu</samp>&rsquo;).
+</p>
+<dl compact="compact">
+<dt><samp><var>prefix</var>/bin</samp></dt>
+<dd><p>Octave and other binaries that people will want to run directly.
+</p>
+</dd>
+<dt><samp><var>prefix</var>/lib/octave-<var>version</var></samp></dt>
+<dd><p>Libraries like liboctave.a and liboctinterp.a.
+</p>
+</dd>
+<dt><samp><var>prefix</var>/octave-<var>version</var>/include/octave</samp></dt>
+<dd><p>Include files distributed with Octave.
+</p>
+</dd>
+<dt><samp><var>prefix</var>/share</samp></dt>
+<dd><p>Architecture-independent data files.
+</p>
+</dd>
+<dt><samp><var>prefix</var>/share/man/man1</samp></dt>
+<dd><p>Unix-style man pages describing Octave.
+</p>
+</dd>
+<dt><samp><var>prefix</var>/share/info</samp></dt>
+<dd><p>Info files describing Octave.
+</p>
+</dd>
+<dt><samp><var>prefix</var>/share/octave/<var>version</var>/m</samp></dt>
+<dd><p>Function files distributed with Octave.  This includes the Octave
+version, so that multiple versions of Octave may be installed at the
+same time.
+</p>
+</dd>
+<dt><samp><var>prefix</var>/libexec/octave/<var>version</var>/exec/<var>arch</var></samp></dt>
+<dd><p>Executables to be run by Octave rather than the user.
+</p>
+</dd>
+<dt><samp><var>prefix</var>/lib/octave/<var>version</var>/oct/<var>arch</var></samp></dt>
+<dd><p>Object files that will be dynamically loaded.
+</p>
+</dd>
+<dt><samp><var>prefix</var>/share/octave/<var>version</var>/imagelib</samp></dt>
+<dd><p>Image files that are distributed with Octave.
+</p></dd>
+</dl>
+</li></ul>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Compiling-Octave-with-64_002dbit-Indexing.html#Compiling-Octave-with-64_002dbit-Indexing" accesskey="n" rel="next">Compiling Octave with 64-bit Indexing</a>, Previous: <a href="Build-Dependencies.html#Build-Dependencies" accesskey="p" rel="prev">Build Dependencies</a>, Up: <a href="Installation.html#Installation" accesskey="u" rel="up">Installation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

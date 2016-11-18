@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Miscellaneous Techniques</title>
+
+<meta name="description" content="GNU Octave: Miscellaneous Techniques">
+<meta name="keywords" content="GNU Octave: Miscellaneous Techniques">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Vectorization-and-Faster-Code-Execution.html#Vectorization-and-Faster-Code-Execution" rel="up" title="Vectorization and Faster Code Execution">
+<link href="Examples.html#Examples" rel="next" title="Examples">
+<link href="JIT-Compiler.html#JIT-Compiler" rel="prev" title="JIT Compiler">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Miscellaneous-Techniques"></a>
+<div class="header">
+<p>
+Next: <a href="Examples.html#Examples" accesskey="n" rel="next">Examples</a>, Previous: <a href="JIT-Compiler.html#JIT-Compiler" accesskey="p" rel="prev">JIT Compiler</a>, Up: <a href="Vectorization-and-Faster-Code-Execution.html#Vectorization-and-Faster-Code-Execution" accesskey="u" rel="up">Vectorization and Faster Code Execution</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Miscellaneous-Techniques-1"></a>
+<h3 class="section">19.6 Miscellaneous Techniques</h3>
+<a name="index-execution-speed"></a>
+<a name="index-speedups"></a>
+<a name="index-optimization"></a>
+
+<p>Here are some other ways of improving the execution speed of Octave
+programs.
+</p>
+<ul>
+<li> Avoid computing costly intermediate results multiple times.
+Octave currently does not eliminate common subexpressions.  Also, certain
+internal computation results are cached for variables.  For instance, if
+a matrix variable is used multiple times as an index, checking the
+indices (and internal conversion to integers) is only done once.
+
+</li><li> Be aware of lazy copies (copy-on-write).
+<a name="index-copy_002don_002dwrite"></a>
+<a name="index-COW"></a>
+<a name="index-memory-management"></a>
+When a copy of an object is created, the data is not immediately copied, but
+rather shared.  The actual copying is postponed until the copied data needs to
+be modified.  For example:
+
+<div class="example">
+<pre class="example">a = zeros (1000); # create a 1000x1000 matrix
+b = a; # no copying done here
+b(1) = 1; # copying done here
+</pre></div>
+
+<p>Lazy copying applies to whole Octave objects such as matrices, cells,
+struct, and also individual cell or struct elements (not array
+elements).
+</p>
+<p>Additionally, index expressions also use lazy copying when Octave can
+determine that the indexed portion is contiguous in memory.  For example:
+</p>
+<div class="example">
+<pre class="example">a = zeros (1000); # create a 1000x1000 matrix
+b = a(:,10:100);  # no copying done here
+b = a(10:100,:);  # copying done here
+</pre></div>
+
+<p>This applies to arrays (matrices), cell arrays, and structs indexed
+using &lsquo;<samp>()</samp>&rsquo;.  Index expressions generating comma-separated lists can also
+benefit from shallow copying in some cases.  In particular, when <var>a</var> is a
+struct array, expressions like <code>{a.x}, {a(:,2).x}</code> will use lazy
+copying, so that data can be shared between a struct array and a cell array.
+</p>
+<p>Most indexing expressions do not live longer than their parent
+objects.  In rare cases, however, a lazily copied slice outlasts its
+parent, in which case it becomes orphaned, still occupying unnecessarily
+more memory than needed.  To provide a remedy working in most real cases,
+Octave checks for orphaned lazy slices at certain situations, when a
+value is stored into a &quot;permanent&quot; location, such as a named variable or
+cell or struct element, and possibly economizes them.  For example:
+</p>
+<div class="example">
+<pre class="example">a = zeros (1000); # create a 1000x1000 matrix
+b = a(:,10:100);  # lazy slice
+a = []; # the original &quot;a&quot; array is still allocated
+c{1} = b; # b is reallocated at this point
+</pre></div>
+
+</li><li> Avoid deep recursion.
+Function calls to m-file functions carry a relatively significant overhead, so
+rewriting a recursion as a loop often helps.  Also, note that the maximum level
+of recursion is limited.
+
+</li><li> Avoid resizing matrices unnecessarily.
+When building a single result matrix from a series of calculations, set the
+size of the result matrix first, then insert values into it.  Write
+
+<div class="example">
+<pre class="example">result = zeros (big_n, big_m)
+for i = over:and_over
+  ridx = &hellip;
+  cidx = &hellip;
+  result(ridx, cidx) = new_value ();
+endfor
+</pre></div>
+
+<p>instead of
+</p>
+<div class="example">
+<pre class="example">result = [];
+for i = ever:and_ever
+  result = [ result, new_value() ];
+endfor
+</pre></div>
+
+<p>Sometimes the number of items can not be computed in advance, and
+stack-like operations are needed.  When elements are being repeatedly
+inserted or removed from the end of an array, Octave detects it as stack
+usage and attempts to use a smarter memory management strategy by
+pre-allocating the array in bigger chunks.  This strategy is also applied
+to cell and struct arrays.
+</p>
+<div class="example">
+<pre class="example">a = [];
+while (condition)
+  &hellip;
+  a(end+1) = value; # &quot;push&quot; operation
+  &hellip;
+  a(end) = []; # &quot;pop&quot; operation
+  &hellip;
+endwhile
+</pre></div>
+
+</li><li> Avoid calling <code>eval</code> or <code>feval</code> excessively.
+Parsing input or looking up the name of a function in the symbol table are
+relatively expensive operations.
+
+<p>If you are using <code>eval</code> merely as an exception handling mechanism, and not
+because you need to execute some arbitrary text, use the <code>try</code>
+statement instead.  See <a href="The-try-Statement.html#The-try-Statement">The try Statement</a>.
+</p>
+</li><li> Use <code>ignore_function_time_stamp</code> when appropriate.
+If you are calling lots of functions, and none of them will need to change
+during your run, set the variable <code>ignore_function_time_stamp</code> to
+<code>&quot;all&quot;</code>.  This will stop Octave from checking the time stamp of a function
+file to see if it has been updated while the program is being run.
+</li></ul>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Examples.html#Examples" accesskey="n" rel="next">Examples</a>, Previous: <a href="JIT-Compiler.html#JIT-Compiler" accesskey="p" rel="prev">JIT Compiler</a>, Up: <a href="Vectorization-and-Faster-Code-Execution.html#Vectorization-and-Faster-Code-Execution" accesskey="u" rel="up">Vectorization and Faster Code Execution</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

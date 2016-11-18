@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Logical Values</title>
+
+<meta name="description" content="GNU Octave: Logical Values">
+<meta name="keywords" content="GNU Octave: Logical Values">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Numeric-Data-Types.html#Numeric-Data-Types" rel="up" title="Numeric Data Types">
+<link href="Promotion-and-Demotion-of-Data-Types.html#Promotion-and-Demotion-of-Data-Types" rel="next" title="Promotion and Demotion of Data Types">
+<link href="Bit-Manipulations.html#Bit-Manipulations" rel="prev" title="Bit Manipulations">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Logical-Values"></a>
+<div class="header">
+<p>
+Next: <a href="Promotion-and-Demotion-of-Data-Types.html#Promotion-and-Demotion-of-Data-Types" accesskey="n" rel="next">Promotion and Demotion of Data Types</a>, Previous: <a href="Bit-Manipulations.html#Bit-Manipulations" accesskey="p" rel="prev">Bit Manipulations</a>, Up: <a href="Numeric-Data-Types.html#Numeric-Data-Types" accesskey="u" rel="up">Numeric Data Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Logical-Values-1"></a>
+<h3 class="section">4.6 Logical Values</h3>
+
+<p>Octave has built-in support for logical values, i.e., variables that
+are either <code>true</code> or <code>false</code>.  When comparing two variables,
+the result will be a logical value whose value depends on whether or
+not the comparison is true.
+</p>
+<p>The basic logical operations are <code>&amp;</code>, <code>|</code>, and <code>!</code>,
+which correspond to &ldquo;Logical And&rdquo;, &ldquo;Logical Or&rdquo;, and &ldquo;Logical
+Negation&rdquo;.  These operations all follow the usual rules of logic.
+</p>
+<p>It is also possible to use logical values as part of standard numerical
+calculations.  In this case <code>true</code> is converted to <code>1</code>, and
+<code>false</code> to 0, both represented using double precision floating
+point numbers.  So, the result of <code>true*22 - false/6</code> is <code>22</code>.
+</p>
+<p>Logical values can also be used to index matrices and cell arrays.
+When indexing with a logical array the result will be a vector containing
+the values corresponding to <code>true</code> parts of the logical array.
+The following example illustrates this.
+</p>
+<div class="example">
+<pre class="example">data = [ 1, 2; 3, 4 ];
+idx = (data &lt;= 2);
+data(idx)
+     &rArr; ans = [ 1; 2 ]
+</pre></div>
+
+<p>Instead of creating the <code>idx</code> array it is possible to replace
+<code>data(idx)</code> with <code>data(&nbsp;data&nbsp;&lt;=&nbsp;2&nbsp;)</code><!-- /@w --> in the above code.
+</p>
+<p>Logical values can also be constructed by
+casting numeric objects to logical values, or by using the <code>true</code>
+or <code>false</code> functions.
+</p>
+<a name="XREFlogical"></a><dl>
+<dt><a name="index-logical"></a>Built-in Function: <em></em> <strong>logical</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Convert the numeric object <var>x</var> to logical type.
+</p>
+<p>Any nonzero values will be converted to true (1) while zero values will be
+converted to false (0).  The non-numeric value NaN cannot be converted and
+will produce an error.
+</p>
+<p>Compatibility Note: Octave accepts complex values as input, whereas
+<small>MATLAB</small> issues an error.
+</p>
+<p><strong>See also:</strong> <a href="Numeric-Data-Types.html#XREFdouble">double</a>, <a href="Single-Precision-Data-Types.html#XREFsingle">single</a>, <a href="Concatenating-Strings.html#XREFchar">char</a>.
+</p></dd></dl>
+
+
+<a name="XREFtrue"></a><dl>
+<dt><a name="index-true"></a>Built-in Function: <em></em> <strong>true</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-true-1"></a>Built-in Function: <em></em> <strong>true</strong> <em>(<var>n</var>, <var>m</var>)</em></dt>
+<dt><a name="index-true-2"></a>Built-in Function: <em></em> <strong>true</strong> <em>(<var>n</var>, <var>m</var>, <var>k</var>, &hellip;)</em></dt>
+<dd><p>Return a matrix or N-dimensional array whose elements are all logical 1.
+</p>
+<p>If invoked with a single scalar integer argument, return a square
+matrix of the specified size.
+</p>
+<p>If invoked with two or more scalar integer arguments, or a vector of integer
+values, return an array with given dimensions.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfalse">false</a>.
+</p></dd></dl>
+
+
+<a name="XREFfalse"></a><dl>
+<dt><a name="index-false"></a>Built-in Function: <em></em> <strong>false</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-false-1"></a>Built-in Function: <em></em> <strong>false</strong> <em>(<var>n</var>, <var>m</var>)</em></dt>
+<dt><a name="index-false-2"></a>Built-in Function: <em></em> <strong>false</strong> <em>(<var>n</var>, <var>m</var>, <var>k</var>, &hellip;)</em></dt>
+<dd><p>Return a matrix or N-dimensional array whose elements are all logical 0.
+</p>
+<p>If invoked with a single scalar integer argument, return a square
+matrix of the specified size.
+</p>
+<p>If invoked with two or more scalar integer arguments, or a vector of integer
+values, return an array with given dimensions.
+</p>
+<p><strong>See also:</strong> <a href="#XREFtrue">true</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Promotion-and-Demotion-of-Data-Types.html#Promotion-and-Demotion-of-Data-Types" accesskey="n" rel="next">Promotion and Demotion of Data Types</a>, Previous: <a href="Bit-Manipulations.html#Bit-Manipulations" accesskey="p" rel="prev">Bit Manipulations</a>, Up: <a href="Numeric-Data-Types.html#Numeric-Data-Types" accesskey="u" rel="up">Numeric Data Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

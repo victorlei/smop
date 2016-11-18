@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Documentation and Test of Oct-Files</title>
+
+<meta name="description" content="GNU Octave: Documentation and Test of Oct-Files">
+<meta name="keywords" content="GNU Octave: Documentation and Test of Oct-Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Oct_002dFiles.html#Oct_002dFiles" rel="up" title="Oct-Files">
+<link href="Mex_002dFiles.html#Mex_002dFiles" rel="next" title="Mex-Files">
+<link href="Exception-and-Error-Handling-in-Oct_002dFiles.html#Exception-and-Error-Handling-in-Oct_002dFiles" rel="prev" title="Exception and Error Handling in Oct-Files">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Documentation-and-Test-of-Oct_002dFiles"></a>
+<div class="header">
+<p>
+Previous: <a href="Exception-and-Error-Handling-in-Oct_002dFiles.html#Exception-and-Error-Handling-in-Oct_002dFiles" accesskey="p" rel="prev">Exception and Error Handling in Oct-Files</a>, Up: <a href="Oct_002dFiles.html#Oct_002dFiles" accesskey="u" rel="up">Oct-Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Documentation-and-Test-of-Oct_002dFiles-1"></a>
+<h4 class="subsection">A.1.13 Documentation and Test of Oct-Files</h4>
+
+<p>The documentation of an oct-file is the fourth string parameter of the
+<code><span class="nolinebreak">DEFUN_DLD</span></code><!-- /@w --> macro.  This string can be formatted in the same manner
+as the help strings for user functions (see <a href="Documentation-Tips.html#Documentation-Tips">Documentation Tips</a>),
+however there are some issue that are particular to the formatting of
+help strings within oct-files.
+</p>
+<p>The major issue is that the help string will typically be longer than a
+single line of text, and so the formatting of long help strings needs to
+be taken into account.  There are several possible solutions, but the most
+common is illustrated in the following example,
+</p>
+<div class="example">
+<pre class="example">DEFUN_DLD (do_what_i_want, args, nargout,
+  &quot;-*- texinfo -*-\n\
+@deftypefn {Function File} {} do_what_i_say (@var{n})\n\
+A function that does what the user actually wants rather\n\
+than what they requested.\n\
+@end deftypefn&quot;)
+{
+&hellip;
+}
+</pre></div>
+
+<p>where, as can be seen, each line of text is terminated by <code>\n\</code>
+which is an embedded new-line in the string together with a C++ string
+continuation character.  Note that the final <code>\</code> must be the last
+character on the line.
+</p>
+<p>Octave also includes the ability to embed test and demonstration
+code for a function within the code itself (see <a href="Test-and-Demo-Functions.html#Test-and-Demo-Functions">Test and Demo Functions</a>).
+This can be used from within oct-files (or in fact any file) with
+certain provisos.  First, the test and demo functions of Octave look
+for <code>%!</code> as the first two characters of a line to identify test
+and demonstration code.  This is a requirement for oct-files as well.
+In addition, the test and demonstration code must be wrapped in a comment
+block to avoid it being interpreted by the compiler.  Finally, the Octave
+test and demonstration code must have access to the original source code
+of the oct-file and not just the compiled code as the tests are stripped
+from the compiled code.  An example in an oct-file might be
+</p>
+<div class="example">
+<pre class="example">/*
+%!assert (sin ([1,2]), [sin(1),sin(2)])
+%!error (sin ())
+%!error (sin (1,1))
+*/
+</pre></div>
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Exception-and-Error-Handling-in-Oct_002dFiles.html#Exception-and-Error-Handling-in-Oct_002dFiles" accesskey="p" rel="prev">Exception and Error Handling in Oct-Files</a>, Up: <a href="Oct_002dFiles.html#Oct_002dFiles" accesskey="u" rel="up">Oct-Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,1101 @@
+@c Copyright (C) 2004-2015 David Bateman
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@ifhtml
+@set htmltex
+@end ifhtml
+@iftex
+@set htmltex
+@end iftex
+
+@node Sparse Matrices
+@chapter Sparse Matrices
+
+@menu
+* Basics::                      Creation and Manipulation of Sparse Matrices
+* Sparse Linear Algebra::       Linear Algebra on Sparse Matrices
+* Iterative Techniques::        Iterative Techniques
+* Real Life Example::           Using Sparse Matrices
+@end menu
+
+@node Basics
+@section Creation and Manipulation of Sparse Matrices
+
+The size of mathematical problems that can be treated at any particular
+time is generally limited by the available computing resources.  Both,
+the speed of the computer and its available memory place limitation on
+the problem size.
+
+There are many classes of mathematical problems which give rise to
+matrices, where a large number of the elements are zero.  In this case
+it makes sense to have a special matrix type to handle this class of
+problems where only the nonzero elements of the matrix are
+stored.  Not only does this reduce the amount of memory to store the
+matrix, but it also means that operations on this type of matrix can
+take advantage of the a priori knowledge of the positions of the
+nonzero elements to accelerate their calculations.
+
+A matrix type that stores only the nonzero elements is generally called
+sparse.  It is the purpose of this document to discuss the basics of the
+storage and creation of sparse matrices and the fundamental operations
+on them.
+
+@menu
+* Storage of Sparse Matrices::
+* Creating Sparse Matrices::
+* Information::
+* Operators and Functions::
+@end menu
+
+@node Storage of Sparse Matrices
+@subsection Storage of Sparse Matrices
+
+It is not strictly speaking necessary for the user to understand how
+sparse matrices are stored.  However, such an understanding will help
+to get an understanding of the size of sparse matrices.  Understanding
+the storage technique is also necessary for those users wishing to
+create their own oct-files.
+
+There are many different means of storing sparse matrix data.  What all
+of the methods have in common is that they attempt to reduce the complexity
+and storage given a priori knowledge of the particular class of problems
+that will be solved.  A good summary of the available techniques for storing
+sparse matrix is given by @nospell{Saad} @footnote{Y. Saad "SPARSKIT: A basic
+toolkit for sparse matrix computation", 1994,
+@url{http://www-users.cs.umn.edu/~saad/software/SPARSKIT/paper.ps}}.
+With full matrices, knowledge of the point of an element of the matrix
+within the matrix is implied by its position in the computers memory.
+However, this is not the case for sparse matrices, and so the positions
+of the nonzero elements of the matrix must equally be stored.
+
+An obvious way to do this is by storing the elements of the matrix as
+triplets, with two elements being their position in the array
+(rows and column) and the third being the data itself.  This is conceptually
+easy to grasp, but requires more storage than is strictly needed.
+
+The storage technique used within Octave is the compressed column
+format.  It is similar to the Yale format.
+@footnote{@url{http://en.wikipedia.org/wiki/Sparse_matrix#Yale_format}}
+In this format the position of each element in a row and the data are
+stored as previously.  However, if we assume that all elements in the
+same column are stored adjacent in the computers memory, then we only
+need to store information on the number of nonzero elements in each
+column, rather than their positions.  Thus assuming that the matrix has
+more nonzero elements than there are columns in the matrix, we win in
+terms of the amount of memory used.
+
+In fact, the column index contains one more element than the number of
+columns, with the first element always being zero.  The advantage of
+this is a simplification in the code, in that there is no special case
+for the first or last columns.  A short example, demonstrating this in
+C is.
+
+@example
+@group
+  for (j = 0; j < nc; j++)
+    for (i = cidx(j); i < cidx(j+1); i++)
+       printf ("nonzero element (%i,%i) is %d\n",
+           ridx(i), j, data(i));
+@end group
+@end example
+
+A clear understanding might be had by considering an example of how the
+above applies to an example matrix.  Consider the matrix
+
+@example
+@group
+    1   2   0  0
+    0   0   0  3
+    0   0   0  4
+@end group
+@end example
+
+The nonzero elements of this matrix are
+
+@example
+@group
+   (1, 1)  @result{} 1
+   (1, 2)  @result{} 2
+   (2, 4)  @result{} 3
+   (3, 4)  @result{} 4
+@end group
+@end example
+
+This will be stored as three vectors @var{cidx}, @var{ridx} and @var{data},
+representing the column indexing, row indexing and data respectively.  The
+contents of these three vectors for the above matrix will be
+
+@example
+@group
+  @var{cidx} = [0, 1, 2, 2, 4]
+  @var{ridx} = [0, 0, 1, 2]
+  @var{data} = [1, 2, 3, 4]
+@end group
+@end example
+
+Note that this is the representation of these elements with the first row
+and column assumed to start at zero, while in Octave itself the row and
+column indexing starts at one.  Thus the number of elements in the
+@var{i}-th column is given by @code{@var{cidx} (@var{i} + 1) -
+@var{cidx} (@var{i})}.
+
+Although Octave uses a compressed column format, it should be noted
+that compressed row formats are equally possible.  However, in the
+context of mixed operations between mixed sparse and dense matrices,
+it makes sense that the elements of the sparse matrices are in the
+same order as the dense matrices.  Octave stores dense matrices in
+column major ordering, and so sparse matrices are equally stored in
+this manner.
+
+A further constraint on the sparse matrix storage used by Octave is that
+all elements in the rows are stored in increasing order of their row
+index, which makes certain operations faster.  However, it imposes
+the need to sort the elements on the creation of sparse matrices.  Having
+disordered elements is potentially an advantage in that it makes operations
+such as concatenating two sparse matrices together easier and faster, however
+it adds complexity and speed problems elsewhere.
+
+@node Creating Sparse Matrices
+@subsection Creating Sparse Matrices
+
+There are several means to create sparse matrix.
+
+@table @asis
+@item Returned from a function
+There are many functions that directly return sparse matrices.  These include
+@dfn{speye}, @dfn{sprand}, @dfn{diag}, etc.
+
+@item Constructed from matrices or vectors
+The function @dfn{sparse} allows a sparse matrix to be constructed from
+three vectors representing the row, column and data.  Alternatively, the
+function @dfn{spconvert} uses a three column matrix format to allow easy
+importation of data from elsewhere.
+
+@item Created and then filled
+The function @dfn{sparse} or @dfn{spalloc} can be used to create an empty
+matrix that is then filled by the user
+
+@item From a user binary program
+The user can directly create the sparse matrix within an oct-file.
+@end table
+
+There are several basic functions to return specific sparse
+matrices.  For example the sparse identity matrix, is a matrix that is
+often needed.  It therefore has its own function to create it as
+@code{speye (@var{n})} or @code{speye (@var{r}, @var{c})}, which
+creates an @var{n}-by-@var{n} or @var{r}-by-@var{c} sparse identity
+matrix.
+
+Another typical sparse matrix that is often needed is a random distribution
+of random elements.  The functions @dfn{sprand} and @dfn{sprandn} perform
+this for uniform and normal random distributions of elements.  They have exactly
+the same calling convention, where @code{sprand (@var{r}, @var{c}, @var{d})},
+creates an @var{r}-by-@var{c} sparse matrix with a density of filled
+elements of @var{d}.
+
+Other functions of interest that directly create sparse matrices, are
+@dfn{diag} or its generalization @dfn{spdiags}, that can take the
+definition of the diagonals of the matrix and create the sparse matrix
+that corresponds to this.  For example,
+
+@example
+s = diag (sparse (randn (1,n)), -1);
+@end example
+
+@noindent
+creates a sparse (@var{n}+1)-by-(@var{n}+1) sparse matrix with a single
+diagonal defined.
+
+@DOCSTRING(spdiags)
+
+@DOCSTRING(speye)
+
+@DOCSTRING(spones)
+
+@DOCSTRING(sprand)
+
+@DOCSTRING(sprandn)
+
+@DOCSTRING(sprandsym)
+
+The recommended way for the user to create a sparse matrix, is to create
+two vectors containing the row and column index of the data and a third
+vector of the same size containing the data to be stored.  For example,
+
+@example
+@group
+  ri = ci = d = [];
+  for j = 1:c
+    ri = [ri; randperm(r,n)'];
+    ci = [ci; j*ones(n,1)];
+    d = [d; rand(n,1)];
+  endfor
+  s = sparse (ri, ci, d, r, c);
+@end group
+@end example
+
+@noindent
+creates an @var{r}-by-@var{c} sparse matrix with a random distribution
+of @var{n} (<@var{r}) elements per column.  The elements of the vectors
+do not need to be sorted in any particular order as Octave will sort
+them prior to storing the data.  However, pre-sorting the data will
+make the creation of the sparse matrix faster.
+
+The function @dfn{spconvert} takes a three or four column real matrix.
+The first two columns represent the row and column index respectively and
+the third and four columns, the real and imaginary parts of the sparse
+matrix.  The matrix can contain zero elements and the elements can be
+sorted in any order.  Adding zero elements is a convenient way to define
+the size of the sparse matrix.  For example:
+
+@example
+@group
+s = spconvert ([1 2 3 4; 1 3 4 4; 1 2 3 0]')
+@result{} Compressed Column Sparse (rows=4, cols=4, nnz=3)
+      (1 , 1) -> 1
+      (2 , 3) -> 2
+      (3 , 4) -> 3
+@end group
+@end example
+
+An example of creating and filling a matrix might be
+
+@example
+@group
+k = 5;
+nz = r * k;
+s = spalloc (r, c, nz)
+for j = 1:c
+  idx = randperm (r);
+  s (:, j) = [zeros(r - k, 1); ...
+        rand(k, 1)] (idx);
+endfor
+@end group
+@end example
+
+It should be noted, that due to the way that the Octave
+assignment functions are written that the assignment will reallocate
+the memory used by the sparse matrix at each iteration of the above loop.
+Therefore the @dfn{spalloc} function ignores the @var{nz} argument and
+does not pre-assign the memory for the matrix.  Therefore, it is vitally
+important that code using to above structure should be vectorized
+as much as possible to minimize the number of assignments and reduce the
+number of memory allocations.
+
+@DOCSTRING(full)
+
+@DOCSTRING(spalloc)
+
+@DOCSTRING(sparse)
+
+@DOCSTRING(spconvert)
+
+The above problem of memory reallocation can be avoided in
+oct-files.  However, the construction of a sparse matrix from an oct-file
+is more complex than can be discussed here.  @xref{External Code Interface},
+for a full description of the techniques involved.
+
+@node Information
+@subsection Finding Information about Sparse Matrices
+
+There are a number of functions that allow information concerning
+sparse matrices to be obtained.  The most basic of these is
+@dfn{issparse} that identifies whether a particular Octave object is
+in fact a sparse matrix.
+
+Another very basic function is @dfn{nnz} that returns the number of
+nonzero entries there are in a sparse matrix, while the function
+@dfn{nzmax} returns the amount of storage allocated to the sparse
+matrix.  Note that Octave tends to crop unused memory at the first
+opportunity for sparse objects.  There are some cases of user created
+sparse objects where the value returned by @dfn{nzmax} will not be
+the same as @dfn{nnz}, but in general they will give the same
+result.  The function @dfn{spstats} returns some basic statistics on
+the columns of a sparse matrix including the number of elements, the
+mean and the variance of each column.
+
+@DOCSTRING(issparse)
+
+@DOCSTRING(nnz)
+
+@DOCSTRING(nonzeros)
+
+@DOCSTRING(nzmax)
+
+@DOCSTRING(spstats)
+
+When solving linear equations involving sparse matrices Octave
+determines the means to solve the equation based on the type of the
+matrix (@pxref{Sparse Linear Algebra}).  Octave probes the
+matrix type when the div (/) or ldiv (\) operator is first used with
+the matrix and then caches the type.  However the @dfn{matrix_type}
+function can be used to determine the type of the sparse matrix prior
+to use of the div or ldiv operators.  For example,
+
+@example
+@group
+a = tril (sprandn (1024, 1024, 0.02), -1) ...
+    + speye (1024);
+matrix_type (a);
+ans = Lower
+@end group
+@end example
+
+@noindent
+shows that Octave correctly determines the matrix type for lower
+triangular matrices.  @dfn{matrix_type} can also be used to force
+the type of a matrix to be a particular type.  For example:
+
+@example
+@group
+a = matrix_type (tril (sprandn (1024, ...
+   1024, 0.02), -1) + speye (1024), "Lower");
+@end group
+@end example
+
+This allows the cost of determining the matrix type to be
+avoided.  However, incorrectly defining the matrix type will result in
+incorrect results from solutions of linear equations, and so it is
+entirely the responsibility of the user to correctly identify the
+matrix type
+
+There are several graphical means of finding out information about
+sparse matrices.  The first is the @dfn{spy} command, which displays
+the structure of the nonzero elements of the
+matrix.  @xref{fig:spmatrix}, for an example of the use of
+@dfn{spy}.  More advanced graphical information can be obtained with the
+@dfn{treeplot}, @dfn{etreeplot} and @dfn{gplot} commands.
+
+@float Figure,fig:spmatrix
+@center @image{spmatrix,4in}
+@caption{Structure of simple sparse matrix.}
+@end float
+
+One use of sparse matrices is in graph theory, where the
+interconnections between nodes are represented as an adjacency
+matrix.  That is, if the i-th node in a graph is connected to the j-th
+node.  Then the ij-th node (and in the case of undirected graphs the
+@nospell{ji-th} node) of the sparse adjacency matrix is nonzero.  If each node
+is then associated with a set of coordinates, then the @dfn{gplot}
+command can be used to graphically display the interconnections
+between nodes.
+
+As a trivial example of the use of @dfn{gplot} consider the example,
+
+@example
+@group
+A = sparse ([2,6,1,3,2,4,3,5,4,6,1,5],
+    [1,1,2,2,3,3,4,4,5,5,6,6],1,6,6);
+xy = [0,4,8,6,4,2;5,0,5,7,5,7]';
+gplot (A,xy)
+@end group
+@end example
+
+@noindent
+which creates an adjacency matrix @code{A} where node 1 is connected
+to nodes 2 and 6, node 2 with nodes 1 and 3, etc.  The coordinates of
+the nodes are given in the n-by-2 matrix @code{xy}.
+@ifset htmltex
+@xref{fig:gplot}.
+
+@float Figure,fig:gplot
+@center @image{gplot,4in}
+@caption{Simple use of the @dfn{gplot} command.}
+@end float
+@end ifset
+
+The dependencies between the nodes of a Cholesky@tie{}factorization can be
+calculated in linear time without explicitly needing to calculate the
+Cholesky@tie{}factorization by the @code{etree} command.  This command
+returns the elimination tree of the matrix and can be displayed
+graphically by the command @code{treeplot (etree (A))} if @code{A} is
+symmetric or @code{treeplot (etree (A+A'))} otherwise.
+
+@DOCSTRING(spy)
+
+@DOCSTRING(etree)
+
+@DOCSTRING(etreeplot)
+
+@DOCSTRING(gplot)
+
+@DOCSTRING(treeplot)
+
+@DOCSTRING(treelayout)
+
+@node Operators and Functions
+@subsection Basic Operators and Functions on Sparse Matrices
+
+@menu
+* Sparse Functions::
+* Return Types of Operators and Functions::
+* Mathematical Considerations::
+@end menu
+
+@node Sparse Functions
+@subsubsection Sparse Functions
+
+Many Octave functions have been overloaded to work with either sparse or full
+matrices.  There is no difference in calling convention when using an
+overloaded function with a sparse matrix, however, there is also no access to
+potentially sparse-specific features.  At any time the sparse matrix specific
+version of a function can be used by explicitly calling its function name.
+
+The table below lists all of the sparse functions of Octave.  Note that the
+names of the specific sparse forms of the functions are typically the same as
+the general versions with a @dfn{sp} prefix.  In the table below, and in the
+rest of this article, the specific sparse versions of functions are used.
+
+@c Table includes in comments the missing sparse functions
+
+@table @asis
+@item Generate sparse matrices:
+  @dfn{spalloc}, @dfn{spdiags}, @dfn{speye}, @dfn{sprand},
+  @dfn{sprandn}, @dfn{sprandsym}
+
+@item Sparse matrix conversion:
+  @dfn{full}, @dfn{sparse}, @dfn{spconvert}
+
+@item Manipulate sparse matrices
+  @dfn{issparse}, @dfn{nnz}, @dfn{nonzeros}, @dfn{nzmax},
+  @dfn{spfun}, @dfn{spones}, @dfn{spy}
+
+@item Graph Theory:
+  @dfn{etree}, @dfn{etreeplot}, @dfn{gplot},
+  @dfn{treeplot}
+@c @dfn{treelayout}
+
+@item Sparse matrix reordering:
+  @dfn{amd}, @dfn{ccolamd}, @dfn{colamd}, @dfn{colperm}, @dfn{csymamd},
+  @dfn{dmperm}, @dfn{symamd}, @dfn{randperm}, @dfn{symrcm}
+
+@item Linear algebra:
+  @dfn{condest}, @dfn{eigs}, @dfn{matrix_type},
+  @dfn{normest}, @dfn{sprank}, @dfn{spaugment}, @dfn{svds}
+
+@item Iterative techniques:
+  @dfn{ichol}, @dfn{ilu}, @dfn{pcg}, @dfn{pcr}
+@c @dfn{bicg}, @dfn{bicgstab}, @dfn{cholinc}, @dfn{cgs}, @dfn{gmres},
+@c @dfn{lsqr}, @dfn{minres}, @dfn{qmr}, @dfn{symmlq}
+
+@item Miscellaneous:
+  @dfn{spparms}, @dfn{symbfact}, @dfn{spstats}
+@end table
+
+In addition all of the standard Octave mapper functions (i.e., basic
+math functions that take a single argument) such as @dfn{abs}, etc.
+can accept sparse matrices.  The reader is referred to the documentation
+supplied with these functions within Octave itself for further
+details.
+
+@node Return Types of Operators and Functions
+@subsubsection Return Types of Operators and Functions
+
+The two basic reasons to use sparse matrices are to reduce the memory
+usage and to not have to do calculations on zero elements.  The two are
+closely related in that the computation time on a sparse matrix operator
+or function is roughly linear with the number of nonzero elements.
+
+Therefore, there is a certain density of nonzero elements of a matrix
+where it no longer makes sense to store it as a sparse matrix, but rather
+as a full matrix.  For this reason operators and functions that have a
+high probability of returning a full matrix will always return one.  For
+example adding a scalar constant to a sparse matrix will almost always
+make it a full matrix, and so the example,
+
+@example
+@group
+speye (3) + 0
+@result{}   1  0  0
+  0  1  0
+  0  0  1
+@end group
+@end example
+
+@noindent
+returns a full matrix as can be seen.
+
+
+Additionally, if @code{sparse_auto_mutate} is true, all sparse functions
+test the amount of memory occupied by the sparse matrix to see if the
+amount of storage used is larger than the amount used by the full
+equivalent.  Therefore @code{speye (2) * 1} will return a full matrix as
+the memory used is smaller for the full version than the sparse version.
+
+As all of the mixed operators and functions between full and sparse
+matrices exist, in general this does not cause any problems.  However,
+one area where it does cause a problem is where a sparse matrix is
+promoted to a full matrix, where subsequent operations would resparsify
+the matrix.  Such cases are rare, but can be artificially created, for
+example @code{(fliplr (speye (3)) + speye (3)) - speye (3)} gives a full
+matrix when it should give a sparse one.  In general, where such cases
+occur, they impose only a small memory penalty.
+
+There is however one known case where this behavior of Octave's
+sparse matrices will cause a problem.  That is in the handling of the
+@dfn{diag} function.  Whether @dfn{diag} returns a sparse or full matrix
+depending on the type of its input arguments.  So
+
+@example
+ a = diag (sparse ([1,2,3]), -1);
+@end example
+
+@noindent
+should return a sparse matrix.  To ensure this actually happens, the
+@dfn{sparse} function, and other functions based on it like @dfn{speye},
+always returns a sparse matrix, even if the memory used will be larger
+than its full representation.
+
+@DOCSTRING(sparse_auto_mutate)
+
+Note that the @code{sparse_auto_mutate} option is incompatible with
+@sc{matlab}, and so it is off by default.
+
+@node Mathematical Considerations
+@subsubsection Mathematical Considerations
+
+The attempt has been made to make sparse matrices behave in exactly the
+same manner as there full counterparts.  However, there are certain differences
+and especially differences with other products sparse implementations.
+
+First, the @qcode{"./"} and @qcode{".^"} operators must be used with care.
+Consider what the examples
+
+@example
+@group
+  s = speye (4);
+  a1 = s .^ 2;
+  a2 = s .^ s;
+  a3 = s .^ -2;
+  a4 = s ./ 2;
+  a5 = 2 ./ s;
+  a6 = s ./ s;
+@end group
+@end example
+
+@noindent
+will give.  The first example of @var{s} raised to the power of 2 causes
+no problems.  However @var{s} raised element-wise to itself involves a
+large number of terms @code{0 .^ 0} which is 1. There @code{@var{s} .^
+@var{s}} is a full matrix.
+
+Likewise @code{@var{s} .^ -2} involves terms like @code{0 .^ -2} which
+is infinity, and so @code{@var{s} .^ -2} is equally a full matrix.
+
+For the "./" operator @code{@var{s} ./ 2} has no problems, but
+@code{2 ./ @var{s}} involves a large number of infinity terms as well
+and is equally a full matrix.  The case of @code{@var{s} ./ @var{s}}
+involves terms like @code{0 ./ 0} which is a @code{NaN} and so this
+is equally a full matrix with the zero elements of @var{s} filled with
+@code{NaN} values.
+
+The above behavior is consistent with full matrices, but is not
+consistent with sparse implementations in other products.
+
+A particular problem of sparse matrices comes about due to the fact that
+as the zeros are not stored, the sign-bit of these zeros is equally not
+stored.  In certain cases the sign-bit of zero is important.  For example:
+
+@example
+@group
+ a = 0 ./ [-1, 1; 1, -1];
+ b = 1 ./ a
+ @result{} -Inf            Inf
+     Inf           -Inf
+ c = 1 ./ sparse (a)
+ @result{}  Inf            Inf
+     Inf            Inf
+@end group
+@end example
+
+To correct this behavior would mean that zero elements with a negative
+sign-bit would need to be stored in the matrix to ensure that their
+sign-bit was respected.  This is not done at this time, for reasons of
+efficiency, and so the user is warned that calculations where the sign-bit
+of zero is important must not be done using sparse matrices.
+
+In general any function or operator used on a sparse matrix will
+result in a sparse matrix with the same or a larger number of nonzero
+elements than the original matrix.  This is particularly true for the
+important case of sparse matrix factorizations.  The usual way to
+address this is to reorder the matrix, such that its factorization is
+sparser than the factorization of the original matrix.  That is the
+factorization of @code{L * U = P * S * Q} has sparser terms @code{L}
+and @code{U} than the equivalent factorization @code{L * U = S}.
+
+Several functions are available to reorder depending on the type of the
+matrix to be factorized.  If the matrix is symmetric positive-definite,
+then @dfn{symamd} or @dfn{csymamd} should be used.  Otherwise
+@dfn{amd}, @dfn{colamd} or @dfn{ccolamd} should be used.  For completeness
+the reordering functions @dfn{colperm} and @dfn{randperm} are
+also available.
+
+@xref{fig:simplematrix}, for an example of the structure of a simple
+positive definite matrix.
+
+@float Figure,fig:simplematrix
+@center @image{spmatrix,4in}
+@caption{Structure of simple sparse matrix.}
+@end float
+
+The standard Cholesky@tie{}factorization of this matrix can be
+obtained by the same command that would be used for a full
+matrix.  This can be visualized with the command
+@code{r = chol (A); spy (r);}.
+@xref{fig:simplechol}.
+The original matrix had
+@ifinfo
+@ifnothtml
+43
+@end ifnothtml
+@end ifinfo
+@ifset htmltex
+598
+@end ifset
+nonzero terms, while this Cholesky@tie{}factorization has
+@ifinfo
+@ifnothtml
+71,
+@end ifnothtml
+@end ifinfo
+@ifset htmltex
+10200,
+@end ifset
+with only half of the symmetric matrix being stored.  This
+is a significant level of fill in, and although not an issue
+for such a small test case, can represents a large overhead
+in working with other sparse matrices.
+
+The appropriate sparsity preserving permutation of the original
+matrix is given by @dfn{symamd} and the factorization using this
+reordering can be visualized using the command @code{q = symamd (A);
+r = chol (A(q,q)); spy (r)}.  This gives
+@ifinfo
+@ifnothtml
+29
+@end ifnothtml
+@end ifinfo
+@ifset htmltex
+399
+@end ifset
+nonzero terms which is a significant improvement.
+
+The Cholesky@tie{}factorization itself can be used to determine the
+appropriate sparsity preserving reordering of the matrix during the
+factorization, In that case this might be obtained with three return
+arguments as @code{[r, p, q] = chol (A); spy (r)}.
+
+@float Figure,fig:simplechol
+@center @image{spchol,4in}
+@caption{Structure of the unpermuted Cholesky@tie{}factorization of the above matrix.}
+@end float
+
+@float Figure,fig:simplecholperm
+@center @image{spcholperm,4in}
+@caption{Structure of the permuted Cholesky@tie{}factorization of the above matrix.}
+@end float
+
+In the case of an asymmetric matrix, the appropriate sparsity
+preserving permutation is @dfn{colamd} and the factorization using
+this reordering can be visualized using the command
+@code{q = colamd (A); [l, u, p] = lu (A(:,q)); spy (l+u)}.
+
+Finally, Octave implicitly reorders the matrix when using the div (/)
+and ldiv (\) operators, and so no the user does not need to explicitly
+reorder the matrix to maximize performance.
+
+@DOCSTRING(amd)
+
+@DOCSTRING(ccolamd)
+
+@DOCSTRING(colamd)
+
+@DOCSTRING(colperm)
+
+@DOCSTRING(csymamd)
+
+@DOCSTRING(dmperm)
+
+@DOCSTRING(symamd)
+
+@DOCSTRING(symrcm)
+
+@node Sparse Linear Algebra
+@section Linear Algebra on Sparse Matrices
+
+Octave includes a polymorphic solver for sparse matrices, where
+the exact solver used to factorize the matrix, depends on the properties
+of the sparse matrix itself.  Generally, the cost of determining the matrix type
+is small relative to the cost of factorizing the matrix itself, but in any
+case the matrix type is cached once it is calculated, so that it is not
+re-determined each time it is used in a linear equation.
+
+The selection tree for how the linear equation is solve is
+
+@enumerate 1
+@item If the matrix is diagonal, solve directly and goto 8
+
+@item If the matrix is a permuted diagonal, solve directly taking into
+account the permutations.  Goto 8
+
+@item If the matrix is square, banded and if the band density is less
+than that given by @code{spparms ("bandden")} continue, else goto 4.
+
+@enumerate a
+@item If the matrix is tridiagonal and the right-hand side is not sparse
+continue, else goto 3b.
+
+@enumerate
+@item If the matrix is Hermitian, with a positive real diagonal, attempt
+      Cholesky@tie{}factorization using @sc{lapack} xPTSV.
+
+@item If the above failed or the matrix is not Hermitian with a positive
+      real diagonal use Gaussian elimination with pivoting using
+      @sc{lapack} xGTSV, and goto 8.
+@end enumerate
+
+@item If the matrix is Hermitian with a positive real diagonal, attempt
+      Cholesky@tie{}factorization using @sc{lapack} xPBTRF.
+
+@item if the above failed or the matrix is not Hermitian with a positive
+      real diagonal use Gaussian elimination with pivoting using
+      @sc{lapack} xGBTRF, and goto 8.
+@end enumerate
+
+@item If the matrix is upper or lower triangular perform a sparse forward
+or backward substitution, and goto 8
+
+@item If the matrix is an upper triangular matrix with column permutations
+or lower triangular matrix with row permutations, perform a sparse forward
+or backward substitution, and goto 8
+
+@item If the matrix is square, Hermitian with a real positive diagonal, attempt
+sparse Cholesky@tie{}factorization using @sc{cholmod}.
+
+@item If the sparse Cholesky@tie{}factorization failed or the matrix is not
+Hermitian with a real positive diagonal, and the matrix is square, factorize
+using @sc{umfpack}.
+
+@item If the matrix is not square, or any of the previous solvers flags
+a singular or near singular matrix, find a minimum norm solution using
+@sc{cxsparse}@footnote{The @sc{cholmod}, @sc{umfpack} and @sc{cxsparse}
+packages were written by Tim Davis and are available at
+@url{http://www.cise.ufl.edu/research/sparse/}}.
+@end enumerate
+
+The band density is defined as the number of nonzero values in the band
+divided by the total number of values in the full band.  The banded
+matrix solvers can be entirely disabled by using @dfn{spparms} to set
+@code{bandden} to 1 (i.e., @code{spparms ("bandden", 1)}).
+
+The QR@tie{}solver factorizes the problem with a @nospell{Dulmage-Mendelsohn}
+decomposition, to separate the problem into blocks that can be treated
+as over-determined, multiple well determined blocks, and a final
+over-determined block.  For matrices with blocks of strongly connected
+nodes this is a big win as LU@tie{}decomposition can be used for many
+blocks.  It also significantly improves the chance of finding a solution
+to over-determined problems rather than just returning a vector of
+@dfn{NaN}'s.
+
+All of the solvers above, can calculate an estimate of the condition
+number.  This can be used to detect numerical stability problems in the
+solution and force a minimum norm solution to be used.  However, for
+narrow banded, triangular or diagonal matrices, the cost of
+calculating the condition number is significant, and can in fact
+exceed the cost of factoring the matrix.  Therefore the condition
+number is not calculated in these cases, and Octave relies on simpler
+techniques to detect singular matrices or the underlying @sc{lapack} code in
+the case of banded matrices.
+
+The user can force the type of the matrix with the @code{matrix_type}
+function.  This overcomes the cost of discovering the type of the matrix.
+However, it should be noted that identifying the type of the matrix incorrectly
+will lead to unpredictable results, and so @code{matrix_type} should be
+used with care.
+
+@DOCSTRING(normest)
+
+@DOCSTRING(onenormest)
+
+@DOCSTRING(condest)
+
+@DOCSTRING(spparms)
+
+@DOCSTRING(sprank)
+
+@DOCSTRING(symbfact)
+
+For non square matrices, the user can also utilize the @code{spaugment}
+function to find a least squares solution to a linear equation.
+
+@DOCSTRING(spaugment)
+
+Finally, the function @code{eigs} can be used to calculate a limited
+number of eigenvalues and eigenvectors based on a selection criteria
+and likewise for @code{svds} which calculates a limited number of
+singular values and vectors.
+
+@DOCSTRING(eigs)
+
+@DOCSTRING(svds)
+
+@node Iterative Techniques
+@section Iterative Techniques Applied to Sparse Matrices
+
+The left division @code{\} and right division @code{/} operators,
+discussed in the previous section, use direct solvers to resolve a
+linear equation of the form @code{@var{x} = @var{A} \ @var{b}} or
+@code{@var{x} = @var{b} / @var{A}}.  Octave also includes a number of
+functions to solve sparse linear equations using iterative techniques.
+
+@DOCSTRING(pcg)
+
+@DOCSTRING(pcr)
+
+The speed with which an iterative solver converges to a solution can be
+accelerated with the use of a pre-conditioning matrix @var{M}.  In this
+case the linear equation @code{@var{M}^-1 * @var{x} = @var{M}^-1 *
+@var{A} \ @var{b}} is solved instead.  Typical pre-conditioning matrices
+are partial factorizations of the original matrix.
+
+@DOCSTRING(ichol)
+
+@DOCSTRING(ilu)
+
+@node Real Life Example
+@section Real Life Example using Sparse Matrices
+
+A common application for sparse matrices is in the solution of Finite
+Element Models.  Finite element models allow numerical solution of
+partial differential equations that do not have closed form solutions,
+typically because of the complex shape of the domain.
+
+In order to motivate this application, we consider the boundary value
+Laplace equation.  This system can model scalar potential fields, such
+as heat or electrical potential.  Given a medium
+@tex
+$\Omega$ with boundary $\partial\Omega$.  At all points on the $\partial\Omega$
+the boundary conditions are known, and we wish to calculate the potential in
+$\Omega$.
+@end tex
+@ifnottex
+Omega with boundary dOmega.  At all points on the dOmega
+the boundary conditions are known, and we wish to calculate the potential in
+Omega.
+@end ifnottex
+Boundary conditions may specify the potential (Dirichlet
+boundary condition), its normal derivative across the boundary
+(Neumann boundary condition), or a weighted sum of the potential and
+its derivative (Cauchy boundary condition).
+
+In a thermal model, we want to calculate the temperature in
+@tex
+$\Omega$
+@end tex
+@ifnottex
+Omega
+@end ifnottex
+and know the boundary temperature (Dirichlet condition)
+or heat flux (from which we can calculate the Neumann condition
+by dividing by the thermal conductivity at the boundary).  Similarly,
+in an electrical model, we want to calculate the voltage in
+@tex
+$\Omega$
+@end tex
+@ifnottex
+Omega
+@end ifnottex
+and know the boundary voltage (Dirichlet) or current
+(Neumann condition after diving by the electrical conductivity).
+In an electrical model, it is common for much of the boundary
+to be electrically isolated; this is a Neumann boundary condition
+with the current equal to zero.
+
+The simplest finite element models will divide
+@tex
+$\Omega$
+@end tex
+@ifnottex
+Omega
+@end ifnottex
+into simplexes (triangles in 2D, pyramids in 3D).
+@ifset htmltex
+We take as a 3-D example a cylindrical liquid filled tank with a small
+non-conductive ball from the EIDORS project@footnote{EIDORS - Electrical
+Impedance Tomography and Diffuse optical Tomography Reconstruction Software
+@url{http://eidors3d.sourceforge.net}}.  This is model is designed to reflect
+an application of electrical impedance tomography, where current patterns
+are applied to such a tank in order to image the internal conductivity
+distribution.  In order to describe the FEM geometry, we have a matrix of
+vertices @code{nodes} and simplices @code{elems}.
+@end ifset
+
+The following example creates a simple rectangular 2-D electrically
+conductive medium with 10 V and 20 V imposed on opposite sides
+(Dirichlet boundary conditions).  All other edges are electrically
+isolated.
+
+@example
+@group
+   node_y = [1;1.2;1.5;1.8;2]*ones(1,11);
+   node_x = ones(5,1)*[1,1.05,1.1,1.2, ...
+             1.3,1.5,1.7,1.8,1.9,1.95,2];
+   nodes = [node_x(:), node_y(:)];
+
+   [h,w] = size (node_x);
+   elems = [];
+   for idx = 1:w-1
+     widx = (idx-1)*h;
+     elems = [elems; ...
+       widx+[(1:h-1);(2:h);h+(1:h-1)]'; ...
+       widx+[(2:h);h+(2:h);h+(1:h-1)]' ];
+   endfor
+
+   E = size (elems,1); # No. of simplices
+   N = size (nodes,1); # No. of vertices
+   D = size (elems,2); # dimensions+1
+@end group
+@end example
+
+This creates a N-by-2 matrix @code{nodes} and a E-by-3 matrix
+@code{elems} with values, which define finite element triangles:
+
+@example
+@group
+  nodes(1:7,:)'
+    1.00 1.00 1.00 1.00 1.00 1.05 1.05 @dots{}
+    1.00 1.20 1.50 1.80 2.00 1.00 1.20 @dots{}
+
+  elems(1:7,:)'
+    1    2    3    4    2    3    4 @dots{}
+    2    3    4    5    7    8    9 @dots{}
+    6    7    8    9    6    7    8 @dots{}
+@end group
+@end example
+
+Using a first order FEM, we approximate the electrical conductivity
+distribution in
+@tex
+$\Omega$
+@end tex
+@ifnottex
+Omega
+@end ifnottex
+as constant on each simplex (represented by the vector @code{conductivity}).
+Based on the finite element geometry, we first calculate a system (or
+stiffness) matrix for each simplex (represented as 3-by-3 elements on the
+diagonal of the element-wise system matrix @code{SE}).  Based on @code{SE}
+and a N-by-DE connectivity matrix @code{C}, representing the connections
+between simplices and vertices, the global connectivity matrix @code{S} is
+calculated.
+
+@example
+  ## Element conductivity
+  conductivity = [1*ones(1,16), ...
+         2*ones(1,48), 1*ones(1,16)];
+
+  ## Connectivity matrix
+  C = sparse ((1:D*E), reshape (elems', ...
+         D*E, 1), 1, D*E, N);
+
+  ## Calculate system matrix
+  Siidx = floor ([0:D*E-1]'/D) * D * ...
+         ones(1,D) + ones(D*E,1)*(1:D) ;
+  Sjidx = [1:D*E]'*ones (1,D);
+  Sdata = zeros (D*E,D);
+  dfact = factorial (D-1);
+  for j = 1:E
+     a = inv ([ones(D,1), ...
+         nodes(elems(j,:), :)]);
+     const = conductivity(j) * 2 / ...
+         dfact / abs (det (a));
+     Sdata(D*(j-1)+(1:D),:) = const * ...
+         a(2:D,:)' * a(2:D,:);
+  endfor
+  ## Element-wise system matrix
+  SE = sparse(Siidx,Sjidx,Sdata);
+  ## Global system matrix
+  S = C'* SE *C;
+@end example
+
+The system matrix acts like the conductivity
+@tex
+$S$
+@end tex
+@ifnottex
+@code{S}
+@end ifnottex
+in Ohm's law
+@tex
+$SV = I$.
+@end tex
+@ifnottex
+@code{S * V = I}.
+@end ifnottex
+Based on the Dirichlet and Neumann boundary conditions, we are able to
+solve for the voltages at each vertex @code{V}.
+
+@example
+  ## Dirichlet boundary conditions
+  D_nodes = [1:5, 51:55];
+  D_value = [10*ones(1,5), 20*ones(1,5)];
+
+  V = zeros (N,1);
+  V(D_nodes) = D_value;
+  idx = 1:N; # vertices without Dirichlet
+             # boundary condns
+  idx(D_nodes) = [];
+
+  ## Neumann boundary conditions.  Note that
+  ## N_value must be normalized by the
+  ## boundary length and element conductivity
+  N_nodes = [];
+  N_value = [];
+
+  Q = zeros (N,1);
+  Q(N_nodes) = N_value;
+
+  V(idx) = S(idx,idx) \ ( Q(idx) - ...
+            S(idx,D_nodes) * V(D_nodes));
+@end example
+
+Finally, in order to display the solution, we show each solved voltage
+value in the z-axis for each simplex vertex.
+@ifset htmltex
+@xref{fig:femmodel}.
+@end ifset
+
+@example
+@group
+  elemx = elems(:,[1,2,3,1])';
+  xelems = reshape (nodes(elemx, 1), 4, E);
+  yelems = reshape (nodes(elemx, 2), 4, E);
+  velems = reshape (V(elemx), 4, E);
+  plot3 (xelems,yelems,velems,"k");
+  print "grid.eps";
+@end group
+@end example
+
+
+@ifset htmltex
+@float Figure,fig:femmodel
+@center @image{grid,4in}
+@caption{Example finite element model the showing triangular elements.
+The height of each vertex corresponds to the solution value.}
+@end float
+@end ifset

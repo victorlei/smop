@@ -1,0 +1,919 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Timing Utilities</title>
+
+<meta name="description" content="GNU Octave: Timing Utilities">
+<meta name="keywords" content="GNU Octave: Timing Utilities">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="System-Utilities.html#System-Utilities" rel="up" title="System Utilities">
+<link href="Filesystem-Utilities.html#Filesystem-Utilities" rel="next" title="Filesystem Utilities">
+<link href="System-Utilities.html#System-Utilities" rel="prev" title="System Utilities">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Timing-Utilities"></a>
+<div class="header">
+<p>
+Next: <a href="Filesystem-Utilities.html#Filesystem-Utilities" accesskey="n" rel="next">Filesystem Utilities</a>, Up: <a href="System-Utilities.html#System-Utilities" accesskey="u" rel="up">System Utilities</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Timing-Utilities-1"></a>
+<h3 class="section">36.1 Timing Utilities</h3>
+
+<p>Octave&rsquo;s core set of functions for manipulating time values are
+patterned after the corresponding functions from the standard C library.
+Several of these functions use a data structure for time that includes
+the following elements:
+</p>
+<dl compact="compact">
+<dt><code>usec</code></dt>
+<dd><p>Microseconds after the second (0-999999).
+</p>
+</dd>
+<dt><code>sec</code></dt>
+<dd><p>Seconds after the minute (0-60).  This number can be 60 to account
+for leap seconds.
+</p>
+</dd>
+<dt><code>min</code></dt>
+<dd><p>Minutes after the hour (0-59).
+</p>
+</dd>
+<dt><code>hour</code></dt>
+<dd><p>Hours since midnight (0-23).
+</p>
+</dd>
+<dt><code>mday</code></dt>
+<dd><p>Day of the month (1-31).
+</p>
+</dd>
+<dt><code>mon</code></dt>
+<dd><p>Months since January (0-11).
+</p>
+</dd>
+<dt><code>year</code></dt>
+<dd><p>Years since 1900.
+</p>
+</dd>
+<dt><code>wday</code></dt>
+<dd><p>Days since Sunday (0-6).
+</p>
+</dd>
+<dt><code>yday</code></dt>
+<dd><p>Days since January 1 (0-365).
+</p>
+</dd>
+<dt><code>isdst</code></dt>
+<dd><p>Daylight Savings Time flag.
+</p>
+</dd>
+<dt><code>zone</code></dt>
+<dd><p>Time zone.
+</p></dd>
+</dl>
+
+<p>In the descriptions of the following functions, this structure is
+referred to as a <var>tm_struct</var>.
+</p>
+<a name="XREFtime"></a><dl>
+<dt><a name="index-time"></a>Built-in Function: <em><var>seconds</var> =</em> <strong>time</strong> <em>()</em></dt>
+<dd><p>Return the current time as the number of seconds since the epoch.
+</p>
+<p>The epoch is referenced to 00:00:00 CUT (Coordinated Universal Time) 1 Jan
+1970.  For example, on Monday February 17, 1997 at 07:15:06 CUT, the value
+returned by <code>time</code> was 856163706.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstrftime">strftime</a>, <a href="#XREFstrptime">strptime</a>, <a href="#XREFlocaltime">localtime</a>, <a href="#XREFgmtime">gmtime</a>, <a href="#XREFmktime">mktime</a>, <a href="#XREFnow">now</a>, <a href="#XREFdate">date</a>, <a href="#XREFclock">clock</a>, <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatestr">datestr</a>, <a href="#XREFdatevec">datevec</a>, <a href="#XREFcalendar">calendar</a>, <a href="#XREFweekday">weekday</a>.
+</p></dd></dl>
+
+
+<a name="XREFnow"></a><dl>
+<dt><a name="index-now"></a>Function File: <em>t =</em> <strong>now</strong> <em>()</em></dt>
+<dd><p>Return the current local date/time as a serial day number
+(see <code>datenum</code>).
+</p>
+<p>The integral part, <code>floor (now)</code> corresponds to the number of days
+between today and Jan 1, 0000.
+</p>
+<p>The fractional part, <code>rem (now, 1)</code> corresponds to the current time.
+</p>
+<p><strong>See also:</strong> <a href="#XREFclock">clock</a>, <a href="#XREFdate">date</a>, <a href="#XREFdatenum">datenum</a>.
+</p></dd></dl>
+
+
+<a name="XREFctime"></a><dl>
+<dt><a name="index-ctime"></a>Function File: <em></em> <strong>ctime</strong> <em>(<var>t</var>)</em></dt>
+<dd><p>Convert a value returned from <code>time</code> (or any other non-negative
+integer), to the local time and return a string of the same form as
+<code>asctime</code>.
+</p>
+<p>The function <code>ctime (time)</code> is equivalent to
+<code>asctime (localtime (time))</code>.  For example:
+</p>
+<div class="example">
+<pre class="example">ctime (time ())
+   &rArr; &quot;Mon Feb 17 01:15:06 1997\n&quot;
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFasctime">asctime</a>, <a href="#XREFtime">time</a>, <a href="#XREFlocaltime">localtime</a>.
+</p></dd></dl>
+
+
+<a name="XREFgmtime"></a><dl>
+<dt><a name="index-gmtime"></a>Built-in Function: <em><var>tm_struct</var> =</em> <strong>gmtime</strong> <em>(<var>t</var>)</em></dt>
+<dd><p>Given a value returned from <code>time</code>, or any non-negative integer,
+return a time structure corresponding to CUT (Coordinated Universal Time).
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">gmtime (time ())
+     &rArr; {
+           usec = 0
+           sec = 6
+           min = 15
+           hour = 7
+           mday = 17
+           mon = 1
+           year = 97
+           wday = 1
+           yday = 47
+           isdst = 0
+           zone = CST
+        }
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFstrftime">strftime</a>, <a href="#XREFstrptime">strptime</a>, <a href="#XREFlocaltime">localtime</a>, <a href="#XREFmktime">mktime</a>, <a href="#XREFtime">time</a>, <a href="#XREFnow">now</a>, <a href="#XREFdate">date</a>, <a href="#XREFclock">clock</a>, <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatestr">datestr</a>, <a href="#XREFdatevec">datevec</a>, <a href="#XREFcalendar">calendar</a>, <a href="#XREFweekday">weekday</a>.
+</p></dd></dl>
+
+
+<a name="XREFlocaltime"></a><dl>
+<dt><a name="index-localtime"></a>Built-in Function: <em><var>tm_struct</var> =</em> <strong>localtime</strong> <em>(<var>t</var>)</em></dt>
+<dd><p>Given a value returned from <code>time</code>, or any non-negative integer,
+return a time structure corresponding to the local time zone.
+</p>
+<div class="example">
+<pre class="example">localtime (time ())
+     &rArr; {
+           usec = 0
+           sec = 6
+           min = 15
+           hour = 1
+           mday = 17
+           mon = 1
+           year = 97
+           wday = 1
+           yday = 47
+           isdst = 0
+           zone = CST
+        }
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFstrftime">strftime</a>, <a href="#XREFstrptime">strptime</a>, <a href="#XREFgmtime">gmtime</a>, <a href="#XREFmktime">mktime</a>, <a href="#XREFtime">time</a>, <a href="#XREFnow">now</a>, <a href="#XREFdate">date</a>, <a href="#XREFclock">clock</a>, <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatestr">datestr</a>, <a href="#XREFdatevec">datevec</a>, <a href="#XREFcalendar">calendar</a>, <a href="#XREFweekday">weekday</a>.
+</p></dd></dl>
+
+
+<a name="XREFmktime"></a><dl>
+<dt><a name="index-mktime"></a>Built-in Function: <em><var>seconds</var> =</em> <strong>mktime</strong> <em>(<var>tm_struct</var>)</em></dt>
+<dd><p>Convert a time structure corresponding to the local time to the number of
+seconds since the epoch.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">mktime (localtime (time ()))
+     &rArr; 856163706
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFstrftime">strftime</a>, <a href="#XREFstrptime">strptime</a>, <a href="#XREFlocaltime">localtime</a>, <a href="#XREFgmtime">gmtime</a>, <a href="#XREFtime">time</a>, <a href="#XREFnow">now</a>, <a href="#XREFdate">date</a>, <a href="#XREFclock">clock</a>, <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatestr">datestr</a>, <a href="#XREFdatevec">datevec</a>, <a href="#XREFcalendar">calendar</a>, <a href="#XREFweekday">weekday</a>.
+</p></dd></dl>
+
+
+<a name="XREFasctime"></a><dl>
+<dt><a name="index-asctime"></a>Function File: <em></em> <strong>asctime</strong> <em>(<var>tm_struct</var>)</em></dt>
+<dd><p>Convert a time structure to a string using the following
+format: <code>&quot;ddd mmm mm HH:MM:SS yyyy\n&quot;</code>.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">asctime (localtime (time ()))
+     &rArr; &quot;Mon Feb 17 01:15:06 1997\n&quot;
+</pre></div>
+
+<p>This is equivalent to <code>ctime (time ())</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFctime">ctime</a>, <a href="#XREFlocaltime">localtime</a>, <a href="#XREFtime">time</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrftime"></a><dl>
+<dt><a name="index-strftime"></a>Built-in Function: <em></em> <strong>strftime</strong> <em>(<var>fmt</var>, <var>tm_struct</var>)</em></dt>
+<dd><p>Format the time structure <var>tm_struct</var> in a flexible way using the format
+string <var>fmt</var> that contains &lsquo;<samp>%</samp>&rsquo; substitutions similar to those in
+<code>printf</code>.
+</p>
+<p>Except where noted, substituted fields have a fixed size; numeric fields are
+padded if necessary.  Padding is with zeros by default; for fields that
+display a single number, padding can be changed or inhibited by following
+the &lsquo;<samp>%</samp>&rsquo; with one of the modifiers described below.  Unknown field
+specifiers are copied as normal characters.  All other characters are copied
+to the output without change.  For example:
+</p>
+<div class="example">
+<pre class="example">strftime (&quot;%r (%Z) %A %e %B %Y&quot;, localtime (time ()))
+      &rArr; &quot;01:15:06 AM (CST) Monday 17 February 1997&quot;
+</pre></div>
+
+<p>Octave&rsquo;s <code>strftime</code> function supports a superset of the ANSI C field
+specifiers.
+</p>
+<p>Literal character fields:
+</p>
+<dl compact="compact">
+<dt><code>%%</code></dt>
+<dd><p>% character.
+</p>
+</dd>
+<dt><code>%n</code></dt>
+<dd><p>Newline character.
+</p>
+</dd>
+<dt><code>%t</code></dt>
+<dd><p>Tab character.
+</p></dd>
+</dl>
+
+<p>Numeric modifiers (a nonstandard extension):
+</p>
+<dl compact="compact">
+<dt><code>- (dash)</code></dt>
+<dd><p>Do not pad the field.
+</p>
+</dd>
+<dt><code>_ (underscore)</code></dt>
+<dd><p>Pad the field with spaces.
+</p></dd>
+</dl>
+
+<p>Time fields:
+</p>
+<dl compact="compact">
+<dt><code>%H</code></dt>
+<dd><p>Hour (00-23).
+</p>
+</dd>
+<dt><code>%I</code></dt>
+<dd><p>Hour (01-12).
+</p>
+</dd>
+<dt><code>%k</code></dt>
+<dd><p>Hour (0-23).
+</p>
+</dd>
+<dt><code>%l</code></dt>
+<dd><p>Hour (1-12).
+</p>
+</dd>
+<dt><code>%M</code></dt>
+<dd><p>Minute (00-59).
+</p>
+</dd>
+<dt><code>%p</code></dt>
+<dd><p>Locale&rsquo;s AM or PM.
+</p>
+</dd>
+<dt><code>%r</code></dt>
+<dd><p>Time, 12-hour (hh:mm:ss [AP]M).
+</p>
+</dd>
+<dt><code>%R</code></dt>
+<dd><p>Time, 24-hour (hh:mm).
+</p>
+</dd>
+<dt><code>%s</code></dt>
+<dd><p>Time in seconds since 00:00:00, Jan 1, 1970 (a nonstandard extension).
+</p>
+</dd>
+<dt><code>%S</code></dt>
+<dd><p>Second (00-61).
+</p>
+</dd>
+<dt><code>%T</code></dt>
+<dd><p>Time, 24-hour (hh:mm:ss).
+</p>
+</dd>
+<dt><code>%X</code></dt>
+<dd><p>Locale&rsquo;s time representation (%H:%M:%S).
+</p>
+</dd>
+<dt><code>%Z</code></dt>
+<dd><p>Time zone (EDT), or nothing if no time zone is determinable.
+</p></dd>
+</dl>
+
+<p>Date fields:
+</p>
+<dl compact="compact">
+<dt><code>%a</code></dt>
+<dd><p>Locale&rsquo;s abbreviated weekday name (Sun-Sat).
+</p>
+</dd>
+<dt><code>%A</code></dt>
+<dd><p>Locale&rsquo;s full weekday name, variable length (Sunday-Saturday).
+</p>
+</dd>
+<dt><code>%b</code></dt>
+<dd><p>Locale&rsquo;s abbreviated month name (Jan-Dec).
+</p>
+</dd>
+<dt><code>%B</code></dt>
+<dd><p>Locale&rsquo;s full month name, variable length (January-December).
+</p>
+</dd>
+<dt><code>%c</code></dt>
+<dd><p>Locale&rsquo;s date and time (Sat Nov 04 12:02:33 EST 1989).
+</p>
+</dd>
+<dt><code>%C</code></dt>
+<dd><p>Century (00-99).
+</p>
+</dd>
+<dt><code>%d</code></dt>
+<dd><p>Day of month (01-31).
+</p>
+</dd>
+<dt><code>%e</code></dt>
+<dd><p>Day of month ( 1-31).
+</p>
+</dd>
+<dt><code>%D</code></dt>
+<dd><p>Date (mm/dd/yy).
+</p>
+</dd>
+<dt><code>%h</code></dt>
+<dd><p>Same as %b.
+</p>
+</dd>
+<dt><code>%j</code></dt>
+<dd><p>Day of year (001-366).
+</p>
+</dd>
+<dt><code>%m</code></dt>
+<dd><p>Month (01-12).
+</p>
+</dd>
+<dt><code>%U</code></dt>
+<dd><p>Week number of year with Sunday as first day of week (00-53).
+</p>
+</dd>
+<dt><code>%w</code></dt>
+<dd><p>Day of week (0-6).
+</p>
+</dd>
+<dt><code>%W</code></dt>
+<dd><p>Week number of year with Monday as first day of week (00-53).
+</p>
+</dd>
+<dt><code>%x</code></dt>
+<dd><p>Locale&rsquo;s date representation (mm/dd/yy).
+</p>
+</dd>
+<dt><code>%y</code></dt>
+<dd><p>Last two digits of year (00-99).
+</p>
+</dd>
+<dt><code>%Y</code></dt>
+<dd><p>Year (1970-).
+</p></dd>
+</dl>
+
+<p><strong>See also:</strong> <a href="#XREFstrptime">strptime</a>, <a href="#XREFlocaltime">localtime</a>, <a href="#XREFgmtime">gmtime</a>, <a href="#XREFmktime">mktime</a>, <a href="#XREFtime">time</a>, <a href="#XREFnow">now</a>, <a href="#XREFdate">date</a>, <a href="#XREFclock">clock</a>, <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatestr">datestr</a>, <a href="#XREFdatevec">datevec</a>, <a href="#XREFcalendar">calendar</a>, <a href="#XREFweekday">weekday</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrptime"></a><dl>
+<dt><a name="index-strptime"></a>Built-in Function: <em>[<var>tm_struct</var>, <var>nchars</var>] =</em> <strong>strptime</strong> <em>(<var>str</var>, <var>fmt</var>)</em></dt>
+<dd><p>Convert the string <var>str</var> to the time structure <var>tm_struct</var> under
+the control of the format string <var>fmt</var>.
+</p>
+<p>If <var>fmt</var> fails to match, <var>nchars</var> is 0; otherwise, it is set to the
+position of last matched character plus 1. Always check for this unless
+you&rsquo;re absolutely sure the date string will be parsed correctly.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstrftime">strftime</a>, <a href="#XREFlocaltime">localtime</a>, <a href="#XREFgmtime">gmtime</a>, <a href="#XREFmktime">mktime</a>, <a href="#XREFtime">time</a>, <a href="#XREFnow">now</a>, <a href="#XREFdate">date</a>, <a href="#XREFclock">clock</a>, <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatestr">datestr</a>, <a href="#XREFdatevec">datevec</a>, <a href="#XREFcalendar">calendar</a>, <a href="#XREFweekday">weekday</a>.
+</p></dd></dl>
+
+
+<p>Most of the remaining functions described in this section are not
+patterned after the standard C library.  Some are available for
+compatibility with <small>MATLAB</small> and others are provided because they are
+useful.
+</p>
+<a name="XREFclock"></a><dl>
+<dt><a name="index-clock"></a>Function File: <em></em> <strong>clock</strong> <em>()</em></dt>
+<dd><p>Return the current local date and time as a date vector.
+</p>
+<p>The date vector contains the following fields: current year, month (1-12),
+day (1-31), hour (0-23), minute (0-59), and second (0-61).  The seconds
+field has a fractional part after the decimal point for extended accuracy.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">fix (clock ())
+     &rArr; [ 1993, 8, 20, 4, 56, 1 ]
+</pre></div>
+
+<p><code>clock</code> is more accurate on systems that have the <code>gettimeofday</code>
+function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFnow">now</a>, <a href="#XREFdate">date</a>, <a href="#XREFdatevec">datevec</a>.
+</p></dd></dl>
+
+
+<a name="XREFdate"></a><dl>
+<dt><a name="index-date"></a>Function File: <em></em> <strong>date</strong> <em>()</em></dt>
+<dd><p>Return the current date as a character string in the form DD-MMM-YYYY.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">date ()
+  &rArr; &quot;20-Aug-1993&quot;
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFnow">now</a>, <a href="#XREFclock">clock</a>, <a href="#XREFdatestr">datestr</a>, <a href="#XREFlocaltime">localtime</a>.
+</p></dd></dl>
+
+
+<a name="XREFetime"></a><dl>
+<dt><a name="index-etime"></a>Function File: <em></em> <strong>etime</strong> <em>(<var>t2</var>, <var>t1</var>)</em></dt>
+<dd><p>Return the difference in seconds between two time values returned from
+<code>clock</code> (<em><var>t2</var> - <var>t1</var></em>).
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">t0 = clock ();
+# many computations later&hellip;
+elapsed_time = etime (clock (), t0);
+</pre></div>
+
+<p>will set the variable <code>elapsed_time</code> to the number of seconds since the
+variable <code>t0</code> was set.
+</p>
+<p><strong>See also:</strong> <a href="#XREFtic">tic</a>, <a href="#XREFtoc">toc</a>, <a href="#XREFclock">clock</a>, <a href="#XREFcputime">cputime</a>, <a href="#XREFaddtodate">addtodate</a>.
+</p></dd></dl>
+
+
+<a name="XREFcputime"></a><dl>
+<dt><a name="index-cputime"></a>Built-in Function: <em>[<var>total</var>, <var>user</var>, <var>system</var>] =</em> <strong>cputime</strong> <em>();</em></dt>
+<dd><p>Return the CPU time used by your Octave session.
+</p>
+<p>The first output is the total time spent executing your process and is equal
+to the sum of second and third outputs, which are the number of CPU seconds
+spent executing in user mode and the number of CPU seconds spent executing
+in system mode, respectively.
+</p>
+<p>If your system does not have a way to report CPU time usage, <code>cputime</code>
+returns 0 for each of its output values.
+</p>
+<p>Note that because Octave used some CPU time to start, it is reasonable
+to check to see if <code>cputime</code> works by checking to see if the total
+CPU time used is nonzero.
+</p>
+<p><strong>See also:</strong> <a href="#XREFtic">tic</a>, <a href="#XREFtoc">toc</a>.
+</p></dd></dl>
+
+
+<a name="XREFis_005fleap_005fyear"></a><dl>
+<dt><a name="index-is_005fleap_005fyear"></a>Function File: <em></em> <strong>is_leap_year</strong> <em>()</em></dt>
+<dt><a name="index-is_005fleap_005fyear-1"></a>Function File: <em></em> <strong>is_leap_year</strong> <em>(<var>year</var>)</em></dt>
+<dd><p>Return true if <var>year</var> is a leap year and false otherwise.
+</p>
+<p>If no year is specified, <code>is_leap_year</code> uses the current year.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">is_leap_year (2000)
+   &rArr; 1
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFweekday">weekday</a>, <a href="#XREFeomday">eomday</a>, <a href="#XREFcalendar">calendar</a>.
+</p></dd></dl>
+
+
+<a name="XREFtoc"></a><a name="XREFtic"></a><dl>
+<dt><a name="index-tic"></a>Built-in Function: <em></em> <strong>tic</strong> <em>()</em></dt>
+<dt><a name="index-tic-1"></a>Built-in Function: <em><var>id</var> =</em> <strong>tic</strong> <em>()</em></dt>
+<dt><a name="index-toc"></a>Built-in Function: <em></em> <strong>toc</strong> <em>()</em></dt>
+<dt><a name="index-toc-1"></a>Built-in Function: <em></em> <strong>toc</strong> <em>(<var>id</var>)</em></dt>
+<dt><a name="index-toc-2"></a>Built-in Function: <em><var>val</var> =</em> <strong>toc</strong> <em>(&hellip;)</em></dt>
+<dd><p>Set or check a wall-clock timer.
+</p>
+<p>Calling <code>tic</code> without an output argument sets the internal timer state.
+Subsequent calls to <code>toc</code> return the number of seconds since the timer
+was set.
+For example,
+</p>
+<div class="example">
+<pre class="example">tic ();
+# many computations later&hellip;
+elapsed_time = toc ();
+</pre></div>
+
+<p>will set the variable <code>elapsed_time</code> to the number of seconds since
+the most recent call to the function <code>tic</code>.
+</p>
+<p>If called with one output argument, <code>tic</code> returns a scalar
+of type <code>uint64</code> that may be later passed to <code>toc</code>.
+</p>
+<div class="example">
+<pre class="example">id = tic; sleep (5); toc (id)
+      &rArr; 5.0010
+</pre></div>
+
+<p>Calling <code>tic</code> and <code>toc</code> this way allows nested timing calls.
+</p>
+<p>If you are more interested in the CPU time that your process used, you
+should use the <code>cputime</code> function instead.  The <code>tic</code> and
+<code>toc</code> functions report the actual wall clock time that elapsed
+between the calls.  This may include time spent processing other jobs or
+doing nothing at all.
+</p>
+<p><strong>See also:</strong> <a href="#XREFtoc">toc</a>, <a href="#XREFcputime">cputime</a>.
+</p></dd></dl>
+
+
+<a name="XREFpause"></a><dl>
+<dt><a name="index-pause-2"></a>Built-in Function: <em></em> <strong>pause</strong> <em>()</em></dt>
+<dt><a name="index-pause-3"></a>Built-in Function: <em></em> <strong>pause</strong> <em>(<var>n</var>)</em></dt>
+<dd><p>Suspend the execution of the program for <var>n</var> seconds.
+</p>
+<p><var>n</var> is a positive real value and may be a fraction of a second.
+</p>
+<p>If invoked without an input arguments then the program is suspended until a
+character is typed.
+</p>
+<p>The following example prints a message and then waits 5 seconds before
+clearing the screen.
+</p>
+<div class="example">
+<pre class="example">fprintf (stderr, &quot;wait please...\n&quot;);
+pause (5);
+clc;
+</pre></div>
+
+<p><strong>See also:</strong> <a href="Terminal-Input.html#XREFkbhit">kbhit</a>, <a href="#XREFsleep">sleep</a>.
+</p></dd></dl>
+
+
+<a name="XREFsleep"></a><dl>
+<dt><a name="index-sleep"></a>Built-in Function: <em></em> <strong>sleep</strong> <em>(<var>seconds</var>)</em></dt>
+<dd><p>Suspend the execution of the program for the given number of seconds.
+</p>
+<p><strong>See also:</strong> <a href="#XREFusleep">usleep</a>, <a href="#XREFpause">pause</a>.
+</p></dd></dl>
+
+
+<a name="XREFusleep"></a><dl>
+<dt><a name="index-usleep"></a>Built-in Function: <em></em> <strong>usleep</strong> <em>(<var>microseconds</var>)</em></dt>
+<dd><p>Suspend the execution of the program for the given number of
+microseconds.
+</p>
+<p>On systems where it is not possible to sleep for periods of time less than
+one second, <code>usleep</code> will pause the execution for <code>round
+(<var>microseconds</var> / 1e6)</code> seconds.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsleep">sleep</a>, <a href="#XREFpause">pause</a>.
+</p></dd></dl>
+
+
+<a name="XREFdatenum"></a><dl>
+<dt><a name="index-datenum"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(<var>datevec</var>)</em></dt>
+<dt><a name="index-datenum-1"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(<var>year</var>, <var>month</var>, <var>day</var>)</em></dt>
+<dt><a name="index-datenum-2"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(<var>year</var>, <var>month</var>, <var>day</var>, <var>hour</var>)</em></dt>
+<dt><a name="index-datenum-3"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(<var>year</var>, <var>month</var>, <var>day</var>, <var>hour</var>, <var>minute</var>)</em></dt>
+<dt><a name="index-datenum-4"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(<var>year</var>, <var>month</var>, <var>day</var>, <var>hour</var>, <var>minute</var>, <var>second</var>)</em></dt>
+<dt><a name="index-datenum-5"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(&quot;datestr&quot;)</em></dt>
+<dt><a name="index-datenum-6"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(&quot;datestr&quot;, <var>f</var>)</em></dt>
+<dt><a name="index-datenum-7"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(&quot;datestr&quot;, <var>p</var>)</em></dt>
+<dt><a name="index-datenum-8"></a>Function File: <em>[<var>days</var>, <var>secs</var>] =</em> <strong>datenum</strong> <em>(&hellip;)</em></dt>
+<dd><p>Return the date/time input as a serial day number, with Jan 1, 0000
+defined as day 1.
+</p>
+<p>The integer part, <code>floor (<var>days</var>)</code> counts the number of
+complete days in the date input.
+</p>
+<p>The fractional part, <code>rem (<var>days</var>, 1)</code> corresponds to the time
+on the given day.
+</p>
+<p>The input may be a date vector (see <code>datevec</code>),
+datestr (see <code>datestr</code>), or directly specified as input.
+</p>
+<p>When processing input datestrings, <var>f</var> is the format string used to
+interpret date strings (see <code>datestr</code>).  If no format <var>f</var> is
+specified, then a relatively slow search is performed through various
+formats.  It is always preferable to specify the format string <var>f</var> if
+it is known.  Formats which do not specify a particular time component
+will have the value set to zero.  Formats which do not specify a date
+will default to January 1st of the current year.
+</p>
+<p><var>p</var> is the year at the start of the century to which two-digit years
+will be referenced.  If not specified, it defaults to the current year
+minus 50.
+</p>
+<p>The optional output <var>secs</var> holds the time on the specified day with
+greater precision than <var>days</var>.
+</p>
+<p>Notes:
+</p>
+<ul>
+<li> Years can be negative and/or fractional.
+
+</li><li> Months below 1 are considered to be January.
+
+</li><li> Days of the month start at 1.
+
+</li><li> Days beyond the end of the month go into subsequent months.
+
+</li><li> Days before the beginning of the month go to the previous month.
+
+</li><li> Days can be fractional.
+</li></ul>
+
+<p><strong>Caution:</strong> this function does not attempt to handle Julian calendars
+so dates before October 15, 1582 are wrong by as much as eleven days.  Also,
+be aware that only Roman Catholic countries adopted the calendar in 1582.
+It took until 1924 for it to be adopted everywhere.  See the Wikipedia entry
+on the Gregorian calendar for more details.
+</p>
+<p><strong>Warning:</strong> leap seconds are ignored.  A table of leap seconds is
+available on the Wikipedia entry for leap seconds.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdatestr">datestr</a>, <a href="#XREFdatevec">datevec</a>, <a href="#XREFnow">now</a>, <a href="#XREFclock">clock</a>, <a href="#XREFdate">date</a>.
+</p></dd></dl>
+
+
+<a name="XREFdatestr"></a><dl>
+<dt><a name="index-datestr"></a>Function File: <em><var>str</var> =</em> <strong>datestr</strong> <em>(<var>date</var>)</em></dt>
+<dt><a name="index-datestr-1"></a>Function File: <em><var>str</var> =</em> <strong>datestr</strong> <em>(<var>date</var>, <var>f</var>)</em></dt>
+<dt><a name="index-datestr-2"></a>Function File: <em><var>str</var> =</em> <strong>datestr</strong> <em>(<var>date</var>, <var>f</var>, <var>p</var>)</em></dt>
+<dd><p>Format the given date/time according to the format <code>f</code> and return
+the result in <var>str</var>.
+</p>
+<p><var>date</var> is a serial date number (see <code>datenum</code>) or a date vector
+(see <code>datevec</code>).  The value of <var>date</var> may also be a string or cell
+array of strings.
+</p>
+<p><var>f</var> can be an integer which corresponds to one of the codes in the table
+below, or a date format string.
+</p>
+<p><var>p</var> is the year at the start of the century in which two-digit years are
+to be interpreted in.  If not specified, it defaults to the current year
+minus 50.
+</p>
+<p>For example, the date 730736.65149 (2000-09-07 15:38:09.0934) would be
+formatted as follows:
+</p>
+<table>
+<thead><tr><th width="10%">Code</th><th width="45%">Format</th><th width="35%">Example</th></tr></thead>
+<tr><td width="10%">0</td><td width="45%">dd-mmm-yyyy HH:MM:SS</td><td width="35%">07-Sep-2000 15:38:09</td></tr>
+<tr><td width="10%">1</td><td width="45%">dd-mmm-yyyy</td><td width="35%">07-Sep-2000</td></tr>
+<tr><td width="10%">2</td><td width="45%">mm/dd/yy</td><td width="35%">09/07/00</td></tr>
+<tr><td width="10%">3</td><td width="45%">mmm</td><td width="35%">Sep</td></tr>
+<tr><td width="10%">4</td><td width="45%">m</td><td width="35%">S</td></tr>
+<tr><td width="10%">5</td><td width="45%">mm</td><td width="35%">09</td></tr>
+<tr><td width="10%">6</td><td width="45%">mm/dd</td><td width="35%">09/07</td></tr>
+<tr><td width="10%">7</td><td width="45%">dd</td><td width="35%">07</td></tr>
+<tr><td width="10%">8</td><td width="45%">ddd</td><td width="35%">Thu</td></tr>
+<tr><td width="10%">9</td><td width="45%">d</td><td width="35%">T</td></tr>
+<tr><td width="10%">10</td><td width="45%">yyyy</td><td width="35%">2000</td></tr>
+<tr><td width="10%">11</td><td width="45%">yy</td><td width="35%">00</td></tr>
+<tr><td width="10%">12</td><td width="45%">mmmyy</td><td width="35%">Sep00</td></tr>
+<tr><td width="10%">13</td><td width="45%">HH:MM:SS</td><td width="35%">15:38:09</td></tr>
+<tr><td width="10%">14</td><td width="45%">HH:MM:SS PM</td><td width="35%">03:38:09 PM</td></tr>
+<tr><td width="10%">15</td><td width="45%">HH:MM</td><td width="35%">15:38</td></tr>
+<tr><td width="10%">16</td><td width="45%">HH:MM PM</td><td width="35%">03:38 PM</td></tr>
+<tr><td width="10%">17</td><td width="45%">QQ-YY</td><td width="35%">Q3-00</td></tr>
+<tr><td width="10%">18</td><td width="45%">QQ</td><td width="35%">Q3</td></tr>
+<tr><td width="10%">19</td><td width="45%">dd/mm</td><td width="35%">07/09</td></tr>
+<tr><td width="10%">20</td><td width="45%">dd/mm/yy</td><td width="35%">07/09/00</td></tr>
+<tr><td width="10%">21</td><td width="45%">mmm.dd,yyyy HH:MM:SS</td><td width="35%">Sep.07,2000 15:38:08</td></tr>
+<tr><td width="10%">22</td><td width="45%">mmm.dd,yyyy</td><td width="35%">Sep.07,2000</td></tr>
+<tr><td width="10%">23</td><td width="45%">mm/dd/yyyy</td><td width="35%">09/07/2000</td></tr>
+<tr><td width="10%">24</td><td width="45%">dd/mm/yyyy</td><td width="35%">07/09/2000</td></tr>
+<tr><td width="10%">25</td><td width="45%">yy/mm/dd</td><td width="35%">00/09/07</td></tr>
+<tr><td width="10%">26</td><td width="45%">yyyy/mm/dd</td><td width="35%">2000/09/07</td></tr>
+<tr><td width="10%">27</td><td width="45%">QQ-YYYY</td><td width="35%">Q3-2000</td></tr>
+<tr><td width="10%">28</td><td width="45%">mmmyyyy</td><td width="35%">Sep2000</td></tr>
+<tr><td width="10%">29</td><td width="45%">yyyy-mm-dd</td><td width="35%">2000-09-07</td></tr>
+<tr><td width="10%">30</td><td width="45%">yyyymmddTHHMMSS</td><td width="35%">20000907T153808</td></tr>
+<tr><td width="10%">31</td><td width="45%">yyyy-mm-dd HH:MM:SS</td><td width="35%">2000-09-07 15:38:08</td></tr>
+</table>
+
+<p>If <var>f</var> is a format string, the following symbols are recognized:
+</p>
+<table>
+<thead><tr><th width="10%">Symbol</th><th width="70%">Meaning</th><th width="20%">Example</th></tr></thead>
+<tr><td width="10%">yyyy</td><td width="70%">Full year</td><td width="20%">2005</td></tr>
+<tr><td width="10%">yy</td><td width="70%">Two-digit year</td><td width="20%">05</td></tr>
+<tr><td width="10%">mmmm</td><td width="70%">Full month name</td><td width="20%">December</td></tr>
+<tr><td width="10%">mmm</td><td width="70%">Abbreviated month name</td><td width="20%">Dec</td></tr>
+<tr><td width="10%">mm</td><td width="70%">Numeric month number (padded with zeros)</td><td width="20%">01, 08, 12</td></tr>
+<tr><td width="10%">m</td><td width="70%">First letter of month name (capitalized)</td><td width="20%">D</td></tr>
+<tr><td width="10%">dddd</td><td width="70%">Full weekday name</td><td width="20%">Sunday</td></tr>
+<tr><td width="10%">ddd</td><td width="70%">Abbreviated weekday name</td><td width="20%">Sun</td></tr>
+<tr><td width="10%">dd</td><td width="70%">Numeric day of month (padded with zeros)</td><td width="20%">11</td></tr>
+<tr><td width="10%">d</td><td width="70%">First letter of weekday name (capitalized)</td><td width="20%">S</td></tr>
+<tr><td width="10%">HH</td><td width="70%">Hour of day, padded with zeros if PM is set</td><td width="20%">09:00</td></tr>
+<tr><td width="10%"></td><td width="70%">and not padded with zeros otherwise</td><td width="20%">9:00 AM</td></tr>
+<tr><td width="10%">MM</td><td width="70%">Minute of hour (padded with zeros)</td><td width="20%">10:05</td></tr>
+<tr><td width="10%">SS</td><td width="70%">Second of minute (padded with zeros)</td><td width="20%">10:05:03</td></tr>
+<tr><td width="10%">FFF</td><td width="70%">Milliseconds of second (padded with zeros)</td><td width="20%">10:05:03.012</td></tr>
+<tr><td width="10%">AM</td><td width="70%">Use 12-hour time format</td><td width="20%">11:30 AM</td></tr>
+<tr><td width="10%">PM</td><td width="70%">Use 12-hour time format</td><td width="20%">11:30 PM</td></tr>
+</table>
+
+<p>If <var>f</var> is not specified or is <code>-1</code>, then use 0, 1 or 16, depending
+on whether the date portion or the time portion of <var>date</var> is empty.
+</p>
+<p>If <var>p</var> is nor specified, it defaults to the current year minus 50.
+</p>
+<p>If a matrix or cell array of dates is given, a column vector of date strings
+is returned.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatevec">datevec</a>, <a href="#XREFdate">date</a>, <a href="#XREFnow">now</a>, <a href="#XREFclock">clock</a>.
+</p></dd></dl>
+
+
+<a name="XREFdatevec"></a><dl>
+<dt><a name="index-datevec"></a>Function File: <em><var>v</var> =</em> <strong>datevec</strong> <em>(<var>date</var>)</em></dt>
+<dt><a name="index-datevec-1"></a>Function File: <em><var>v</var> =</em> <strong>datevec</strong> <em>(<var>date</var>, <var>f</var>)</em></dt>
+<dt><a name="index-datevec-2"></a>Function File: <em><var>v</var> =</em> <strong>datevec</strong> <em>(<var>date</var>, <var>p</var>)</em></dt>
+<dt><a name="index-datevec-3"></a>Function File: <em><var>v</var> =</em> <strong>datevec</strong> <em>(<var>date</var>, <var>f</var>, <var>p</var>)</em></dt>
+<dt><a name="index-datevec-4"></a>Function File: <em>[<var>y</var>, <var>m</var>, <var>d</var>, <var>h</var>, <var>mi</var>, <var>s</var>] =</em> <strong>datevec</strong> <em>(&hellip;)</em></dt>
+<dd><p>Convert a serial date number (see <code>datenum</code>) or date string (see
+<code>datestr</code>) into a date vector.
+</p>
+<p>A date vector is a row vector with six members, representing the year,
+month, day, hour, minute, and seconds respectively.
+</p>
+<p><var>f</var> is the format string used to interpret date strings
+(see <code>datestr</code>).  If <var>date</var> is a string, but no format is
+specified, then a relatively slow search is performed through various
+formats.  It is always preferable to specify the format string <var>f</var> if it
+is known.  Formats which do not specify a particular time component will
+have the value set to zero.  Formats which do not specify a date will
+default to January 1st of the current year.
+</p>
+<p><var>p</var> is the year at the start of the century to which two-digit years
+will be referenced.  If not specified, it defaults to the current year minus
+50.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatestr">datestr</a>, <a href="#XREFclock">clock</a>, <a href="#XREFnow">now</a>, <a href="#XREFdate">date</a>.
+</p></dd></dl>
+
+
+<a name="XREFaddtodate"></a><dl>
+<dt><a name="index-addtodate"></a>Function File: <em><var>d</var> =</em> <strong>addtodate</strong> <em>(<var>d</var>, <var>q</var>, <var>f</var>)</em></dt>
+<dd><p>Add <var>q</var> amount of time (with units <var>f</var>) to the serial datenum,
+<var>d</var>.
+</p>
+<p><var>f</var> must be one of <code>&quot;year&quot;</code>, <code>&quot;month&quot;</code>, <code>&quot;day&quot;</code>,
+<code>&quot;hour&quot;</code>, <code>&quot;minute&quot;</code>, <code>&quot;second&quot;</code>, or
+<code>&quot;millisecond&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatevec">datevec</a>, <a href="#XREFetime">etime</a>.
+</p></dd></dl>
+
+
+<a name="XREFcalendar"></a><dl>
+<dt><a name="index-calendar"></a>Function File: <em><var>c</var> =</em> <strong>calendar</strong> <em>()</em></dt>
+<dt><a name="index-calendar-1"></a>Function File: <em><var>c</var> =</em> <strong>calendar</strong> <em>(<var>d</var>)</em></dt>
+<dt><a name="index-calendar-2"></a>Function File: <em><var>c</var> =</em> <strong>calendar</strong> <em>(<var>y</var>, <var>m</var>)</em></dt>
+<dt><a name="index-calendar-3"></a>Function File: <em></em> <strong>calendar</strong> <em>(&hellip;)</em></dt>
+<dd><p>Return the current monthly calendar in a 6x7 matrix.
+</p>
+<p>If <var>d</var> is specified, return the calendar for the month containing the
+date <var>d</var>, which must be a serial date number or a date string.
+</p>
+<p>If <var>y</var> and <var>m</var> are specified, return the calendar for year <var>y</var>
+and month <var>m</var>.
+</p>
+<p>If no output arguments are specified, print the calendar on the screen
+instead of returning a matrix.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatestr">datestr</a>.
+</p></dd></dl>
+
+
+<a name="XREFweekday"></a><dl>
+<dt><a name="index-weekday"></a>Function File: <em>[<var>n</var>, <var>s</var>] =</em> <strong>weekday</strong> <em>(<var>d</var>)</em></dt>
+<dt><a name="index-weekday-1"></a>Function File: <em>[<var>n</var>, <var>s</var>] =</em> <strong>weekday</strong> <em>(<var>d</var>, <var>format</var>)</em></dt>
+<dd><p>Return the day of the week as a number in <var>n</var> and as a string in <var>s</var>.
+</p>
+<p>The days of the week are numbered 1&ndash;7 with the first day being Sunday.
+</p>
+<p><var>d</var> is a serial date number or a date string.
+</p>
+<p>If the string <var>format</var> is not present or is equal to <code>&quot;short&quot;</code>
+then <var>s</var> will contain the abbreviated name of the weekday.  If
+<var>format</var> is <code>&quot;long&quot;</code> then <var>s</var> will contain the full name.
+</p>
+<p>Table of return values based on <var>format</var>:
+</p>
+<table>
+<thead><tr><th width="6%"><var>n</var></th><th width="13%"><code>&quot;short&quot;</code></th><th width="16%"><code>&quot;long&quot;</code></th></tr></thead>
+<tr><td width="6%">1</td><td width="13%">Sun</td><td width="16%">Sunday</td></tr>
+<tr><td width="6%">2</td><td width="13%">Mon</td><td width="16%">Monday</td></tr>
+<tr><td width="6%">3</td><td width="13%">Tue</td><td width="16%">Tuesday</td></tr>
+<tr><td width="6%">4</td><td width="13%">Wed</td><td width="16%">Wednesday</td></tr>
+<tr><td width="6%">5</td><td width="13%">Thu</td><td width="16%">Thursday</td></tr>
+<tr><td width="6%">6</td><td width="13%">Fri</td><td width="16%">Friday</td></tr>
+<tr><td width="6%">7</td><td width="13%">Sat</td><td width="16%">Saturday</td></tr>
+</table>
+
+
+<p><strong>See also:</strong> <a href="#XREFeomday">eomday</a>, <a href="#XREFis_005fleap_005fyear">is_leap_year</a>, <a href="#XREFcalendar">calendar</a>, <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatevec">datevec</a>.
+</p></dd></dl>
+
+
+<a name="XREFeomday"></a><dl>
+<dt><a name="index-eomday"></a>Function File: <em><var>e</var> =</em> <strong>eomday</strong> <em>(<var>y</var>, <var>m</var>)</em></dt>
+<dd><p>Return the last day of the month <var>m</var> for the year <var>y</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFweekday">weekday</a>, <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatevec">datevec</a>, <a href="#XREFis_005fleap_005fyear">is_leap_year</a>, <a href="#XREFcalendar">calendar</a>.
+</p></dd></dl>
+
+
+<a name="XREFdatetick"></a><dl>
+<dt><a name="index-datetick"></a>Function File: <em></em> <strong>datetick</strong> <em>()</em></dt>
+<dt><a name="index-datetick-1"></a>Function File: <em></em> <strong>datetick</strong> <em>(<var>form</var>)</em></dt>
+<dt><a name="index-datetick-2"></a>Function File: <em></em> <strong>datetick</strong> <em>(<var>axis</var>, <var>form</var>)</em></dt>
+<dt><a name="index-datetick-3"></a>Function File: <em></em> <strong>datetick</strong> <em>(&hellip;, &quot;keeplimits&quot;)</em></dt>
+<dt><a name="index-datetick-4"></a>Function File: <em></em> <strong>datetick</strong> <em>(&hellip;, &quot;keepticks&quot;)</em></dt>
+<dt><a name="index-datetick-5"></a>Function File: <em></em> <strong>datetick</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dd><p>Add date formatted tick labels to an axis.
+</p>
+<p>The axis to apply the ticks to is determined by <var>axis</var> which can take
+the values <code>&quot;x&quot;</code>, <code>&quot;y&quot;</code>, or <code>&quot;z&quot;</code>.  The default value is
+<code>&quot;x&quot;</code>.
+</p>
+<p>The formatting of the labels is determined by the variable <var>form</var>, which
+can either be a string or positive integer that <code>datestr</code> accepts.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatestr">datestr</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Filesystem-Utilities.html#Filesystem-Utilities" accesskey="n" rel="next">Filesystem Utilities</a>, Up: <a href="System-Utilities.html#System-Utilities" accesskey="u" rel="up">System Utilities</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,1679 @@
+@c DO NOT EDIT!  Generated automatically by munge-texi.pl.
+
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Data Containers
+@chapter Data Containers
+@cindex containers
+
+Octave includes support for two different mechanisms to contain
+arbitrary data types in the same variable.  Structures, which are C-like,
+and are indexed with named fields, and cell arrays, where each element
+of the array can have a different data type and or shape.  Multiple
+input arguments and return values of functions are organized as
+another data container, the comma separated list.
+
+@menu
+* Structures::
+* Cell Arrays::
+* Comma Separated Lists::
+@end menu
+
+@node Structures
+@section Structures
+@cindex structures
+@cindex data structures
+
+Octave includes support for organizing data in structures.  The current
+implementation uses an associative array with indices limited to
+strings, but the syntax is more like C-style structures.
+
+@menu
+* Basic Usage and Examples::
+* Structure Arrays::
+* Creating Structures::
+* Manipulating Structures::
+* Processing Data in Structures::
+@end menu
+
+@node Basic Usage and Examples
+@subsection Basic Usage and Examples
+
+Here are some examples of using data structures in Octave.
+
+Elements of structures can be of any value type.  For example, the three
+expressions
+
+@example
+@group
+x.a = 1;
+x.b = [1, 2; 3, 4];
+x.c = "string";
+@end group
+@end example
+
+@opindex .
+@noindent
+create a structure with three elements.  The @samp{.} character separates
+the structure name from the field name and indicates to Octave that this
+variable is a structure.  To print the value of the
+structure you can type its name, just as for any other variable:
+
+@example
+@group
+x
+     @result{} x =
+        @{
+          a = 1
+          b =
+
+            1  2
+            3  4
+
+          c = string
+        @}
+@end group
+@end example
+
+@noindent
+Note that Octave may print the elements in any order.
+
+Structures may be copied just like any other variable:
+
+@example
+@group
+y = x
+     @result{} y =
+        @{
+          a = 1
+          b =
+
+            1  2
+            3  4
+
+          c = string
+        @}
+@end group
+@end example
+
+Since structures are themselves values, structure elements may reference
+other structures.  The following statements change the value of the
+element @code{b} of the structure @code{x} to be a data structure
+containing the single element @code{d}, which has a value of 3.
+
+@example
+@group
+x.b.d = 3;
+x.b
+     @result{} ans =
+        @{
+          d = 3
+        @}
+
+x
+     @result{} x =
+        @{
+          a = 1
+          b =
+          @{
+            d = 3
+          @}
+
+          c = string
+        @}
+@end group
+@end example
+
+Note that when Octave prints the value of a structure that contains
+other structures, only a few levels are displayed.  For example:
+
+@example
+@group
+a.b.c.d.e = 1;
+a
+     @result{} a =
+        @{
+          b =
+          @{
+            c =
+            @{
+              1x1 struct array containing the fields:
+
+              d: 1x1 struct
+            @}
+          @}
+        @}
+@end group
+@end example
+
+@noindent
+This prevents long and confusing output from large deeply nested
+structures.  The number of levels to print for nested structures may be
+set with the function @code{struct_levels_to_print}, and the function
+@code{print_struct_array_contents} may be used to enable printing of the
+contents of structure arrays.
+
+@c struct_levels_to_print libinterp/octave-value/ov-struct.cc
+@anchor{XREFstruct_levels_to_print}
+@deftypefn  {Built-in Function} {@var{val} =} struct_levels_to_print ()
+@deftypefnx {Built-in Function} {@var{old_val} =} struct_levels_to_print (@var{new_val})
+@deftypefnx {Built-in Function} {} struct_levels_to_print (@var{new_val}, "local")
+Query or set the internal variable that specifies the number of
+structure levels to display.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFprint_struct_array_contents,,print_struct_array_contents}}
+@end deftypefn
+
+
+@c print_struct_array_contents libinterp/octave-value/ov-struct.cc
+@anchor{XREFprint_struct_array_contents}
+@deftypefn  {Built-in Function} {@var{val} =} print_struct_array_contents ()
+@deftypefnx {Built-in Function} {@var{old_val} =} print_struct_array_contents (@var{new_val})
+@deftypefnx {Built-in Function} {} print_struct_array_contents (@var{new_val}, "local")
+Query or set the internal variable that specifies whether to print struct
+array contents.
+
+If true, values of struct array elements are printed.  This variable does
+not affect scalar structures whose elements are always printed.  In both
+cases, however, printing will be limited to the number of levels specified
+by @var{struct_levels_to_print}.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFstruct_levels_to_print,,struct_levels_to_print}}
+@end deftypefn
+
+
+Functions can return structures.  For example, the following function
+separates the real and complex parts of a matrix and stores them in two
+elements of the same structure variable.
+
+@example
+@group
+function y = f (x)
+  y.re = real (x);
+  y.im = imag (x);
+endfunction
+@end group
+@end example
+
+When called with a complex-valued argument, @code{f} returns the data
+structure containing the real and imaginary parts of the original
+function argument.
+
+@example
+@group
+f (rand (2) + rand (2) * I)
+     @result{} ans =
+        @{
+          im =
+
+            0.26475  0.14828
+            0.18436  0.83669
+
+          re =
+
+            0.040239  0.242160
+            0.238081  0.402523
+
+        @}
+@end group
+@end example
+
+Function return lists can include structure elements, and they may be
+indexed like any other variable.  For example:
+
+@example
+[ x.u, x.s(2:3,2:3), x.v ] = svd ([1, 2; 3, 4]);
+x
+     @result{} x =
+        @{
+          u =
+
+            -0.40455  -0.91451
+            -0.91451   0.40455
+
+          s =
+
+             0.00000   0.00000   0.00000
+             0.00000   5.46499   0.00000
+             0.00000   0.00000   0.36597
+
+          v =
+
+            -0.57605   0.81742
+            -0.81742  -0.57605
+
+        @}
+@end example
+
+It is also possible to cycle through all the elements of a structure in
+a loop, using a special form of the @code{for} statement
+(@pxref{Looping Over Structure Elements}).
+
+@node Structure Arrays
+@subsection Structure Arrays
+
+A structure array is a particular instance of a structure, where each of
+the fields of the structure is represented by a cell array.  Each of
+these cell arrays has the same dimensions.  Conceptually, a structure
+array can also be seen as an array of structures with identical
+fields.  An example of the creation of a structure array is
+
+@example
+@group
+x(1).a = "string1";
+x(2).a = "string2";
+x(1).b = 1;
+x(2).b = 2;
+@end group
+@end example
+
+@noindent
+which creates a 2-by-1 structure array with two fields.  Another way
+to create a structure array is with the @code{struct} function
+(@pxref{Creating Structures}).  As previously, to print the value of
+the structure array, you can type its name:
+
+@example
+@group
+x
+     @result{} x =
+        @{
+          1x2 struct array containing the fields:
+
+            a
+            b
+        @}
+@end group
+@end example
+
+Individual elements of the structure array can be returned by indexing
+the variable like @code{@var{x}(1)}, which returns a structure with
+two fields:
+
+@example
+@group
+x(1)
+     @result{} ans =
+        @{
+          a = string1
+          b =  1
+        @}
+@end group
+@end example
+
+Furthermore, the structure array can return a comma separated list of
+field values (@pxref{Comma Separated Lists}), if indexed by one of its
+own field names.  For example:
+
+@example
+@group
+x.a
+     @result{}
+        ans = string1
+        ans = string2
+@end group
+@end example
+
+Here is another example, using this comma separated list on the
+left-hand side of an assignment:
+
+@example
+@group
+[x.a] = deal ("new string1", "new string2");
+ x(1).a
+     @result{} ans = new string1
+ x(2).a
+     @result{} ans = new string2
+@end group
+@end example
+
+Just as for numerical arrays, it is possible to use vectors as indices
+(@pxref{Index Expressions}):
+
+@example
+@group
+x(3:4) = x(1:2);
+[x([1,3]).a] = deal ("other string1", "other string2");
+x.a
+     @result{}
+        ans = other string1
+        ans = new string2
+        ans = other string2
+        ans = new string2
+@end group
+@end example
+
+The function @code{size} will return the size of the structure.  For
+the example above
+
+@example
+@group
+size (x)
+     @result{} ans =
+
+          1   4
+@end group
+@end example
+
+Elements can be deleted from a structure array in a similar manner to a
+numerical array, by assigning the elements to an empty matrix.  For
+example
+
+@example
+@group
+in = struct ("call1", @{x, Inf, "last"@},
+             "call2", @{x, Inf, "first"@})
+     @result{} in =
+        @{
+          1x3 struct array containing the fields:
+
+            call1
+            call2
+        @}
+
+in(1) = [];
+in.call1
+     @result{}
+       ans = Inf
+       ans = last
+@end group
+@end example
+
+@node Creating Structures
+@subsection Creating Structures
+@cindex dynamic naming
+
+Besides the index operator @qcode{"."}, Octave can use dynamic naming
+@qcode{"(var)"} or the @code{struct} function to create structures.  Dynamic
+naming uses the string value of a variable as the field name.  For example:
+
+@example
+@group
+a = "field2";
+x.a = 1;
+x.(a) = 2;
+x
+     @result{} x =
+        @{
+          a =  1
+          field2 =  2
+        @}
+@end group
+@end example
+
+@noindent
+Dynamic indexing also allows you to use arbitrary strings, not merely
+valid Octave identifiers (note that this does not work on @sc{matlab}):
+
+@example
+@group
+a = "long field with spaces (and funny char$)";
+x.a = 1;
+x.(a) = 2;
+x
+     @result{} x =
+        @{
+          a =  1
+          long field with spaces (and funny char$) =  2
+        @}
+@end group
+@end example
+
+@noindent
+The warning id @code{Octave:language-extension} can be enabled to warn
+about this usage.  @xref{XREFwarning_ids,,warning_ids}.
+
+More realistically, all of the functions that operate on strings can be used
+to build the correct field name before it is entered into the data structure.
+
+@example
+@group
+names = ["Bill"; "Mary"; "John"];
+ages  = [37; 26; 31];
+for i = 1:rows (names)
+  database.(names(i,:)) = ages(i);
+endfor
+database
+     @result{} database =
+        @{
+          Bill =  37
+          Mary =  26
+          John =  31
+        @}
+@end group
+@end example
+
+The third way to create structures is the @code{struct} command.  @code{struct}
+takes pairs of arguments, where the first argument in the pair is the fieldname
+to include in the structure and the second is a scalar or cell array,
+representing the values to include in the structure or structure array.  For
+example:
+
+@example
+@group
+struct ("field1", 1, "field2", 2)
+@result{} ans =
+      @{
+        field1 =  1
+        field2 =  2
+      @}
+@end group
+@end example
+
+If the values passed to @code{struct} are a mix of scalar and cell
+arrays, then the scalar arguments are expanded to create a
+structure array with a consistent dimension.  For example:
+
+@example
+@group
+s = struct ("field1", @{1, "one"@}, "field2", @{2, "two"@},
+        "field3", 3);
+s.field1
+     @result{}
+        ans =  1
+        ans = one
+
+s.field2
+     @result{}
+        ans =  2
+        ans = two
+
+s.field3
+     @result{}
+        ans =  3
+        ans =  3
+@end group
+@end example
+
+If you want to create a struct which contains a cell array as an
+individual field, you must wrap it in another cell array as shown in
+the following example:
+
+@example
+@group
+struct ("field1", @{@{1, "one"@}@}, "field2", 2)
+     @result{} ans =
+        @{
+          field1 =
+
+        @{
+          [1,1] =  1
+          [1,2] = one
+        @}
+
+          field2 =  2
+        @}
+@end group
+@end example
+
+@c struct libinterp/octave-value/ov-struct.cc
+@anchor{XREFstruct}
+@deftypefn  {Built-in Function} {@var{s} =} struct ()
+@deftypefnx {Built-in Function} {@var{s} =} struct (@var{field1}, @var{value1}, @var{field2}, @var{value2}, @dots{})
+@deftypefnx {Built-in Function} {@var{s} =} struct (@var{obj})
+
+Create a scalar or array structure and initialize its values.
+
+The @var{field1}, @var{field2}, @dots{} variables are strings specifying the
+names of the fields and the @var{value1}, @var{value2}, @dots{} variables
+can be of any type.
+
+If the values are cell arrays, create a structure array and initialize its
+values.  The dimensions of each cell array of values must match.  Singleton
+cells and non-cell values are repeated so that they fill the entire array. 
+If the cells are empty, create an empty structure array with the specified
+field names.
+
+If the argument is an object, return the underlying struct.
+
+Observe that the syntax is optimized for struct @strong{arrays}.  Consider
+the following examples:
+
+@example
+@group
+struct ("foo", 1)
+  @result{} scalar structure containing the fields:
+    foo =  1
+
+struct ("foo", @{@})
+  @result{} 0x0 struct array containing the fields:
+    foo
+
+struct ("foo", @{ @{@} @})
+  @result{} scalar structure containing the fields:
+    foo = @{@}(0x0)
+
+struct ("foo", @{1, 2, 3@})
+  @result{} 1x3 struct array containing the fields:
+    foo
+
+@end group
+@end example
+
+@noindent
+The first case is an ordinary scalar struct---one field, one value.  The
+second produces an empty struct array with one field and no values, since
+being passed an empty cell array of struct array values.  When the value is
+a cell array containing a single entry, this becomes a scalar struct with
+that single entry as the value of the field.  That single entry happens
+to be an empty cell array.
+
+Finally, if the value is a non-scalar cell array, then @code{struct}
+produces a struct @strong{array}.
+@seealso{@ref{XREFcell2struct,,cell2struct}, @ref{XREFfieldnames,,fieldnames}, @ref{XREFgetfield,,getfield}, @ref{XREFsetfield,,setfield}, @ref{XREFrmfield,,rmfield}, @ref{XREFisfield,,isfield}, @ref{XREForderfields,,orderfields}, @ref{XREFisstruct,,isstruct}, @ref{XREFstructfun,,structfun}}
+@end deftypefn
+
+
+The function @code{isstruct} can be used to test if an object is a
+structure or a structure array.
+
+@c isstruct libinterp/octave-value/ov-struct.cc
+@anchor{XREFisstruct}
+@deftypefn {Built-in Function} {} isstruct (@var{x})
+Return true if @var{x} is a structure or a structure array.
+@seealso{@ref{XREFismatrix,,ismatrix}, @ref{XREFiscell,,iscell}, @ref{XREFisa,,isa}}
+@end deftypefn
+
+
+@node Manipulating Structures
+@subsection Manipulating Structures
+
+Other functions that can manipulate the fields of a structure are given below.
+
+@c numfields libinterp/octave-value/ov-struct.cc
+@anchor{XREFnumfields}
+@deftypefn {Built-in Function} {} numfields (@var{s})
+Return the number of fields of the structure @var{s}.
+@seealso{@ref{XREFfieldnames,,fieldnames}}
+@end deftypefn
+
+
+@c fieldnames scripts/general/fieldnames.m
+@anchor{XREFfieldnames}
+@deftypefn  {Function File} {@var{names} =} fieldnames (@var{struct})
+@deftypefnx {Function File} {@var{names} =} fieldnames (@var{obj})
+@deftypefnx {Function File} {@var{names} =} fieldnames (@var{javaobj})
+@deftypefnx {Function File} {@var{names} =} fieldnames ("@var{jclassname}")
+Return a cell array of strings with the names of the fields in the
+specified input.
+
+When the input is a structure @var{struct}, the names are the elements of
+the structure.
+
+When the input is an Octave object @var{obj}, the names are the public
+properties of the object.
+
+When the input is a Java object @var{javaobj} or Java classname
+@var{jclassname} the name are the public data elements of the object or
+class.
+@seealso{@ref{XREFnumfields,,numfields}, @ref{XREFisfield,,isfield}, @ref{XREForderfields,,orderfields}, @ref{XREFstruct,,struct}, @ref{XREFmethods,,methods}}
+@end deftypefn
+
+
+@c isfield libinterp/octave-value/ov-struct.cc
+@anchor{XREFisfield}
+@deftypefn  {Built-in Function} {} isfield (@var{x}, "@var{name}")
+@deftypefnx {Built-in Function} {} isfield (@var{x}, @var{name})
+Return true if the @var{x} is a structure and it includes an element named
+@var{name}.
+
+If @var{name} is a cell array of strings then a logical array of equal
+dimension is returned.
+@seealso{@ref{XREFfieldnames,,fieldnames}}
+@end deftypefn
+
+
+@c setfield scripts/miscellaneous/setfield.m
+@anchor{XREFsetfield}
+@deftypefn  {Function File} {@var{sout} =} setfield (@var{s}, @var{field}, @var{val})
+@deftypefnx {Function File} {@var{sout} =} setfield (@var{s}, @var{sidx1}, @var{field1}, @var{fidx1}, @var{sidx2}, @var{field2}, @var{fidx2}, @dots{}, @var{val})
+
+Return a @emph{copy} of the structure @var{s} with the field member
+@var{field} set to the value @var{val}.
+
+For example:
+
+@example
+@group
+@var{s} = struct ();
+@var{s} = setfield (@var{s}, "foo bar", 42);
+@end group
+@end example
+
+@noindent
+This is equivalent to
+
+@example
+@var{s}.("foo bar") = 42;
+@end example
+
+@noindent
+Note that ordinary structure syntax @code{@var{s}.foo bar = 42} cannot be
+used here, as the field name is not a valid Octave identifier because of
+the space character.  Using arbitrary strings for field names is
+incompatible with @sc{matlab}, and this usage will emit a warning if the
+warning ID @code{Octave:language-extension} is enabled.
+@xref{XREFwarning_ids}.
+
+With the second calling form, set a field of a structure array.  The
+input @var{sidx} selects an element of the structure array, @var{field}
+specifies the field name of the selected element, and @var{fidx} selects
+which element of the field (in the case of an array or cell array).
+The @var{sidx}, @var{field}, and @var{fidx} inputs can be repeated to
+address nested structure array elements.  The structure array index and
+field element index must be cell arrays while the field name must be a
+string.
+
+For example:
+
+@example
+@group
+@var{s} = struct ("baz", 42);
+setfield (@var{s}, @{1@}, "foo", @{1@}, "bar", 54)
+@result{}
+  ans =
+    scalar structure containing the fields:
+      baz =  42
+      foo =
+        scalar structure containing the fields:
+          bar =  54
+@end group
+@end example
+
+The example begins with an ordinary scalar structure to which a nested
+scalar structure is added.  In all cases, if the structure index @var{sidx}
+is not specified it defaults to 1 (scalar structure).  Thus, the example
+above could be written more concisely as
+@code{setfield (@var{s}, "foo", "bar", 54)}
+
+Finally, an example with nested structure arrays:
+
+@example
+@group
+@var{sa}.foo = 1;
+@var{sa} = setfield (@var{sa}, @{2@}, "bar", @{3@}, "baz", @{1, 4@}, 5);
+@var{sa}(2).bar(3)
+@result{}
+  ans =
+    scalar structure containing the fields:
+      baz =  0   0   0   5
+@end group
+@end example
+
+Here @var{sa} is a structure array whose field at elements 1 and 2 is in
+turn another structure array whose third element is a simple scalar
+structure.  The terminal scalar structure has a field which contains a
+matrix value.
+
+Note that the same result as in the above example could be achieved by:
+
+@example
+@group
+@var{sa}.foo = 1;
+@var{sa}(2).bar(3).baz(1,4) = 5
+@end group
+@end example
+@seealso{@ref{XREFgetfield,,getfield}, @ref{XREFrmfield,,rmfield}, @ref{XREForderfields,,orderfields}, @ref{XREFisfield,,isfield}, @ref{XREFfieldnames,,fieldnames}, @ref{XREFisstruct,,isstruct}, @ref{XREFstruct,,struct}}
+@end deftypefn
+
+
+@c getfield scripts/miscellaneous/getfield.m
+@anchor{XREFgetfield}
+@deftypefn  {Function File} {@var{val} =} getfield (@var{s}, @var{field})
+@deftypefnx {Function File} {@var{val} =} getfield (@var{s}, @var{sidx1}, @var{field1}, @var{fidx1}, @dots{})
+Get the value of the field named @var{field} from a structure or nested
+structure @var{s}.
+
+If @var{s} is a structure array then @var{sidx} selects an element of the
+structure array, @var{field} specifies the field name of the selected
+element, and @var{fidx} selects which element of the field (in the case of
+an array or cell array).  See @code{setfield} for a more complete
+description of the syntax.
+
+@seealso{@ref{XREFsetfield,,setfield}, @ref{XREFrmfield,,rmfield}, @ref{XREForderfields,,orderfields}, @ref{XREFisfield,,isfield}, @ref{XREFfieldnames,,fieldnames}, @ref{XREFisstruct,,isstruct}, @ref{XREFstruct,,struct}}
+@end deftypefn
+
+
+@c rmfield libinterp/octave-value/ov-struct.cc
+@anchor{XREFrmfield}
+@deftypefn  {Built-in Function} {@var{sout} =} rmfield (@var{s}, "@var{f}")
+@deftypefnx {Built-in Function} {@var{sout} =} rmfield (@var{s}, @var{f})
+Return a @emph{copy} of the structure (array) @var{s} with the field @var{f}
+removed.
+
+If @var{f} is a cell array of strings or a character array, remove each of
+the named fields.
+@seealso{@ref{XREForderfields,,orderfields}, @ref{XREFfieldnames,,fieldnames}, @ref{XREFisfield,,isfield}}
+@end deftypefn
+
+
+@c orderfields scripts/miscellaneous/orderfields.m
+@anchor{XREForderfields}
+@deftypefn  {Function File} {@var{sout}] =} orderfields (@var{s1})
+@deftypefnx {Function File} {@var{sout}] =} orderfields (@var{s1}, @var{s2})
+@deftypefnx {Function File} {@var{sout}] =} orderfields (@var{s1}, @{@var{cellstr}@})
+@deftypefnx {Function File} {@var{sout}] =} orderfields (@var{s1}, @var{p})
+@deftypefnx {Function File} {[@var{sout}, @var{p}] =} orderfields (@dots{})
+Return a @emph{copy} of @var{s1} with fields arranged alphabetically, or as
+specified by the second input.
+
+Given one input struct @var{s1}, arrange field names alphabetically.
+
+If a second struct argument is given, arrange field names in @var{s1} as they
+appear in @var{s2}.  The second argument may also specify the order in a
+cell array of strings @var{cellstr}.  The second argument may also be a
+permutation vector.
+
+The optional second output argument @var{p} is the permutation vector which
+converts the original name order to the new name order.
+
+Examples:
+
+@example
+@group
+s = struct ("d", 4, "b", 2, "a", 1, "c", 3);
+t1 = orderfields (s)
+     @result{} t1 =
+        @{
+          a =  1
+          b =  2
+          c =  3
+          d =  4
+        @}
+@end group
+@group
+t = struct ("d", @{@}, "c", @{@}, "b", @{@}, "a", @{@});
+t2 = orderfields (s, t)
+     @result{} t2 =
+        @{
+          d =  4
+          c =  3
+          b =  2
+          a =  1
+        @}
+@end group
+@group
+t3 = orderfields (s, [3, 2, 4, 1])
+     @result{} t3 =
+        @{
+          a =  1
+          b =  2
+          c =  3
+          d =  4
+        @}
+@end group
+@group
+[t4, p] = orderfields (s, @{"d", "c", "b", "a"@})
+     @result{} t4 =
+        @{
+          d =  4
+          c =  3
+          b =  2
+          a =  1
+        @}
+        p =
+           1
+           4
+           2
+           3
+@end group
+@end example
+
+@seealso{@ref{XREFfieldnames,,fieldnames}, @ref{XREFgetfield,,getfield}, @ref{XREFsetfield,,setfield}, @ref{XREFrmfield,,rmfield}, @ref{XREFisfield,,isfield}, @ref{XREFisstruct,,isstruct}, @ref{XREFstruct,,struct}}
+@end deftypefn
+
+
+@c substruct scripts/miscellaneous/substruct.m
+@anchor{XREFsubstruct}
+@deftypefn {Function File} {} substruct (@var{type}, @var{subs}, @dots{})
+Create a subscript structure for use with @code{subsref} or @code{subsasgn}.
+
+For example:
+
+@example
+@group
+idx = substruct ("()", @{3, ":"@})
+     @result{}
+       idx =
+       @{
+         type = ()
+         subs =
+         @{
+           [1,1] =  3
+           [1,2] = :
+         @}
+       @}
+x = [1, 2, 3;
+     4, 5, 6;
+     7, 8, 9];
+subsref (x, idx)
+   @result{} 7  8  9
+@end group
+@end example
+@seealso{@ref{XREFsubsref,,subsref}, @ref{XREFsubsasgn,,subsasgn}}
+@end deftypefn
+
+
+@node Processing Data in Structures
+@subsection Processing Data in Structures
+
+The simplest way to process data in a structure is within a @code{for}
+loop (@pxref{Looping Over Structure Elements}).  A similar effect can be
+achieved with the @code{structfun} function, where a user defined
+function is applied to each field of the structure.
+@xref{XREFstructfun,,structfun}.
+
+Alternatively, to process the data in a structure, the structure might
+be converted to another type of container before being treated.
+
+@c struct2cell libinterp/octave-value/ov-cell.cc
+@anchor{XREFstruct2cell}
+@deftypefn {Built-in Function} {@var{c} =} struct2cell (@var{s})
+Create a new cell array from the objects stored in the struct object.
+
+If @var{f} is the number of fields in the structure, the resulting cell
+array will have a dimension vector corresponding to
+@code{[@var{f} size(@var{s})]}.  For example:
+
+@example
+@group
+s = struct ("name", @{"Peter", "Hannah", "Robert"@},
+           "age", @{23, 16, 3@});
+c = struct2cell (s)
+   @result{} c = @{2x1x3 Cell Array@}
+c(1,1,:)(:)
+   @result{}
+      @{
+        [1,1] = Peter
+        [2,1] = Hannah
+        [3,1] = Robert
+      @}
+c(2,1,:)(:)
+   @result{}
+      @{
+        [1,1] = 23
+        [2,1] = 16
+        [3,1] = 3
+      @}
+@end group
+@end example
+
+@seealso{@ref{XREFcell2struct,,cell2struct}, @ref{XREFfieldnames,,fieldnames}}
+@end deftypefn
+
+
+@node Cell Arrays
+@section Cell Arrays
+@cindex cell arrays
+
+It can be both necessary and convenient to store several variables of
+different size or type in one variable.  A cell array is a container
+class able to do just that.  In general cell arrays work just like
+@math{N}-dimensional arrays with the exception of the use of @samp{@{}
+and @samp{@}} as allocation and indexing operators.
+
+@menu
+* Basic Usage of Cell Arrays::
+* Creating Cell Arrays::
+* Indexing Cell Arrays::
+* Cell Arrays of Strings::
+* Processing Data in Cell Arrays::
+@end menu
+
+@node Basic Usage of Cell Arrays
+@subsection Basic Usage of Cell Arrays
+@opindex @{
+@opindex @}
+As an example, the following code creates a cell array containing a
+string and a 2-by-2 random matrix
+
+@example
+c = @{"a string", rand(2, 2)@};
+@end example
+
+@noindent
+To access the elements of a cell array, it can be indexed with the @{
+and @} operators.  Thus, the variable created in the previous example
+can be indexed like this:
+
+@example
+@group
+c@{1@}
+     @result{} ans = a string
+@end group
+@end example
+
+@noindent
+As with numerical arrays several elements of a cell array can be
+extracted by indexing with a vector of indexes
+
+@example
+@group
+c@{1:2@}
+     @result{} ans = a string
+     @result{} ans =
+
+               0.593993   0.627732
+               0.377037   0.033643
+@end group
+@end example
+
+The indexing operators can also be used to insert or overwrite elements
+of a cell array.  The following code inserts the scalar 3 on the
+third place of the previously created cell array
+
+@example
+@group
+c@{3@} = 3
+     @result{} c =
+
+         @{
+           [1,1] = a string
+           [1,2] =
+
+              0.593993   0.627732
+              0.377037   0.033643
+
+           [1,3] =  3
+         @}
+@end group
+@end example
+
+Details on indexing cell arrays are explained in @ref{Indexing Cell Arrays}.
+
+In general nested cell arrays are displayed hierarchically as in the
+previous example.  In some circumstances it makes sense to reference
+them by their index, and this can be performed by the @code{celldisp}
+function.
+
+@c celldisp scripts/general/celldisp.m
+@anchor{XREFcelldisp}
+@deftypefn  {Function File} {} celldisp (@var{c})
+@deftypefnx {Function File} {} celldisp (@var{c}, @var{name})
+Recursively display the contents of a cell array.
+
+By default the values are displayed with the name of the variable @var{c}.
+However, this name can be replaced with the variable @var{name}.  For
+example:
+
+@example
+@group
+c = @{1, 2, @{31, 32@}@};
+celldisp (c, "b")
+   @result{}
+      b@{1@} =
+       1
+      b@{2@} =
+       2
+      b@{3@}@{1@} =
+       31
+      b@{3@}@{2@} =
+       32
+@end group
+@end example
+
+@seealso{@ref{XREFdisp,,disp}}
+@end deftypefn
+
+
+To test if an object is a cell array, use the @code{iscell}
+function.  For example:
+
+@example
+@group
+iscell (c)
+     @result{} ans = 1
+
+iscell (3)
+     @result{} ans = 0
+
+@end group
+@end example
+
+@c iscell libinterp/octave-value/ov-cell.cc
+@anchor{XREFiscell}
+@deftypefn {Built-in Function} {} iscell (@var{x})
+Return true if @var{x} is a cell array object.
+@seealso{@ref{XREFismatrix,,ismatrix}, @ref{XREFisstruct,,isstruct}, @ref{XREFiscellstr,,iscellstr}, @ref{XREFisa,,isa}}
+@end deftypefn
+
+
+@node Creating Cell Arrays
+@subsection Creating Cell Arrays
+
+The introductory example (@pxref{Basic Usage of Cell Arrays}) showed
+how to create a cell array containing currently available variables.
+In many situations, however, it is useful to create a cell array and
+then fill it with data.
+
+The @code{cell} function returns a cell array of a given size, containing
+empty matrices.  This function is similar to the @code{zeros}
+function for creating new numerical arrays.  The following example creates
+a 2-by-2 cell array containing empty matrices
+
+@example
+@group
+c = cell (2,2)
+     @result{} c =
+
+         @{
+           [1,1] = [](0x0)
+           [2,1] = [](0x0)
+           [1,2] = [](0x0)
+           [2,2] = [](0x0)
+         @}
+@end group
+@end example
+
+Just like numerical arrays, cell arrays can be multi-dimensional.  The
+@code{cell} function accepts any number of positive integers to describe
+the size of the returned cell array.  It is also possible to set the size
+of the cell array through a vector of positive integers.  In the
+following example two cell arrays of equal size are created, and the size
+of the first one is displayed
+
+@example
+@group
+c1 = cell (3, 4, 5);
+c2 = cell ( [3, 4, 5] );
+size (c1)
+     @result{} ans =
+         3   4   5
+@end group
+@end example
+
+@noindent
+As can be seen, the @ref{XREFsize,,size} function also works
+for cell arrays.  As do other functions describing the size of an
+object, such as @ref{XREFlength,,length}, @ref{XREFnumel,, numel},
+@ref{XREFrows,,rows}, and @ref{XREFcolumns,,columns}.
+
+@c cell libinterp/octave-value/ov-cell.cc
+@anchor{XREFcell}
+@deftypefn  {Built-in Function} {} cell (@var{n})
+@deftypefnx {Built-in Function} {} cell (@var{m}, @var{n})
+@deftypefnx {Built-in Function} {} cell (@var{m}, @var{n}, @var{k}, @dots{})
+@deftypefnx {Built-in Function} {} cell ([@var{m} @var{n} @dots{}])
+Create a new cell array object.
+
+If invoked with a single scalar integer argument, return a square
+@nospell{NxN} cell array.  If invoked with two or more scalar integer
+arguments, or a vector of integer values, return an array with the given
+dimensions.
+@seealso{@ref{XREFcellstr,,cellstr}, @ref{XREFmat2cell,,mat2cell}, @ref{XREFnum2cell,,num2cell}, @ref{XREFstruct2cell,,struct2cell}}
+@end deftypefn
+
+
+As an alternative to creating empty cell arrays, and then filling them, it
+is possible to convert numerical arrays into cell arrays using the
+@code{num2cell}, @code{mat2cell} and @code{cellslices} functions.
+
+@c num2cell libinterp/corefcn/cellfun.cc
+@anchor{XREFnum2cell}
+@deftypefn  {Built-in Function} {@var{C} =} num2cell (@var{A})
+@deftypefnx {Built-in Function} {@var{C} =} num2cell (@var{A}, @var{dim})
+Convert the numeric matrix @var{A} to a cell array.
+
+If @var{dim} is defined, the value @var{C} is of dimension 1 in this
+dimension and the elements of @var{A} are placed into @var{C} in slices.
+For example:
+
+@example
+@group
+num2cell ([1,2;3,4])
+   @result{}
+      @{
+        [1,1] =  1
+        [2,1] =  3
+        [1,2] =  2
+        [2,2] =  4
+      @}
+num2cell ([1,2;3,4],1)
+   @result{}
+      @{
+        [1,1] =
+           1
+           3
+        [1,2] =
+           2
+           4
+      @}
+@end group
+@end example
+
+@seealso{@ref{XREFmat2cell,,mat2cell}}
+@end deftypefn
+
+
+@c mat2cell libinterp/corefcn/cellfun.cc
+@anchor{XREFmat2cell}
+@deftypefn  {Built-in Function} {@var{C} =} mat2cell (@var{A}, @var{m}, @var{n})
+@deftypefnx {Built-in Function} {@var{C} =} mat2cell (@var{A}, @var{d1}, @var{d2}, @dots{})
+@deftypefnx {Built-in Function} {@var{C} =} mat2cell (@var{A}, @var{r})
+Convert the matrix @var{A} to a cell array.
+
+If @var{A} is 2-D, then it is required that
+@code{sum (@var{m}) == size (@var{A}, 1)} and
+@code{sum (@var{n}) == size (@var{A}, 2)}.  Similarly, if @var{A} is
+multi-dimensional and the number of dimensional arguments is equal to the
+dimensions of @var{A}, then it is required that
+@code{sum (@var{di}) == size (@var{A}, i)}.
+
+Given a single dimensional argument @var{r}, the other dimensional
+arguments are assumed to equal @code{size (@var{A},@var{i})}.
+
+An example of the use of mat2cell is
+
+@example
+mat2cell (reshape (1:16,4,4), [3,1], [3,1])
+@result{}
+@{
+   [1,1] =
+
+      1   5   9
+      2   6  10
+      3   7  11
+
+   [2,1] =
+
+      4   8  12
+
+   [1,2] =
+
+     13
+     14
+     15
+
+   [2,2] = 16
+@}
+@end example
+@seealso{@ref{XREFnum2cell,,num2cell}, @ref{XREFcell2mat,,cell2mat}}
+@end deftypefn
+
+
+@c cellslices libinterp/corefcn/cellfun.cc
+@anchor{XREFcellslices}
+@deftypefn {Built-in Function} {@var{sl} =} cellslices (@var{x}, @var{lb}, @var{ub}, @var{dim})
+Given an array @var{x}, this function produces a cell array of slices from
+the array determined by the index vectors @var{lb}, @var{ub}, for lower and
+upper bounds, respectively.
+
+In other words, it is equivalent to the following code:
+
+@example
+@group
+n = length (lb);
+sl = cell (1, n);
+for i = 1:length (lb)
+  sl@{i@} = x(:,@dots{},lb(i):ub(i),@dots{},:);
+endfor
+@end group
+@end example
+
+The position of the index is determined by @var{dim}.  If not specified,
+slicing is done along the first non-singleton dimension.
+@seealso{@ref{XREFcell2mat,,cell2mat}, @ref{XREFcellindexmat,,cellindexmat}, @ref{XREFcellfun,,cellfun}}
+@end deftypefn
+
+
+@node Indexing Cell Arrays
+@subsection Indexing Cell Arrays
+
+As shown in @pxref{Basic Usage of Cell Arrays} elements can be
+extracted from cell arrays using the @samp{@{} and @samp{@}}
+operators.  If you want to extract or access subarrays which are still
+cell arrays, you need to use the @samp{(} and @samp{)} operators.  The
+following example illustrates the difference:
+
+@example
+@group
+c = @{"1", "2", "3"; "x", "y", "z"; "4", "5", "6"@};
+c@{2,3@}
+     @result{} ans = z
+
+c(2,3)
+     @result{} ans =
+        @{
+          [1,1] = z
+        @}
+@end group
+@end example
+
+@noindent So with @samp{@{@}} you access elements of a cell
+array, while with @samp{()} you access a sub array of a cell
+array.
+
+Using the @samp{(} and @samp{)} operators, indexing works for cell
+arrays like for multi-dimensional arrays.  As an example, all the rows
+of the first and third column of a cell array can be set to @code{0}
+with the following command:
+
+@example
+@group
+c(:, [1, 3]) = @{0@}
+     @result{}  =
+        @{
+          [1,1] = 0
+          [2,1] = 0
+          [3,1] = 0
+          [1,2] = 2
+          [2,2] =  10
+          [3,2] =  20
+          [1,3] = 0
+          [2,3] = 0
+          [3,3] = 0
+        @}
+@end group
+@end example
+
+Note, that the above can also be achieved like this:
+
+@example
+c(:, [1, 3]) = 0;
+@end example
+
+@noindent Here, the scalar @samp{0} is automatically promoted to
+cell array @samp{@{0@}} and then assigned to the subarray of @code{c}.
+
+To give another example for indexing cell arrays with @samp{()}, you
+can exchange the first and the second row of a cell array as in the
+following command:
+
+@example
+@group
+c = @{1, 2, 3; 4, 5, 6@};
+c([1, 2], :) = c([2, 1], :)
+     @result{} =
+        @{
+          [1,1] =  4
+          [2,1] =  1
+          [1,2] =  5
+          [2,2] =  2
+          [1,3] =  6
+          [2,3] =  3
+        @}
+@end group
+@end example
+
+Accessing multiple elements of a cell array with the @samp{@{} and
+@samp{@}} operators will result in a comma-separated list of all the
+requested elements (@pxref{Comma Separated Lists}).  Using the
+@samp{@{} and @samp{@}} operators the first two rows in the above
+example can be swapped back like this:
+
+@example
+@group
+[c@{[1,2], :@}] = deal (c@{[2, 1], :@})
+     @result{} =
+        @{
+          [1,1] =  1
+          [2,1] =  4
+          [1,2] =  2
+          [2,2] =  5
+          [1,3] =  3
+          [2,3] =  6
+        @}
+@end group
+@end example
+
+As for struct arrays and numerical arrays, the empty matrix @samp{[]}
+can be used to delete elements from a cell array:
+
+@example
+@group
+x = @{"1", "2"; "3", "4"@};
+x(1, :) = []
+     @result{} x =
+        @{
+          [1,1] = 3
+          [1,2] = 4
+        @}
+@end group
+@end example
+
+The following example shows how to just remove the contents of cell
+array elements but not delete the space for them:
+
+@example
+@group
+x = @{"1", "2"; "3", "4"@};
+x(1, :) = @{[]@}
+@result{} x =
+      @{
+        [1,1] = [](0x0)
+        [2,1] = 3
+        [1,2] = [](0x0)
+        [2,2] = 4
+      @}
+@end group
+@end example
+
+The indexing operations operate on the cell array and not on the objects
+within the cell array.  By contrast, @code{cellindexmat} applies matrix indexing
+to the objects within each cell array entry and returns the requested values.
+
+@c cellindexmat libinterp/corefcn/cellfun.cc
+@anchor{XREFcellindexmat}
+@deftypefn {Built-in Function} {@var{y} =} cellindexmat (@var{x}, @var{varargin})
+Perform indexing of matrices in a cell array.
+
+Given a cell array of matrices @var{x}, this function computes
+
+@example
+@group
+Y = cell (size (X));
+for i = 1:numel (X)
+  Y@{i@} = X@{i@}(varargin@{:@});
+endfor
+@end group
+@end example
+@seealso{@ref{XREFcellslices,,cellslices}, @ref{XREFcellfun,,cellfun}}
+@end deftypefn
+
+
+@node Cell Arrays of Strings
+@subsection Cell Arrays of Strings
+
+One common use of cell arrays is to store multiple strings in the same
+variable.  It is also possible to store multiple strings in a
+character matrix by letting each row be a string.  This, however,
+introduces the problem that all strings must be of equal length.
+Therefore, it is recommended to use cell arrays to store multiple
+strings.  For cases, where the character matrix representation is required
+for an operation, there are several functions that convert a cell
+array of strings to a character array and back.  @code{char} and
+@code{strvcat} convert cell arrays to a character array
+(@pxref{Concatenating Strings}), while the function @code{cellstr}
+converts a character array to a cell array of strings:
+
+@example
+@group
+a = ["hello"; "world"];
+c = cellstr (a)
+     @result{} c =
+         @{
+           [1,1] = hello
+           [2,1] = world
+         @}
+@end group
+@end example
+
+@c cellstr libinterp/octave-value/ov-cell.cc
+@anchor{XREFcellstr}
+@deftypefn {Built-in Function} {@var{cstr} =} cellstr (@var{strmat})
+Create a new cell array object from the elements of the string array
+@var{strmat}.
+
+Each row of @var{strmat} becomes an element of @var{cstr}.  Any trailing
+spaces in a row are deleted before conversion.
+
+To convert back from a cellstr to a character array use @code{char}.
+@seealso{@ref{XREFcell,,cell}, @ref{XREFchar,,char}}
+@end deftypefn
+
+
+One further advantage of using cell arrays to store multiple strings is
+that most functions for string manipulations included with Octave
+support this representation.  As an example, it is possible to compare
+one string with many others using the @code{strcmp} function.  If one of
+the arguments to this function is a string and the other is a cell array
+of strings, each element of the cell array will be compared to the string
+argument:
+
+@example
+@group
+c = @{"hello", "world"@};
+strcmp ("hello", c)
+     @result{} ans =
+        1   0
+@end group
+@end example
+
+@noindent
+The following string functions support cell arrays of strings:
+@code{char}, @code{strvcat}, @code{strcat} (@pxref{Concatenating
+Strings}), @code{strcmp}, @code{strncmp}, @code{strcmpi},
+@code{strncmpi} (@pxref{Comparing Strings}), @code{str2double},
+@code{deblank}, @code{strtrim}, @code{strtrunc}, @code{strfind},
+@code{strmatch}, , @code{regexp}, @code{regexpi} (@pxref{Manipulating 
+Strings}) and @code{str2double} (@pxref{String Conversions}).
+
+The function @code{iscellstr} can be used to test if an object is a
+cell array of strings.
+
+@c iscellstr libinterp/octave-value/ov-cell.cc
+@anchor{XREFiscellstr}
+@deftypefn {Built-in Function} {} iscellstr (@var{cell})
+Return true if every element of the cell array @var{cell} is a character
+string.
+@seealso{@ref{XREFischar,,ischar}}
+@end deftypefn
+
+
+@node Processing Data in Cell Arrays
+@subsection Processing Data in Cell Arrays
+
+Data that is stored in a cell array can be processed in several ways
+depending on the actual data.  The simplest way to process that data
+is to iterate through it using one or more @code{for} loops.  The same
+idea can be implemented more easily through the use of the @code{cellfun}
+function that calls a user-specified function on all elements of a cell
+array.  @xref{XREFcellfun,,cellfun}.
+
+An alternative is to convert the data to a different container, such as
+a matrix or a data structure.  Depending on the data this is possible
+using the @code{cell2mat} and @code{cell2struct} functions.
+
+@c cell2mat scripts/general/cell2mat.m
+@anchor{XREFcell2mat}
+@deftypefn {Function File} {@var{m} =} cell2mat (@var{c})
+Convert the cell array @var{c} into a matrix by concatenating all
+elements of @var{c} into a hyperrectangle.
+
+Elements of @var{c} must be numeric, logical, or char matrices; or cell
+arrays; or structs; and @code{cat} must be able to concatenate them together.
+@seealso{@ref{XREFmat2cell,,mat2cell}, @ref{XREFnum2cell,,num2cell}}
+@end deftypefn
+
+
+@c cell2struct libinterp/octave-value/ov-struct.cc
+@anchor{XREFcell2struct}
+@deftypefn  {Built-in Function} {} cell2struct (@var{cell}, @var{fields})
+@deftypefnx {Built-in Function} {} cell2struct (@var{cell}, @var{fields}, @var{dim})
+Convert @var{cell} to a structure.
+
+The number of fields in @var{fields} must match the number of elements in
+@var{cell} along dimension @var{dim}, that is
+@code{numel (@var{fields}) == size (@var{cell}, @var{dim})}.  If @var{dim}
+is omitted, a value of 1 is assumed.
+
+@example
+@group
+A = cell2struct (@{"Peter", "Hannah", "Robert";
+                   185, 170, 168@},
+                 @{"Name","Height"@}, 1);
+A(1)
+   @result{}
+      @{
+        Name   = Peter
+        Height = 185
+      @}
+
+@end group
+@end example
+@seealso{@ref{XREFstruct2cell,,struct2cell}, @ref{XREFcell2mat,,cell2mat}, @ref{XREFstruct,,struct}}
+@end deftypefn
+
+
+@node Comma Separated Lists
+@section Comma Separated Lists
+@cindex comma separated lists
+@cindex cs-lists
+
+Comma separated lists @footnote{Comma-separated lists are also sometimes
+informally referred to as @dfn{cs-lists}.} are the basic argument type
+to all Octave functions - both for input and return arguments.  In the
+example
+
+@example
+max (@var{a}, @var{b})
+@end example
+
+@noindent
+@samp{@var{a}, @var{b}} is a comma separated list.  Comma separated lists
+can appear on both the right and left hand side of an assignment.  For
+example
+
+@example
+@group
+x = [1 0 1 0 0 1 1; 0 0 0 0 0 0 7];
+[@var{i}, @var{j}] = find (@var{x}, 2, "last");
+@end group
+@end example
+
+@noindent
+Here, @samp{@var{x}, 2, "last"} is a comma separated list constituting
+the input arguments of @code{find}.  @code{find} returns a comma
+separated list of output arguments which is assigned element by
+element to the comma separated list @samp{@var{i}, @var{j}}.
+
+Another example of where comma separated lists are used is in the
+creation of a new array with @code{[]} (@pxref{Matrices}) or the
+creation of a cell array with @code{@{@}} (@pxref{Basic Usage of Cell
+Arrays}).  In the expressions
+
+@example
+@group
+a = [1, 2, 3, 4];
+c = @{4, 5, 6, 7@};
+@end group
+@end example
+
+@noindent
+both @samp{1, 2, 3, 4} and @samp{4, 5, 6, 7} are comma separated lists.
+
+Comma separated lists cannot be directly manipulated by the
+user.  However, both structure arrays and cell arrays can be converted
+into comma separated lists, and thus used in place of explicitly
+written comma separated lists.  This feature is useful in many ways,
+as will be shown in the following subsections.
+
+@menu
+* Comma Separated Lists Generated from Cell Arrays::
+* Comma Separated Lists Generated from Structure Arrays::
+@end menu
+
+@node Comma Separated Lists Generated from Cell Arrays
+@subsection Comma Separated Lists Generated from Cell Arrays
+
+As has been mentioned above (@pxref{Indexing Cell Arrays}), elements
+of a cell array can be extracted into a comma separated list with the
+@code{@{} and @code{@}} operators.  By surrounding this list with
+@code{[} and @code{]}, it can be concatenated into an array.  For example:
+
+@example
+@group
+a = @{1, [2, 3], 4, 5, 6@};
+b = [a@{1:4@}]
+     @result{} b =
+         1   2   3   4   5
+@end group
+@end example
+
+Similarly, it is possible to create a new cell array containing cell
+elements selected with @code{@{@}}.  By surrounding the list with
+@samp{@{} and @samp{@}} a new cell array will be created, as the
+following example illustrates:
+
+@example
+@group
+a = @{1, rand(2, 2), "three"@};
+b = @{ a@{ [1, 3] @} @}
+     @result{} b =
+         @{
+           [1,1] =  1
+           [1,2] = three
+         @}
+@end group
+@end example
+
+Furthermore, cell elements (accessed by @code{@{@}}) can be passed
+directly to a function.  The list of elements from the cell array will
+be passed as an argument list to a given function as if it is called
+with the elements as individual arguments.  The two calls to
+@code{printf} in the following example are identical but the latter is
+simpler and can handle cell arrays of an arbitrary size:
+
+@example
+@group
+c = @{"GNU", "Octave", "is", "Free", "Software"@};
+printf ("%s ", c@{1@}, c@{2@}, c@{3@}, c@{4@}, c@{5@});
+     @print{} GNU Octave is Free Software
+printf ("%s ", c@{:@});
+     @print{} GNU Octave is Free Software
+@end group
+@end example
+
+If used on the left-hand side of an assignment, a comma separated list
+generated with @code{@{@}} can be assigned to.  An example is
+
+@example
+@group
+in@{1@} = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+in@{2@} = inf;
+in@{3@} = "last";
+in@{4@} = "first";
+out = cell (4, 1);
+[out@{1:3@}] = find (in@{1 : 3@});
+[out@{4:6@}] = find (in@{[1, 2, 4]@})
+     @result{} out =
+        @{
+          [1,1] = 1
+          [2,1] = 9
+          [3,1] = 90
+          [4,1] = 1
+          [3,1] = 1
+          [4,1] = 10
+        @}
+@end group
+@end example
+
+
+@node Comma Separated Lists Generated from Structure Arrays
+@subsection Comma Separated Lists Generated from Structure Arrays
+Structure arrays can equally be used to create comma separated
+lists.  This is done by addressing one of the fields of a structure
+array.  For example:
+
+@example
+@group
+x = ceil (randn (10, 1));
+in = struct ("call1", @{x, 3, "last"@},
+             "call2", @{x, inf, "first"@});
+out = struct ("call1", cell (2, 1), "call2", cell (2, 1));
+[out.call1] = find (in.call1);
+[out.call2] = find (in.call2);
+@end group
+@end example

@@ -1,0 +1,1086 @@
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+The real and complex @code{ColumnVector} and @code{RowVector} classes
+all have the following functions.  These will eventually be part of an
+@code{MArray<T>} class, derived from the @code{Array<T>} class.  Then
+the @code{ColumnVector} and @code{RowVector} classes will be derived
+from the @code{MArray<T>} class.
+
+Element by element vector by scalar ops.
+
+@deftypefn {} {RowVector} {operator +} (const RowVector &@var{a}, const double &@var{s})
+@deftypefnx {} {RowVector} {operator -} (const RowVector &@var{a}, const double &@var{s})
+@deftypefnx {} {RowVector} {operator *} (const RowVector &@var{a}, const double &@var{s})
+@deftypefnx {} {RowVector} {operator /} (const RowVector &@var{a}, const double &@var{s})
+@end deftypefn
+
+Element by element scalar by vector ops.
+
+@deftypefn {} {RowVector} {operator +} (const double &@var{s}, const RowVector &@var{a})
+@deftypefnx {} {RowVector} {operator -} (const double &@var{s}, const RowVector &@var{a})
+@deftypefnx {} {RowVector} {operator *} (const double &@var{s}, const RowVector &@var{a})
+@deftypefnx {} {RowVector} {operator /} (const double &@var{s}, const RowVector &@var{a})
+@end deftypefn
+
+Element by element vector by vector ops.
+
+@deftypefn {} {RowVector} {operator +} (const RowVector &@var{a}, const RowVector &@var{b})
+@deftypefnx {} {RowVector} {operator -} (const RowVector &@var{a}, const RowVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {RowVector} product (const RowVector &@var{a}, const RowVector &@var{b})
+@deftypefnx {} {RowVector} quotient (const RowVector &@var{a}, const RowVector &@var{b})
+@end deftypefn
+
+Unary MArray ops.
+
+@deftypefn {} {RowVector} {operator -} (const RowVector &@var{a})
+@end deftypefn
+
+@c ------------------------------------------------------------------------
+
+The @code{Matrix} classes share the following functions.  These will
+eventually be part of an @code{MArray2<T>} class, derived from the
+@code{Array2<T>} class.  Then the @code{Matrix} class will be derived
+from the @code{MArray<T>} class.
+
+Element by element matrix by scalar ops.
+
+@deftypefn {} {Matrix} {operator +} (const Matrix &@var{a}, const double &@var{s})
+@deftypefnx {} {Matrix} {operator -} (const Matrix &@var{a}, const double &@var{s})
+@deftypefnx {} {Matrix} {operator *} (const Matrix &@var{a}, const double &@var{s})
+@deftypefnx {} {Matrix} {operator /} (const Matrix &@var{a}, const double &@var{s})
+@end deftypefn
+
+Element by element scalar by matrix ops.
+
+@deftypefn {} {Matrix} {operator +} (const double &@var{s}, const Matrix &@var{a})
+@deftypefnx {} {Matrix} {operator -} (const double &@var{s}, const Matrix &@var{a})
+@deftypefnx {} {Matrix} {operator *} (const double &@var{s}, const Matrix &@var{a})
+@deftypefnx {} {Matrix} {operator /} (const double &@var{s}, const Matrix &@var{a})
+@end deftypefn
+
+Element by element matrix by matrix ops.
+
+@deftypefn {} {Matrix} {operator +} (const Matrix &@var{a}, const Matrix &@var{b})
+@deftypefnx {} {Matrix} {operator -} (const Matrix &@var{a}, const Matrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {Matrix} product (const Matrix &@var{a}, const Matrix &@var{b})
+@deftypefnx {} {Matrix} quotient (const Matrix &@var{a}, const Matrix &@var{b})
+@end deftypefn
+
+Unary matrix ops.
+
+@deftypefn {} {Matrix} {operator -} (const Matrix &@var{a})
+@end deftypefn
+
+@c ------------------------------------------------------------------------
+
+The @code{DiagMatrix} classes share the following functions.  These will
+eventually be part of an @code{MDiagArray<T>} class, derived from the
+@code{DiagArray<T>} class.  Then the @code{DiagMatrix} class will be
+derived from the @code{MDiagArray<T>} class.
+
+Element by element MDiagArray by scalar ops.
+
+@deftypefn {} {DiagMatrix} {operator *} (const DiagMatrix &@var{a}, const double &@var{s})
+@deftypefnx {} {DiagMatrix} {operator /} (const DiagMatrix &@var{a}, const double &@var{s})
+@end deftypefn
+
+Element by element scalar by MDiagArray ops.
+
+@deftypefn {} {DiagMatrix} {operator *} (const double &@var{s}, const DiagMatrix &@var{a})
+@end deftypefn
+
+Element by element MDiagArray by MDiagArray ops.
+
+@deftypefn {} {DiagMatrix} {operator +} (const DiagMatrix &@var{a}, const DiagMatrix &@var{b})
+@deftypefnx {} {DiagMatrix} {operator -} (const DiagMatrix &@var{a}, const DiagMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {DiagMatrix} product (const DiagMatrix &@var{a}, const DiagMatrix &@var{b})
+@end deftypefn
+
+Unary MDiagArray ops.
+
+@deftypefn {} {DiagMatrix} {operator -} (const DiagMatrix &@var{a})
+@end deftypefn
+
+@c ------------------------------------------------------------------------
+
+@node Matrix and Vector Operations, Matrix Factorizations, Arrays, Top
+@chapter Matrix and Vector Operations
+@cindex matrix manipulations
+@cindex vector manipulations
+
+@deftypefn  {} {} Matrix (void)
+@deftypefnx  {} {} Matrix (int @var{r}, int @var{c})
+@deftypefnx  {} {} Matrix (int @var{r}, int @var{c}, double @var{val})
+@deftypefnx  {} {} Matrix (const Array2<double> &@var{a})
+@deftypefnx  {} {} Matrix (const Matrix &@var{a})
+@deftypefnx  {} {} Matrix (const DiagArray<double> &@var{a})
+@deftypefnx  {} {} Matrix (const DiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} Matrix& {operator =} (const Matrix &@var{a})
+@end deftypefn
+
+@deftypefn {} int {operator ==} (const Matrix &@var{a}) const
+@deftypefnx {} int {operator !=} (const Matrix &@var{a}) const
+@end deftypefn
+
+@deftypefn {} Matrix& insert (const Matrix &@var{a}, int @var{r}, int @var{c})
+@deftypefnx {} Matrix& insert (const RowVector &@var{a}, int @var{r}, int @var{c})
+@deftypefnx {} Matrix& insert (const ColumnVector &@var{a}, int @var{r}, int @var{c})
+@deftypefnx {} Matrix& insert (const DiagMatrix &@var{a}, int @var{r}, int @var{c})
+@end deftypefn
+
+@deftypefn {} Matrix& fill (double @var{val})
+@deftypefnx {} Matrix& fill (double @var{val}, int r1, int c1, int r2, int c2)
+@end deftypefn
+
+@deftypefn {} Matrix append (const Matrix &@var{a}) const
+@deftypefnx {} Matrix append (const RowVector &@var{a}) const
+@deftypefnx {} Matrix append (const ColumnVector &@var{a}) const
+@deftypefnx {} Matrix append (const DiagMatrix &@var{a}) const
+@end deftypefn
+
+@deftypefn {} Matrix stack (const Matrix &@var{a}) const
+@deftypefnx {} Matrix stack (const RowVector &@var{a}) const
+@deftypefnx {} Matrix stack (const ColumnVector &@var{a}) const
+@deftypefnx {} Matrix stack (const DiagMatrix &@var{a}) const
+@end deftypefn
+
+@deftypefn {} Matrix transpose (void) const
+@end deftypefn
+
+@deftypefn {} Matrix extract (int r1, int c1, int r2, int c2) const
+@end deftypefn
+
+@deftypefn {} RowVector row (int @var{i}) const
+@deftypefnx {} RowVector row (char *s) const
+@end deftypefn
+
+@deftypefn {} ColumnVector column (int @var{i}) const
+@deftypefnx {} ColumnVector column (char *s) const
+@end deftypefn
+
+@deftypefn {} Matrix inverse (void) const
+@deftypefnx {} Matrix inverse (int &@var{info}) const
+@deftypefnx {} Matrix inverse (int &@var{info}, double &@var{rcond}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix fourier (void) const
+@deftypefnx {} ComplexMatrix ifourier (void) const
+@end deftypefn
+
+@deftypefn {} DET determinant (void) const
+@deftypefnx {} DET determinant (int &@var{info}) const
+@deftypefnx {} DET determinant (int &@var{info}, double &@var{rcond}) const
+@end deftypefn
+
+@deftypefn {} Matrix solve (const Matrix &@var{b}) const
+@deftypefnx {} Matrix solve (const Matrix &@var{b}, int &@var{info}) const
+@deftypefnx {} Matrix solve (const Matrix &@var{b}, int &@var{info}, double &@var{rcond}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix solve (const ComplexMatrix &@var{b}) const
+@deftypefnx {} ComplexMatrix solve (const ComplexMatrix &@var{b}, int &@var{info}) const
+@deftypefnx {} ComplexMatrix solve (const ComplexMatrix &@var{b}, int &@var{info}, double &@var{rcond}) const
+@end deftypefn
+
+@deftypefn {} ColumnVector solve (const ColumnVector &@var{b}) const
+@deftypefnx {} ColumnVector solve (const ColumnVector &@var{b}, int &@var{info}) const
+@deftypefnx {} ColumnVector solve (const ColumnVector &@var{b}, int &@var{info}, double &@var{rcond}) const
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector solve (const ComplexColumnVector &@var{b}) const
+@deftypefnx {} ComplexColumnVector solve (const ComplexColumnVector &@var{b}, int &@var{info}) const
+@deftypefnx {} ComplexColumnVector solve (const ComplexColumnVector &@var{b}, int &@var{info}, double &@var{rcond}) const
+@end deftypefn
+
+@deftypefn {} Matrix lssolve (const Matrix &@var{b}) const
+@deftypefnx {} Matrix lssolve (const Matrix &@var{b}, int &@var{info}) const
+@deftypefnx {} Matrix lssolve (const Matrix &@var{b}, int &@var{info}, int &@var{rank}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix lssolve (const ComplexMatrix &@var{b}) const
+@deftypefnx {} ComplexMatrix lssolve (const ComplexMatrix &@var{b}, int &@var{info}) const
+@deftypefnx {} ComplexMatrix lssolve (const ComplexMatrix &@var{b}, int &@var{info}, int &@var{rank}) const
+@end deftypefn
+
+@deftypefn {} ColumnVector lssolve (const ColumnVector &@var{b}) const
+@deftypefnx {} ColumnVector lssolve (const ColumnVector &@var{b}, int &@var{info}) const
+@deftypefnx {} ColumnVector lssolve (const ColumnVector &@var{b}, int &@var{info}, int &@var{rank}) const
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector lssolve (const ComplexColumnVector &@var{b}) const
+@deftypefnx {} ComplexColumnVector lssolve (const ComplexColumnVector &@var{b}, int &@var{info}) const
+@deftypefnx {} ComplexColumnVector lssolve (const ComplexColumnVector &@var{b}, int &@var{info}, int &@var{rank}) const
+@end deftypefn
+
+@deftypefn {} Matrix& {operator +=} (const Matrix &@var{a})
+@deftypefnx {} Matrix& {operator -=} (const Matrix &@var{a})
+@end deftypefn
+
+@deftypefn {} Matrix& {operator +=} (const DiagMatrix &@var{a})
+@deftypefnx {} Matrix& {operator -=} (const DiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} Matrix {operator !} (void) const
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const Matrix &@var{a}, const Complex &@var{s})
+@deftypefnx {} {ComplexMatrix} {operator -} (const Matrix &@var{a}, const Complex &@var{s})
+@deftypefnx {} {ComplexMatrix} {operator *} (const Matrix &@var{a}, const Complex &@var{s})
+@deftypefnx {} {ComplexMatrix} {operator /} (const Matrix &@var{a}, const Complex &@var{s})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const Complex &@var{s}, const Matrix &@var{a})
+@deftypefnx {} {ComplexMatrix} {operator -} (const Complex &@var{s}, const Matrix &@var{a})
+@deftypefnx {} {ComplexMatrix} {operator *} (const Complex &@var{s}, const Matrix &@var{a})
+@deftypefnx {} {ComplexMatrix} {operator /} (const Complex &@var{s}, const Matrix &@var{a})
+@end deftypefn
+
+@deftypefn {} {ColumnVector} {operator *} (const Matrix &@var{a}, const ColumnVector &@var{b})
+@deftypefnx {} {ComplexColumnVector} {operator *} (const Matrix &@var{a}, const ComplexColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {Matrix} {operator +} (const Matrix &@var{a}, const DiagMatrix &@var{b})
+@deftypefnx {} {Matrix} {operator -} (const Matrix &@var{a}, const DiagMatrix &@var{b})
+@deftypefnx {} {Matrix} {operator *} (const Matrix &@var{a}, const DiagMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const Matrix &@var{a}, const ComplexDiagMatrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator -} (const Matrix &@var{a}, const ComplexDiagMatrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator *} (const Matrix &@var{a}, const ComplexDiagMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {Matrix} {operator *} (const Matrix &@var{a}, const Matrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator *} (const Matrix &@var{a}, const ComplexMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const Matrix &@var{a}, const ComplexMatrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator -} (const Matrix &@var{a}, const ComplexMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} product (const Matrix &@var{a}, const ComplexMatrix &@var{b})
+@deftypefnx {} {ComplexMatrix} quotient (const Matrix &@var{a}, const ComplexMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {Matrix} map (d_d_Mapper @var{f}, const Matrix &@var{a})
+@deftypefnx {} void map (d_d_Mapper @var{f})
+@end deftypefn
+
+@deftypefn {} Matrix all (void) const
+@deftypefnx {} Matrix any (void) const
+@end deftypefn
+
+@deftypefn {} Matrix cumprod (void) const
+@deftypefnx {} Matrix cumsum (void) const
+@deftypefnx {} Matrix prod (void) const
+@deftypefnx {} Matrix sum (void) const
+@deftypefnx {} Matrix sumsq (void) const
+@end deftypefn
+
+@deftypefn {} ColumnVector diag (void) const
+@deftypefnx {} ColumnVector diag (int @var{k}) const
+@end deftypefn
+
+@deftypefn {} ColumnVector row_min (void) const
+@deftypefnx {} ColumnVector row_min_loc (void) const
+@end deftypefn
+
+@deftypefn {} ColumnVector row_max (void) const
+@deftypefnx {} ColumnVector row_max_loc (void) const
+@end deftypefn
+
+@deftypefn {} RowVector column_min (void) const
+@deftypefnx {} RowVector column_min_loc (void) const
+@end deftypefn
+
+@deftypefn {} RowVector column_max (void) const
+@deftypefnx {} RowVector column_max_loc (void) const
+@end deftypefn
+
+@deftypefn {} {ostream&} {operator <<} (ostream &@var{os}, const Matrix &@var{a})
+@deftypefnx {} {istream&} {operator >>} (istream &@var{is}, Matrix &@var{a})
+@end deftypefn
+
+@deftypefn  {} {} ColumnVector (void)
+@deftypefnx  {} {} ColumnVector (int @var{n})
+@deftypefnx  {} {} ColumnVector (int @var{n}, double @var{val})
+@deftypefnx  {} {} ColumnVector (const Array<double> &@var{a})
+@deftypefnx  {} {} ColumnVector (const ColumnVector &@var{a})
+@end deftypefn
+
+@deftypefn {} ColumnVector& {operator =} (const ColumnVector &@var{a})
+@end deftypefn
+
+@deftypefn {} int {operator ==} (const ColumnVector &@var{a}) const
+@deftypefnx {} int {operator !=} (const ColumnVector &@var{a}) const
+@end deftypefn
+
+@deftypefn {} ColumnVector& insert (const ColumnVector &@var{a}, int @var{r})
+@end deftypefn
+
+@deftypefn {} ColumnVector& fill (double @var{val})
+@deftypefnx {} ColumnVector& fill (double @var{val}, int r1, int r2)
+@end deftypefn
+
+@deftypefn {} ColumnVector stack (const ColumnVector &@var{a}) const
+@end deftypefn
+
+@deftypefn {} RowVector transpose (void) const
+@end deftypefn
+
+@deftypefn {} ColumnVector extract (int r1, int r2) const
+@end deftypefn
+
+@deftypefn {} ColumnVector& {operator +=} (const ColumnVector &@var{a})
+@deftypefnx {} ColumnVector& {operator -=} (const ColumnVector &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} {operator +} (const ColumnVector &@var{a}, const Complex &@var{s})
+@deftypefnx {} {ComplexColumnVector} {operator -} (const ColumnVector &@var{a}, const Complex &@var{s})
+@deftypefnx {} {ComplexColumnVector} {operator *} (const ColumnVector &@var{a}, const Complex &@var{s})
+@deftypefnx {} {ComplexColumnVector} {operator /} (const ColumnVector &@var{a}, const Complex &@var{s})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} {operator +} (const Complex &@var{s}, const ColumnVector &@var{a})
+@deftypefnx {} {ComplexColumnVector} {operator -} (const Complex &@var{s}, const ColumnVector &@var{a})
+@deftypefnx {} {ComplexColumnVector} {operator *} (const Complex &@var{s}, const ColumnVector &@var{a})
+@deftypefnx {} {ComplexColumnVector} {operator /} (const Complex &@var{s}, const ColumnVector &@var{a})
+@end deftypefn
+
+@deftypefn {} {Matrix} {operator *} (const ColumnVector &@var{a}, const RowVector &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator *} (const ColumnVector &@var{a}, const ComplexRowVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} {operator +} (const ComplexColumnVector &@var{a}, const ComplexColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} {operator -} (const ComplexColumnVector &@var{a}, const ComplexColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} product (const ComplexColumnVector &@var{a}, const ComplexColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} quotient (const ComplexColumnVector &@var{a}, const ComplexColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ColumnVector} map (d_d_Mapper @var{f}, const ColumnVector &@var{a})
+@deftypefnx {} void map (d_d_Mapper @var{f})
+@end deftypefn
+
+@deftypefn {} double min (void) const
+@deftypefnx {} double max (void) const
+@end deftypefn
+
+@deftypefn {} {ostream&} {operator <<} (ostream &@var{os}, const ColumnVector &@var{a})
+@end deftypefn
+
+@deftypefn  {} {} RowVector (void)
+@deftypefnx  {} {} RowVector (int @var{n})
+@deftypefnx  {} {} RowVector (int @var{n}, double @var{val})
+@deftypefnx  {} {} RowVector (const Array<double> &@var{a})
+@deftypefnx  {} {} RowVector (const RowVector &@var{a})
+@end deftypefn
+
+@deftypefn {} RowVector& {operator =} (const RowVector &@var{a})
+@end deftypefn
+
+@deftypefn {} int {operator ==} (const RowVector &@var{a}) const
+@deftypefnx {} int {operator !=} (const RowVector &@var{a}) const
+@end deftypefn
+
+@deftypefn {} RowVector& insert (const RowVector &@var{a}, int @var{c})
+@end deftypefn
+
+@deftypefn {} RowVector& fill (double @var{val})
+@deftypefnx {} RowVector& fill (double @var{val}, int c1, int c2)
+@end deftypefn
+
+@deftypefn {} RowVector append (const RowVector &@var{a}) const
+@end deftypefn
+
+@deftypefn {} ColumnVector transpose (void) const
+@end deftypefn
+
+@deftypefn {} RowVector extract (int c1, int c2) const
+@end deftypefn
+
+@deftypefn {} RowVector& {operator +=} (const RowVector &@var{a})
+@deftypefnx {} RowVector& {operator -=} (const RowVector &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexRowVector} {operator +} (const RowVector &@var{a}, const Complex &@var{s})
+@deftypefnx {} {ComplexRowVector} {operator -} (const RowVector &@var{a}, const Complex &@var{s})
+@deftypefnx {} {ComplexRowVector} {operator *} (const RowVector &@var{a}, const Complex &@var{s})
+@deftypefnx {} {ComplexRowVector} {operator /} (const RowVector &@var{a}, const Complex &@var{s})
+@end deftypefn
+
+@deftypefn {} {ComplexRowVector} {operator +} (const Complex &@var{s}, const RowVector &@var{a})
+@deftypefnx {} {ComplexRowVector} {operator -} (const Complex &@var{s}, const RowVector &@var{a})
+@deftypefnx {} {ComplexRowVector} {operator *} (const Complex &@var{s}, const RowVector &@var{a})
+@deftypefnx {} {ComplexRowVector} {operator /} (const Complex &@var{s}, const RowVector &@var{a})
+@end deftypefn
+
+@deftypefn {} {double} {operator *} (const RowVector &@var{a}, ColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {Complex} {operator *} (const RowVector &@var{a}, const ComplexColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {RowVector} {operator *} (const RowVector &@var{a}, const Matrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexRowVector} {operator *} (const RowVector &@var{a}, const ComplexMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexRowVector} {operator +} (const RowVector &@var{a}, const ComplexRowVector &@var{b})
+@deftypefnx {} {ComplexRowVector} {operator -} (const RowVector &@var{a}, const ComplexRowVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexRowVector} product (const RowVector &@var{a}, const ComplexRowVector &@var{b})
+@deftypefnx {} {ComplexRowVector} quotient (const RowVector &@var{a}, const ComplexRowVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {RowVector} map (d_d_Mapper @var{f}, const RowVector &@var{a})
+@deftypefnx {} void map (d_d_Mapper @var{f})
+@end deftypefn
+
+@deftypefn {} double min (void) const
+@deftypefnx {} double max (void) const
+@end deftypefn
+
+@deftypefn {} {ostream&} {operator <<} (ostream &@var{os}, const RowVector &@var{a})
+@end deftypefn
+
+@deftypefn  {} {} DiagMatrix (void)
+@deftypefnx  {} {} DiagMatrix (int @var{n})
+@deftypefnx  {} {} DiagMatrix (int @var{n}, double @var{val})
+@deftypefnx  {} {} DiagMatrix (int @var{r}, int @var{c})
+@deftypefnx  {} {} DiagMatrix (int @var{r}, int @var{c}, double @var{val})
+@deftypefnx  {} {} DiagMatrix (const RowVector &@var{a})
+@deftypefnx  {} {} DiagMatrix (const ColumnVector &@var{a})
+@deftypefnx  {} {} DiagMatrix (const DiagArray<double> &@var{a})
+@deftypefnx  {} {} DiagMatrix (const DiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} DiagMatrix& {operator =} (const DiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} int {operator ==} (const DiagMatrix &@var{a}) const
+@deftypefnx {} int {operator !=} (const DiagMatrix &@var{a}) const
+@end deftypefn
+
+@deftypefn {} DiagMatrix& fill (double @var{val})
+@deftypefnx {} DiagMatrix& fill (double @var{val}, int @var{beg}, int @var{end})
+@deftypefnx {} DiagMatrix& fill (const ColumnVector &@var{a})
+@deftypefnx {} DiagMatrix& fill (const RowVector &@var{a})
+@deftypefnx {} DiagMatrix& fill (const ColumnVector &@var{a}, int @var{beg})
+@deftypefnx {} DiagMatrix& fill (const RowVector &@var{a}, int @var{beg})
+@end deftypefn
+
+@deftypefn {} DiagMatrix transpose (void) const
+@end deftypefn
+
+@deftypefn {} Matrix extract (int r1, int c1, int r2, int c2) const
+@end deftypefn
+
+@deftypefn {} RowVector row (int @var{i}) const
+@deftypefnx {} RowVector row (char *s) const
+@end deftypefn
+
+@deftypefn {} ColumnVector column (int @var{i}) const
+@deftypefnx {} ColumnVector column (char *s) const
+@end deftypefn
+
+@deftypefn {} DiagMatrix inverse (void) const
+@deftypefnx {} DiagMatrix inverse (int &@var{info}) const
+@end deftypefn
+
+@deftypefn {} DiagMatrix& {operator +=} (const DiagMatrix &@var{a})
+@deftypefnx {} DiagMatrix& {operator -=} (const DiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} {Matrix} {operator +} (const DiagMatrix &@var{a}, double @var{s})
+@deftypefnx {} {Matrix} {operator -} (const DiagMatrix &@var{a}, double @var{s})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const DiagMatrix &@var{a}, const Complex &@var{s})
+@deftypefnx {} {ComplexMatrix} {operator -} (const DiagMatrix &@var{a}, const Complex &@var{s})
+@end deftypefn
+
+@deftypefn {} {ComplexDiagMatrix} {operator *} (const DiagMatrix &@var{a}, const Complex &@var{s})
+@deftypefnx {} {ComplexDiagMatrix} {operator /} (const DiagMatrix &@var{a}, const Complex &@var{s})
+@end deftypefn
+
+@deftypefn {} {Matrix} {operator +} (double @var{s}, const DiagMatrix &@var{a})
+@deftypefnx {} {Matrix} {operator -} (double @var{s}, const DiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const Complex &@var{s}, const DiagMatrix &@var{a})
+@deftypefnx {} {ComplexMatrix} {operator -} (const Complex &@var{s}, const DiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexDiagMatrix} {operator *} (const Complex &@var{s}, const DiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} {ColumnVector} {operator *} (const DiagMatrix &@var{a}, const ColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} {operator *} (const DiagMatrix &@var{a}, const ComplexColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexDiagMatrix} {operator +} (const DiagMatrix &@var{a}, const ComplexDiagMatrix &@var{b})
+@deftypefnx {} {ComplexDiagMatrix} {operator -} (const DiagMatrix &@var{a}, const ComplexDiagMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexDiagMatrix} product (const DiagMatrix &@var{a}, const ComplexDiagMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {Matrix} {operator +} (const DiagMatrix &@var{a}, const Matrix &@var{b})
+@deftypefnx {} {Matrix} {operator -} (const DiagMatrix &@var{a}, const Matrix &@var{b})
+@deftypefnx {} {Matrix} {operator *} (const DiagMatrix &@var{a}, const Matrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const DiagMatrix &@var{a}, const ComplexMatrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator -} (const DiagMatrix &@var{a}, const ComplexMatrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator *} (const DiagMatrix &@var{a}, const ComplexMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} ColumnVector diag (void) const
+@deftypefnx {} ColumnVector diag (int @var{k}) const
+@end deftypefn
+
+@deftypefn {} {ostream&} {operator <<} (ostream &@var{os}, const DiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn  {} {} ComplexMatrix (void)
+@deftypefnx  {} {} ComplexMatrix (int @var{r}, int @var{c})
+@deftypefnx  {} {} ComplexMatrix (int @var{r}, int @var{c}, const Complex &@var{val})
+@deftypefnx  {} {} ComplexMatrix (const Matrix &@var{a})
+@deftypefnx  {} {} ComplexMatrix (const Array2<Complex> &@var{a})
+@deftypefnx  {} {} ComplexMatrix (const ComplexMatrix &@var{a})
+@deftypefnx  {} {} ComplexMatrix (const DiagMatrix &@var{a})
+@deftypefnx  {} {} ComplexMatrix (const DiagArray<Complex> &@var{a})
+@deftypefnx  {} {} ComplexMatrix (const ComplexDiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexMatrix& {operator =} (const ComplexMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} int {operator ==} (const ComplexMatrix &@var{a}) const
+@deftypefnx {} int {operator !=} (const ComplexMatrix &@var{a}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix& insert (const Matrix &@var{a}, int @var{r}, int @var{c})
+@deftypefnx {} ComplexMatrix& insert (const RowVector &@var{a}, int @var{r}, int @var{c})
+@deftypefnx {} ComplexMatrix& insert (const ColumnVector &@var{a}, int @var{r}, int @var{c})
+@deftypefnx {} ComplexMatrix& insert (const DiagMatrix &@var{a}, int @var{r}, int @var{c})
+@end deftypefn
+
+@deftypefn {} ComplexMatrix& insert (const ComplexMatrix &@var{a}, int @var{r}, int @var{c})
+@deftypefnx {} ComplexMatrix& insert (const ComplexRowVector &@var{a}, int @var{r}, int @var{c})
+@deftypefnx {} ComplexMatrix& insert (const ComplexColumnVector &@var{a}, int @var{r}, int @var{c})
+@deftypefnx {} ComplexMatrix& insert (const ComplexDiagMatrix &@var{a}, int @var{r}, int @var{c})
+@end deftypefn
+
+@deftypefn {} ComplexMatrix& fill (double @var{val})
+@deftypefnx {} ComplexMatrix& fill (const Complex &@var{val})
+@deftypefnx {} ComplexMatrix& fill (double @var{val}, int r1, int c1, int r2, int c2)
+@deftypefnx {} ComplexMatrix& fill (const Complex &@var{val}, int r1, int c1, int r2, int c2)
+@end deftypefn
+
+@deftypefn {} ComplexMatrix append (const Matrix &@var{a}) const
+@deftypefnx {} ComplexMatrix append (const RowVector &@var{a}) const
+@deftypefnx {} ComplexMatrix append (const ColumnVector &@var{a}) const
+@deftypefnx {} ComplexMatrix append (const DiagMatrix &@var{a}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix append (const ComplexMatrix &@var{a}) const
+@deftypefnx {} ComplexMatrix append (const ComplexRowVector &@var{a}) const
+@deftypefnx {} ComplexMatrix append (const ComplexColumnVector &@var{a}) const
+@deftypefnx {} ComplexMatrix append (const ComplexDiagMatrix &@var{a}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix stack (const Matrix &@var{a}) const
+@deftypefnx {} ComplexMatrix stack (const RowVector &@var{a}) const
+@deftypefnx {} ComplexMatrix stack (const ColumnVector &@var{a}) const
+@deftypefnx {} ComplexMatrix stack (const DiagMatrix &@var{a}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix stack (const ComplexMatrix &@var{a}) const
+@deftypefnx {} ComplexMatrix stack (const ComplexRowVector &@var{a}) const
+@deftypefnx {} ComplexMatrix stack (const ComplexColumnVector &@var{a}) const
+@deftypefnx {} ComplexMatrix stack (const ComplexDiagMatrix &@var{a}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix transpose (void) const
+@end deftypefn
+
+@deftypefn {} {Matrix} real (const ComplexMatrix &@var{a})
+@deftypefnx {} {Matrix} imag (const ComplexMatrix &@var{a})
+@deftypefnx {} {ComplexMatrix} conj (const ComplexMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexMatrix extract (int r1, int c1, int r2, int c2) const
+@end deftypefn
+
+@deftypefn {} ComplexRowVector row (int @var{i}) const
+@deftypefnx {} ComplexRowVector row (char *s) const
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector column (int @var{i}) const
+@deftypefnx {} ComplexColumnVector column (char *s) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix inverse (void) const
+@deftypefnx {} ComplexMatrix inverse (int &@var{info}) const
+@deftypefnx {} ComplexMatrix inverse (int &@var{info}, double &@var{rcond}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix fourier (void) const
+@deftypefnx {} ComplexMatrix ifourier (void) const
+@end deftypefn
+
+@deftypefn {} ComplexDET determinant (void) const
+@deftypefnx {} ComplexDET determinant (int &@var{info}) const
+@deftypefnx {} ComplexDET determinant (int &@var{info}, double &@var{rcond}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix solve (const Matrix &@var{b}) const
+@deftypefnx {} ComplexMatrix solve (const Matrix &@var{b}, int &@var{info}) const
+@deftypefnx {} ComplexMatrix solve (const Matrix &@var{b}, int &@var{info}, double &@var{rcond}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix solve (const ComplexMatrix &@var{b}) const
+@deftypefnx {} ComplexMatrix solve (const ComplexMatrix &@var{b}, int &@var{info}) const
+@deftypefnx {} ComplexMatrix solve (const ComplexMatrix &@var{b}, int &@var{info}, double &@var{rcond}) const
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector solve (const ComplexColumnVector &@var{b}) const
+@deftypefnx {} ComplexColumnVector solve (const ComplexColumnVector &@var{b}, int &@var{info}) const
+@deftypefnx {} ComplexColumnVector solve (const ComplexColumnVector &@var{b}, int &@var{info}, double &@var{rcond}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix lssolve (const ComplexMatrix &@var{b}) const
+@deftypefnx {} ComplexMatrix lssolve (const ComplexMatrix &@var{b}, int &@var{info}) const
+@deftypefnx {} ComplexMatrix lssolve (const ComplexMatrix &@var{b}, int &@var{info}, int &@var{rank}) const
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector lssolve (const ComplexColumnVector &@var{b}) const
+@deftypefnx {} ComplexColumnVector lssolve (const ComplexColumnVector &@var{b}, int &@var{info}) const
+@deftypefnx {} ComplexColumnVector lssolve (const ComplexColumnVector &@var{b}, int &@var{info}, int &@var{rank}) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix& {operator +=} (const DiagMatrix &@var{a})
+@deftypefnx {} ComplexMatrix& {operator -=} (const DiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexMatrix& {operator +=} (const ComplexDiagMatrix &@var{a})
+@deftypefnx {} ComplexMatrix& {operator -=} (const ComplexDiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexMatrix& {operator +=} (const Matrix &@var{a})
+@deftypefnx {} ComplexMatrix& {operator -=} (const Matrix &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexMatrix& {operator +=} (const ComplexMatrix &@var{a})
+@deftypefnx {} ComplexMatrix& {operator -=} (const ComplexMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} Matrix {operator !} (void) const
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const ComplexMatrix &@var{a}, double @var{s})
+@deftypefnx {} {ComplexMatrix} {operator -} (const ComplexMatrix &@var{a}, double @var{s})
+@deftypefnx {} {ComplexMatrix} {operator *} (const ComplexMatrix &@var{a}, double @var{s})
+@deftypefnx {} {ComplexMatrix} {operator /} (const ComplexMatrix &@var{a}, double @var{s})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (double @var{s}, const ComplexMatrix &@var{a})
+@deftypefnx {} {ComplexMatrix} {operator -} (double @var{s}, const ComplexMatrix &@var{a})
+@deftypefnx {} {ComplexMatrix} {operator *} (double @var{s}, const ComplexMatrix &@var{a})
+@deftypefnx {} {ComplexMatrix} {operator /} (double @var{s}, const ComplexMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} {operator *} (const ComplexMatrix &@var{a}, const ColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} {operator *} (const ComplexMatrix &@var{a}, const ComplexColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const ComplexMatrix &@var{a}, const DiagMatrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator -} (const ComplexMatrix &@var{a}, const DiagMatrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator *} (const ComplexMatrix &@var{a}, const DiagMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const ComplexMatrix &@var{a}, const ComplexDiagMatrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator -} (const ComplexMatrix &@var{a}, const ComplexDiagMatrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator *} (const ComplexMatrix &@var{a}, const ComplexDiagMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const ComplexMatrix &@var{a}, const Matrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator -} (const ComplexMatrix &@var{a}, const Matrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator *} (const ComplexMatrix &@var{a}, const Matrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator *} (const ComplexMatrix &@var{a}, const ComplexMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} product (const ComplexMatrix &@var{a}, const Matrix &@var{b})
+@deftypefnx {} {ComplexMatrix} quotient (const ComplexMatrix &@var{a}, const Matrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} map (c_c_Mapper @var{f}, const ComplexMatrix &@var{a})
+@deftypefnx {} {Matrix} map (d_c_Mapper @var{f}, const ComplexMatrix &@var{a})
+@deftypefnx {} void map (c_c_Mapper @var{f})
+@end deftypefn
+
+@deftypefn {} Matrix all (void) const
+@deftypefnx {} Matrix any (void) const
+@end deftypefn
+
+@deftypefn {} ComplexMatrix cumprod (void) const
+@deftypefnx {} ComplexMatrix cumsum (void) const
+@deftypefnx {} ComplexMatrix prod (void) const
+@deftypefnx {} ComplexMatrix sum (void) const
+@deftypefnx {} ComplexMatrix sumsq (void) const
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector diag (void) const
+@deftypefnx {} ComplexColumnVector diag (int @var{k}) const
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector row_min (void) const
+@deftypefnx {} ComplexColumnVector row_min_loc (void) const
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector row_max (void) const
+@deftypefnx {} ComplexColumnVector row_max_loc (void) const
+@end deftypefn
+
+@deftypefn {} ComplexRowVector column_min (void) const
+@deftypefnx {} ComplexRowVector column_min_loc (void) const
+@end deftypefn
+
+@deftypefn {} ComplexRowVector column_max (void) const
+@deftypefnx {} ComplexRowVector column_max_loc (void) const
+@end deftypefn
+
+@deftypefn {} {ostream&} {operator <<} (ostream &@var{os}, const ComplexMatrix &@var{a})
+@deftypefnx {} {istream&} {operator >>} (istream &@var{is}, ComplexMatrix &@var{a})
+@end deftypefn
+
+@deftypefn  {} {} ComplexColumnVector (void)
+@deftypefnx  {} {} ComplexColumnVector (int @var{n})
+@deftypefnx  {} {} ComplexColumnVector (int @var{n}, const Complex &@var{val})
+@deftypefnx  {} {} ComplexColumnVector (const ColumnVector &@var{a})
+@deftypefnx  {} {} ComplexColumnVector (const Array<Complex> &@var{a})
+@deftypefnx  {} {} ComplexColumnVector (const ComplexColumnVector &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector& {operator =} (const ComplexColumnVector &@var{a})
+@end deftypefn
+
+@deftypefn {} int {operator ==} (const ComplexColumnVector &@var{a}) const
+@deftypefnx {} int {operator !=} (const ComplexColumnVector &@var{a}) const
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector& insert (const ColumnVector &@var{a}, int @var{r})
+@deftypefnx {} ComplexColumnVector& insert (const ComplexColumnVector &@var{a}, int @var{r})
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector& fill (double @var{val})
+@deftypefnx {} ComplexColumnVector& fill (const Complex &@var{val})
+@deftypefnx {} ComplexColumnVector& fill (double @var{val}, int r1, int r2)
+@deftypefnx {} ComplexColumnVector& fill (const Complex &@var{val}, int r1, int r2)
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector stack (const ColumnVector &@var{a}) const
+@deftypefnx {} ComplexColumnVector stack (const ComplexColumnVector &@var{a}) const
+@end deftypefn
+
+@deftypefn {} ComplexRowVector transpose (void) const
+@end deftypefn
+
+@deftypefn {} {ColumnVector} real (const ComplexColumnVector &@var{a})
+@deftypefnx {} {ColumnVector} imag (const ComplexColumnVector &@var{a})
+@deftypefnx {} {ComplexColumnVector} conj (const ComplexColumnVector &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector extract (int r1, int r2) const
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector& {operator +=} (const ColumnVector &@var{a})
+@deftypefnx {} ComplexColumnVector& {operator -=} (const ColumnVector &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector& {operator +=} (const ComplexColumnVector &@var{a})
+@deftypefnx {} ComplexColumnVector& {operator -=} (const ComplexColumnVector &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} {operator +} (const ComplexColumnVector &@var{a}, double @var{s})
+@deftypefnx {} {ComplexColumnVector} {operator -} (const ComplexColumnVector &@var{a}, double @var{s})
+@deftypefnx {} {ComplexColumnVector} {operator *} (const ComplexColumnVector &@var{a}, double @var{s})
+@deftypefnx {} {ComplexColumnVector} {operator /} (const ComplexColumnVector &@var{a}, double @var{s})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} {operator +} (double @var{s}, const ComplexColumnVector &@var{a})
+@deftypefnx {} {ComplexColumnVector} {operator -} (double @var{s}, const ComplexColumnVector &@var{a})
+@deftypefnx {} {ComplexColumnVector} {operator *} (double @var{s}, const ComplexColumnVector &@var{a})
+@deftypefnx {} {ComplexColumnVector} {operator /} (double @var{s}, const ComplexColumnVector &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator *} (const ComplexColumnVector &@var{a}, const ComplexRowVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} {operator +} (const ComplexColumnVector &@var{a}, const ColumnVector &@var{b})
+@deftypefnx {} {ComplexColumnVector} {operator -} (const ComplexColumnVector &@var{a}, const ColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} product (const ComplexColumnVector &@var{a}, const ColumnVector &@var{b})
+@deftypefnx {} {ComplexColumnVector} quotient (const ComplexColumnVector &@var{a}, const ColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} map (c_c_Mapper @var{f}, const ComplexColumnVector &@var{a})
+@deftypefnx {} {ColumnVector} map (d_c_Mapper @var{f}, const ComplexColumnVector &@var{a})
+@deftypefnx {} void map (c_c_Mapper @var{f})
+@end deftypefn
+
+@deftypefn {} Complex min (void) const
+@deftypefnx {} Complex max (void) const
+@end deftypefn
+
+@deftypefn {} {ostream&} {operator <<} (ostream &@var{os}, const ComplexColumnVector &@var{a})
+@end deftypefn
+
+@deftypefn  {} {} ComplexRowVector (void)
+@deftypefnx  {} {} ComplexRowVector (int @var{n})
+@deftypefnx  {} {} ComplexRowVector (int @var{n}, const Complex &@var{val})
+@deftypefnx  {} {} ComplexRowVector (const RowVector &@var{a})
+@deftypefnx  {} {} ComplexRowVector (const Array<Complex> &@var{a})
+@deftypefnx  {} {} ComplexRowVector (const ComplexRowVector &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexRowVector& {operator =} (const ComplexRowVector &@var{a})
+@end deftypefn
+
+@deftypefn {} int {operator ==} (const ComplexRowVector &@var{a}) const
+@deftypefnx {} int {operator !=} (const ComplexRowVector &@var{a}) const
+@end deftypefn
+
+@deftypefn {} ComplexRowVector& insert (const RowVector &@var{a}, int @var{c})
+@deftypefnx {} ComplexRowVector& insert (const ComplexRowVector &@var{a}, int @var{c})
+@end deftypefn
+
+@deftypefn {} ComplexRowVector& fill (double @var{val})
+@deftypefnx {} ComplexRowVector& fill (const Complex &@var{val})
+@deftypefnx {} ComplexRowVector& fill (double @var{val}, int c1, int c2)
+@deftypefnx {} ComplexRowVector& fill (const Complex &@var{val}, int c1, int c2)
+@end deftypefn
+
+@deftypefn {} ComplexRowVector append (const RowVector &@var{a}) const
+@deftypefnx {} ComplexRowVector append (const ComplexRowVector &@var{a}) const
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector transpose (void) const
+@end deftypefn
+
+@deftypefn {} {RowVector} real (const ComplexRowVector &@var{a})
+@deftypefnx {} {RowVector} imag (const ComplexRowVector &@var{a})
+@deftypefnx {} {ComplexRowVector} conj (const ComplexRowVector &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexRowVector extract (int c1, int c2) const
+@end deftypefn
+
+@deftypefn {} ComplexRowVector& {operator +=} (const RowVector &@var{a})
+@deftypefnx {} ComplexRowVector& {operator -=} (const RowVector &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexRowVector& {operator +=} (const ComplexRowVector &@var{a})
+@deftypefnx {} ComplexRowVector& {operator -=} (const ComplexRowVector &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexRowVector} {operator +} (const ComplexRowVector &@var{a}, double @var{s})
+@deftypefnx {} {ComplexRowVector} {operator -} (const ComplexRowVector &@var{a}, double @var{s})
+@deftypefnx {} {ComplexRowVector} {operator *} (const ComplexRowVector &@var{a}, double @var{s})
+@deftypefnx {} {ComplexRowVector} {operator /} (const ComplexRowVector &@var{a}, double @var{s})
+@end deftypefn
+
+@deftypefn {} {ComplexRowVector} {operator +} (double @var{s}, const ComplexRowVector &@var{a})
+@deftypefnx {} {ComplexRowVector} {operator -} (double @var{s}, const ComplexRowVector &@var{a})
+@deftypefnx {} {ComplexRowVector} {operator *} (double @var{s}, const ComplexRowVector &@var{a})
+@deftypefnx {} {ComplexRowVector} {operator /} (double @var{s}, const ComplexRowVector &@var{a})
+@end deftypefn
+
+@deftypefn {} {Complex} {operator *} (const ComplexRowVector &@var{a}, const ColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {Complex} {operator *} (const ComplexRowVector &@var{a}, const ComplexColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexRowVector} {operator *} (const ComplexRowVector &@var{a}, const ComplexMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexRowVector} {operator +} (const ComplexRowVector &@var{a}, const RowVector &@var{b})
+@deftypefnx {} {ComplexRowVector} {operator -} (const ComplexRowVector &@var{a}, const RowVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexRowVector} product (const ComplexRowVector &@var{a}, const RowVector &@var{b})
+@deftypefnx {} {ComplexRowVector} quotient (const ComplexRowVector &@var{a}, const RowVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexRowVector} map (c_c_Mapper @var{f}, const ComplexRowVector &@var{a})
+@deftypefnx {} {RowVector} map (d_c_Mapper @var{f}, const ComplexRowVector &@var{a})
+@deftypefnx {} void map (c_c_Mapper @var{f})
+@end deftypefn
+
+@deftypefn {} Complex min (void) const
+@deftypefnx {} Complex max (void) const
+@end deftypefn
+
+@deftypefn {} {ostream&} {operator <<} (ostream &@var{os}, const ComplexRowVector &@var{a})
+@end deftypefn
+
+@deftypefn  {} {} ComplexDiagMatrix (void)
+@deftypefnx  {} {} ComplexDiagMatrix (int @var{n})
+@deftypefnx  {} {} ComplexDiagMatrix (int @var{n}, const Complex &@var{val})
+@deftypefnx  {} {} ComplexDiagMatrix (int @var{r}, int @var{c})
+@deftypefnx  {} {} ComplexDiagMatrix (int @var{r}, int @var{c}, const Complex &@var{val})
+@deftypefnx  {} {} ComplexDiagMatrix (const RowVector &@var{a})
+@deftypefnx  {} {} ComplexDiagMatrix (const ComplexRowVector &@var{a})
+@deftypefnx  {} {} ComplexDiagMatrix (const ColumnVector &@var{a})
+@deftypefnx  {} {} ComplexDiagMatrix (const ComplexColumnVector &@var{a})
+@deftypefnx  {} {} ComplexDiagMatrix (const DiagMatrix &@var{a})
+@deftypefnx  {} {} ComplexDiagMatrix (const DiagArray<Complex> &@var{a})
+@deftypefnx  {} {} ComplexDiagMatrix (const ComplexDiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexDiagMatrix& {operator =} (const ComplexDiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} int {operator ==} (const ComplexDiagMatrix &@var{a}) const
+@deftypefnx {} int {operator !=} (const ComplexDiagMatrix &@var{a}) const
+@end deftypefn
+
+@deftypefn {} ComplexDiagMatrix& fill (double @var{val})
+@deftypefnx {} ComplexDiagMatrix& fill (const Complex &@var{val})
+@deftypefnx {} ComplexDiagMatrix& fill (double @var{val}, int @var{beg}, int @var{end})
+@deftypefnx {} ComplexDiagMatrix& fill (const Complex &@var{val}, int @var{beg}, int @var{end})
+@deftypefnx {} ComplexDiagMatrix& fill (const ColumnVector &@var{a})
+@deftypefnx {} ComplexDiagMatrix& fill (const ComplexColumnVector &@var{a})
+@deftypefnx {} ComplexDiagMatrix& fill (const RowVector &@var{a})
+@deftypefnx {} ComplexDiagMatrix& fill (const ComplexRowVector &@var{a})
+@deftypefnx {} ComplexDiagMatrix& fill (const ColumnVector &@var{a}, int @var{beg})
+@deftypefnx {} ComplexDiagMatrix& fill (const ComplexColumnVector &@var{a}, int @var{beg})
+@deftypefnx {} ComplexDiagMatrix& fill (const RowVector &@var{a}, int @var{beg})
+@deftypefnx {} ComplexDiagMatrix& fill (const ComplexRowVector &@var{a}, int @var{beg})
+@end deftypefn
+
+@deftypefn {} ComplexDiagMatrix transpose (void) const
+@end deftypefn
+
+@deftypefn {} {DiagMatrix} real (const ComplexDiagMatrix &@var{a})
+@deftypefnx {} {DiagMatrix} imag (const ComplexDiagMatrix &@var{a})
+@deftypefnx {} {ComplexDiagMatrix} conj (const ComplexDiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexMatrix extract (int r1, int c1, int r2, int c2) const
+@end deftypefn
+
+@deftypefn {} ComplexRowVector row (int @var{i}) const
+@deftypefnx {} ComplexRowVector row (char *s) const
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector column (int @var{i}) const
+@deftypefnx {} ComplexColumnVector column (char *s) const
+@end deftypefn
+
+@deftypefn {} ComplexDiagMatrix inverse (int &@var{info}) const
+@deftypefnx {} ComplexDiagMatrix inverse (void) const
+@end deftypefn
+
+@deftypefn {} ComplexDiagMatrix& {operator +=} (const DiagMatrix &@var{a})
+@deftypefnx {} ComplexDiagMatrix& {operator -=} (const DiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} ComplexDiagMatrix& {operator +=} (const ComplexDiagMatrix &@var{a})
+@deftypefnx {} ComplexDiagMatrix& {operator -=} (const ComplexDiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const ComplexDiagMatrix &@var{a}, double @var{s})
+@deftypefnx {} {ComplexMatrix} {operator -} (const ComplexDiagMatrix &@var{a}, double @var{s})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const ComplexDiagMatrix &@var{a}, const Complex &@var{s})
+@deftypefnx {} {ComplexMatrix} {operator -} (const ComplexDiagMatrix &@var{a}, const Complex &@var{s})
+@end deftypefn
+
+@deftypefn {} {ComplexDiagMatrix} {operator *} (const ComplexDiagMatrix &@var{a}, double @var{s})
+@deftypefnx {} {ComplexDiagMatrix} {operator /} (const ComplexDiagMatrix &@var{a}, double @var{s})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (double @var{s}, const ComplexDiagMatrix &@var{a})
+@deftypefnx {} {ComplexMatrix} {operator -} (double @var{s}, const ComplexDiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const Complex &@var{s}, const ComplexDiagMatrix &@var{a})
+@deftypefnx {} {ComplexMatrix} {operator -} (const Complex &@var{s}, const ComplexDiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexDiagMatrix} {operator *} (double @var{s}, const ComplexDiagMatrix &@var{a})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} {operator *} (const ComplexDiagMatrix &@var{a}, const ColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexColumnVector} {operator *} (const ComplexDiagMatrix &@var{a}, const ComplexColumnVector &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexDiagMatrix} {operator +} (const ComplexDiagMatrix &@var{a}, const DiagMatrix &@var{b})
+@deftypefnx {} {ComplexDiagMatrix} {operator -} (const ComplexDiagMatrix &@var{a}, const DiagMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexDiagMatrix} product (const ComplexDiagMatrix &@var{a}, const DiagMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const ComplexDiagMatrix &@var{a}, const Matrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator -} (const ComplexDiagMatrix &@var{a}, const Matrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator *} (const ComplexDiagMatrix &@var{a}, const Matrix &@var{b})
+@end deftypefn
+
+@deftypefn {} {ComplexMatrix} {operator +} (const ComplexDiagMatrix &@var{a}, const ComplexMatrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator -} (const ComplexDiagMatrix &@var{a}, const ComplexMatrix &@var{b})
+@deftypefnx {} {ComplexMatrix} {operator *} (const ComplexDiagMatrix &@var{a}, const ComplexMatrix &@var{b})
+@end deftypefn
+
+@deftypefn {} ComplexColumnVector diag (void) const
+@deftypefnx {} ComplexColumnVector diag (int @var{k}) const
+@end deftypefn
+
+@deftypefn {} {ostream&} {operator <<} (ostream &@var{os}, const ComplexDiagMatrix &@var{a})
+@end deftypefn

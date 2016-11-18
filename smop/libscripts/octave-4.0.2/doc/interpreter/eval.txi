@@ -1,0 +1,183 @@
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Evaluation
+@chapter Evaluation
+
+Normally, you evaluate expressions simply by typing them at the Octave
+prompt, or by asking Octave to interpret commands that you have saved in
+a file.
+
+Sometimes, you may find it necessary to evaluate an expression that has
+been computed and stored in a string, which is exactly what the
+@code{eval} function lets you do.
+
+@DOCSTRING(eval)
+
+@menu
+* Calling a Function by its Name::
+* Evaluation in a Different Context::
+@end menu
+
+@node Calling a Function by its Name
+@section Calling a Function by its Name
+
+The @code{feval} function allows you to call a function from a string
+containing its name.  This is useful when writing a function that needs to
+call user-supplied functions.  The @code{feval} function takes the name
+of the function to call as its first argument, and the remaining
+arguments are given to the function.
+
+The following example is a simple-minded function using @code{feval}
+that finds the root of a user-supplied function of one variable using
+Newton's method.
+
+@example
+function result = newtroot (fname, x)
+
+# usage: newtroot (fname, x)
+#
+#   fname : a string naming a function f(x).
+#   x     : initial guess
+
+  delta = tol = sqrt (eps);
+  maxit = 200;
+  fx = feval (fname, x);
+  for i = 1:maxit
+    if (abs (fx) < tol)
+      result = x;
+      return;
+    else
+      fx_new = feval (fname, x + delta);
+      deriv = (fx_new - fx) / delta;
+      x = x - fx / deriv;
+      fx = fx_new;
+    endif
+  endfor
+
+  result = x;
+
+endfunction
+@end example
+
+Note that this is only meant to be an example of calling user-supplied
+functions and should not be taken too seriously.  In addition to using a
+more robust algorithm, any serious code would check the number and type
+of all the arguments, ensure that the supplied function really was a
+function, etc.  @xref{Predicates for Numeric Objects},
+for a list of predicates for numeric objects, and @pxref{Status of
+Variables}, for a description of the @code{exist} function.
+
+@DOCSTRING(feval)
+
+A similar function @code{run} exists for calling user script files, that
+are not necessarily on the user path
+
+@DOCSTRING(run)
+
+@node Evaluation in a Different Context
+@section Evaluation in a Different Context
+
+Before you evaluate an expression you need to substitute
+the values of the variables used in the expression.  These
+are stored in the symbol table.  Whenever the interpreter
+starts a new function it saves the current symbol table
+and creates a new one, initializing it with the list of
+function parameters and a couple of predefined variables
+such as @code{nargin}.  Expressions inside the function use the
+new symbol table.
+
+Sometimes you want to write a function so that when you
+call it, it modifies variables in your own context.  This
+allows you to use a pass-by-name style of function,
+which is similar to using a pointer in programming languages such
+as C.
+
+Consider how you might write @code{save} and @code{load} as
+m-files.  For example:
+
+@example
+@group
+function create_data
+  x = linspace (0, 10, 10);
+  y = sin (x);
+  save mydata x y
+endfunction
+@end group
+@end example
+
+With @code{evalin}, you could write @code{save} as follows:
+
+@example
+@group
+function save (file, name1, name2)
+  f = open_save_file (file);
+  save_var (f, name1, evalin ("caller", name1));
+  save_var (f, name2, evalin ("caller", name2));
+endfunction
+@end group
+@end example
+
+@noindent
+Here, @samp{caller} is the @code{create_data} function and @code{name1}
+is the string @qcode{"x"}, which evaluates simply as the value of @code{x}.
+
+You later want to load the values back from @code{mydata}
+in a different context:
+
+@example
+@group
+function process_data
+  load mydata
+  @dots{} do work @dots{}
+endfunction
+@end group
+@end example
+
+@noindent
+With @code{assignin}, you could write @code{load} as follows:
+
+@example
+@group
+function load (file)
+  f = open_load_file (file);
+  [name, val] = load_var (f);
+  assignin ("caller", name, val);
+  [name, val] = load_var (f);
+  assignin ("caller", name, val);
+endfunction
+@end group
+@end example
+
+@noindent
+Here, @samp{caller} is the @code{process_data} function.
+
+You can set and use variables at the command prompt
+using the context @samp{base} rather than @samp{caller}.
+
+These functions are rarely used in practice.  One
+example is the @code{fail (@samp{code}, @samp{pattern})} function
+which evaluates @samp{code} in the caller's context and
+checks that the error message it produces matches
+the given pattern.  Other examples such as @code{save} and @code{load}
+are written in C++ where all Octave variables
+are in the @samp{caller} context and @code{evalin} is not needed.
+
+@DOCSTRING(evalin)
+
+@DOCSTRING(assignin)

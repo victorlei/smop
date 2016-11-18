@@ -1,0 +1,393 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Using Octave Mode</title>
+
+<meta name="description" content="GNU Octave: Using Octave Mode">
+<meta name="keywords" content="GNU Octave: Using Octave Mode">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Emacs-Octave-Support.html#Emacs-Octave-Support" rel="up" title="Emacs Octave Support">
+<link href="Running-Octave-from-Within-Emacs.html#Running-Octave-from-Within-Emacs" rel="next" title="Running Octave from Within Emacs">
+<link href="Installing-EOS.html#Installing-EOS" rel="prev" title="Installing EOS">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Using-Octave-Mode"></a>
+<div class="header">
+<p>
+Next: <a href="Running-Octave-from-Within-Emacs.html#Running-Octave-from-Within-Emacs" accesskey="n" rel="next">Running Octave from Within Emacs</a>, Previous: <a href="Installing-EOS.html#Installing-EOS" accesskey="p" rel="prev">Installing EOS</a>, Up: <a href="Emacs-Octave-Support.html#Emacs-Octave-Support" accesskey="u" rel="up">Emacs Octave Support</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Using-Octave-Mode-1"></a>
+<h3 class="appendixsec">H.2 Using Octave Mode</h3>
+
+<p>If you are lucky, your sysadmins have already arranged everything so
+that Emacs automatically goes into Octave mode whenever you visit an
+Octave code file as characterized by its extension <samp>.m</samp>.  If not,
+proceed as follows.
+</p>
+<ol>
+<li> To begin using Octave mode for all <samp>.m</samp> files you visit, add the
+following lines to a file loaded by Emacs at startup time, typically
+your <samp>~/.emacs</samp> file:
+
+<div class="lisp">
+<pre class="lisp">(autoload 'octave-mode &quot;octave-mod&quot; nil t)
+(setq auto-mode-alist
+      (cons '(&quot;\\.m$&quot; . octave-mode) auto-mode-alist))
+</pre></div>
+
+</li><li> Finally, to turn on the abbrevs, auto-fill and font-lock features
+automatically, also add the following lines to one of the Emacs startup
+files:
+<div class="lisp">
+<pre class="lisp">(add-hook 'octave-mode-hook
+          (lambda ()
+            (abbrev-mode 1)
+            (auto-fill-mode 1)
+            (if (eq window-system 'x)
+                (font-lock-mode 1))))
+</pre></div>
+<p>See the Emacs manual for more information about how to customize
+Font-lock mode.
+</p></li></ol>
+
+<p>In Octave mode, the following special Emacs commands can be used in
+addition to the standard Emacs commands.
+</p>
+<dl compact="compact">
+<dt><kbd>C-h m</kbd></dt>
+<dd><p>Describe the features of Octave mode.
+</p>
+</dd>
+<dt><kbd>LFD</kbd></dt>
+<dd><p>Reindent the current Octave line, insert a newline and indent the new
+line (<code>octave-reindent-then-newline-and-indent</code>).  An abbrev before
+point is expanded if <code>abbrev-mode</code> is non-<code>nil</code>.
+</p>
+</dd>
+<dt><kbd>TAB</kbd></dt>
+<dd><p>Indents current Octave line based on its contents and on previous
+lines (<code>indent-according-to-mode</code>).
+</p>
+</dd>
+<dt><kbd>;</kbd></dt>
+<dd><p>Insert an &ldquo;electric&rdquo; semicolon (<code>octave-electric-semi</code>).  If
+<code>octave-auto-indent</code> is non-<code>nil</code>, reindent the current line.
+If <code>octave-auto-newline</code> is non-<code>nil</code>, automagically insert a
+newline and indent the new line.
+</p>
+</dd>
+<dt><kbd>`</kbd></dt>
+<dd><p>Start entering an abbreviation (<code>octave-abbrev-start</code>).  If Abbrev
+mode is turned on, typing <kbd>`C-h</kbd> or <kbd>`?</kbd> lists all abbrevs.
+Any other key combination is executed normally.  Note that all Octave
+abbrevs start with a grave accent.
+</p>
+</dd>
+<dt><kbd>M-LFD</kbd></dt>
+<dd><p>Break line at point and insert continuation marker and alignment
+(<code>octave-split-line</code>).
+</p>
+</dd>
+<dt><kbd>M-TAB</kbd></dt>
+<dd><p>Perform completion on Octave symbol preceding point, comparing that
+symbol against Octave&rsquo;s reserved words and built-in variables
+(<code>octave-complete-symbol</code>).
+</p>
+</dd>
+<dt><kbd>M-C-a</kbd></dt>
+<dd><p>Move backward to the beginning of a function
+(<code>octave-beginning-of-defun</code>).
+With prefix argument <var>N</var>, do it that many times if <var>N</var> is
+positive; otherwise, move forward to the <var>N</var>-th following beginning
+of a function.
+</p>
+</dd>
+<dt><kbd>M-C-e</kbd></dt>
+<dd><p>Move forward to the end of a function (<code>octave-end-of-defun</code>).
+With prefix argument <var>N</var>, do it that many times if <var>N</var> is
+positive; otherwise, move back to the <var>N</var>-th preceding end of a
+function.
+</p>
+</dd>
+<dt><kbd>M-C-h</kbd></dt>
+<dd><p>Puts point at beginning and mark at the end of the current Octave
+function, i.e., the one containing point or following point
+(<code>octave-mark-defun</code>).
+</p>
+</dd>
+<dt><kbd>M-C-q</kbd></dt>
+<dd><p>Properly indents the Octave function which contains point
+(<code>octave-indent-defun</code>).
+</p>
+</dd>
+<dt><kbd>M-;</kbd></dt>
+<dd><p>If there is no comment already on this line, create a code-level comment
+(started by two comment characters) if the line is empty, or an in-line
+comment (started by one comment character) otherwise
+(<code>octave-indent-for-comment</code>).
+Point is left after the start of the comment which is properly aligned.
+</p>
+</dd>
+<dt><kbd>C-c ;</kbd></dt>
+<dd><p>Puts the comment character &lsquo;<samp>#</samp>&rsquo; (more precisely, the string value of
+<code>octave-comment-start</code>) at the beginning of every line in the
+region (<code>octave-comment-region</code>).  With just <kbd>C-u</kbd> prefix
+argument, uncomment each line in the region.  A numeric prefix argument
+<var>N</var> means use <var>N</var> comment characters.
+</p>
+</dd>
+<dt><kbd>C-c :</kbd></dt>
+<dd><p>Uncomments every line in the region (<code>octave-uncomment-region</code>).
+</p>
+</dd>
+<dt><kbd>C-c C-p</kbd></dt>
+<dd><p>Move one line of Octave code backward, skipping empty and comment lines
+(<code>octave-previous-code-line</code>).  With numeric prefix argument
+<var>N</var>, move that many code lines backward (forward if <var>N</var> is
+negative).
+</p>
+</dd>
+<dt><kbd>C-c C-n</kbd></dt>
+<dd><p>Move one line of Octave code forward, skipping empty and comment lines
+(<code>octave-next-code-line</code>).  With numeric prefix argument <var>N</var>,
+move that many code lines forward (backward if <var>N</var> is negative).
+</p>
+</dd>
+<dt><kbd>C-c C-a</kbd></dt>
+<dd><p>Move to the &lsquo;real&rsquo; beginning of the current line
+(<code>octave-beginning-of-line</code>).  If point is in an empty or comment
+line, simply go to its beginning; otherwise, move backwards to the
+beginning of the first code line which is not inside a continuation
+statement, i.e., which does not follow a code line ending in &lsquo;<samp>...</samp>&rsquo;
+or &lsquo;<samp>\</samp>&rsquo;, or is inside an open parenthesis list.
+</p>
+</dd>
+<dt><kbd>C-c C-e</kbd></dt>
+<dd><p>Move to the &lsquo;real&rsquo; end of the current line (<code>octave-end-of-line</code>).
+If point is in a code line, move forward to the end of the first Octave
+code line which does not end in &lsquo;<samp>...</samp>&rsquo; or &lsquo;<samp>\</samp>&rsquo; or is inside an
+open parenthesis list.  Otherwise, simply go to the end of the current
+line.
+</p>
+</dd>
+<dt><kbd>C-c M-C-n</kbd></dt>
+<dd><p>Move forward across one balanced begin-end block of Octave code
+(<code>octave-forward-block</code>).  With numeric prefix argument <var>N</var>,
+move forward across <var>n</var> such blocks (backward if <var>N</var> is
+negative).
+</p>
+</dd>
+<dt><kbd>C-c M-C-p</kbd></dt>
+<dd><p>Move back across one balanced begin-end block of Octave code
+(<code>octave-backward-block</code>).  With numeric prefix argument <var>N</var>,
+move backward across <var>N</var> such blocks (forward if <var>N</var> is
+negative).
+</p>
+</dd>
+<dt><kbd>C-c M-C-d</kbd></dt>
+<dd><p>Move forward down one begin-end block level of Octave code
+(<code>octave-down-block</code>).  With numeric prefix argument, do it that
+many times; a negative argument means move backward, but still go down
+one level.
+</p>
+</dd>
+<dt><kbd>C-c M-C-u</kbd></dt>
+<dd><p>Move backward out of one begin-end block level of Octave code
+(<code>octave-backward-up-block</code>).  With numeric prefix argument, do it
+that many times; a negative argument means move forward, but still to a
+less deep spot.
+</p>
+</dd>
+<dt><kbd>C-c M-C-h</kbd></dt>
+<dd><p>Put point at the beginning of this block, mark at the end
+(<code>octave-mark-block</code>).
+The block marked is the one that contains point or follows point.
+</p>
+</dd>
+<dt><kbd>C-c ]</kbd></dt>
+<dd><p>Close the current block on a separate line (<code>octave-close-block</code>).
+An error is signaled if no block to close is found.
+</p>
+</dd>
+<dt><kbd>C-c f</kbd></dt>
+<dd><p>Insert a function skeleton, prompting for the function&rsquo;s name, arguments
+and return values which have to be entered without parentheses
+(<code>octave-insert-defun</code>).
+</p>
+</dd>
+<dt><kbd>C-c C-h</kbd></dt>
+<dd><p>Search the function, operator and variable indices of all info files
+with documentation for Octave for entries (<code>octave-help</code>).  If used
+interactively, the entry is prompted for with completion.  If multiple
+matches are found, one can cycle through them using the standard
+&lsquo;<samp>,</samp>&rsquo; (<code>Info-index-next</code>) command of the Info reader.
+</p>
+<p>The variable <code>octave-help-files</code> is a list of files to search
+through and defaults to <code>'(&quot;octave&quot;)</code>.  If there is also an Octave
+Local Guide with corresponding info file, say, <samp>octave-LG</samp>, you can
+have <code>octave-help</code> search both files by
+</p><div class="lisp">
+<pre class="lisp">(setq octave-help-files '(&quot;octave&quot; &quot;octave-LG&quot;))
+</pre></div>
+<p>in one of your Emacs startup files.
+</p>
+</dd>
+</dl>
+
+<p>A common problem is that the <tt class="key">RET</tt> key does <em>not</em> indent the
+line to where the new text should go after inserting the newline.  This
+is because the standard Emacs convention is that <tt class="key">RET</tt> (aka
+<kbd>C-m</kbd>) just adds a newline, whereas <tt class="key">LFD</tt> (aka <kbd>C-j</kbd>) adds a
+newline and indents it.  This is particularly inconvenient for users with
+keyboards which do not have a special <tt class="key">LFD</tt> key at all; in such
+cases, it is typically more convenient to use <tt class="key">RET</tt> as the <tt class="key">LFD</tt>
+key (rather than typing <kbd>C-j</kbd>).
+</p>
+<p>You can make <tt class="key">RET</tt> do this by adding
+</p><div class="lisp">
+<pre class="lisp">(define-key octave-mode-map &quot;\C-m&quot;
+  'octave-reindent-then-newline-and-indent)
+</pre></div>
+<p>to one of your Emacs startup files.  Another, more generally applicable
+solution is
+</p><div class="lisp">
+<pre class="lisp">(defun RET-behaves-as-LFD ()
+  (let ((x (key-binding &quot;\C-j&quot;)))
+    (local-set-key &quot;\C-m&quot; x)))
+(add-hook 'octave-mode-hook 'RET-behaves-as-LFD)
+</pre></div>
+<p>(this works for all modes by adding to the startup hooks, without having
+to know the particular binding of <tt class="key">RET</tt> in that mode!).  Similar
+considerations apply for using <tt class="key">M-RET</tt> as <tt class="key">M-LFD</tt>.  As Barry
+A. Warsaw <a href="mailto:bwarsaw@cnri.reston.va.us">bwarsaw@cnri.reston.va.us</a> says in the documentation for his
+<code>cc-mode</code>, &ldquo;This is a very common question.  <code>:-)</code> If you want
+this to be the default behavior, don&rsquo;t lobby me, lobby RMS!&rdquo;
+</p>
+<p>The following variables can be used to customize Octave mode.
+</p>
+<dl compact="compact">
+<dt><code>octave-auto-indent</code></dt>
+<dd><p>Non-<code>nil</code> means auto-indent the current line after a semicolon or
+space.  Default is <code>nil</code>.
+</p>
+</dd>
+<dt><code>octave-auto-newline</code></dt>
+<dd><p>Non-<code>nil</code> means auto-insert a newline and indent after semicolons
+are typed.  The default value is <code>nil</code>.
+</p>
+</dd>
+<dt><code>octave-blink-matching-block</code></dt>
+<dd><p>Non-<code>nil</code> means show matching begin of block when inserting a space,
+newline or &lsquo;<samp>;</samp>&rsquo; after an else or end keyword.  Default is <code>t</code>.
+This is an extremely useful feature for automatically verifying that the
+keywords match&mdash;if they don&rsquo;t, an error message is displayed.
+</p>
+</dd>
+<dt><code>octave-block-offset</code></dt>
+<dd><p>Extra indentation applied to statements in block structures.
+Default is 2.
+</p>
+</dd>
+<dt><code>octave-continuation-offset</code></dt>
+<dd><p>Extra indentation applied to Octave continuation lines.
+Default is 4.
+</p>
+</dd>
+<dt><code>octave-continuation-string</code></dt>
+<dd><p>String used for Octave continuation lines.
+Normally &lsquo;<samp>\</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>octave-mode-startup-message</code></dt>
+<dd><p>If <code>t</code> (default), a startup message is displayed when Octave mode
+is called.
+</p>
+</dd>
+</dl>
+
+<p>If Font Lock mode is enabled, Octave mode will display
+</p>
+<ul>
+<li> strings in <code>font-lock-string-face</code>
+
+</li><li> comments in <code>font-lock-comment-face</code>
+
+</li><li> the Octave reserved words (such as all block keywords) and the text
+functions (such as &lsquo;<samp>cd</samp>&rsquo; or &lsquo;<samp>who</samp>&rsquo;) which are also reserved
+using <code>font-lock-keyword-face</code>
+
+</li><li> the built-in operators (&lsquo;<samp>&amp;&amp;</samp>&rsquo;, &lsquo;<samp>==</samp>&rsquo;, &hellip;) using
+<code>font-lock-reference-face</code>
+
+</li><li> and the function names in function declarations in
+<code>font-lock-function-name-face</code>.
+</li></ul>
+
+<p>There is also rudimentary support for Imenu (currently, function
+names can be indexed).
+</p>
+<a name="index-TAGS"></a>
+<a name="index-Emacs-TAGS-files"></a>
+<a name="index-octave_002dtags"></a>
+<p>You can generate TAGS files for Emacs from Octave <samp>.m</samp> files using
+the shell script <code>octave-tags</code> that is installed alongside your copy of
+Octave.
+</p>
+<p>Customization of Octave mode can be performed by modification of the
+variable <code>octave-mode-hook</code>.  If the value of this variable is
+non-<code>nil</code>, turning on Octave mode calls its value.
+</p>
+<p>If you discover a problem with Octave mode, you can conveniently send a
+bug report using <kbd>C-c C-b</kbd> (<code>octave-submit-bug-report</code>).  This
+automatically sets up a mail buffer with version information already
+added.  You just need to add a description of the problem, including a
+reproducible test case and send the message.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Running-Octave-from-Within-Emacs.html#Running-Octave-from-Within-Emacs" accesskey="n" rel="next">Running Octave from Within Emacs</a>, Previous: <a href="Installing-EOS.html#Installing-EOS" accesskey="p" rel="prev">Installing EOS</a>, Up: <a href="Emacs-Octave-Support.html#Emacs-Octave-Support" accesskey="u" rel="up">Emacs Octave Support</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Demonstration Functions</title>
+
+<meta name="description" content="GNU Octave: Demonstration Functions">
+<meta name="keywords" content="GNU Octave: Demonstration Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Test-and-Demo-Functions.html#Test-and-Demo-Functions" rel="up" title="Test and Demo Functions">
+<link href="Tips-and-Standards.html#Tips-and-Standards" rel="next" title="Tips and Standards">
+<link href="Test-Functions.html#Test-Functions" rel="prev" title="Test Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Demonstration-Functions"></a>
+<div class="header">
+<p>
+Previous: <a href="Test-Functions.html#Test-Functions" accesskey="p" rel="prev">Test Functions</a>, Up: <a href="Test-and-Demo-Functions.html#Test-and-Demo-Functions" accesskey="u" rel="up">Test and Demo Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Demonstration-Functions-1"></a>
+<h3 class="section">B.2 Demonstration Functions</h3>
+
+<a name="XREFdemo"></a><dl>
+<dt><a name="index-demo"></a>Command: <em></em> <strong>demo</strong> <em><var>name</var></em></dt>
+<dt><a name="index-demo-1"></a>Command: <em></em> <strong>demo</strong> <em><var>name</var> <var>n</var></em></dt>
+<dt><a name="index-demo-2"></a>Function File: <em></em> <strong>demo</strong> <em>(&quot;<var>name</var>&quot;)</em></dt>
+<dt><a name="index-demo-3"></a>Function File: <em></em> <strong>demo</strong> <em>(&quot;<var>name</var>&quot;, <var>n</var>)</em></dt>
+<dd>
+<p>Run example code block <var>n</var> associated with the function <var>name</var>.
+</p>
+<p>If <var>n</var> is not specified, all examples are run.
+</p>
+<p>The preferred location for example code blocks is embedded within the script
+m-file immediately following the code that it exercises.  Alternatively,
+the examples may be stored in a file with the same name but no extension
+located on Octave&rsquo;s load path.  To separate examples from regular script
+code all lines are prefixed by <code>%!</code>.  Each example must also be
+introduced by the keyword <code>&quot;demo&quot;</code> flush left to the prefix with no
+intervening spaces.  The remainder of the example can contain arbitrary
+Octave code.  For example:
+</p>
+<div class="example">
+<pre class="example">%!demo
+%! t = 0:0.01:2*pi;
+%! x = sin (t);
+%! plot (t, x);
+%! title (&quot;one cycle of a sine wave&quot;);
+%! #-------------------------------------------------
+%! # the figure window shows one cycle of a sine wave
+</pre></div>
+
+<p>Note that the code is displayed before it is executed so that a simple
+comment at the end suffices for labeling what is being shown.  For plots,
+labeling can also be done with <code>title</code> or <code>text</code>.  It is generally
+<strong>not</strong> necessary to use <code>disp</code> or <code>printf</code> within the demo.
+</p>
+<p>Demos are run in a stand-alone function environment with no access to
+external variables.  This means that every demo must have separate
+initialization code.  Alternatively, all demos can be combined into a single
+large demo with the code
+</p>
+<div class="example">
+<pre class="example">%! input (&quot;Press &lt;enter&gt; to continue: &quot;, &quot;s&quot;);
+</pre></div>
+
+<p>between the sections, but this usage is discouraged.  Other techniques to
+avoid multiple initialization blocks include using multiple plots with a new
+<code>figure</code> command between each plot, or using <code>subplot</code> to put
+multiple plots in the same window.
+</p>
+<p>Finally, because <code>demo</code> evaluates within a function context it is not
+possible to define new functions within the code.  Anonymous functions make
+a good substitute in most instances.  If function blocks <strong>must</strong> be
+used then the code <code>eval (example (&quot;function&quot;, n))</code> will allow Octave
+to see them.  This has its own problems, however, as <code>eval</code> only
+evaluates one line or statement at a time.  In this case the function
+declaration must be wrapped with <code>&quot;if 1 &lt;demo stuff&gt; endif&quot;</code> where
+<code>&quot;if&quot;</code> is on the same line as <code>&quot;demo&quot;</code>.  For example:
+</p>
+<div class="example">
+<pre class="example">%!demo if 1
+%!  function y = f(x)
+%!    y = x;
+%!  endfunction
+%!  f(3)
+%! endif
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFrundemos">rundemos</a>, <a href="#XREFexample">example</a>, <a href="Test-Functions.html#XREFtest">test</a>.
+</p></dd></dl>
+
+
+<a name="XREFexample"></a><dl>
+<dt><a name="index-example"></a>Command: <em></em> <strong>example</strong> <em><var>name</var></em></dt>
+<dt><a name="index-example-1"></a>Command: <em></em> <strong>example</strong> <em><var>name</var> <var>n</var></em></dt>
+<dt><a name="index-example-2"></a>Function File: <em></em> <strong>example</strong> <em>(&quot;<var>name</var>&quot;)</em></dt>
+<dt><a name="index-example-3"></a>Function File: <em></em> <strong>example</strong> <em>(&quot;<var>name</var>&quot;, <var>n</var>)</em></dt>
+<dt><a name="index-example-4"></a>Function File: <em>[<var>s</var>, <var>idx</var>] =</em> <strong>example</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Display the code for example <var>n</var> associated with the function
+<var>name</var>, but do not run it.
+</p>
+<p>If <var>n</var> is not specified, all examples are displayed.
+</p>
+<p>When called with output arguments, the examples are returned in the form of
+a string <var>s</var>, with <var>idx</var> indicating the ending position of the
+various examples.
+</p>
+<p>See <code>demo</code> for a complete explanation.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdemo">demo</a>, <a href="Test-Functions.html#XREFtest">test</a>.
+</p></dd></dl>
+
+
+<a name="XREFrundemos"></a><dl>
+<dt><a name="index-rundemos"></a>Function File: <em></em> <strong>rundemos</strong> <em>()</em></dt>
+<dt><a name="index-rundemos-1"></a>Function File: <em></em> <strong>rundemos</strong> <em>(<var>directory</var>)</em></dt>
+<dd><p>Execute built-in demos for all m-files in the specified <var>directory</var>.
+</p>
+<p>Demo blocks in any C++ source files (<samp>*.cc</samp>) will also be executed
+for use with dynamically linked oct-file functions.
+</p>
+<p>If no directory is specified, operate on all directories in Octave&rsquo;s search
+path for functions.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdemo">demo</a>, <a href="#XREFruntests">runtests</a>, <a href="Manipulating-the-Load-Path.html#XREFpath">path</a>.
+</p></dd></dl>
+
+
+<a name="XREFruntests"></a><dl>
+<dt><a name="index-runtests"></a>Function File: <em></em> <strong>runtests</strong> <em>()</em></dt>
+<dt><a name="index-runtests-1"></a>Function File: <em></em> <strong>runtests</strong> <em>(<var>directory</var>)</em></dt>
+<dd><p>Execute built-in tests for all m-files in the specified <var>directory</var>.
+</p>
+<p>Test blocks in any C++ source files (<samp>*.cc</samp>) will also be executed
+for use with dynamically linked oct-file functions.
+</p>
+<p>If no directory is specified, operate on all directories in Octave&rsquo;s search
+path for functions.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrundemos">rundemos</a>, <a href="Test-Functions.html#XREFtest">test</a>, <a href="Manipulating-the-Load-Path.html#XREFpath">path</a>.
+</p></dd></dl>
+
+
+<a name="XREFspeed"></a><dl>
+<dt><a name="index-speed"></a>Function File: <em></em> <strong>speed</strong> <em>(<var>f</var>, <var>init</var>, <var>max_n</var>, <var>f2</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-speed-1"></a>Function File: <em>[<var>order</var>, <var>n</var>, <var>T_f</var>, <var>T_f2</var>] =</em> <strong>speed</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Determine the execution time of an expression (<var>f</var>) for various input
+values (<var>n</var>).
+</p>
+<p>The <var>n</var> are log-spaced from 1 to <var>max_n</var>.  For each <var>n</var>, an
+initialization expression (<var>init</var>) is computed to create any data needed
+for the test.  If a second expression (<var>f2</var>) is given then the
+execution times of the two expressions are compared.  When called without
+output arguments the results are printed to stdout and displayed
+graphically.
+</p>
+<dl compact="compact">
+<dt><code><var>f</var></code></dt>
+<dd><p>The code expression to evaluate.
+</p>
+</dd>
+<dt><code><var>max_n</var></code></dt>
+<dd><p>The maximum test length to run.  The default value is 100.  Alternatively,
+use <code>[min_n, max_n]</code> or specify the <var>n</var> exactly with
+<code>[n1, n2, &hellip;, nk]</code>.
+</p>
+</dd>
+<dt><code><var>init</var></code></dt>
+<dd><p>Initialization expression for function argument values.  Use <var>k</var> for
+the test number and <var>n</var> for the size of the test.  This should compute
+values for all variables used by <var>f</var>.  Note that <var>init</var> will be
+evaluated first for <em>k = 0</em>, so things which are constant throughout
+the test series can be computed once.  The default value is
+<code><var>x</var> = randn (<var>n</var>, 1)</code>.
+</p>
+</dd>
+<dt><code><var>f2</var></code></dt>
+<dd><p>An alternative expression to evaluate, so that the speed of two
+expressions can be directly compared.  The default is <code>[]</code>.
+</p>
+</dd>
+<dt><code><var>tol</var></code></dt>
+<dd><p>Tolerance used to compare the results of expression <var>f</var> and expression
+<var>f2</var>.  If <var>tol</var> is positive, the tolerance is an absolute one.
+If <var>tol</var> is negative, the tolerance is a relative one.  The default is
+<code>eps</code>.  If <var>tol</var> is <code>Inf</code>, then no comparison will be made.
+</p>
+</dd>
+<dt><code><var>order</var></code></dt>
+<dd><p>The time complexity of the expression <em>O(a*n^p)</em>.  This is a
+structure with fields <code>a</code> and <code>p</code>.
+</p>
+</dd>
+<dt><code><var>n</var></code></dt>
+<dd><p>The values <var>n</var> for which the expression was calculated <strong>AND</strong>
+the execution time was greater than zero.
+</p>
+</dd>
+<dt><code><var>T_f</var></code></dt>
+<dd><p>The nonzero execution times recorded for the expression <var>f</var> in seconds.
+</p>
+</dd>
+<dt><code><var>T_f2</var></code></dt>
+<dd><p>The nonzero execution times recorded for the expression <var>f2</var> in seconds.
+If required, the mean time ratio is simply <code>mean (T_f ./ T_f2)</code>.
+</p>
+</dd>
+</dl>
+
+<p>The slope of the execution time graph shows the approximate power of the
+asymptotic running time <em>O(n^p)</em>.  This power is plotted for the
+region over which it is approximated (the latter half of the graph).  The
+estimated power is not very accurate, but should be sufficient to
+determine the general order of an algorithm.  It should indicate if, for
+example, the implementation is unexpectedly <em>O(n^2)</em> rather than
+<em>O(n)</em> because it extends a vector each time through the loop rather
+than pre-allocating storage.  In the current version of Octave, the
+following is not the expected <em>O(n)</em>.
+</p>
+<div class="example">
+<pre class="example">speed (&quot;for i = 1:n, y{i} = x(i); endfor&quot;, &quot;&quot;, [1000, 10000])
+</pre></div>
+
+<p>But it is if you preallocate the cell array <code>y</code>:
+</p>
+<div class="example">
+<pre class="example">speed (&quot;for i = 1:n, y{i} = x(i); endfor&quot;, ...
+       &quot;x = rand (n, 1); y = cell (size (x));&quot;, [1000, 10000])
+</pre></div>
+
+<p>An attempt is made to approximate the cost of individual operations, but
+it is wildly inaccurate.  You can improve the stability somewhat by doing
+more work for each <code>n</code>.  For example:
+</p>
+<div class="example">
+<pre class="example">speed (&quot;airy(x)&quot;, &quot;x = rand (n, 10)&quot;, [10000, 100000])
+</pre></div>
+
+<p>When comparing two different expressions (<var>f</var>, <var>f2</var>), the slope of
+the line on the speedup ratio graph should be larger than 1 if the new
+expression is faster.  Better algorithms have a shallow slope.  Generally,
+vectorizing an algorithm will not change the slope of the execution time
+graph, but will shift it relative to the original.  For example:
+</p>
+<div class="example">
+<pre class="example">speed (&quot;sum (x)&quot;, &quot;&quot;, [10000, 100000], ...
+       &quot;v = 0; for i = 1:length (x), v += x(i); endfor&quot;)
+</pre></div>
+
+<p>The following is a more complex example.  If there was an original version
+of <code>xcorr</code> using for loops and a second version using an FFT, then
+one could compare the run speed for various lags as follows, or for a fixed
+lag with varying vector lengths as follows:
+</p>
+<div class="example">
+<pre class="example">speed (&quot;xcorr (x, n)&quot;, &quot;x = rand (128, 1);&quot;, 100,
+       &quot;xcorr_orig (x, n)&quot;, -100*eps)
+speed (&quot;xcorr (x, 15)&quot;, &quot;x = rand (20+n, 1);&quot;, 100,
+       &quot;xcorr_orig (x, n)&quot;, -100*eps)
+</pre></div>
+
+<p>Assuming one of the two versions is in xcorr_orig, this would compare their
+speed and their output values.  Note that the FFT version is not exact, so
+one must specify an acceptable tolerance on the comparison <code>100*eps</code>.
+In this case, the comparison should be computed relatively, as
+<code>abs ((<var>x</var> - <var>y</var>) ./ <var>y</var>)</code> rather than absolutely as
+<code>abs (<var>x</var> - <var>y</var>)</code>.
+</p>
+<p>Type <kbd>example (&quot;speed&quot;)</kbd> to see some real examples or
+<kbd>demo (&quot;speed&quot;)</kbd> to run them.
+</p></dd></dl>
+
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Test-Functions.html#Test-Functions" accesskey="p" rel="prev">Test Functions</a>, Up: <a href="Test-and-Demo-Functions.html#Test-and-Demo-Functions" accesskey="u" rel="up">Test and Demo Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

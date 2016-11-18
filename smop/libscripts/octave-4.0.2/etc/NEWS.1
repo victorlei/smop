@@ -1,0 +1,1602 @@
+Summary of changes for version 1.1.1:
+------------------------------------
+
+  * New built-in variables, default_return_value and
+    define_all_return_values.
+
+    If define_all_return_values is set to "false", Octave does not do
+    anything special for return values that are left undefined, and
+    you will get an error message if you try to use them.  For
+    example, if the function
+
+      function [x, y] = f ()
+        y = 1;
+      endfunction
+
+    is called as
+
+      octave:13> [a, b] = f ()
+
+    Octave will print an error message for the attempt to assign an
+    undefined value to `a'.
+
+    This is incompatible with Matlab, which will define the return
+    variable `x' to be the empty matrix.  To get the Matlab-like
+    behavior, you can set the variable define_all_return_values to
+    "true" (the default is "false") and default_return_value to `[]'
+    (the default).  Then, any return values that remain undefined when
+    the function returns will be initialized to `[]'.
+
+    If the function is called without explicitly asking for an output,
+    it will succeed.  This behavior is compatible and unchanged from
+    previous versions of Octave.
+
+  * New built-in variable suppress_verbose_help_message.  If set to
+    "true", Octave will not add additional help information to the end
+    of the output from the help command and usage messages for
+    built-in commands.  The default value is "false".
+
+  * New built-in variable PS4 is used as the prefix of echoed input
+    (enabled with the --echo-input (-x) option).
+
+  * The function size() now accepts an optional second argument.
+
+  * Output from `save - ...' now goes through the pager.
+
+  * The break statement may also be used to exit a function, for
+    compatibility with Matlab.
+
+  * The directory tree for installing Octave is now closer to
+    conforming with the current GNU standards.
+
+  * More bug fixes.
+
+Summary of changes for version 1.1.0:
+------------------------------------
+
+  * Octave now requires g++ 2.6.3 or later.  This change is necessary
+    to make template instantiations cleaner, and to avoid having to
+    have special cases in the code for earlier versions of gcc.
+
+  * A new data structure type has been added.  The implementation uses
+    an associative array with indices limited to strings, but the
+    syntax is more like C-style structures.  here are some examples of
+    using it.
+
+    Elements of structures can be of any type, including structures:
+
+      octave:1> x.a = 1;
+      octave:2> x.b = [1, 2; 3, 4];
+      octave:3> x.c = "string";
+      octave:4> x
+      x =
+
+      <structure: a b c>
+
+      octave:5> x.a
+      x.a = 1
+      octave:6> x.b
+      x.b =
+
+        1  2
+        3  4
+
+      octave:7> x.c
+      x.c = string
+      octave:8> x.b.d = 3
+      x.b.d = 3
+      octave:9> x.b
+      x.b =
+
+      <structure: d>
+
+      octave:10> x.b.d
+      x.b.d = 3
+
+    Functions can return structures:
+
+      octave:1> a = rand (3) + rand (3) * I;
+      octave:2> function y = f (x)
+      > y.re = real (x);
+      > y.im = imag (x);
+      > endfunction
+      octave:3> f (a)
+      ans =
+
+      <structure: im re>
+
+      octave:4> ans.im
+      ans.im =
+
+        0.093411  0.229690  0.627585
+        0.415128  0.221706  0.850341
+        0.894990  0.343265  0.384018
+
+      octave:5> ans.re
+      ans.re =
+
+        0.56234  0.14797  0.26416
+        0.72120  0.62691  0.20910
+        0.89211  0.25175  0.21081
+
+    Return lists can include structure elements:
+
+      octave:1> [x.u, x.s, x.v] = svd ([1, 2; 3, 4])
+      x.u =
+
+        -0.40455  -0.91451
+        -0.91451   0.40455
+
+      x.s =
+
+        5.46499  0.00000
+        0.00000  0.36597
+
+      x.v =
+
+        -0.57605   0.81742
+        -0.81742  -0.57605
+
+      octave:8> x
+      x =
+
+      <structure: s u v>
+
+    This feature should be considered experimental, but it seems to
+    work OK.  Suggestions for ways to improve it are welcome.
+
+  * Octave now supports a limited form of exception handling modeled
+    after the unwind-protect form of Lisp:
+
+      unwind_protect
+        BODY
+      unwind_protect_cleanup
+        CLEANUP
+      end_unwind_protect
+
+    Where BODY and CLEANUP are both optional and may contain any
+    Octave expressions or commands.  The statements in CLEANUP are
+    guaranteed to be executed regardless of how control exits BODY.
+
+    This is useful to protect temporary changes to global variables
+    from possible errors.  For example, the following code will always
+    restore the original value of the built-in variable
+    do_fortran_indexing even if an error occurs while performing the
+    indexing operation.
+
+      save_do_fortran_indexing = do_fortran_indexing;
+      unwind_protect
+        do_fortran_indexing = "true";
+        elt = a (idx)
+      unwind_protect_cleanup
+        do_fortran_indexing = save_do_fortran_indexing;
+      end_unwind_protect
+
+    Without unwind_protect, the value of do_fortran_indexing would not
+    be restored if an error occurs while performing the indexing
+    operation because evaluation would stop at the point of the error
+    and the statement to restore the value would not be executed.
+
+  * Recursive directory searching has been implemented using Karl
+    Berry's kpathsea library.  Directories below path elements that
+    end in // are searched recursively for .m files.
+
+  * Octave now waits for additional input when a pair of parentheses
+    is `open' instead of giving an error.  This allows one to write
+    statements like this
+
+      if (big_long_variable_name == other_long_variable_name
+          || not_so_short_variable_name > 4
+          && y > x)
+        some (code, here);
+
+    without having to clutter up the if statement with continuation
+    characters.
+
+  * Continuation lines are now allowed in string constants and are
+    handled correctly inside matrix constants.
+
+  * Both `...{whitespace}\n' and `\{whitespace}\n' can be used to
+    introduce continuation lines, where {whitespace} may include
+    spaces, tabs and comments.
+
+  * The script directory has been split up by topic.
+
+  * Dynamic linking mostly works with dld.  The following limitations
+    are known problems:
+
+    -- Clearing dynamically linked functions doesn't work.
+
+    -- Dynamic linking only works with dld, which has not been ported
+       to very many systems yet.
+
+    -- Configuring with --enable-lite-kernel seems to mostly work to
+       make nonessential built-in functions dynamically loaded, but
+       there also seem to be some problems.  For example, fsolve seems
+       to always return info == 3.  This is difficult to debug since
+       GDB doesn't appear to allow breakpoints to be set inside
+       dynamically loaded functions.
+
+    -- Octave uses a lot of memory if the dynamically linked functions
+       are compiled with -g.  This appears to be a limitation with
+       dld, and can be avoided by not using -g to compile functions
+       that will be linked dynamically.
+
+  * fft2 and ifft2 are now built-in functions.
+
+  * The `&&' and `||' logical operators are now evaluated in a
+    short-circuit fashion and work differently than the element by
+    element operators `&' and `|'.  See the Octave manual for more
+    details.
+
+  * Expressions like 1./m are now parsed as 1 ./ m, not 1. / m.
+
+  * The replot command now takes the same arguments as gplot or
+    gsplot (except ranges, which cannot be respecified with replot
+    (yet)) so you can add additional lines to existing plots.
+
+  * The hold command has been implemented.
+
+  * New function `clearplot' clears the plot window.  The name `clg'
+    is aliased to `clearplot' for compatibility with Matlab.
+
+  * The commands `gplot clear' and `gsplot clear' are equivalent to
+    `clearplot'.  (Previously, `gplot clear' would evaluate `clear' as
+    an ordinary expression and clear all the visible variables.)
+
+  * The Matlab-style plotting commands have been improved.  They now
+    accept line-style arguments, multiple x-y pairs, and other plot
+    option flags.  For example,
+
+      plot (x, y, "@12", x, y2, x, y3, "4", x, y4, "+")
+
+    results in a plot with
+
+      y  plotted with points of type 2 ("+") and color 1 (red).
+      y2 plotted with lines.
+      y3 plotted with lines of color 4.
+      y4 plotted with points which are "+"s.
+
+    the help message for `plot' and `plot_opt' provide full
+    descriptions of the options.
+
+  * NaN is now dropped from plot data, and Inf is converted to a
+    very large value before calling gnuplot.
+
+  * Improved load and save commands:
+
+    -- The save and load commands can now read and write a new binary
+       file format.  Conversion to and from IEEE big and little endian
+       formats is handled automatically.  Conversion for other formats
+       has not yet been implemented.
+
+    -- The load command can now read Matlab .mat files, though it is
+       not yet able to read sparse matrices or handle conversion for
+       all data formats.
+
+    -- The save command can write Matlab .mat files.
+
+    -- The load command automatically determines the save format
+       (binary, ascii, or Matlab binary).
+
+    -- The default format for the save command is taken from the
+       built-in variable `default_save_format'.
+
+    -- The save and load commands now both accept a list of globbing
+       patterns so you can easily load a list of variables from a
+       file.
+
+    -- The load command now accepts the option -list, for listing the
+       variable names without actually loading the data.  With
+       -verbose, it prints a long listing.
+
+    -- The load command now accepts the option -float-binary, for
+       saving floating point data in binary files in single precision.
+
+  * who and whos now accept a list of globbing patterns so you can
+    limit the lists of variables and functions to those that match a
+    given set of patterns.
+
+  * New functions for manipulating polynomials
+
+      compan     -- companion matrix corresponding to polynomial coefficients
+      conv       -- convolve two vectors
+      deconv     -- deconvolve two vectors
+      roots      -- find the roots of a polynomial
+      poly       -- characteristic polynomial of a matrix
+      polyderiv  -- differentiate a polynomial
+      polyinteg  -- integrate a polynomial
+      polyreduce -- reduce a polynomial to minimum number of terms
+      polyval    -- evaluate a polynomial at a point
+      polyvalm   -- evaluate a polynomial in the matrix sense
+      residue    -- partial fraction expansion corresponding to the ratio
+                    of two polynomials
+
+  * New functions for manipulating sets
+
+      create_set   -- create a set of unique values
+      complement   -- find the complement of two sets
+      intersection -- find the intersection of two sets
+      union        -- find the union of two sets
+
+  * New elementary functions:
+
+      acot   acoth   acsc   acsch
+      asec   asech   cot    coth
+      csc    csch    log2   sec
+      sech
+
+  * New special functions:
+
+      beta   -- beta function
+      betai  -- incomplete beta function
+      gammai -- incomplete gamma function
+
+  * New image processing functions:
+
+      colormap  -- set and return current colormap
+      gray      -- set a gray colormap
+      gray2ind  -- image format conversion
+      image     -- display an image
+      imagesc   -- scale and display an image
+      imshow    -- display images
+      ind2gray  -- image format conversion
+      ind2rgb   -- image format conversion
+      loadimage -- load an image from a file
+      ntsc2rgb  -- image format conversion
+      ocean     -- set a color colormap
+      rgb2ind   -- image format conversion
+      rgb2ntsc  -- image format conversion
+      saveimage -- save an image to a file
+
+  * New time and date functions:
+
+      tic          -- set wall-clock timer
+      toc          -- get elapsed wall-clock time, since timer last set
+      etime        -- another way to get elapsed wall-clock time
+      cputime      -- get CPU time used since Octave started
+      is_leap_year -- is the given year a leap year?
+
+  * Other new functions:
+
+      bug_report -- submit a bug report to the bug-octave mailing list
+
+      toascii -- convert a string to a matrix of ASCII character codes
+
+      octave_tmp_file -- generate a unique temporary file name
+
+      undo_string_escapes -- replace special characters in a string by
+                             their backslash forms
+
+      is_struct -- determine whether something is a structure data type
+
+      feof   -- check EOF condition for a specified file
+      ferror -- check error state for a specified file
+      fread  -- read binary data from a file
+      fwrite -- write binary data to a file
+
+      file_in_path -- check to see if named file exists in given path
+
+      kbhit  -- get a single character from the terminal
+
+      axis   -- change plot ranges
+      hist   -- plot histograms
+
+      diary  -- save commands and output to a file
+
+      type   -- show the definition of a function
+      which  -- print the type of an identifier or the location of a
+                function file
+
+      isieee  -- Returns 1 if host uses IEEE floating point
+      realmax -- Returns largest floating point number
+      realmin -- Returns smallest floating point number
+
+      gcd     -- greatest common divisor
+      lcm     -- least common multiple
+
+      null    -- orthonormal basis of the null space of a matrix
+      orth    -- orthonormal basis of the range space of a matrix
+
+      fft2    -- two-dimensional fast fourier transform
+      ifft2   -- two-dimensional inverse fast fourier transform
+      filter  -- digital filter
+      fftfilt -- filter using fft
+      fftconv -- convolve to vectors using fft
+      sinc    -- returns sin(pi*x)/(pi*x)
+      freqz   -- compute the frequency response of a filter
+
+  * The meaning of nargin (== args.length ()) in built-in functions
+    has been changed to match the meaning of nargin in user-defined
+    functions.
+
+  * Variable return lists.  Octave now has a real mechanism for
+    handling functions that return an unspecified number of values,
+    so it is no longer necessary to place an upper bound on the number
+    of outputs that a function can produce.
+
+    Here is an example of a function that uses the new syntax to
+    produce n values:
+
+      function [...] = foo (n)
+        for i = 1:n
+          vr_val (i * x);
+        endfor
+      endfunction
+
+  * New keyword, all_va_args, that allows the entire list of va_args
+    to be passed to another function.  For example, given the functions
+
+      function f (...)
+        while (nargin--)
+          disp (va_arg ())
+        endwhile
+      endfunction
+      function g (...)
+        f ("begin", all_va_args, "end")
+      endfunction
+
+    the statement
+
+      g (1, 2, 3)
+
+    prints
+
+      begin
+      1
+      2
+      3
+      end
+
+    all_va_args may be used more than once, but can only be used
+    within functions that take a variable number of arguments.
+
+  * If given a second argument, svd now returns an economy-sized
+    decomposition, eliminating the unnecessary rows or columns of U or
+    V.
+
+  * The max and min functions correctly handle complex matrices in
+    which some columns contain real values only.
+
+  * The find function now handles 2 and 3 output arguments.
+
+  * The qr function now allows computation of QR with pivoting.
+
+  * hilb() is much faster for large matrices.
+
+  * computer() is now a built-in function.
+
+  * pinv() is now a built-in function.
+
+  * The output from the history command now goes through the pager.
+
+  * If a function is called without assigning the result, nargout is
+    now correctly set to 0.
+
+  * It is now possible to write functions that only set some return
+    values.  For example, calling the function
+
+      function [x, y, z] = f () x = 1; z = 2; endfunction
+
+    as
+
+      [a, b, c] = f ()
+
+    produces:
+
+      a = 1
+
+      b = [](0x0)
+
+      c = 2
+
+  * The shell_cmd function has been renamed to system (the name
+    shell_cmd remains for compatibility).  It now returns [output, status].
+
+  * New built-in variable `OCTAVE_VERSION'.  Also a new function,
+    version, for compatibility with Matlab.
+
+  * New built-in variable `automatic_replot'.  If it is "true", Octave
+    will automatically send a replot command to gnuplot each time the
+    plot changes.  Since this is fairly inefficient, the default value
+    is "false".
+
+  * New built-in variable `whitespace_in_literal_matrix' allows some
+    control over how Octave decides to convert spaces to commas in
+    matrix expressions like `[m (1)]'.
+
+    If the value of `whitespace_in_literal_matrix' is "ignore", Octave
+    will never insert a comma or a semicolon in a literal matrix list.
+    For example, the expression `[1 2]' will result in an error
+    instead of being treated the same as `[1, 2]', and the expression
+
+      [ 1, 2,
+        3, 4 ]
+
+    will result in the vector [1 2 3 4] instead of a matrix.
+
+    If the value of `whitespace_in_literal_matrix' is "traditional",
+    Octave will convert spaces to a comma between identifiers and `('.
+    For example, given the matrix
+
+      m = [3 2]
+
+    the expression
+
+      [m (1)]
+
+    will be parsed as
+
+      [m, (1)]
+
+    and will result in
+
+      [3 2 1]
+
+    and the expression
+
+      [ 1, 2,
+        3, 4 ]
+
+    will result in a matrix because the newline character is converted
+    to a semicolon (row separator) even though there is a comma at the
+    end of the first line (trailing commas or semicolons are ignored).
+    This is apparently how Matlab behaves.
+
+    Any other value for `whitespace_in_literal_matrix' results in
+    behavior that is the same as traditional, except that Octave does
+    not convert spaces to a comma between identifiers and `('.
+    For example, the expression
+
+      [m (1)]
+
+    will produce 3.  This is the way Octave has always behaved.
+
+  * Line numbers in error messages for functions defined in files and
+    for script files now correspond to the file line number, not the
+    number of lines after the function keyword appeared.
+
+  * Octave now extracts help from script files.  The comments must
+    come before any other statements in the file.
+
+  * In function files, the first block of comments in the file will
+    now be interpreted as the help text if it doesn't look like the
+    Octave copyright notice.  Otherwise, Octave extracts the first set
+    of comments after the function keyword.
+
+  * The function clock is more accurate on systems that have the
+    gettimeofday() function.
+
+  * The standard output stream is now automatically flushed before
+    reading from stdin with any of the *scanf() functions.
+
+  * Expanded reference card.
+
+  * The Octave distribution now includes a frequently asked questions
+    file, with answers.  Better answers and more questions (with
+    answers!) are welcome.
+
+  * New option --verbose.  If Octave is invoked with --verbose and not
+    --silent, a message is printed if an octaverc file is read while
+    Octave is starting.
+
+  * An improved configure script generated by Autoconf 2.0.
+
+  * Lots of bug fixes.
+
+Summary of changes for version 1.0:
+----------------------------------
+
+  * C-style I/O functions now handle files referenced by name or by
+    number more consistently.
+
+Summary of changes for version 0.83:
+-----------------------------------
+
+  * Loading global symbols should work now.
+
+  * Clearing the screen doesn't reprint the prompt unnecessarily.
+
+  * The operations <complex scalar> OP <real matrix> for OP == +, -,
+    *, or ./ no longer crash Octave.
+
+  * More portability and configuration fixes.
+
+Summary of changes for version 0.82:
+-----------------------------------
+
+  * Octave now comes with a reference card.
+
+  * The manual has been improved, but more work remains to be done.
+
+  * The atanh function now works for complex arguments.
+
+  * The asin, acos, acosh, and atanh functions now work properly when
+    given real-valued arguments that produce complex results.
+
+  * SEEK_SET, SEEK_CUR, and SEEK_END are now constants.
+
+  * The `using' qualifier now works with gplot and gsplot when the
+    data to plot is coming directly from a file.
+
+  * The strcmp function now works correctly for empty strings.
+
+  * Eliminated bogus parse error for M-files that don't end with `end'
+    or `endfunction'.
+
+  * For empty matrices with one nonzero dimension, the +, -, .*, and
+    ./ operators now correctly preserve the dimension.
+
+  * Octave no longer crashes if you type ^D at the beginning of a line
+    in the middle of defining a loop or if statement.
+
+  * On AIX systems, Back off on indexing DiagArray via Proxy class to
+    avoid gcc (or possibly AIX assembler?) bug.
+
+  * Various other bug and portability fixes.
+
+Summary of changes for version 0.81:
+-----------------------------------
+
+  * Octave no longer dumps core if you try to define a function in
+    your .octaverc file.
+
+  * Fixed bug in Array class that resulted in bogus off-diagonal
+    elements when computing eigenvalue and singular value
+    decompositions.
+
+  * Fixed bug that prevented lsode from working on the SPARCstation,
+    at least with some versions of Sun's f77.  This bug was introduced
+    in 0.80, when I changed LSODE to allow the user to abort the
+    integration from within the RHS function.
+
+  * Fixed bug that prevented global attribute of variables from being
+    saved with save(), and another that prevented load() from working
+    at all.
+
+Summary of changes for version 0.80:
+-----------------------------------
+
+  * I have started working on a manual for the C++ classes.  At this
+    point, it is little more than a list of function names.  If you
+    would like to volunteer to help work on this, please contact
+    maintainers@octave.org.
+
+  * The patterns accepted by the save and clear commands now work like
+    file name globbing patterns instead of regular expressions.  I
+    apologize for any inconvenience this change may cause, but file
+    name globbing seems like a more reasonable style of pattern
+    matching for this purpose.
+
+  * It is now possible to specify tolerances and other optional inputs
+    for dassl, fsolve, lsode, npsol, qpsol, and quad.  For each of
+    these functions, there is a corresponding function X_options,
+    which takes a keyword and value arguments.  If invoked without any
+    arguments, the X_options functions print a list of possible
+    keywords and current values.  For example,
+
+      npsol_options ()
+
+    prints a list of possible options with values, and
+
+      npsol_options ("major print level", 10)
+
+    sets the major print level to 10.
+
+    The keyword match is not case sensitive, and the keywords may be
+    abbreviated to the shortest unique match.  For example,
+
+      npsol_options ("ma p", 10)
+
+    is equivalent to the statement shown above.
+
+  * The new built-in variable save_precision can be used to set the
+    number of digits preserved by the ASCII save command.
+
+  * Assignment of [] now works in most cases to allow you to delete
+    rows or columns of matrices and vectors.  For example, given a
+    4x5 matrix A, the assignment
+
+      A (3, :) = []
+
+    deletes the third row of A, and the assignment
+
+      A (:, 1:2:5) = []
+
+    deletes the first, third, and fifth columns.
+
+  * Variable argument lists.  Octave now has a real mechanism for
+    handling functions that take an unspecified number of arguments,
+    so it is no longer necessary to place an upper bound on the number
+    of optional arguments that a function can accept.
+
+    Here is an example of a function that uses the new syntax to print
+    a header followed by an unspecified number of values:
+
+      function foo (heading, ...)
+        disp (heading);
+        va_start ();
+        while (--nargin)
+          disp (va_arg ());
+        endwhile
+      endfunction
+
+    Note that the argument list must contain at least one named
+    argument (this restriction may eventually be removed), and the
+    ellipsis must appear as the last element of the argument list.
+
+    Calling va_start() positions an internal pointer to the first
+    unnamed argument and allows you to cycle through the arguments
+    more than once.  It is not necessary to call va_start() if you
+    do not plan to cycle through the arguments more than once.
+
+  * Recursive functions should work now.
+
+  * The environment variable OCTAVE_PATH is now handled in the same
+    way as TeX handles TEXINPUTS.  If the path starts with `:', the
+    standard path is prepended to the value obtained from the
+    environment.  If it ends with `:' the standard path is appended to
+    the value obtained from the environment.
+
+  * New functions, from Kurt Hornik (hornik@neuro.tuwien.ac.at) and
+    the Department of Probability Theory and Statistics TU Wien,
+    Austria:
+
+     corrcoef    -- corrcoef (X, Y) is the correlation between the i-th
+                    variable in X and the j-th variable in Y
+                    corrcoef (X) is corrcoef (X, X)
+     cov         -- cov (X, Y) is the covariance between the i-th
+                    variable in X and the j-th variable in Y
+                    cov (X) is cov (X, X)
+     gls         -- generalized least squares estimation
+     kurtosis    -- kurtosis(x) = N^(-1) std(x)^(-4) SUM_i (x(i)-mean(x))^4 - 3
+                    If x is a matrix, return the row vector containing
+                    the kurtosis of each column
+     mahalanobis -- returns Mahalanobis' D-square distance between the
+                    multivariate samples X and Y, which must have the
+                    same number of components (columns), but may have
+                    a different number of observations (rows)
+     ols         -- ordinary least squares estimation
+     pinv        -- returns the pseudoinverse of X; singular values
+                    less than tol are ignored
+     skewness    -- skewness (x) = N^(-1) std(x)^(-3) SUM_i (x(i)-mean(x))^3
+                    if x is a matrix, return the row vector containing
+                    the skewness of each column
+
+  * Errors in user-supplied functions called from dassl, fsolve,
+    lsode, npsol, and quad are handled more gracefully.
+
+  * Programming errors in the use of the C++ classes within Octave
+    should no longer cause Octave to abort.  Instead, Octave's error
+    handler function is called and execution continues as best as is
+    possible.  This should result in eventually returning control to
+    the top-level Octave prompt.  (It would be nice to have a real
+    exception handling mechanism...)
+
+  * A number of memory leaks have been eliminated.  Thanks to
+    Fong Kin Fui <fui@ee.nus.sg> for reporting them.
+
+  * The C++ matrix classes are now derived from a generic
+    template-based array class.
+
+  * The readline function operate-and-get-next (from bash) is now
+    available and bound to C-O by default.
+
+  * Octave now uses the version of readline currently distributed with
+    bash-1.13.  On some systems, interactive invocations of Octave
+    will now blink the cursor to show matching parens.
+
+  * By default, include files are now installed in
+    $prefix/include/octave instead of $prefix/include.
+
+  * Octave now uses a config.h file instead of putting all defines on
+    the compiler command line.
+
+Summary of changes for version 0.79:
+-----------------------------------
+
+  * New control systems functions:
+
+     dgram -- Returns the discrete controllability and observability gramian.
+     dlqr  -- Discrete linear quadratic regulator design.
+     dlqe  -- Discrete linear quadratic estimator (Kalman Filter) design.
+     c2d   -- Convert continuous system description to discrete time
+              description assuming zero-order hold and given sample time.
+
+  * The max (min) functions can now return the index of the max (min)
+    value as a second return value.
+
+Summary of changes for version 0.78:
+-----------------------------------
+
+  * Octave's handling of global variables has been completely
+    rewritten.  To access global variables inside a function, you must
+    now declare them to be global within the function body.  Likewise,
+    if you do not declare a variable as global at the command line,
+    you will not have access to it within a function, even if it is
+    declared global there.  For example, given the function
+
+      function f ()
+        global x = 1;
+        y = 2;
+      endfunction
+
+    the global variable `x' is not visible at the top level until the
+    command
+
+      octave:13> global x
+
+    has been evaluated, and the variable `y' remains local to the
+    function f() even if it is declared global at the top level.
+
+    Clearing a global variable at the top level will remove its global
+    scope and leave it undefined.  For example,
+
+      octave:1> function f ()   # Define a function that accesses
+      >  global x;              #   the global variable `x'.
+      >  x
+      > endfunction
+      octave:2> global x = 1    # Give the variable `x' a value.
+      octave:3> f ()            # Evaluating the function accesses the
+      x = 1                     #   global `x'.
+      octave:4> clear x         # Remove `x' from global scope, clear value.
+      octave:5> x = 2           # Define new local `x' at the top level
+      x = 2
+      octave:6> f               # The global `x' is no longer defined.
+      error: `x' undefined near line 1 column 25
+      error: evaluating expression near line 1, column 25
+      error: called from `f'
+      octave:7> x               # But the local one is.
+      x = 2
+
+  * The new function, `is_global (string)' returns 1 if the variable
+    named by string is globally visible.  Otherwise, returns 0.
+
+  * The implementation of `who' has changed.  It now accepts the
+    following options:
+
+      -b -builtins   -- display info for built-in variables and functions
+      -f -functions  -- display info for currently compiled functions
+      -v -variables  -- display info for user variables
+      -l -long       -- display long info
+
+    The long output looks like this:
+
+      octave:5> who -l
+
+      *** currently compiled functions:
+
+      prot  type               rows   cols  name
+      ====  ====               ====   ====  ====
+       wd   user function         -      -  f
+
+      *** local user variables:
+
+      prot  type               rows   cols  name
+      ====  ====               ====   ====  ====
+       wd   real scalar           1      1  y
+
+      *** globally visible user variables:
+
+      prot  type               rows   cols  name
+      ====  ====               ====   ====  ====
+       wd   complex matrix       13     13  x
+
+    where the first character of the `protection' field is `w' if the
+    symbol can be redefined, and `-' if it has read-only access.  The
+    second character may be `d' if the symbol can be deleted, or `-'
+    if the symbol cannot be cleared.
+
+  * The new built-in variable ignore_function_time_stamp can be used
+    to prevent Octave from calling stat() each time it looks up
+    functions defined in M-files.  If set to "system", Octave will not
+    automatically recompile M-files in subdirectories of
+    $OCTAVE_HOME/lib/VERSION if they have changed since they were last
+    compiled, but will recompile other M-files in the LOADPATH if they
+    change.  If set to "all", Octave will not recompile any M-files
+    unless their definitions are removed with clear.  For any other
+    value of ignore_function_time_stamp, Octave will always check to
+    see if functions defined in M-files need to recompiled.  The
+    default value of ignore_function_time_stamp is "system".
+
+  * The new built-in variable EDITOR can be used to specify the editor
+    for the edit_history command.  It is set to the value of the
+    environment variable EDITOR, or `vi' if EDITOR is not set, or is
+    empty.
+
+  * There is a new built-in variable, INFO_FILE, which is used as the
+    location of the info file.  Its initial value is
+    $OCTAVE_HOME/info/octave.info, so `help -i' should now work
+    provided that OCTAVE_HOME is set correctly, even if Octave is
+    installed in a directory different from that specified at compile
+    time.
+
+  * There is a new command line option, --info-file FILE, that may be
+    used to set Octave's idea of the location of the info file.  It
+    will override any value of OCTAVE_INFO_FILE found in the
+    environment, but not any INFO_FILE="filename" commands found in
+    the system or user startup files.
+
+  * Octave's Info reader will now recognize gzipped files that have
+    names ending in `.gz'.
+
+  * The save command now accepts regular expressions as arguments.
+    Note that these patterns are regular expressions, and do not work
+    like filename globbing.  For example, given the variables `a',
+    `aa', and `a1', the command `save a*' saves `a' and `aa' but not
+    `a1'.  To match all variables beginning with `a', you must use an
+    expression like `a.*' (match all sequences beginning with `a'
+    followed by zero or more characters).
+
+  * Line and column information is included in more error messages.
+
+Summary of changes for version 0.77:
+-----------------------------------
+
+  * Improved help.  The command `help -i topic' now uses the GNU Info
+    browser to display help for the given topic directly from the
+    Texinfo documentation.
+
+  * New function: chol -- Cholesky factorization.
+
+Summary of changes for version 0.76:
+-----------------------------------
+
+  * Better run-time error messages.  Many now include line and column
+    information indicating where the error occurred.  Octave will also
+    print a traceback for errors occurring inside functions. If you
+    find error messages that could use improvement, or errors that
+    Octave fails to catch, please send a bug report to
+    bug@octave.org.
+
+  * If gplot (or gsplot) is given a string to plot, and the string
+    does not name a file, Octave will pass the string along to gnuplot
+    directly.  This allows commands like
+
+      gplot "sin (x)" w l, data w p
+
+    to work (assuming that data is a variable containing a matrix of
+    values).
+
+  * Long options (--help, --version, etc.) are supported.
+
+Summary of changes for version 0.75:
+-----------------------------------
+
+  * The documentation is much more complete, but still could use a lot
+    of work.
+
+  * The history function now prints line numbers by default.  The
+    command `history -q' will  omit them.
+
+  * The clear function now accepts regular expressions.
+
+  * If gplot (or gsplot) is given a string to plot, and the string
+    names a file, Octave attempts to plot the contents of the file.
+
+  * New functions:
+
+    history:
+
+      run_history  -- run commands from the history list.
+      edit_history -- edit commands from the history list with your
+                      favorite editor.
+
+    linear algebra:
+
+      balance         -- Balancing for algebraic and generalized
+                         eigenvalue problems.
+      givens          -- Givens rotation.
+      is_square       -- Check to see if a matrix is square.
+      qzhess          -- QZ decomposition of the matrix pencil (a - lambda b).
+      qzval           -- Generalized eigenvalues for real matrices.
+      syl             -- Sylvester equation solver.
+
+    control systems:
+
+      is_symmetric    -- Check to see if a matrix is symmetric.
+      abcddim         -- Check dimensions of linear dynamic system [A,B,C,D].
+      is_controllable -- Check to see if [A,B,C,D] is controllable.
+      is_observable   -- Check to see if [A,B,C,D] is observable.
+      are             -- Solve algebraic Ricatti equation.
+      dare            -- Solve discrete-time algebraic Ricatti equation.
+      lqe             -- Kalman filter design for continuous linear system.
+      lqr             -- Linear Quadratic Regulator design.
+      lyap            -- Solve Lyapunov equation.
+      dlyap           -- Solve discrete Lyapunov equation.
+      tzero           -- Compute the transmission zeros of [A,B,C,D].
+
+Summary of changes for version 0.74:
+-----------------------------------
+
+  * Formal parameters to functions are now always considered to be
+    local variables, so things like
+
+      global x = 0
+      global y = 0
+      function y = f (x) x = 1; y = x; end
+      f (x)
+
+    result in the function returning 1, with the global values of x
+    and y unchanged.
+
+  * Multiple assignment expressions are now allowed to take indices,
+    so things like
+
+      octave:13> [a([1,2],[3,4]), b([5,6],[7,8])] = lu ([1,2;3,4])
+
+    will work correctly.
+
+Summary of changes for version 0.73:
+-----------------------------------
+
+  * Saving and loading global variables works correctly now.
+
+  * The save command no longer saves built-in variables.
+
+  * Global variables are more reliable.
+
+  * Matrices may now have one or both dimensions zero, so that
+    operations on empty matrices are now handled more consistently.
+
+    By default, dimensions of the empty matrix are now printed along
+    with the empty matrix symbol, `[]'.  For example:
+
+      octave:13> zeros (3, 0)
+      ans =
+
+      [](3x0)
+
+    The new variable `print_empty_dimensions' controls this behavior.
+
+    See also Carl de Boor, An Empty Exercise, SIGNUM, Volume 25,
+    pages 2--6, 1990, or C. N. Nett and W. M. Haddad, A
+    System-Theoretic Appropriate Realization of the Empty Matrix
+    Concept, IEEE Transactions on Automatic Control, Volume 38,
+    Number 5, May 1993.
+
+  * The right and left division operators `/' and `\' will now find a
+    minimum norm solution if the system is not square, or if the
+    coefficient matrix is singular.
+
+  * New functions:
+
+      hess   -- Hessenberg decomposition
+      schur  -- Ordered Schur factorization
+      perror -- print error messages corresponding to error codes
+                returned from the functions fsolve, npsol, and qpsol
+                (with others to possibly be added later).
+
+  * Octave now prints a warning if it finds anything other than
+    whitespace or comments after the final `end' or `endfunction'
+    statement.
+
+  * The bodies of functions, and the for, while, and if commands are
+    now allowed to be empty.
+
+  * Support for Gill and Murray's QPSOL has been added.  Like NPSOL,
+    QPSOL is not freely redistributable either, so you must obtain
+    your own copy to be able to use this feature.  More information
+    about where to find QPSOL and NPSOL are in the file README.NLP.
+
+Summary of changes for version 0.72:
+-----------------------------------
+
+  * For numeric output, columns are now lined up on the decimal point.
+    (This requires libg++-2.3.1 or later to work correctly).
+
+  * If octave is running interactively and the output intended for the
+    screen is longer than one page and a pager is available, it is
+    sent to the pager through a pipe.  You may specify the program to
+    use as the pager by setting the variable PAGER.  PAGER may also
+    specify a command pipeline.
+
+  * Spaces are not always significant inside square brackets now, so
+    commands like
+
+      [ linspace (1, 2) ]
+
+    will work.  However, some possible sources of confusion remain
+    because Octave tries (possibly too hard) to determine exactly what
+    operation is intended from the context surrounding an operator.
+    For example:
+
+    -- In the command
+
+         [ 1 - 1 ]
+
+       the `-' is treated as a binary operator and the result is the
+       scalar 0, but in the command
+
+         [ 1 -1 ]
+
+       the `-' is treated as a unary operator and the result is the
+       vector [ 1 -1 ].
+
+    -- In the command
+
+         a = 1; [ 1 a' ]
+
+       the single quote character `'' is treated as a transpose operator
+       and the result is the vector [ 1 1 ], but in the command
+
+         a = 1; [ 1 a ' ]
+
+       an error message indicating an unterminated string constant is
+       printed.
+
+  * Assignments are just expressions now, so they are valid anywhere
+    other expressions are.  This means that things like
+
+      if (a = n < m) ... endif
+
+    are valid.  This is parsed as:  compare `n < m', assign the result
+    to the variable `a', and use it as the test expression in the if
+    statement.
+
+    To help avoid errors where `=' has been used but `==' was
+    intended, Octave issues a warning suggesting parenthesis around
+    assignments used as truth values.  You can suppress this warning
+    by adding parenthesis, or by setting the value of the new built-in
+    variable `warn_assign_as_truth_value' to 'false' (the default
+    value is 'true').
+
+    This is also true for multiple assignments, so expressions like
+
+      [a, b, c] = [u, s, v] = expression
+
+    are now possible.  If the expression is a function, nargout is set
+    to the number of arguments for the right-most assignment.  The
+    other assignments need not contain the same number of elements.
+    Extra left hand side variables in an assignment become undefined.
+
+  * The default line style for plots is now `lines' instead of
+    `points'.  To change it, use the `set data style STYLE' command.
+
+  * New file handling and I/O functions:
+
+      fopen    -- open a file for reading or writing
+      fclose   -- close a file
+      fflush   -- flush output to a file
+      fgets    -- read characters from a file
+      frewind  -- set file position to the beginning of a file
+      fseek    -- set file position
+      ftell    -- tell file position
+      freport  -- print a report for all open files
+      fscanf   -- read from a file
+      sscanf   -- read from a string
+      scanf    -- read from the standard input
+
+  * New built-in variables for file and I/O functions:
+
+      stdin    -- file number corresponding to the standard input stream.
+      stdout   -- file number corresponding to the standard output stream.
+      stderr   -- file number corresponding to the standard error stream.
+
+    The following may be used as the final (optional) argument for
+    fseek:
+
+      SEEK_SET -- set position relative to the beginning of the file.
+      SEEK_CUR -- set position relative to the current position.
+      SEEK_END -- set position relative to the end of the file.
+
+  * New function: setstr -- convert vectors or scalars to strings
+    (doesn't work for matrices yet).
+
+  * If possible, computer now prints the system type instead of
+    always printing `Hi Dave, I'm a HAL-9000'.
+
+  * Octave now properly saves and restores its internal state
+    correctly in more places.  Interrupting Octave while it is
+    executing a script file no longer causes it to exit.
+
+  * Octave now does tilde expansion on each element of the LOADPATH.
+
+  * A number of memory leaks have been plugged.
+
+  * Dependencies for C++ source files are now generated automatically
+    by g++.
+
+  * There is a new command line option, -p PATH, that may be used to
+    set Octave's loadpath from the command line.  It will override any
+    value of OCTAVE_PATH found in the environment, but not any
+    LOADPATH="path" commands found in the system or user startup files.
+
+  * It is now possible to override Octave's default idea of the
+    location of the system-wide startup file (usually stored in
+    $(prefix)/lib/octave/octaverc) using the environment variable
+    OCTAVE_HOME.  If OCTAVE_HOME has a value, Octave will look for
+    octaverc and its M-files in the directory $OCTAVE_HOME/lib/octave.
+
+    This allows people who are using binary distributions (as is
+    common with systems like Linux) to install the real octave binary
+    in any directory (using a name like octave.bin) and then install
+    a simple script like this
+
+      #!/bin/sh
+      OCTAVE_HOME=/foo/bar/baz
+      export OCTAVE_HOME
+      exec octave.bin
+
+    to be invoked as octave.
+
+
+Summary of changes for version 0.71:
+-----------------------------------
+
+  * Much improved plotting facility.  With this release, Octave does
+    not require a specially modified version of gnuplot, so gnuplot
+    sources are no longer distributed with Octave.  For a more
+    detailed description of the new plotting features, see the file
+    PLOTTING.
+
+  * New plotting commands:
+
+      plot            -- 2D plots
+      semilogx        -- 2D semilog plot with logscale on the x axis
+      semilogy        -- 2D semilog plot with logscale on the y axis
+      loglog          -- 2D log-log plot
+      mesh            -- 3D mesh plot
+      meshdom         -- create matrices for 3D plotting from two vectors
+      contour         -- contour plots of 3D data
+      bar             -- create bar graphs
+      stairs          -- create stairstep plots
+      polar           -- 2D plots from theta-R data
+      grid            -- turn plot grid lines on or off
+      xlabel, ylabel  -- place labels on the x and y axes of 2D plots
+      sombrero        -- demonstrate 3D plotting
+      gplot           -- 2D plot command with gnuplot-like syntax
+      gsplot          -- 3D plot command with gnuplot-like syntax
+      set             -- set plot options with gnuplot syntax
+      show            -- show plot options with gnuplot syntax
+      closeplot       -- close stream to gnuplot process
+      purge_tmp_files -- delete temporary files created by plot command
+
+  * Other new commands:
+
+      ls, dir         -- print a directory listing
+      shell_cmd       -- execute shell commands
+      keyboard        -- get input from keyboard, useful for debugging
+      menu            -- display a menu of options and ask for input
+      fft             -- fast fourier transform
+      ifft            -- inverse fast fourier transform
+
+  * Strings may be enclosed in either single or double quote
+    characters.  Double quote characters are not special within single
+    quote strings, and single quotes are not special within double
+    quote strings.
+
+  * Command name completion now works for M-file names too.
+
+  * Better help and usage messages for many functions.
+
+  * Help is now available for functions defined in M-files.  The first
+    block of comments is taken as the text of the help message.
+
+  * Numerous changes in preparation to support dynamic loading of
+    object files with dld.
+
+  * Bug fixes to make solving DAEs with dassl actually work.
+
+  * The command `save file' now saves all variables in the named file.
+
+  * If do_fortran_indexing is 'true', indexing a scalar with
+    [1,1,1,...] (n times) replicates its value n times.  The
+    orientation of the resulting vector depends on the value of
+    prefer_column_vectors.
+
+  * Things like [[1,2][3,4]] no longer cause core dumps, and invalid
+    input like [1,2;3,4,[5,6]] now produces a diagnostic message.
+
+  * The cd, save, and load commands now do tilde expansion.
+
+  * It's now possible to clear global variables and functions by name.
+
+  * Use of clear inside functions is now a parse error.
+
+Summary of changes for version 0.70:
+-----------------------------------
+
+  * Better parse error diagnostics.  For interactive input, you get
+    messages like
+
+      octave:1> a = 3 + * 4;
+
+      parse error:
+
+          a = 3 + * 4;
+                  ^
+
+    and for script files, the message includes the file name and input
+    line number:
+
+      octave:1> foo
+
+      parse error near line 4 of file foo.m:
+
+          a = 3 + * 4;
+                  ^
+
+  * New built-in variable PS2 which is used as the secondary prompt.
+    The default value is '> '.
+
+  * New file, octave-mode.el, for editing Octave code with GNU Emacs.
+    This is a modified version of Matthew R. Wette's matlab-mode.el.
+
+  * Better support for missing math functions.
+
+  * User preferences are now cached in a global struct so we don't
+    have to do a symbol table lookup each time we need to know what
+    they are.  This should mean slightly improved performance for
+    evaluating expressions.
+
+Summary of changes for version 0.69:
+-----------------------------------
+
+  * Multiple assignments are now possible, so statements like
+
+      a = b = c = 3;
+      a = b = c = [1,2;3,4];
+
+    or
+
+      c = (a = (b = 2) * 3 + 4) * 5
+
+    are legal, as are things that have even more bizarre effects, like
+
+      a(4:6,4:6) = b(2:3,2:3) = [1,2;3,4];
+
+    (try it).
+
+  * Improved parsing of strings (but they still don't work as matrix
+    elements).
+
+  * An M-file may now either define a function or be a list of
+    commands to execute.
+
+  * Better detection and conditional compilation of IEEE functions
+    isinf, finite, and isnan.
+
+  * Replacements for acosh, asinh, atanh, and gamma from the BSD math
+    library for those systems that don't have them.
+
+Summary of changes for version 0.68:
+-----------------------------------
+
+  * New functions:
+
+      eval  -- evaluate a string as a sequence of Octave commands.
+      input -- print a prompt and get user input.
+
+Summary of changes for version 0.67:
+-----------------------------------
+
+  * New functions:
+
+      find -- return the indices of nonzero elements.
+
+  * Zero-one style indexing now works.  For example,
+
+      a = [1,2,3,4];
+      b = a([1,0,0,1])
+
+    sets b to the first and fourth elements of a.
+
+    Zero-one style indexing also works for indexing the left hand side
+    of an assignment.  For example,
+
+      a = rand (1,2;3,4);
+      a([0,1],:) = [-1,-2]
+
+    sets the second row of a to [-1 -2]
+
+    The behavior for the ambiguous case
+
+      a = [1,2,3,4];
+      b = a([1,1,1,1]);
+
+    is controlled by the new global variable `prefer_zero_one_indexing'.
+    If this variable is equal to 'true', b will be set to [1 2 3 4].
+    If it is false, b will be set to [1 1 1 1].  The default value is
+    'false'.
+
+  * Using the new global variable `propagate_empty_matrices', it is
+    possible to have unary and binary operations on empty matrices
+    return an empty matrix.  The default value of this variable is
+    'warn', so that empty matrices are propagated but you get a
+    warning.  Some functions, like eig and svd have also been changed
+    to handle this.
+
+  * Empty matrices can be used in conditionals, but they always
+    evaluate to `false'.  With propagate_empty_matrices = 'true', both
+    of the following expressions print 0:
+
+      if  [], 1, else 0, end
+      if ~[], 1, else 0, end
+
+  * Octave no longer converts input like `3.2 i' or `3 I' to complex
+    constants directly because that causes problems inside square
+    brackets, where spaces are important.  This abbreviated notation
+    *does* work if there isn't a space between the number and the i,
+    I, j, or J.
+
+Summary of changes for version 0.66:
+-----------------------------------
+
+  * Logical unary not operator (~ or !) now works for complex.
+
+  * Left division works.
+
+  * Right and left element by element division should work correctly
+    now.
+
+  * Numbers like .3e+2 are no longer errors.
+
+  * Indexing a matrix with a complex value doesn't cause a core dump.
+
+  * The min and max functions should work correctly for two arguments.
+
+  * Improved (I hope!) configuration checks.
+
+  * Octave is now installed as octave-M.N, where M and N are version
+    numbers, and octave is a link to that file.  This makes it
+    possible to have more than one version of the interpreter installed.
+
+Summary of changes for version 0.63:
+-----------------------------------
+
+  * The reshape function works again.
+
+  * Octave now converts input like `3.2i' or `3 I' or `2.3e5 j' to be
+    complex constants directly, rather than requiring an expression
+    like `3.3 * i' to be evaluated.
+
+Summary of changes for version 0.61:
+-----------------------------------
+
+  * Octave has been successfully compiled using gcc 2.3.3 and libg++ 2.3.
+    on a 486 system running Linux.
+
+  * The win_texas_lotto function is now called texas_lotto (it's a
+    script file, and win_texas_lotto.m is too long for some Linux and
+    System V systems).
+
+Summary of changes for version 0.57:
+------------------------------------
+
+  * The C-like formatted print functions printf, fprintf, and sprintf
+    finally work.
+
+Summary of changes for version 0.56:
+------------------------------------
+
+  * By default, octave prints a short disclaimer when it starts.
+    (You can suppress it by invoking octave with -q).
+
+  * You can keep octave from reading your ~/.octaverc and .octaverc
+    files by invoking it with -f.
+
+  * When returning two values, eig now returns [v, d] instead of
+    [lambda, v], where d is a diagonal matrix made from lambda.
+
+  * The win_texas_lotto function now produces a sorted list.
+
+  * New functions:
+
+      expm -- matrix exponential.
+      logm -- matrix logarithm.
+
+Summary of changes for version 0.55:
+------------------------------------
+
+  * The following (C-style) backslash escape sequences work in quoted
+    strings (useful(?) with printf()):
+
+      \a  bell         \r  carriage return
+      \b  backspace    \t  horizontal tab
+      \f  formfeed     \v  vertical tab
+      \n  newline      \\  backslash
+
+  * Use of `...' at the end of a line will allow a statement to
+    continue over more than one line.
+
+  * The names `inf' and `nan' are now aliases for `Inf' and `NaN',
+    respectively.
+
+  * New functions:
+
+      casesen -- print a warning if the luser tries to turn off case
+                 sensitivity.
+      median  -- find median value.
+      norm    -- compute the norm of a matrix.
+      sort    -- sort columns.
+
+  * New variable, `silent_functions'.  If silent_functions == 'true',
+    the results of expressions are not printed even if they are not
+    followed by a semicolon.  The disp() and printf() functions still
+    result in output.  The default value for this variable is 'false'.
+
+  * New variable `return_last_value_computed'.  If it is 'true',
+    functions defined in script files return the last value computed
+    if a return value has not been explicitly declared.  The default
+    value for this variable is 'false'.
+
+Summary of changes for version 0.52:
+------------------------------------
+
+  * Name completion works for function and variable names currently in
+    the symbol tables.  Coming soon: completion for names of functions
+    defined in script files but not yet compiled.
+
+  * The initial value of do_fortran_indexing is now false, and the
+    initial value of prefer_column_vectors is now true.  Swap the
+    values of these variables if you want behavior that is more like
+    Matlab.
+
+  * All script files check the number of input arguments before doing
+    much real work.
+
+  * The identifiers `i' and `j' are now also names for sqrt(-1).
+    These symbols may be used for other purposes, but their original
+    definition will reappear if they are cleared.
+
+  * The symbol tables are now implemented with hash tables for faster
+    searching.
+
+  * A small amount of help is now available for most built-in
+    operators, keywords and functions.  Coming soon: help for script
+    files.
+
+  * Without any arguments, the help command now lists all known
+    built-in operators, keywords and functions.
+
+  * Generic parse errors are now signalled by `Eh, what's up doc?',
+    which is closer to what Bugs actually says.
+
+  * The who command now only prints variable names by default.
+    Use the -fcn (or -fcns, or -functions) switch to print the names of
+    built-in or currently compiled functions.
+
+Summary of changes for version 0.51:
+------------------------------------
+
+  * Major overhaul of array indexing.
+
+  * The colloc function actually works now.
+
+Summary of changes for version 0.50:
+------------------------------------
+
+  * The lsode and dassl functions now return the states only,
+    instead of the time and the states, so you must keep track of
+    the corresponding times (this is easy though, because you have
+    to specify a vector of desired output times anyway).
+
+  * Solution of NLPs with NPSOL now works on the SPARC.
+
+  * New keywords `endif', `endfor', `endfunction', `endif', and
+    `endwhile', which allow for better diagnostics.  The `end' keyword
+    is still recognized.  All script files have been changed to use
+    these new keywords in place of `end'.
+
+  * It is now possible to uninstall Octave by doing a `make uninstall'
+    in the top level directory.
+
+  * The Makefiles are much closer to conforming with GNU coding standards.
+
+  * New functions:
+
+      win_texas_lotto  -- produce six unique random numbers between 1 and 50.
+      quad             -- numerical integration.
+      lu               -- LU factorization
+      qr               -- QR factorization
+      dassl            -- Solution of DAEs using DASSL.
+
+  * New files:
+
+      THANKS -- A list of people and organizations who have supported
+                the development of Octave.
+
+      NEWS   -- This file, listing recent changes.
+
+  * Help is now available at the gnuplot prompt.

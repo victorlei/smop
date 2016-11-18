@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Data Types</title>
+
+<meta name="description" content="GNU Octave: Data Types">
+<meta name="keywords" content="GNU Octave: Data Types">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Built_002din-Data-Types.html#Built_002din-Data-Types" rel="next" title="Built-in Data Types">
+<link href="Comments-and-the-Help-System.html#Comments-and-the-Help-System" rel="prev" title="Comments and the Help System">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Data-Types"></a>
+<div class="header">
+<p>
+Next: <a href="Numeric-Data-Types.html#Numeric-Data-Types" accesskey="n" rel="next">Numeric Data Types</a>, Previous: <a href="Getting-Started.html#Getting-Started" accesskey="p" rel="prev">Getting Started</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Data-Types-1"></a>
+<h2 class="chapter">3 Data Types</h2>
+<a name="index-data-types"></a>
+
+<p>All versions of Octave include a number of built-in data types,
+including real and complex scalars and matrices, character strings,
+a data structure type, and an array that can contain all data types.
+</p>
+<p>It is also possible to define new specialized data types by writing a
+small amount of C++ code.  On some systems, new data types can be loaded
+dynamically while Octave is running, so it is not necessary to recompile
+all of Octave just to add a new type.  See <a href="External-Code-Interface.html#External-Code-Interface">External Code Interface</a>, for
+more information about Octave&rsquo;s dynamic linking capabilities.
+<a href="User_002ddefined-Data-Types.html#User_002ddefined-Data-Types">User-defined Data Types</a> describes what you must do to define a
+new data type for Octave.
+</p>
+<a name="XREFtypeinfo"></a><dl>
+<dt><a name="index-typeinfo"></a>Built-in Function: <em></em> <strong>typeinfo</strong> <em>()</em></dt>
+<dt><a name="index-typeinfo-1"></a>Built-in Function: <em></em> <strong>typeinfo</strong> <em>(<var>expr</var>)</em></dt>
+<dd>
+<p>Return the type of the expression <var>expr</var>, as a string.
+</p>
+<p>If <var>expr</var> is omitted, return a cell array of strings containing all the
+currently installed data types.
+</p>
+<p><strong>See also:</strong> <a href="Built_002din-Data-Types.html#XREFclass">class</a>, <a href="Built_002din-Data-Types.html#XREFisa">isa</a>.
+</p></dd></dl>
+
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Built_002din-Data-Types.html#Built_002din-Data-Types" accesskey="1">Built-in Data Types</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="User_002ddefined-Data-Types.html#User_002ddefined-Data-Types" accesskey="2">User-defined Data Types</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Object-Sizes.html#Object-Sizes" accesskey="3">Object Sizes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,370 @@
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Variables
+@chapter Variables
+@cindex variables, user-defined
+@cindex user-defined variables
+
+Variables let you give names to values and refer to them later.  You have
+already seen variables in many of the examples.  The name of a variable
+must be a sequence of letters, digits and underscores, but it may not begin
+with a digit.  Octave does not enforce a limit on the length of variable
+names, but it is seldom useful to have variables with names longer than
+about 30 characters.  The following are all valid variable names
+
+@example
+@group
+x
+x15
+__foo_bar_baz__
+fucnrdthsucngtagdjb
+@end group
+@end example
+
+@noindent
+However, names like @code{__foo_bar_baz__} that begin and end with two
+underscores are understood to be reserved for internal use by Octave.
+You should not use them in code you write, except to access Octave's
+documented internal variables and built-in symbolic constants.
+
+Case is significant in variable names.  The symbols @code{a} and
+@code{A} are distinct variables.
+
+A variable name is a valid expression by itself.  It represents the
+variable's current value.  Variables are given new values with
+@dfn{assignment operators} and @dfn{increment operators}.
+@xref{Assignment Ops,,Assignment Expressions}.
+
+There is one built-in variable with a special meaning.  The @code{ans} variable
+always contains the result of the last computation, where the output wasn't
+assigned to any variable.  The code @code{a = cos (pi)} will assign the value -1
+to the variable @code{a}, but will not change the value of @code{ans}.  However,
+the code @code{cos (pi)} will set the value of @code{ans} to -1.
+
+Variables in Octave do not have fixed types, so it is possible to first
+store a numeric value in a variable and then to later use the same name
+to hold a string value in the same program.  Variables may not be used
+before they have been given a value.  Doing so results in an error.
+
+@cindex @code{ans}
+@DOCSTRING(ans)
+
+@DOCSTRING(isvarname)
+
+@DOCSTRING(genvarname)
+
+@DOCSTRING(namelengthmax)
+
+@menu
+* Global Variables::
+* Persistent Variables::
+* Status of Variables::
+@end menu
+
+@node Global Variables
+@section Global Variables
+@cindex global variables
+@cindex @code{global} statement
+@cindex variables, global
+
+A variable that has been declared @dfn{global} may be accessed from
+within a function body without having to pass it as a formal parameter.
+
+A variable may be declared global using a @code{global} declaration
+statement.  The following statements are all global declarations.
+
+@example
+@group
+global a
+global a b
+global c = 2
+global d = 3 e f = 5
+@end group
+@end example
+
+A global variable may only be initialized once in a @code{global}
+statement.  For example, after executing the following code
+
+@example
+@group
+global gvar = 1
+global gvar = 2
+@end group
+@end example
+
+@noindent
+the value of the global variable @code{gvar} is 1, not 2.  Issuing a
+@samp{clear gvar} command does not change the above behavior, but
+@samp{clear all} does.
+
+It is necessary declare a variable as global within a function body in
+order to access it.  For example,
+
+@example
+@group
+global x
+function f ()
+  x = 1;
+endfunction
+f ()
+@end group
+@end example
+
+@noindent
+does @emph{not} set the value of the global variable @code{x} to 1.  In
+order to change the value of the global variable @code{x}, you must also
+declare it to be global within the function body, like this
+
+@example
+@group
+function f ()
+  global x;
+  x = 1;
+endfunction
+@end group
+@end example
+
+Passing a global variable in a function parameter list will
+make a local copy and not modify the global value.  For example, given
+the function
+
+@example
+@group
+function f (x)
+  x = 0
+endfunction
+@end group
+@end example
+
+@noindent
+and the definition of @code{x} as a global variable at the top level,
+
+@example
+global x = 13
+@end example
+
+@noindent
+the expression
+
+@example
+f (x)
+@end example
+
+@noindent
+will display the value of @code{x} from inside the function as 0,
+but the value of @code{x} at the top level remains unchanged, because
+the function works with a @emph{copy} of its argument.
+
+@DOCSTRING(isglobal)
+
+@node Persistent Variables
+@section Persistent Variables
+@cindex persistent variables
+@cindex @code{persistent} statement
+@cindex variables, persistent
+@anchor{XREFpersistent}
+
+A variable that has been declared @dfn{persistent} within a function
+will retain its contents in memory between subsequent calls to the
+same function.  The difference between persistent variables and global
+variables is that persistent variables are local in scope to a
+particular function and are not visible elsewhere.
+
+The following example uses a persistent variable to create a function
+that prints the number of times it has been called.
+
+@example
+@group
+function count_calls ()
+  persistent calls = 0;
+  printf ("'count_calls' has been called %d times\n",
+          ++calls);
+endfunction
+
+for i = 1:3
+  count_calls ();
+endfor
+
+@print{} 'count_calls' has been called 1 times
+@print{} 'count_calls' has been called 2 times
+@print{} 'count_calls' has been called 3 times
+@end group
+@end example
+
+As the example shows, a variable may be declared persistent using a
+@code{persistent} declaration statement.  The following statements are
+all persistent declarations.
+
+@example
+@group
+persistent a
+persistent a b
+persistent c = 2
+persistent d = 3 e f = 5
+@end group
+@end example
+
+The behavior of persistent variables is equivalent to the behavior of
+static variables in C@.
+
+Like global variables, a persistent variable may only be initialized once.
+For example, after executing the following code
+
+@example
+@group
+persistent pvar = 1
+persistent pvar = 2
+@end group
+@end example
+
+@noindent
+the value of the persistent variable @code{pvar} is 1, not 2.
+
+If a persistent variable is declared but not initialized to a specific
+value, it will contain an empty matrix.  So, it is also possible to
+initialize a persistent variable by checking whether it is empty, as the
+following example illustrates.
+
+@example
+@group
+function count_calls ()
+  persistent calls;
+  if (isempty (calls))
+    calls = 0;
+  endif
+  printf ("'count_calls' has been called %d times\n",
+          ++calls);
+endfunction
+@end group
+@end example
+
+@noindent
+This implementation behaves in exactly the same way as the previous
+implementation of @code{count_calls}.
+
+The value of a persistent variable is kept in memory until it is
+explicitly cleared.  Assuming that the implementation of @code{count_calls}
+is saved on disk, we get the following behavior.
+
+@example
+for i = 1:2
+  count_calls ();
+endfor
+@print{} 'count_calls' has been called 1 times
+@print{} 'count_calls' has been called 2 times
+
+clear
+for i = 1:2
+  count_calls ();
+endfor
+@print{} 'count_calls' has been called 3 times
+@print{} 'count_calls' has been called 4 times
+
+clear all
+for i = 1:2
+  count_calls ();
+endfor
+@print{} 'count_calls' has been called 1 times
+@print{} 'count_calls' has been called 2 times
+
+clear count_calls
+for i = 1:2
+  count_calls ();
+endfor
+@print{} 'count_calls' has been called 1 times
+@print{} 'count_calls' has been called 2 times
+@end example
+
+@noindent
+That is, the persistent variable is only removed from memory when the
+function containing the variable is removed.  Note that if the function
+definition is typed directly into the Octave prompt, the persistent
+variable will be cleared by a simple @code{clear} command as the entire
+function definition will be removed from memory.  If you do not want
+a persistent variable to be removed from memory even if the function is
+cleared, you should use the @code{mlock} function
+(@pxref{Function Locking}).
+
+@node Status of Variables
+@section Status of Variables
+
+When creating simple one-shot programs it can be very convenient to
+see which variables are available at the prompt.  The function @code{who}
+and its siblings @code{whos} and @code{whos_line_format} will show
+different information about what is in memory, as the following shows.
+
+@example
+@group
+str = "A random string";
+who -variables
+     @print{} *** local user variables:
+     @print{}
+     @print{} __nargin__  str
+@end group
+@end example
+
+@DOCSTRING(who)
+
+@DOCSTRING(whos)
+
+@DOCSTRING(whos_line_format)
+
+Instead of displaying which variables are in memory, it is possible
+to determine if a given variable is available.  That way it is possible
+to alter the behavior of a program depending on the existence of a
+variable.  The following example illustrates this.
+
+@example
+@group
+if (! exist ("meaning", "var"))
+  disp ("The program has no 'meaning'");
+endif
+@end group
+@end example
+
+@DOCSTRING(exist)
+
+Usually Octave will manage the memory, but sometimes it can be practical
+to remove variables from memory manually.  This is usually needed when
+working with large variables that fill a substantial part of the memory.
+On a computer that uses the IEEE floating point format, the following
+program allocates a matrix that requires around 128 MB memory.
+
+@example
+large_matrix = zeros (4000, 4000);
+@end example
+
+@noindent
+Since having this variable in memory might slow down other computations,
+it can be necessary to remove it manually from memory.  The @code{clear}
+function allows this.
+
+@DOCSTRING(clear)
+
+@DOCSTRING(pack)
+
+Information about a function or variable such as its location in the
+file system can also be acquired from within Octave.  This is usually
+only useful during development of programs, and not within a program.
+
+@DOCSTRING(type)
+
+@DOCSTRING(which)
+
+@DOCSTRING(what)

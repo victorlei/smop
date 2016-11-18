@@ -1,0 +1,567 @@
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node System Utilities
+@chapter System Utilities
+
+This chapter describes the functions that are available to allow you to
+get information about what is happening outside of Octave, while it is
+still running, and use this information in your program.  For example,
+you can get information about environment variables, the current time,
+and even start other programs from the Octave prompt.
+
+@menu
+* Timing Utilities::
+* Filesystem Utilities::
+* File Archiving Utilities::
+* Networking Utilities::
+* Controlling Subprocesses::
+* Process ID Information::
+* Environment Variables::
+* Current Working Directory::
+* Password Database Functions::
+* Group Database Functions::
+* System Information::
+* Hashing Functions::
+@end menu
+
+@node Timing Utilities
+@section Timing Utilities
+
+Octave's core set of functions for manipulating time values are
+patterned after the corresponding functions from the standard C library.
+Several of these functions use a data structure for time that includes
+the following elements:
+
+@table @code
+@item usec
+Microseconds after the second (0-999999).
+
+@item sec
+Seconds after the minute (0-60).  This number can be 60 to account
+for leap seconds.
+
+@item min
+Minutes after the hour (0-59).
+
+@item hour
+Hours since midnight (0-23).
+
+@item mday
+Day of the month (1-31).
+
+@item mon
+Months since January (0-11).
+
+@item year
+Years since 1900.
+
+@item wday
+Days since Sunday (0-6).
+
+@item yday
+Days since January 1 (0-365).
+
+@item isdst
+Daylight Savings Time flag.
+
+@item zone
+Time zone.
+@end table
+
+@noindent
+In the descriptions of the following functions, this structure is
+referred to as a @var{tm_struct}.
+
+@DOCSTRING(time)
+
+@DOCSTRING(now)
+
+@DOCSTRING(ctime)
+
+@DOCSTRING(gmtime)
+
+@DOCSTRING(localtime)
+
+@DOCSTRING(mktime)
+
+@DOCSTRING(asctime)
+
+@DOCSTRING(strftime)
+
+@DOCSTRING(strptime)
+
+Most of the remaining functions described in this section are not
+patterned after the standard C library.  Some are available for
+compatibility with @sc{matlab} and others are provided because they are
+useful.
+
+@DOCSTRING(clock)
+
+@DOCSTRING(date)
+
+@DOCSTRING(etime)
+
+@DOCSTRING(cputime)
+
+@DOCSTRING(is_leap_year)
+
+@anchor{XREFtoc}
+@DOCSTRING(tic)
+
+@DOCSTRING(pause)
+
+@DOCSTRING(sleep)
+
+@DOCSTRING(usleep)
+
+@DOCSTRING(datenum)
+
+@DOCSTRING(datestr)
+
+@DOCSTRING(datevec)
+
+@DOCSTRING(addtodate)
+
+@DOCSTRING(calendar)
+
+@DOCSTRING(weekday)
+
+@DOCSTRING(eomday)
+
+@DOCSTRING(datetick)
+
+@node Filesystem Utilities
+@section Filesystem Utilities
+
+Octave includes many utility functions for copying, moving, renaming, and
+deleting files; for creating, reading, and deleting directories; for retrieving
+status information on files; and for manipulating file and path names.
+
+@DOCSTRING(movefile)
+
+@DOCSTRING(rename)
+
+@DOCSTRING(copyfile)
+
+@DOCSTRING(unlink)
+
+@DOCSTRING(link)
+
+@DOCSTRING(symlink)
+
+@DOCSTRING(readlink)
+
+@DOCSTRING(mkdir)
+
+@DOCSTRING(rmdir)
+
+@DOCSTRING(confirm_recursive_rmdir)
+
+@DOCSTRING(mkfifo)
+
+@DOCSTRING(umask)
+
+@anchor{XREFlstat}
+@DOCSTRING(stat)
+
+@DOCSTRING(S_ISBLK)
+
+@DOCSTRING(S_ISCHR)
+
+@DOCSTRING(S_ISDIR)
+
+@DOCSTRING(S_ISFIFO)
+
+@DOCSTRING(S_ISLNK)
+
+@DOCSTRING(S_ISREG)
+
+@DOCSTRING(S_ISSOCK)
+
+@DOCSTRING(fileattrib)
+
+@DOCSTRING(isdir)
+
+@DOCSTRING(readdir)
+
+@DOCSTRING(glob)
+
+@DOCSTRING(file_in_path)
+
+@DOCSTRING(filesep)
+
+@DOCSTRING(filemarker)
+
+@DOCSTRING(fileparts)
+
+@DOCSTRING(fullfile)
+
+@DOCSTRING(tilde_expand)
+
+@DOCSTRING(canonicalize_file_name)
+
+@DOCSTRING(make_absolute_filename)
+
+@DOCSTRING(is_absolute_filename)
+
+@DOCSTRING(is_rooted_relative_filename)
+
+@DOCSTRING(recycle)
+
+@node File Archiving Utilities
+@section File Archiving Utilities
+
+@DOCSTRING(bunzip2)
+
+@DOCSTRING(gzip)
+
+@DOCSTRING(gunzip)
+
+@DOCSTRING(tar)
+
+@DOCSTRING(untar)
+
+@DOCSTRING(zip)
+
+@DOCSTRING(unzip)
+
+@DOCSTRING(unpack)
+
+@DOCSTRING(bzip2)
+
+@node Networking Utilities
+@section Networking Utilities
+
+@menu
+* FTP Objects::
+* URL Manipulation::
+* Base64 and Binary Data Transmission::
+@end menu
+
+@DOCSTRING(gethostname)
+
+@node FTP Objects
+@subsection FTP Objects
+
+Octave supports the FTP protocol through an object-oriented interface.
+Use the function @code{ftp} to create an FTP object which represents the
+connection.  All FTP functions take an FTP object as the first argument.
+
+@DOCSTRING(@ftp/ftp)
+
+@DOCSTRING(@ftp/close)
+
+@DOCSTRING(@ftp/mget)
+
+@DOCSTRING(@ftp/mput)
+
+@DOCSTRING(@ftp/cd)
+
+@DOCSTRING(@ftp/dir)
+
+@DOCSTRING(@ftp/ascii)
+
+@DOCSTRING(@ftp/binary)
+
+@DOCSTRING(@ftp/delete)
+
+@DOCSTRING(@ftp/rename)
+
+@DOCSTRING(@ftp/mkdir)
+
+@DOCSTRING(@ftp/rmdir)
+
+@node URL Manipulation
+@subsection URL Manipulation
+
+@DOCSTRING(urlread)
+
+@DOCSTRING(urlwrite)
+
+@node Base64 and Binary Data Transmission
+@subsection Base64 and Binary Data Transmission
+
+Some transmission channels can not accept binary data.  It is customary to
+encode binary data in Base64 for transmission and to decode the data upon
+reception.
+
+@DOCSTRING(base64_encode)
+
+@DOCSTRING(base64_decode)
+
+@node Controlling Subprocesses
+@section Controlling Subprocesses
+
+Octave includes some high-level commands like @code{system} and
+@code{popen} for starting subprocesses.  If you want to run another
+program to perform some task and then look at its output, you will
+probably want to use these functions.
+
+Octave also provides several very low-level Unix-like functions which
+can also be used for starting subprocesses, but you should probably only
+use them if you can't find any way to do what you need with the
+higher-level functions.
+
+@DOCSTRING(system)
+
+@DOCSTRING(unix)
+
+@DOCSTRING(dos)
+
+@DOCSTRING(open)
+
+@DOCSTRING(perl)
+
+@DOCSTRING(python)
+
+@DOCSTRING(popen)
+
+@DOCSTRING(pclose)
+
+@DOCSTRING(popen2)
+
+@DOCSTRING(EXEC_PATH)
+
+In most cases, the following functions simply decode their arguments and
+make the corresponding Unix system calls.  For a complete example of how
+they can be used, look at the definition of the function @code{popen2}.
+
+@DOCSTRING(fork)
+
+@DOCSTRING(exec)
+
+@DOCSTRING(pipe)
+
+@DOCSTRING(dup2)
+
+@DOCSTRING(waitpid)
+
+@DOCSTRING(WCONTINUE)
+
+@DOCSTRING(WCOREDUMP)
+
+@DOCSTRING(WEXITSTATUS)
+
+@DOCSTRING(WIFCONTINUED)
+
+@DOCSTRING(WIFSIGNALED)
+
+@DOCSTRING(WIFSTOPPED)
+
+@DOCSTRING(WIFEXITED)
+
+@DOCSTRING(WNOHANG)
+
+@DOCSTRING(WSTOPSIG)
+
+@DOCSTRING(WTERMSIG)
+
+@DOCSTRING(WUNTRACED)
+
+@DOCSTRING(fcntl)
+
+@DOCSTRING(kill)
+
+@DOCSTRING(SIG)
+
+@node Process ID Information
+@section Process, Group, and User IDs
+
+@DOCSTRING(getpgrp)
+
+@DOCSTRING(getpid)
+
+@DOCSTRING(getppid)
+
+@DOCSTRING(geteuid)
+
+@DOCSTRING(getuid)
+
+@DOCSTRING(getegid)
+
+@DOCSTRING(getgid)
+
+@node Environment Variables
+@section Environment Variables
+
+@DOCSTRING(getenv)
+
+@DOCSTRING(setenv)
+
+@DOCSTRING(unsetenv)
+
+@DOCSTRING(get_home_directory)
+
+@node Current Working Directory
+@section Current Working Directory
+
+@DOCSTRING(cd)
+
+@DOCSTRING(ls)
+
+@DOCSTRING(ls_command)
+
+@DOCSTRING(dir)
+
+@DOCSTRING(pwd)
+
+@node Password Database Functions
+@section Password Database Functions
+
+Octave's password database functions return information in a structure
+with the following fields.
+
+@table @code
+@item name
+The user name.
+
+@item passwd
+The encrypted password, if available.
+
+@item uid
+The numeric user id.
+
+@item gid
+The numeric group id.
+
+@item gecos
+The GECOS field.
+
+@item dir
+The home directory.
+
+@item shell
+The initial shell.
+@end table
+
+In the descriptions of the following functions, this data structure is
+referred to as a @var{pw_struct}.
+
+@DOCSTRING(getpwent)
+
+@DOCSTRING(getpwuid)
+
+@DOCSTRING(getpwnam)
+
+@DOCSTRING(setpwent)
+
+@DOCSTRING(endpwent)
+
+@node Group Database Functions
+@section Group Database Functions
+
+Octave's group database functions return information in a structure
+with the following fields.
+
+@table @code
+@item name
+The user name.
+
+@item passwd
+The encrypted password, if available.
+
+@item gid
+The numeric group id.
+
+@item mem
+The members of the group.
+@end table
+
+In the descriptions of the following functions, this data structure is
+referred to as a @var{grp_struct}.
+
+@DOCSTRING(getgrent)
+
+@DOCSTRING(getgrgid)
+
+@DOCSTRING(getgrnam)
+
+@DOCSTRING(setgrent)
+
+@DOCSTRING(endgrent)
+
+@node System Information
+@section System Information
+
+@DOCSTRING(computer)
+
+@DOCSTRING(uname)
+
+@DOCSTRING(nproc)
+
+@DOCSTRING(ispc)
+
+@DOCSTRING(isunix)
+
+@DOCSTRING(ismac)
+
+@DOCSTRING(isieee)
+
+@DOCSTRING(isdeployed)
+
+@DOCSTRING(isstudent)
+
+@DOCSTRING(OCTAVE_HOME)
+
+@DOCSTRING(matlabroot)
+
+@DOCSTRING(OCTAVE_VERSION)
+
+@DOCSTRING(version)
+
+@DOCSTRING(ver)
+
+@DOCSTRING(compare_versions)
+
+@DOCSTRING(license)
+
+@DOCSTRING(octave_config_info)
+
+@DOCSTRING(getrusage)
+
+@node Hashing Functions
+@section Hashing Functions
+
+It is often necessary to find if two strings or files are
+identical.  This might be done by comparing them character by character
+and looking for differences.  However, this can be slow, and so comparing
+a hash of the string or file can be a rapid way of finding if the files
+differ.
+
+Another use of the hashing function is to check for file integrity.  The
+user can check the hash of the file against a known value and find if
+the file they have is the same as the one that the original hash was
+produced with.
+
+Octave supplies the @code{md5sum} function to perform MD5 hashes on
+strings and files.  An example of the use of @code{md5sum} function might
+be
+
+@example
+@group
+if exist (file, "file")
+  hash = md5sum (file);
+else
+  # Treat the variable "file" as a string
+  hash = md5sum (file, true);
+endif
+@end group
+@end example
+
+@DOCSTRING(md5sum)

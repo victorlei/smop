@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Progress Bar</title>
+
+<meta name="description" content="GNU Octave: Progress Bar">
+<meta name="keywords" content="GNU Octave: Progress Bar">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="GUI-Development.html#GUI-Development" rel="up" title="GUI Development">
+<link href="UI-Elements.html#UI-Elements" rel="next" title="UI Elements">
+<link href="I_002fO-Dialogs.html#I_002fO-Dialogs" rel="prev" title="I/O Dialogs">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Progress-Bar"></a>
+<div class="header">
+<p>
+Next: <a href="UI-Elements.html#UI-Elements" accesskey="n" rel="next">UI Elements</a>, Previous: <a href="I_002fO-Dialogs.html#I_002fO-Dialogs" accesskey="p" rel="prev">I/O Dialogs</a>, Up: <a href="GUI-Development.html#GUI-Development" accesskey="u" rel="up">GUI Development</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Progress-Bar-1"></a>
+<h3 class="section">35.2 Progress Bar</h3>
+<a name="index-Progress-Bar"></a>
+
+<a name="XREFwaitbar"></a><dl>
+<dt><a name="index-waitbar"></a>Function File: <em><var>h</var> =</em> <strong>waitbar</strong> <em>(<var>frac</var>)</em></dt>
+<dt><a name="index-waitbar-1"></a>Function File: <em><var>h</var> =</em> <strong>waitbar</strong> <em>(<var>frac</var>, <var>msg</var>)</em></dt>
+<dt><a name="index-waitbar-2"></a>Function File: <em><var>h</var> =</em> <strong>waitbar</strong> <em>(&hellip;, &quot;FigureProperty&quot;, &quot;Value&quot;, &hellip;)</em></dt>
+<dt><a name="index-waitbar-3"></a>Function File: <em></em> <strong>waitbar</strong> <em>(<var>frac</var>)</em></dt>
+<dt><a name="index-waitbar-4"></a>Function File: <em></em> <strong>waitbar</strong> <em>(<var>frac</var>, <var>hwbar</var>)</em></dt>
+<dt><a name="index-waitbar-5"></a>Function File: <em></em> <strong>waitbar</strong> <em>(<var>frac</var>, <var>hwbar</var>, <var>msg</var>)</em></dt>
+<dd><p>Return a handle <var>h</var> to a new waitbar object.
+</p>
+<p>The waitbar is filled to fraction <var>frac</var> which must be in the range
+[0, 1].
+</p>
+<p>The optional message <var>msg</var> is centered and displayed above the waitbar.
+</p>
+<p>The appearance of the waitbar figure window can be configured by passing
+property/value pairs to the function.
+</p>
+<p>When called with a single input the current waitbar, if it exists, is
+updated to the new value <var>frac</var>.  If there are multiple outstanding
+waitbars they can be updated individually by passing the handle <var>hwbar</var>
+of the specific waitbar to modify.
+</p></dd></dl>
+
+
+
+
+
+</body>
+</html>

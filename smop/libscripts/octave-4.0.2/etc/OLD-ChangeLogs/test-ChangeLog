@@ -1,0 +1,854 @@
+2011-04-11  Rik  <octave@nomad.inbox5.com>
+
+	* fntests.m: Remove deprecated and private functions from list of
+	functions requiring tests.  Count functions with %!demo blocks as
+	having tests.
+
+2011-04-03  Rik  <octave@nomad.inbox5.com>
+
+	* test_diag_perm.m: Reverse previous changeset.  Return 3-input form
+	of diag().
+
+2011-04-01  Rik  <octave@nomad.inbox5.com>
+
+	* test_diag_perm.m: Update diag tests to reflect removal of archaic
+	3-input form of diag().
+
+2011-03-18  Rik  <octave@nomad.inbox5.com>
+
+	* test_parser.m: Add operatore precedence tests.
+
+2011-03-01  Rik  <octave@nomad.inbox5.com>
+
+	* test/test_index-wfi-t.m: Use modern warning function
+	rather than deprecated built-in variable to set warning state.
+
+2011-02-22  Rik  <octave@nomad.inbox5.com>
+
+	* fntests.m: Use single quotes around regexp patterns.
+
+2011-02-19  Rik  <octave@nomad.inbox5.com>
+
+	* fntests.m: Use PCRE regular expressions to simplify script.
+
+2011-02-02  Rik  <octave@nomad.inbox5.com>
+
+	* build_sparse_tests.sh: Use testif to only run some sparse tests when
+	necessary libraries are installed.
+
+2011-01-14  John W. Eaton  <jwe@octave.org>
+
+	* Update copyright notices for 2011.
+
+2010-12-13  Rik  <octave@nomad.inbox5.com>
+
+	* test_switch.m : Add test for switch statement with otherwise clause,
+	but no cases.
+
+2010-11-10  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m: Set warning state off for Octave:deprecated-functions.
+	(run_test_script): Do run tests for deprecated functions.
+
+2010-11-09  John W. Eaton  <jwe@octave.org>
+
+	* test_parser.m: New file.
+	* Makefile.am (FCN_FILES): Add it to the list.
+
+2010-09-29  Rik  <octave@nomad.inbox5.com>
+
+	* fntests.m: Break output text differently for better readability.
+
+2010-09-28  Rik  <octave@nomad.inbox5.com>
+
+	* test/@Gork/set.m, test/fntests.m, test/test_func.m, test/test_io.m:
+	Untabify scripts.
+
+2010-09-27  Rik  <octave@nomad.inbox5.com>
+
+	* fntests.m: Use single quotes for regex when possible.
+
+2010-09-26  Rik  <octave@nomad.inbox5.com>
+
+	* fntests.m (has_tests, has_functions): Recode to remove requirement
+	for PCRE.
+
+2010-09-24  Rik  <octave@nomad.inbox5.com>
+
+	* fntests.m: Rephrase output for clarity.
+
+2010-08-17  Rik  <octave@nomad.inbox5.com>
+
+	* fntests.m: Add extra newline for more readable output.
+
+2010-07-30  Rik  <octave@nomad.inbox5.com>
+
+	* Makefile.am: New clean-local target to remove directories
+	created automatically during testing.
+
+2010-04-28  John W. Eaton  <jwe@octave.org>
+
+	* test_struct.m: Update expected error message text.
+
+2010-03-19  Jaroslav Hajek  <highegg@gmail.com>
+
+	* test_slice.m: Use ID check rather than message for invalid resizing.
+
+2010-03-05  Jaroslav Hajek  <highegg@gmail.com>
+
+	* test_logical-wfi-f.m: Update.
+	* test_logical-wfi-t.m: Update.
+	* test_struct.m Update.
+
+2010-01-29  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m (hasfunctions): Only check for DEFUN in .cc files.
+	Return true for all .m files.
+
+2010-01-14  David Grundberg  <davidg@cs.umu.se>
+
+	* fntests.m (run_test_script): Check all *.cc files for tests.
+
+2010-01-13  Rik  <octave@nomad.inbox5.com>
+
+	* build_bc_overload_tests.sh: Correct test syntax (= vs. ==)
+
+2010-01-13  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.am (test_bc_overloads.m): Accept expected results
+	file as argument.  Style fixes.
+
+2010-01-13  Jaroslav Hajek  <highegg@gmail.com>
+
+	* build_bc_overload_tests.sh: New shell script.
+	* build_bc_overloads_expected.m: New source (not normally used).
+	* bc_overloads_expected: New text file.
+	* Makefile.am: Build test_bc_overloads.m.
+
+2009-12-25  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m (hastests): Use regexp instead of findstr and only
+	match tests that appear as the first thing on a line.
+
+2009-12-19  Rik  <octave@nomad.inbox5.com>
+
+	* build_sparse_tests.sh: Use lognrnd instead of deprecated lognormal_rnd
+
+2009-12-19  Rik  <octave@nomad.inbox5.com>
+
+	* Makefile.am: Eliminate TOPDIR variable in favor of built-in automake
+	variables of top_builddir and top_srcdir.
+
+2009-12-17  Rik  <octdev@nomad.inbox5.com>
+
+	* config/unix.exp: Remove obsolete file from repository
+
+2009-12-17  Rik  <octdev@nomad.inbox5.com>
+
+	* @Blork/module.mk, @Cork/module.mk, @Dork/module.mk,
+	@Gork/module.mk, @Pork/module.mk, @Sneetch/module.mk,
+	@Snork/module.mk, @Spork/module.mk, Makefile.am: Distribute private
+	function directories necessary for OOP tests to work in tarballs
+
+2009-12-03  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.am (CLEANFILES, DISTCLEANFILES): New variables.
+
+2009-11-10  John W. Eaton  <jwe@octave.org>
+
+	* @Blork/module.mk, @Cork/module.mk, @Dork/module.mk,
+	@Gork/module.mk, @Pork/module.mk, @Sneetch/module.mk,
+	@Snork/module.mk, @Spork/module.mk, Makefile.am: New files.
+	* Makefile.in: Delete.
+
+2009-10-19  Rik  <octdev@nomad.inbox5.com>
+
+	* fntests.m: .cc files are now included in the list of files requiring
+	tests only if they define a user function (DEFUN or DEFUN_DLD)
+
+2009-10-19  Rik  <octdev@nomad.inbox5.com>
+
+	* fntests.m: Remove deprecated functions from list of functions
+	requiring new tests to be written.
+
+2009-10-08  Rik  <octdev@nomad.inbox5.com>
+
+	* fntests.m: Fix typo of an extra space in instructions to user.
+
+2009-10-05  Rik  <octdev@nomad.inbox5.com>
+
+	* fntests.m: Fix typo directing users to the wrong log file
+
+2009-06-23  Robert T. Short  <octave@phaselockedsystems.com>
+
+	* @Blork/Blork.m, @Blork/bleek.m, @Blork/display.m, @Blork/get.m,
+	@Blork/set.m, @Cork/Cork.m, @Cork/click.m, @Cork/display.m,
+	@Cork/get.m, @Cork/set.m, @Dork/Dork.m, @Dork/bling.m,
+	@Dork/display.m, @Dork/gack.m, @Dork/get.m, @Dork/getStash.m,
+	@Dork/private/myStash.m, @Dork/set.m, @Gork/Gork.m, @Gork/cork.m,
+	@Gork/display.m, @Gork/gark.m, @Gork/get.m, @Gork/set.m,
+	@Gork/subsasgn.m, @Gork/subsref.m, @Pork/Pork.m, @Pork/bling.m,
+	@Pork/display.m, @Pork/get.m, @Pork/gurk.m,
+	@Pork/private/myStash.m, @Pork/set.m, @Sneetch/Sneetch.m,
+	@Sneetch/display.m, @Snork/Snork.m, @Snork/cack.m,
+	@Snork/display.m, @Snork/end.m, @Snork/get.m, @Snork/getStash.m,
+	@Snork/gick.m, @Snork/loadobj.m, @Snork/private/myStash.m,
+	@Snork/saveobj.m, @Snork/set.m, @Snork/subsasgn.m,
+	@Snork/subsindex.m, @Snork/subsref.m, @Spork/Spork.m,
+	@Spork/cack.m, @Spork/display.m, @Spork/geek.m, @Spork/get.m,
+	@Spork/getStash.m, @Spork/loadobj.m, @Spork/private/myStash.m,
+	@Spork/saveobj.m, @Spork/set.m, test_classes.m: New files.
+
+2009-06-22  Jaroslav Hajek  <highegg@gmail.com>
+
+	* test_null_assign.m: Fix test.
+
+2009-04-17  Thorsten Meyer  <thorsten.meyier@gmx.de>
+
+	* test_struct.m: Add tests to prevent regression of bug with
+	indexed assignment into empty struct array.
+
+2009-04-15  Thorsten Meyer  <thorsten.meyier@gmx.de>
+
+	* test_struct.m: Add tests for lazy copying in nested assignments
+	of struct elements.
+
+2009-04-12  Thorsten Meyer  <thorsten.meyier@gmx.de>
+
+	* test_contin.m, test_error.m, test_eval-catch.m, test_for.m,
+	test_global.m,  test_if.m, test_index-wfi-f.m,
+	/test_index-wfi-t.m, test_io.m, test_logical-wfi-f.m,
+	test_logical-wfi-t.m, test_prefer.m, test_recursion.m,
+	test_return.m, test_string.m, test_struct.m, test_switch.m,
+	test_system.m, test_transpose.m, test_try.m, test_unwind.m,
+	test_while.m: Remove obsolete comments.
+
+2009-04-07  Carlo de Falco  <kingcrimson@tiscali.it>
+
+	* test_io.m: Add a test for saving and reading a matrix with the
+	"-ascii" format.
+
+2009-03-10  Jason Riedy  <jason@acm.org>
+
+	* test_diag_perm.m: Add tests for permuting sparse matrices and
+	for the correct types from interactions between
+	pseudo-scalars (1x1 matrices).
+
+2009-03-10  Jason Riedy  <jason@acm.org>
+
+	* build_sparse_tests.sh: Add LU tests to the rectangular tests.
+
+2009-03-10  Jason Riedy  <jason@acm.org>
+
+	* test_diag_perm.m: Add a test for conversion to sparse form.
+
+2009-03-09  Jason Riedy  <jason@acm.org>
+
+	* test_diag_perm.m: Add tests for diag + sparse.
+
+2009-03-08  Jason Riedy  <jason@acm.org>
+
+	* test_diag_perm.m: Add tests for inverse scaling and sparse structure.
+
+2009-03-08  Jason Riedy  <jason@acm.org>
+
+	* test_diag_perm.m: Add tests for preserving sparse structure
+	when scaling.
+
+2009-02-25  John W. Eaton  <jwe@octave.org>
+
+	* build_sparse_tests.sh: Note that saving sparse matrices to MAT
+	files fails when using 64-bit indexing.
+
+2009-02-22  John W. Eaton  <jwe@octave.org>
+
+	* build_sparse_tests.sh: Fix diag matrix divide by zero test.
+
+2009-02-18  John W. Eaton  <jwe@octave.org>
+
+	* test_args.m: Don't use assert to test for function handles.
+
+2009-02-15  John W. Eaton  <jwe@octave.org>
+
+	* test_io.m, test_prefer.m: Avoid command-style function call
+	syntax when assigning results.
+
+2009-02-09  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m (hastests): Error if fopen fails.
+
+2009-01-29  John W. Eaton  <jwe@octave.org>
+
+	* test_system.m: Use isfield instead of struct_contains.
+
+2009-01-25  Thorsten Meyer  <thorsten@hexe>
+
+	* test_struct.m: Add struct array tests.
+
+2009-01-23  Søren Hauberg  <hauberg@gmail.com>
+
+	* test_prefer.m: Update to match new API of the 'type' function.
+
+2008-12-24  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m (hastests): Use fread instead of fscanf to preserve
+	whitespace.
+
+2008-12-02  Jaroslav Hajek  <highegg@gmail.com>
+
+	* build_sparse_tests.sh: Fix test.
+
+2008-10-28  Jaroslav Hajek  <highegg@gmail.com>
+
+	* test_logical-wfi-f.m: Fix error messages.
+	* test_logical-wfi-t.m: Fix error messages.
+	* test_slice.m: Fix error messages.
+
+2008-09-26  Jaroslav Hajek  <highegg@gmail.com>
+
+	* test_null_assign.m: More test for null assignments.
+
+2008-09-18  Jaroslav Hajek  <highegg@gmail.com>
+
+	* test_null_assign.m: New tests.
+
+2008-06-11  John W. Eaton  <jwe@octave.org>
+
+	* test_error.m: Fix tests for usage.
+	* test_eval-catch.m, test_try.m: Fix expected output from lasterr.
+
+2008-06-02  David Bateman  <dbateman@free.fr>
+
+	* test_arith.m: Delete and move tests close to function
+	definitions.
+	* test_func.m: Also test for single precision return values.
+
+	* test_infnan.m, test_linalg.m, test_matrix.m, test_number.m):
+	Delet and move tests close to function definitions.
+	* test_range.m: Also test single precision examples.
+
+2008-05-19  Bill Denney  <bill@denney.ws>
+
+	* test_args.m: Update format to allow running "test test_args"
+	and add default argument tests.
+
+2008-05-09  Rafael Laboissiere  <rafael@debian.org>
+
+	* test_io.m, test_system.m: Use ischar instead of deprecated isstr.
+
+2008-05-06  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m: Use puts instead of printf where appropriate.
+	Fix missing newline in message.
+
+2008-03-26  David Bateman  <dbateman@free.fr>
+
+	* test_index-wfi-f.m: Split large block of tests.  New tests.
+
+2008-03-26  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m (report_files_with_no_tests): New function.
+	Use it to report number of .m and .cc files without tests separately.
+
+2008-03-25  John W. Eaton  <jwe@octave.org>
+
+	* test_index-wfi-f.m: New tests.
+
+2008-03-25  Jaroslav Hajek  <highegg@gmail.com>
+
+	* test_io.m: Add test for save with -struct modifier.
+
+2008-03-20  David Bateman  <dbateman@free.fr>
+
+	* test_func.m: Modify to test for char, cell and structure arrays.
+
+	* test_func.m: New test code that ensures that all operations
+	which work on dimensions alone (squeeze, triu, etc.) work for all
+	objects and preserve type.
+
+2008-04-09  Michael Goffioul  <michael.goffioul@gmail.com>
+
+	* test_string.m: Fix isprint test under Win32, where
+	isprint(setstr(9)) is true.
+	* test_system.m: Add condition for various syscall tests. Make cd test
+	able to deal with drive-letter-only pathnames (e.g. C:\) under Win32.
+
+2008-03-07  John W. Eaton  <jwe@octave.org>
+
+	* test_logical-wfi-t.m, test_logical-wfi-f.m: Update tests for
+	logical indexing bug fix.
+
+2008-03-06  John W. Eaton  <jwe@octave.org>
+
+	* test_eval.m, test_diffeq.m, test_quad.m, test_signal.m:
+	Delete files with no tests.
+
+2008-02-25  Ben Abbott  <bpabbott@mac.com>
+
+	* test_eval-catch.m, test_io.m, test_try.m: Use cstrcat instead of
+	strcat.
+
+2008-02-22  David Bateman  <dbateman@free.fr>
+
+	* build_sparse_tests.sh: Replaced removed sparse functions like
+	spdiag with their generic names. Fix lu tests for modified
+	syntax. Test vector and scaling or LU and chol functions.
+	* test_linalg.m: Change error message of failing chol/lu test.
+
+2008-02-19  David Bateman  <dbateman@free.fr>
+
+	* build_sparse_tests.sh: Replaced removed spars functions like
+	spmin, with their  generic names.
+
+2008-01-22  John W. Eaton  <jwe@octave.org>
+
+	* test_poly.m, test_set.m, test_stats.m: Delete files with no tests.
+
+2008-01-22  Thomas Weber  <thomas.weber.mail@gmail.com>
+
+	* test_linalg.m, test_matrix.m, test_number.m, test_poly.m,
+	test_signal.m, test_stats.m, test_string.m, test_system.m:
+	Move tests to individual source files.
+
+2008-01-15  Thomas Weber  <thomas.weber.mail@gmail.com>
+
+	* test_arith.m: Move tests to source files.
+
+2008-01-15  John W. Eaton  <jwe@octave.org>
+
+	* test_audio.m, test_control.m, test_image.m, test_optim.m,
+	test_plot.m, test_unix.m: Delete files with no tests.
+
+2007-12-21  John W. Eaton  <jwe@octave.org>
+
+	Version 3.0.0 released.
+
+2007-12-18  David Bateman  <dbateman@free.fr>
+
+	* build_sparse_tests.sh: Add tests for indexing like a([1,1],:),
+	a(:,[1,1]) and sparse(42)([1,1]).
+
+2007-12-11  David Bateman  <dbateman@free.fr>
+
+	* build_sparse_tests.sh: Drop argument to Fsparse to force mutation.
+	* test_range.m: Ditto.
+
+2007-12-10  John W. Eaton  <jwe@octave.org>
+
+	* test_nonlin.m: Delete.
+
+2007-12-03  David Bateman  <dbateman@free.fr>
+
+	* fntests.m: Also count the skipped tests.
+	* build_sparse_tests.sh: As appropriate make tests conditional on
+	HAVE_UMFPACK, HAVE_CHOLMOD and HAVE_CXSPARSE.
+
+2007-11-26  David Bateman  <dbateman@free.fr>
+
+	* build_sparse_tests.sh: More care with sparse return values.
+
+2007-10-30  Kim Hansen  <kimhanse@gmail.com>
+
+	* build_sparse_tests.sh: Fix typo.
+
+2007-10-23  John W. Eaton  <jwe@octave.org>
+
+	* build_sparse_tests.sh (gen_sparsesparse_elementop_tests):
+	Use xtest for "assert(as./bs,sparse(af./bf,true),100*eps);" test.
+
+2007-10-12  John W. Eaton  <jwe@octave.org>
+
+	* Change copyright notices in all files that are part of Octave to
+	GPLv3 or any later version.
+
+2007-10-06  John W. Eaton  <jwe@octave.org>
+
+	* test_poly.m: Move residue test to residue.m.
+
+2007-09-29  Kim Hansen  <kimhanse@gmail.com>
+
+	* test_range.m: Test range data
+
+2007-09-21  John W. Eaton  <jwe@octave.org>
+
+	* test_slice.m: Fix test for x = ones ([0, 2]); x(idx) = N case.
+	See change for liboctave/Array.cc.
+
+2007-06-15  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m: Also report expected failures in summary.
+	Improved wording from Thomas Weber <thomas.weber.mail@gmail.com>.
+
+2007-06-06  John W. Eaton  <jwe@octave.org>
+
+	* test_signal.m: Rename internal assert function to xassert.
+
+2007-04-26  David Bateman  <dbateman@free.fr>
+
+	* test_for.m: Add tests for multi-dimensional matrices and cell
+	arrays.
+
+2007-04-04  Rafael Laboissiere  <rafael@debian.org>
+
+	* Makefile.in (clean): Also remove a.wav file created by
+	testing wavwrite.m.
+
+2007-04-03  Kim Hansen  <kimhanse@gmail.com>
+
+	* test_slice.m: New file.
+
+2007-03-27  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in (dist): Use ln, not $(LN_S).
+
+2007-02-26  From Michael Goffioul  <michael.goffioul@swing.be>
+
+	* Makefile.in: Use $(LN_S) instead of ln or ln -s.
+
+2007-02-20  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in (check): Use --norc instead of --no-site-file.
+	From: Alex Zvoleff  <azvoleff@ucsd.edu>
+
+2007-02-19  John W. Eaton  <jwe@octave.org>
+
+	* test_system.m: Handle confirm_recursive_rmdir as function
+	instead of built-in variable.
+
+2007-02-07  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m: Add plea for help writing tests.
+
+2007-01-11  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m: Also handle scripts directory in the build tree.
+
+	* Makefile.in (OCTAVE_SCRIPT_PATH): Delete unused variable.
+
+2006-11-14  Luis F. Ortiz  <lortiz@interactivesupercomputing.com>
+
+	* fntests.m: Include liboctave in the list of directories to test.
+
+2006-08-25  John W. Eaton  <jwe@octave.org>
+
+	* test_io.m (testls): Allow for small variance in loaded values
+	for text data formats.  Use persistent local variables instead of
+	resetting rand seed.
+
+2006-08-22  David Bateman  <dbateman@free.fr>
+
+	* build_sparse_tests.sh: Don't force conversion to sparse boolean
+	return type for string mapper functions.
+
+2006-08-21  John W. Eaton  <jwe@octave.org>
+
+	* test_io.m: Use isequal (a, b) instead of a != b.  Use isequal
+	for struct and cell tests instead of more complex constructs.
+
+2006-06-27  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in (distclean): Also remove test_sparse.m.
+
+2006-06-07  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m: Keep track of files with tests and report total.
+
+2006-06-01  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m (print_test_file_name, print_pass_fail): New functions.
+	(runtestdir, runtestscript): Use them.  Print info for each file
+	with tests.  Print info about files without tests to log file.
+	(run_test_dir): Rename from runtestdir.  Change all uses.
+	(run_test_script): Rename from runtestscript.  Change all uses.
+	Handle page_screen_output as a function instead of a built-in
+	variable.
+
+2006-05-04  John W. Eaton  <jwe@octave.org>
+
+	* test_prefer.m: Adjust tests for eliminated built-in variables.
+
+2006-04-29  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in (check): Use run-octave script.
+
+2006-04-28  John W. Eaton  <jwe@octave.org>
+
+	* test_prefer.m: Adjust tests for new way of handling warning state.
+	* build_sparse_tests.sh: Likewise.
+
+2006-04-11  John W. Eaton  <jwe@octave.org>
+
+	* test_system.m, test_struct.m, test_string.m, test_quad.m,
+	test_number.m, test_nonlin.m, test_matrix.m, test_linalg.m,
+	test_io.m, test_diffeq.m, test_arith.m: Update for new usage
+	message format.
+
+2006-04-03  David Bateman  <dbateman@free.fr>
+
+	* test_number.m: Reverse sense of isscalar and isvector tests
+	for recent changes.
+
+2006-03-21  John W. Eaton  <jwe@octave.org>
+
+	* test_system.m: Use cell arrays of character strings in fnmatch
+	tests.
+
+2006-03-16  John W. Eaton  <jwe@octave.org>
+
+	* test_system.m: End all *pwent tests with a call to endpwent.
+	End all *grent tests with a call to endgrent.
+
+2006-03-14  John W. Eaton  <jwe@octave.org>
+
+	* fntests.m: Prettier printing of output.
+	* test_eval.m: Disable chatty tests.
+
+2006-03-08  David Bateman  <dbateman@free.fr>
+
+	* test_system.m: Fix recursive rmdir test for recent change.
+
+2006-02-20  David Bateman  <dbateman@free.fr>
+
+	* build_spase_tests.sh: Add tests for ldiv tests for rectangular
+	diagonal, permuted diagonal, triangular and permuted triangular
+	matrices.
+
+2006-02-09  David Bateman  <dbateman@free.fr>
+
+	* build_sparse_tests.sh: Add tests for sparse QR solvers.
+
+2006-01-21  David Bateman  <dbateman@free.fr>
+
+	* build_sparsetest.sh: Add new un-ordered indexing, assignment and
+	deletion tests.
+
+2006-01-13  Bill Denney  <bill@givebillmoney.com>
+
+	* test_system.m: Use filesep instead of "/" where needed.
+
+2005-12-14  David Bateman  <dbateman@free.fr>
+
+	* build_sparse_tests.sh: New script to build sparse matrix tests.
+	* fntests.m: New script to run the octave test code, with "make check".
+	* Makefile.in (DISTDIRS): Delete.
+	(dist): Simplify.
+	(OCTAVE_SCRIPT_PATH): Include . and $(srcdir).
+	(check): Run tests with fntest.m instead of runtest.
+	(test_sparse.m): New target.
+	(clean): Remove fntests.log instead of octave.log and octave.sum.
+
+	* tests/test_args.m, tests/test_infnan.m, tests/test_set.m,
+	tests/test_arith.m, tests/test_io.m, tests/test_signal.m,
+	tests/test_audio.m, tests/test_linalg.m, tests/test_sparse.m,
+	tests/test_contin.m, tests/test_logical-wfi-f.m, tests/test_stats.m,
+	tests/test_control.m, tests/test_logical-wfi-t.m, tests/test_string.m,
+	tests/test_diffeq.m, tests/test_matrix.m, tests/test_struct.m,
+	tests/test_error.m, tests/test_nonlin.m, tests/test_switch.m,
+	tests/test_eval-catch.m, tests/test_number.m, tests/test_system.m,
+	tests/test_eval.m, tests/test_optim.m, tests/test_transpose.m,
+	tests/test_for.m, tests/test_plot.m, tests/test_try.m,
+	tests/test_global.m, tests/test_poly.m, tests/test_unix.m,
+	tests/test_if.m, tests/test_prefer.m, tests/test_unwind.m,
+	tests/test_image.m, tests/test_quad.m, tests/test_while.m,
+	tests/test_index-wfi-f.m, tests/test_recursion.m,
+	tests/test_index-wfi-t.m, tests/test_return.m: Initial of conversion
+	of DejaGnu tests to test/assert infrastructure.
+
+2005-05-11  John W. Eaton  <jwe@octave.org>
+
+	* config/unix.exp: Start Octave with -H.
+
+2002-10-31  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* octave.test/arith/prod-4.m, octave.test/arith/sum-4.m:
+	Cover more cases for empty matrices.
+
+2002-10-15  Paul Kienzle  <pkienzle@users.sf.net>
+
+	* Makefile.in: Use @library_path_var@ instead of LD_LIBRARY_PATH.
+
+2002-09-27  Paul Kienzle  <pkienzle@users.sf.net>
+
+	* qr-7.m: Remove randomness from complex matrix generator.
+	Increase tolerance on rosser matrix test.
+
+2002-09-26  Paul Kienzle  <pkienzle@users.sf.net>
+
+	* octave.test/linalg/qr-7.m: Replace large random matrix tests
+	of economy QR decomposition with small predictable tests.
+	Include numerically sensitive rosser matrix test.  Don't
+	report the measured norms.
+
+2002-04-24  Bill Lash  <lash@tellabs.com>
+
+	* test/octave.test/signal/signal.exp: Add unwrap test.
+	* test/octave.test/signal/unwrap-1.m: New file.
+
+2002-04-24  David Billinghurst  <David.Billinghurst@riotinto.com.au>
+
+	* octave.test/signal/signal.exp: Add tests for fft, ifft
+	fft2, ifft2 and detrend.
+	* octave.test/signal/detrend-1.m: New test.
+	* octave.test/signal/detrend-2.m: New test.
+	* octave.test/signal/detrend-3.m: New test.
+	* octave.test/signal/fft-1.m: New test.
+	* octave.test/signal/ifft-1.m: New test.
+	* octave.test/signal/fft2-1.m: New test.
+	* octave.test/signal/ifft2-1.m: New test.
+
+2002-04-22  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* octave.test/diffeq/dassl-1.m (tol): Use relative tolerance for test.
+	* octave.test/diffeq/dassl-2.m (tol): Likewise.
+	* octave.test/diffeq/lsode-1.m (tol): Likewise.
+	* octave.test/diffeq/lsode-2.m (tol): Likewise.
+	* octave.test/diffeq/lsode-3.m (tol): Likewise.
+
+2002-04-12  Kienzle  <pkienzle@jazz.ncnr.nist.gov>
+
+	* config/unix.exp: Allow running of individual tests with
+	"runtest *.exp" from any of the directories under test/octave.test.
+
+2002-04-02  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* octave.test/linalg/qr-7.m: New test.
+	From Paul Kienzle <pkienzle@jazz.ncnr.nist.gov>.
+
+2001-04-24  Christoph Spiel  <cspiel@hammersmith-consulting.com>
+
+	* Makefile.in (check): Allow user to specify which .exp file to run.
+	* octave.test/try, octave.test/eval-catch: New directories and tests.
+
+2000-06-07  Ben Sapp  <bsapp@nua.lampf.lanl.gov>
+
+	* octave.test/quad/quad-1.m: Use absolute value of difference
+	from expected value when comparing with sqrt (eps).  Potential
+	problems like this were noticed by Przemek Klosowski
+	<przemek@rrdjazz.nist.gov>.
+	* octave.test/quad/quad-2.m: Likewise.
+	* octave.test/arith/exp-1.m: Likewise.
+	* octave.test/linalg/cond-1.m: Likewise.
+	* octave.test/linalg/eig-1.m: Likewise.
+	* octave.test/linalg/eig-2.m: Likewise.
+	* octave.test/linalg/inv-1.m: Likewise.
+	* octave.test/linalg/lu-2.m: Likewise.
+	* octave.test/linalg/svd-2.m: Likewise.
+	* octave.test/linalg/svd-10.m: Likewise.
+
+1999-10-29  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* octave.test/system/mktime-1.m (t): Compare whole seconds only.
+
+Fri Dec  4 20:55:47 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* octave.test/system/clock-1.m: Use standard format specifiers %d
+	and %H instead of %e and %k.
+
+Fri Oct 23 15:53:01 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* octave.test/arith/exp-5.m: New test.
+
+	* octave.test/stats/mean-3.m: New version of mean accepts a second
+	optional arg.
+
+	* octave.test/system/date-1.m: Correct test for new Y2K-compliant
+	date function.
+
+Wed May 27 00:38:27 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* octave.test/diffeq/dassl-1.m, octave.test/diffeq/dassl-2.m,
+	octave.test/diffeq/lsode-1.m: New tests, from David Billinghurst
+	<David.Billinghurst@riotinto.com.au>.
+
+	* octave.test/diffeq/lsode-2.m, octave.test/diffeq/lsode-3.m:
+ 	New tests, from Peter Hopfgartner <phopfgartner@memc.inet.it>.
+
+Thu Apr 23 01:45:16 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in: If $(SHARED_LIBS), set LD_LIBRARY_PATH for running
+	Octave before installation is complete.
+
+Wed Apr 15 15:23:43 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* octave.test/index/dfi-f/m-2.m, octave.test/index/dfi-f/index.exp:
+	Expect this test to succed now.
+
+Thu Mar  5 20:35:26 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* octave.test/system/gmtime-1.m, octave.test/system/localtime-1.m:
+	Not all systems have time zone info in the struct.
+
+Mon Mar  2 14:36:50 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* octave.test/io/binary-io-1.m (id): Use binary flag in fopen call.
+
+Wed Apr  2 21:59:15 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* octave.test/prefer/prefer.exp: Delete prefer-36 and prefer-37.
+	* octave.test/prefer/prefer-36.m, octave.test/prefer/prefer-37.m:
+	Delete test files.
+
+Wed Mar 12 16:56:41 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (install-strip): New target.
+
+Sat Mar  1 15:23:14 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 2.0.5 released.
+
+Thu Feb 20 02:58:05 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 2.0.4 released.
+
+Tue Feb 18 09:22:04 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 2.0.3 released.
+
+Mon Jan 27 15:51:58 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 2.0.2 released.
+
+Thu Jan 23 13:48:19 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* octave.test/unwind/unwind-2.m: Scripts now stop executing when
+	errors are encountered.
+
+	* octave.test/return/return.exp: Return at top level is no longer
+	an error.
+
+Tue Jan  7 00:16:23 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 2.0.1 released.
+
+Tue Dec 10 01:43:05 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 2.0 released.
+
+Fri Dec  6 15:23:39 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 1.94.
+
+Wed Nov 20 01:00:02 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 1.93.
+
+Thu Nov 14 00:05:57 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 1.92
+
+Thu Nov  7 12:43:03 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 1.91.
+
+Wed Oct 30 17:19:12 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 1.90.
+
+	* Makefile.in (DISTFILES): Add ChangeLog.
+
+Fri Feb  9 21:40:49 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (OCTAVE_SCRIPT_PATH): Add ../src directory (for .oct
+	files) and current directory (why not?).
+
+See ChangeLog.1 in the top level directory for earlier changes.

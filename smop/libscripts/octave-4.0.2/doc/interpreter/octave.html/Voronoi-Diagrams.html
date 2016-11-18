@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Voronoi Diagrams</title>
+
+<meta name="description" content="GNU Octave: Voronoi Diagrams">
+<meta name="keywords" content="GNU Octave: Voronoi Diagrams">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Geometry.html#Geometry" rel="up" title="Geometry">
+<link href="Convex-Hull.html#Convex-Hull" rel="next" title="Convex Hull">
+<link href="Identifying-Points-in-Triangulation.html#Identifying-Points-in-Triangulation" rel="prev" title="Identifying Points in Triangulation">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Voronoi-Diagrams"></a>
+<div class="header">
+<p>
+Next: <a href="Convex-Hull.html#Convex-Hull" accesskey="n" rel="next">Convex Hull</a>, Previous: <a href="Delaunay-Triangulation.html#Delaunay-Triangulation" accesskey="p" rel="prev">Delaunay Triangulation</a>, Up: <a href="Geometry.html#Geometry" accesskey="u" rel="up">Geometry</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Voronoi-Diagrams-1"></a>
+<h3 class="section">30.2 Voronoi Diagrams</h3>
+
+<p>A Voronoi diagram or Voronoi tessellation of a set of points <var>s</var> in
+an N-dimensional space, is the tessellation of the N-dimensional space
+such that all points in <code><var>v</var>(<var>p</var>)</code>, a partitions of the
+tessellation where <var>p</var> is a member of <var>s</var>, are closer to <var>p</var>
+than any other point in <var>s</var>.  The Voronoi diagram is related to the
+Delaunay triangulation of a set of points, in that the vertexes of the
+Voronoi tessellation are the centers of the circum-circles of the
+simplices of the Delaunay tessellation.
+</p>
+<a name="XREFvoronoi"></a><dl>
+<dt><a name="index-voronoi"></a>Function File: <em></em> <strong>voronoi</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-voronoi-1"></a>Function File: <em></em> <strong>voronoi</strong> <em>(<var>x</var>, <var>y</var>, <var>options</var>)</em></dt>
+<dt><a name="index-voronoi-2"></a>Function File: <em></em> <strong>voronoi</strong> <em>(&hellip;, &quot;linespec&quot;)</em></dt>
+<dt><a name="index-voronoi-3"></a>Function File: <em></em> <strong>voronoi</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-voronoi-4"></a>Function File: <em><var>h</var> =</em> <strong>voronoi</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-voronoi-5"></a>Function File: <em>[<var>vx</var>, <var>vy</var>] =</em> <strong>voronoi</strong> <em>(&hellip;)</em></dt>
+<dd><p>Plot the Voronoi diagram of points <code>(<var>x</var>, <var>y</var>)</code>.
+</p>
+<p>The Voronoi facets with points at infinity are not drawn.
+</p>
+<p>The <var>options</var> argument, which must be a string or cell array of strings,
+contains options passed to the underlying qhull command.
+See the documentation for the Qhull library for details
+<a href="http://www.qhull.org/html/qh-quick.htm#options">http://www.qhull.org/html/qh-quick.htm#options</a>.
+</p>
+<p>If <code>&quot;linespec&quot;</code> is given it is used to set the color and line style of
+the plot.
+</p>
+<p>If an axis graphics handle <var>hax</var> is supplied then the Voronoi diagram is
+drawn on the specified axis rather than in a new figure.
+</p>
+<p>If a single output argument is requested then the Voronoi diagram will be
+plotted and a graphics handle <var>h</var> to the plot is returned.
+</p>
+<p>[<var>vx</var>, <var>vy</var>] = voronoi (&hellip;) returns the Voronoi vertices
+instead of plotting the diagram.
+</p>
+<div class="example">
+<pre class="example">x = rand (10, 1);
+y = rand (size (x));
+h = convhull (x, y);
+[vx, vy] = voronoi (x, y);
+plot (vx, vy, &quot;-b&quot;, x, y, &quot;o&quot;, x(h), y(h), &quot;-g&quot;);
+legend (&quot;&quot;, &quot;points&quot;, &quot;hull&quot;);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFvoronoin">voronoin</a>, <a href="Delaunay-Triangulation.html#XREFdelaunay">delaunay</a>, <a href="Convex-Hull.html#XREFconvhull">convhull</a>.
+</p></dd></dl>
+
+
+<a name="XREFvoronoin"></a><dl>
+<dt><a name="index-voronoin"></a>Function File: <em>[<var>C</var>, <var>F</var>] =</em> <strong>voronoin</strong> <em>(<var>pts</var>)</em></dt>
+<dt><a name="index-voronoin-1"></a>Function File: <em>[<var>C</var>, <var>F</var>] =</em> <strong>voronoin</strong> <em>(<var>pts</var>, <var>options</var>)</em></dt>
+<dd><p>Compute N-dimensional Voronoi facets.
+</p>
+<p>The input matrix <var>pts</var> of size [n, dim] contains n points in a space of
+dimension dim.
+</p>
+<p><var>C</var> contains the points of the Voronoi facets.  The list <var>F</var>
+contains, for each facet, the indices of the Voronoi points.
+</p>
+<p>An optional second argument, which must be a string or cell array of strings,
+contains options passed to the underlying qhull command.
+See the documentation for the Qhull library for details
+<a href="http://www.qhull.org/html/qh-quick.htm#options">http://www.qhull.org/html/qh-quick.htm#options</a>.
+</p>
+<p>The default options depend on the dimension of the input:
+</p>
+<ul>
+<li> 2-D and 3-D: <var>options</var> = <code>{&quot;Qbb&quot;}</code>
+
+</li><li> 4-D and higher: <var>options</var> = <code>{&quot;Qbb&quot;, &quot;Qx&quot;}</code>
+</li></ul>
+
+<p>If <var>options</var> is not present or <code>[]</code> then the default arguments are
+used.  Otherwise, <var>options</var> replaces the default argument list.
+To append user options to the defaults it is necessary to repeat the
+default arguments in <var>options</var>.  Use a null string to pass no arguments.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFvoronoi">voronoi</a>, <a href="Convex-Hull.html#XREFconvhulln">convhulln</a>, <a href="Delaunay-Triangulation.html#XREFdelaunayn">delaunayn</a>.
+</p></dd></dl>
+
+
+<p>An example of the use of <code>voronoi</code> is
+</p>
+<div class="example">
+<pre class="example">rand (&quot;state&quot;,9);
+x = rand (10,1);
+y = rand (10,1);
+tri = delaunay (x, y);
+[vx, vy] = voronoi (x, y, tri);
+triplot (tri, x, y, &quot;b&quot;);
+hold on;
+plot (vx, vy, &quot;r&quot;);
+</pre></div>
+
+<p>The result of which can be seen in <a href="#fig_003avoronoi">Figure 30.3</a>.  Note that the
+circum-circle of one of the triangles has been added to this figure, to
+make the relationship between the Delaunay tessellation and the Voronoi
+diagram clearer.
+</p>
+<div class="float"><a name="fig_003avoronoi"></a>
+<div align="center"><img src="voronoi.png" alt="voronoi">
+</div>
+<div class="float-caption"><p><strong>Figure 30.3: </strong>Delaunay triangulation and Voronoi diagram of a random set of points</p></div></div>
+<p>Additional information about the size of the facets of a Voronoi
+diagram, and which points of a set of points is in a polygon can be had
+with the <code>polyarea</code> and <code>inpolygon</code> functions respectively.
+</p>
+<a name="XREFpolyarea"></a><dl>
+<dt><a name="index-polyarea"></a>Function File: <em></em> <strong>polyarea</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-polyarea-1"></a>Function File: <em></em> <strong>polyarea</strong> <em>(<var>x</var>, <var>y</var>, <var>dim</var>)</em></dt>
+<dd>
+<p>Determine area of a polygon by triangle method.
+</p>
+<p>The variables <var>x</var> and <var>y</var> define the vertex pairs, and must
+therefore have the same shape.  They can be either vectors or arrays.  If
+they are arrays then the columns of <var>x</var> and <var>y</var> are treated
+separately and an area returned for each.
+</p>
+<p>If the optional <var>dim</var> argument is given, then <code>polyarea</code> works
+along this dimension of the arrays <var>x</var> and <var>y</var>.
+</p>
+</dd></dl>
+
+
+<p>An example of the use of <code>polyarea</code> might be
+</p>
+<div class="example">
+<pre class="example">rand (&quot;state&quot;, 2);
+x = rand (10, 1);
+y = rand (10, 1);
+[c, f] = voronoin ([x, y]);
+af = zeros (size (f));
+for i = 1 : length (f)
+  af(i) = polyarea (c (f {i, :}, 1), c (f {i, :}, 2));
+endfor
+</pre></div>
+
+<p>Facets of the Voronoi diagram with a vertex at infinity have infinity
+area.  A simplified version of <code>polyarea</code> for rectangles is
+available with <code>rectint</code>
+</p>
+<a name="XREFrectint"></a><dl>
+<dt><a name="index-rectint"></a>Function File: <em><var>area</var> =</em> <strong>rectint</strong> <em>(<var>a</var>, <var>b</var>)</em></dt>
+<dd><p>Compute area or volume of intersection of rectangles or N-D boxes.
+</p>
+<p>Compute the area of intersection of rectangles in <var>a</var> and rectangles in
+<var>b</var>.  N-dimensional boxes are supported in which case the volume, or
+hypervolume is computed according to the number of dimensions.
+</p>
+<p>2-dimensional rectangles are defined as <code>[xpos ypos width height]</code>
+where xpos and ypos are the position of the bottom left corner.  Higher
+dimensions are supported where the coordinates for the minimum value of each
+dimension follow the length of the box in that dimension, e.g.,
+<code>[xpos ypos zpos kpos &hellip; width height depth k_length &hellip;]</code>.
+</p>
+<p>Each row of <var>a</var> and <var>b</var> define a rectangle, and if both define
+multiple rectangles, then the output, <var>area</var>, is a matrix where the i-th
+row corresponds to the i-th row of a and the j-th column corresponds to the
+j-th row of b.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFpolyarea">polyarea</a>.
+</p></dd></dl>
+
+
+<a name="XREFinpolygon"></a><dl>
+<dt><a name="index-inpolygon"></a>Function File: <em><var>in</var> =</em> <strong>inpolygon</strong> <em>(<var>x</var>, <var>y</var>, <var>xv</var>, <var>yv</var>)</em></dt>
+<dt><a name="index-inpolygon-1"></a>Function File: <em>[<var>in</var>, <var>on</var>] =</em> <strong>inpolygon</strong> <em>(<var>x</var>, <var>y</var>, <var>xv</var>, <var>yv</var>)</em></dt>
+<dd>
+<p>For a polygon defined by vertex points <code>(<var>xv</var>, <var>yv</var>)</code>, return
+true if the points <code>(<var>x</var>, <var>y</var>)</code> are inside (or on the boundary)
+of the polygon; Otherwise, return false.
+</p>
+<p>The input variables <var>x</var> and <var>y</var>, must have the same dimension.
+</p>
+<p>The optional output <var>on</var> returns true if the points are exactly on the
+polygon edge, and false otherwise.
+</p>
+<p><strong>See also:</strong> <a href="Delaunay-Triangulation.html#XREFdelaunay">delaunay</a>.
+</p></dd></dl>
+
+
+<p>An example of the use of <code>inpolygon</code> might be
+</p>
+<div class="example">
+<pre class="example">randn (&quot;state&quot;, 2);
+x = randn (100, 1);
+y = randn (100, 1);
+vx = cos (pi * [-1 : 0.1: 1]);
+vy = sin (pi * [-1 : 0.1 : 1]);
+in = inpolygon (x, y, vx, vy);
+plot (vx, vy, x(in), y(in), &quot;r+&quot;, x(!in), y(!in), &quot;bo&quot;);
+axis ([-2, 2, -2, 2]);
+</pre></div>
+
+<p>The result of which can be seen in <a href="#fig_003ainpolygon">Figure 30.4</a>.
+</p>
+<div class="float"><a name="fig_003ainpolygon"></a>
+<div align="center"><img src="inpolygon.png" alt="inpolygon">
+</div>
+<div class="float-caption"><p><strong>Figure 30.4: </strong>Demonstration of the <code>inpolygon</code> function to determine the
+points inside a polygon</p></div></div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Convex-Hull.html#Convex-Hull" accesskey="n" rel="next">Convex Hull</a>, Previous: <a href="Delaunay-Triangulation.html#Delaunay-Triangulation" accesskey="p" rel="prev">Delaunay Triangulation</a>, Up: <a href="Geometry.html#Geometry" accesskey="u" rel="up">Geometry</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

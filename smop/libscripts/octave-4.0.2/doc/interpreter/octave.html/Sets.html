@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Sets</title>
+
+<meta name="description" content="GNU Octave: Sets">
+<meta name="keywords" content="GNU Octave: Sets">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Set-Operations.html#Set-Operations" rel="next" title="Set Operations">
+<link href="Random-Number-Generation.html#Random-Number-Generation" rel="prev" title="Random Number Generation">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Sets"></a>
+<div class="header">
+<p>
+Next: <a href="Polynomial-Manipulations.html#Polynomial-Manipulations" accesskey="n" rel="next">Polynomial Manipulations</a>, Previous: <a href="Statistics.html#Statistics" accesskey="p" rel="prev">Statistics</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Sets-1"></a>
+<h2 class="chapter">27 Sets</h2>
+
+<p>Octave has a number of functions for managing sets of data.  A set is defined
+as a collection of unique elements and is typically represented by a vector of
+numbers sorted in ascending order.  Any vector or matrix can be converted to a
+set by removing duplicates through the use of the <code>unique</code> function.
+However, it isn&rsquo;t necessary to explicitly create a set as all of the functions
+which operate on sets will convert their input to a set before proceeding.
+</p>
+<a name="XREFunique"></a><dl>
+<dt><a name="index-unique"></a>Function File: <em></em> <strong>unique</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-unique-1"></a>Function File: <em></em> <strong>unique</strong> <em>(<var>x</var>, &quot;rows&quot;)</em></dt>
+<dt><a name="index-unique-2"></a>Function File: <em>[<var>y</var>, <var>i</var>, <var>j</var>] =</em> <strong>unique</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-unique-3"></a>Function File: <em>[<var>y</var>, <var>i</var>, <var>j</var>] =</em> <strong>unique</strong> <em>(&hellip;, &quot;first&quot;)</em></dt>
+<dt><a name="index-unique-4"></a>Function File: <em>[<var>y</var>, <var>i</var>, <var>j</var>] =</em> <strong>unique</strong> <em>(&hellip;, &quot;last&quot;)</em></dt>
+<dd><p>Return the unique elements of <var>x</var> sorted in ascending order.
+</p>
+<p>If the input <var>x</var> is a column vector then return a column vector;
+Otherwise, return a row vector.  <var>x</var> may also be a cell array of strings.
+</p>
+<p>If the optional argument <code>&quot;rows&quot;</code> is given then return the unique
+rows of <var>x</var> sorted in ascending order.  The input must be a 2-D matrix
+to use this option.
+</p>
+<p>If requested, return index vectors <var>i</var> and <var>j</var> such that
+<code><var>y</var> = <var>x</var>(<var>i</var>)</code> and <code><var>x</var> = <var>y</var>(<var>j</var>)</code>.
+</p>
+<p>Additionally, if <var>i</var> is a requested output then one of <code>&quot;first&quot;</code> or
+<code>&quot;last&quot;</code> may be given as an input.  If <code>&quot;last&quot;</code> is specified,
+return the highest possible indices in <var>i</var>, otherwise, if <code>&quot;first&quot;</code>
+is specified, return the lowest.  The default is <code>&quot;last&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="Set-Operations.html#XREFunion">union</a>, <a href="Set-Operations.html#XREFintersect">intersect</a>, <a href="Set-Operations.html#XREFsetdiff">setdiff</a>, <a href="Set-Operations.html#XREFsetxor">setxor</a>, <a href="Set-Operations.html#XREFismember">ismember</a>.
+</p></dd></dl>
+
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Set-Operations.html#Set-Operations" accesskey="1">Set Operations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Polynomial-Manipulations.html#Polynomial-Manipulations" accesskey="n" rel="next">Polynomial Manipulations</a>, Previous: <a href="Statistics.html#Statistics" accesskey="p" rel="prev">Statistics</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

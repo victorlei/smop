@@ -1,0 +1,373 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Linear Least Squares</title>
+
+<meta name="description" content="GNU Octave: Linear Least Squares">
+<meta name="keywords" content="GNU Octave: Linear Least Squares">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Optimization.html#Optimization" rel="up" title="Optimization">
+<link href="Statistics.html#Statistics" rel="next" title="Statistics">
+<link href="Nonlinear-Programming.html#Nonlinear-Programming" rel="prev" title="Nonlinear Programming">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Linear-Least-Squares"></a>
+<div class="header">
+<p>
+Previous: <a href="Nonlinear-Programming.html#Nonlinear-Programming" accesskey="p" rel="prev">Nonlinear Programming</a>, Up: <a href="Optimization.html#Optimization" accesskey="u" rel="up">Optimization</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Linear-Least-Squares-1"></a>
+<h3 class="section">25.4 Linear Least Squares</h3>
+
+<p>Octave also supports linear least squares minimization.  That is,
+Octave can find the parameter <em>b</em> such that the model
+<em>y = x*b</em>
+fits data <em>(x,y)</em> as well as possible, assuming zero-mean
+Gaussian noise.  If the noise is assumed to be isotropic the problem
+can be solved using the &lsquo;<samp>\</samp>&rsquo; or &lsquo;<samp>/</samp>&rsquo; operators, or the <code>ols</code>
+function.  In the general case where the noise is assumed to be anisotropic
+the <code>gls</code> is needed.
+</p>
+<a name="XREFols"></a><dl>
+<dt><a name="index-ols"></a>Function File: <em>[<var>beta</var>, <var>sigma</var>, <var>r</var>] =</em> <strong>ols</strong> <em>(<var>y</var>, <var>x</var>)</em></dt>
+<dd><p>Ordinary least squares estimation.
+</p>
+<p>OLS applies to the multivariate model
+<em>y = x*b + e</em><!-- /@w --> with
+<em>mean (e) = 0</em> and <em>cov (vec (e)) = kron (s, I)</em>.
+where
+<em>y</em> is a <em>t</em> by <em>p</em> matrix, <em>x</em> is a <em>t</em> by <em>k</em>
+matrix, <em>b</em> is a <em>k</em> by <em>p</em> matrix, and <em>e</em> is a
+<em>t</em> by <em>p</em> matrix.
+</p>
+<p>Each row of <var>y</var> and <var>x</var> is an observation and each column a variable.
+</p>
+<p>The return values <var>beta</var>, <var>sigma</var>, and <var>r</var> are defined as
+follows.
+</p>
+<dl compact="compact">
+<dt><var>beta</var></dt>
+<dd><p>The OLS estimator for <em>b</em>.
+<var>beta</var> is calculated directly via <code>inv (x'*x) * x' * y</code> if the
+matrix <code>x'*x</code> is of full rank.
+Otherwise, <code><var>beta</var> = pinv (<var>x</var>) * <var>y</var></code> where
+<code>pinv (<var>x</var>)</code> denotes the pseudoinverse of <var>x</var>.
+</p>
+</dd>
+<dt><var>sigma</var></dt>
+<dd><p>The OLS estimator for the matrix <var>s</var>,
+</p>
+<div class="example">
+<pre class="example"><var>sigma</var> = (<var>y</var>-<var>x</var>*<var>beta</var>)'
+  * (<var>y</var>-<var>x</var>*<var>beta</var>)
+  / (<var>t</var>-rank(<var>x</var>))
+</pre></div>
+
+</dd>
+<dt><var>r</var></dt>
+<dd><p>The matrix of OLS residuals, <code><var>r</var> = <var>y</var> - <var>x</var>*<var>beta</var></code>.
+</p></dd>
+</dl>
+
+<p><strong>See also:</strong> <a href="#XREFgls">gls</a>, <a href="Basic-Matrix-Functions.html#XREFpinv">pinv</a>.
+</p></dd></dl>
+
+
+<a name="XREFgls"></a><dl>
+<dt><a name="index-gls"></a>Function File: <em>[<var>beta</var>, <var>v</var>, <var>r</var>] =</em> <strong>gls</strong> <em>(<var>y</var>, <var>x</var>, <var>o</var>)</em></dt>
+<dd><p>Generalized least squares model.
+</p>
+<p>Perform a generalized least squares estimation for the multivariate model
+<em>y = x*b + e</em><!-- /@w --> with <em>mean (e) = 0</em> and
+<em>cov (vec (e)) = (s^2) o</em>,
+where
+<em>y</em> is a <em>t</em> by <em>p</em> matrix, <em>x</em> is a <em>t</em> by
+<em>k</em> matrix, <em>b</em> is a <em>k</em> by <em>p</em> matrix, <em>e</em>
+is a <em>t</em> by <em>p</em> matrix, and <em>o</em> is a <em>t*p</em> by
+<em>t*p</em> matrix.
+</p>
+<p>Each row of <var>y</var> and <var>x</var> is an observation and each column a
+variable.  The return values <var>beta</var>, <var>v</var>, and <var>r</var> are
+defined as follows.
+</p>
+<dl compact="compact">
+<dt><var>beta</var></dt>
+<dd><p>The GLS estimator for <em>b</em>.
+</p>
+</dd>
+<dt><var>v</var></dt>
+<dd><p>The GLS estimator for <em>s^2</em>.
+</p>
+</dd>
+<dt><var>r</var></dt>
+<dd><p>The matrix of GLS residuals, <em>r = y - x*beta</em>.
+</p></dd>
+</dl>
+
+<p><strong>See also:</strong> <a href="#XREFols">ols</a>.
+</p></dd></dl>
+
+
+<a name="XREFlsqnonneg"></a><dl>
+<dt><a name="index-lsqnonneg"></a>Function File: <em><var>x</var> =</em> <strong>lsqnonneg</strong> <em>(<var>c</var>, <var>d</var>)</em></dt>
+<dt><a name="index-lsqnonneg-1"></a>Function File: <em><var>x</var> =</em> <strong>lsqnonneg</strong> <em>(<var>c</var>, <var>d</var>, <var>x0</var>)</em></dt>
+<dt><a name="index-lsqnonneg-2"></a>Function File: <em><var>x</var> =</em> <strong>lsqnonneg</strong> <em>(<var>c</var>, <var>d</var>, <var>x0</var>, <var>options</var>)</em></dt>
+<dt><a name="index-lsqnonneg-3"></a>Function File: <em>[<var>x</var>, <var>resnorm</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-lsqnonneg-4"></a>Function File: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-lsqnonneg-5"></a>Function File: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>, <var>exitflag</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-lsqnonneg-6"></a>Function File: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>, <var>exitflag</var>, <var>output</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-lsqnonneg-7"></a>Function File: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>, <var>exitflag</var>, <var>output</var>, <var>lambda</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
+<dd><p>Minimize <code>norm (<var>c</var>*<var>x</var> - d)</code> subject to
+<code><var>x</var> &gt;= 0</code>.
+</p>
+<p><var>c</var> and <var>d</var> must be real.
+</p>
+<p><var>x0</var> is an optional initial guess for <var>x</var>.
+</p>
+<p>Currently, <code>lsqnonneg</code> recognizes these options: <code>&quot;MaxIter&quot;</code>,
+<code>&quot;TolX&quot;</code>.  For a description of these options, see
+<a href="#XREFoptimset">optimset</a>.
+</p>
+<p>Outputs:
+</p>
+<ul>
+<li> resnorm
+
+<p>The squared 2-norm of the residual: norm (<var>c</var>*<var>x</var>-<var>d</var>)^2
+</p>
+</li><li> residual
+
+<p>The residual: <var>d</var>-<var>c</var>*<var>x</var>
+</p>
+</li><li> exitflag
+
+<p>An indicator of convergence.  0 indicates that the iteration count was
+exceeded, and therefore convergence was not reached; &gt;0 indicates that the
+algorithm converged.  (The algorithm is stable and will converge given
+enough iterations.)
+</p>
+</li><li> output
+
+<p>A structure with two fields:
+</p>
+<ul>
+<li> <code>&quot;algorithm&quot;</code>: The algorithm used (<code>&quot;nnls&quot;</code>)
+
+</li><li> <code>&quot;iterations&quot;</code>: The number of iterations taken.
+</li></ul>
+
+</li><li> lambda
+
+<p>Not implemented.
+</p></li></ul>
+
+<p><strong>See also:</strong> <a href="#XREFoptimset">optimset</a>, <a href="Quadratic-Programming.html#XREFpqpnonneg">pqpnonneg</a>, <a href="#XREFlscov">lscov</a>.
+</p></dd></dl>
+
+
+<a name="XREFlscov"></a><dl>
+<dt><a name="index-lscov"></a>Function File: <em><var>x</var> =</em> <strong>lscov</strong> <em>(<var>A</var>, <var>b</var>)</em></dt>
+<dt><a name="index-lscov-1"></a>Function File: <em><var>x</var> =</em> <strong>lscov</strong> <em>(<var>A</var>, <var>b</var>, <var>V</var>)</em></dt>
+<dt><a name="index-lscov-2"></a>Function File: <em><var>x</var> =</em> <strong>lscov</strong> <em>(<var>A</var>, <var>b</var>, <var>V</var>, <var>alg</var>)</em></dt>
+<dt><a name="index-lscov-3"></a>Function File: <em>[<var>x</var>, <var>stdx</var>, <var>mse</var>, <var>S</var>] =</em> <strong>lscov</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Compute a generalized linear least squares fit.
+</p>
+<p>Estimate <var>x</var> under the model <var>b</var> = <var>A</var><var>x</var> + <var>w</var>,
+where the noise <var>w</var> is assumed to follow a normal distribution
+with covariance matrix <em>{\sigma^2} V</em>.
+</p>
+<p>If the size of the coefficient matrix <var>A</var> is n-by-p, the
+size of the vector/array of constant terms <var>b</var> must be n-by-k.
+</p>
+<p>The optional input argument <var>V</var> may be a n-by-1 vector of positive
+weights (inverse variances), or a n-by-n symmetric positive semidefinite
+matrix representing the covariance of <var>b</var>.  If <var>V</var> is not
+supplied, the ordinary least squares solution is returned.
+</p>
+<p>The <var>alg</var> input argument, a guidance on solution method to use, is
+currently ignored.
+</p>
+<p>Besides the least-squares estimate matrix <var>x</var> (p-by-k), the function
+also returns <var>stdx</var> (p-by-k), the error standard deviation of
+estimated <var>x</var>; <var>mse</var> (k-by-1), the estimated data error covariance
+scale factors (<em>\sigma^2</em>); and <var>S</var> (p-by-p, or p-by-p-by-k if k
+&gt; 1), the error covariance of <var>x</var>.
+</p>
+<p>Reference: Golub and Van Loan (1996),
+<cite>Matrix Computations (3rd Ed.)</cite>, Johns Hopkins, Section 5.6.3
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFols">ols</a>, <a href="#XREFgls">gls</a>, <a href="#XREFlsqnonneg">lsqnonneg</a>.
+</p></dd></dl>
+
+
+<a name="XREFoptimset"></a><dl>
+<dt><a name="index-optimset"></a>Function File: <em></em> <strong>optimset</strong> <em>()</em></dt>
+<dt><a name="index-optimset-1"></a>Function File: <em><var>options</var> =</em> <strong>optimset</strong> <em>()</em></dt>
+<dt><a name="index-optimset-2"></a>Function File: <em><var>options</var> =</em> <strong>optimset</strong> <em>(<var>par</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-optimset-3"></a>Function File: <em><var>options</var> =</em> <strong>optimset</strong> <em>(<var>old</var>, <var>par</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-optimset-4"></a>Function File: <em><var>options</var> =</em> <strong>optimset</strong> <em>(<var>old</var>, <var>new</var>)</em></dt>
+<dd><p>Create options structure for optimization functions.
+</p>
+<p>When called without any input or output arguments, <code>optimset</code> prints
+a list of all valid optimization parameters.
+</p>
+<p>When called with one output and no inputs, return an options structure with
+all valid option parameters initialized to <code>[]</code>.
+</p>
+<p>When called with a list of parameter/value pairs, return an options
+structure with only the named parameters initialized.
+</p>
+<p>When the first input is an existing options structure <var>old</var>, the values
+are updated from either the <var>par</var>/<var>val</var> list or from the options
+structure <var>new</var>.
+</p>
+<p>Valid parameters are:
+</p>
+<dl compact="compact">
+<dt>AutoScaling</dt>
+<dt>ComplexEqn</dt>
+<dt>Display</dt>
+<dd><p>Request verbose display of results from optimizations.  Values are:
+</p>
+<dl compact="compact">
+<dt><code>&quot;off&quot;</code> [default]</dt>
+<dd><p>No display.
+</p>
+</dd>
+<dt><code>&quot;iter&quot;</code></dt>
+<dd><p>Display intermediate results for every loop iteration.
+</p>
+</dd>
+<dt><code>&quot;final&quot;</code></dt>
+<dd><p>Display the result of the final loop iteration.
+</p>
+</dd>
+<dt><code>&quot;notify&quot;</code></dt>
+<dd><p>Display the result of the final loop iteration if the function has
+failed to converge.
+</p></dd>
+</dl>
+
+</dd>
+<dt>FinDiffType</dt>
+<dt>FunValCheck</dt>
+<dd><p>When enabled, display an error if the objective function returns an invalid
+value (a complex number, NaN, or Inf).  Must be set to <code>&quot;on&quot;</code> or
+<code>&quot;off&quot;</code> [default].  Note: the functions <code>fzero</code> and
+<code>fminbnd</code> correctly handle Inf values and only complex values or NaN
+will cause an error in this case.
+</p>
+</dd>
+<dt>GradObj</dt>
+<dd><p>When set to <code>&quot;on&quot;</code>, the function to be minimized must return a
+second argument which is the gradient, or first derivative, of the
+function at the point <var>x</var>.  If set to <code>&quot;off&quot;</code> [default], the
+gradient is computed via finite differences.
+</p>
+</dd>
+<dt>Jacobian</dt>
+<dd><p>When set to <code>&quot;on&quot;</code>, the function to be minimized must return a
+second argument which is the Jacobian, or first derivative, of the
+function at the point <var>x</var>.  If set to <code>&quot;off&quot;</code> [default], the
+Jacobian is computed via finite differences.
+</p>
+</dd>
+<dt>MaxFunEvals</dt>
+<dd><p>Maximum number of function evaluations before optimization stops.
+Must be a positive integer.
+</p>
+</dd>
+<dt>MaxIter</dt>
+<dd><p>Maximum number of algorithm iterations before optimization stops.
+Must be a positive integer.
+</p>
+</dd>
+<dt>OutputFcn</dt>
+<dd><p>A user-defined function executed once per algorithm iteration.
+</p>
+</dd>
+<dt>TolFun</dt>
+<dd><p>Termination criterion for the function output.  If the difference in the
+calculated objective function between one algorithm iteration and the next
+is less than <code>TolFun</code> the optimization stops.  Must be a positive
+scalar.
+</p>
+</dd>
+<dt>TolX</dt>
+<dd><p>Termination criterion for the function input.  If the difference in <var>x</var>,
+the current search point, between one algorithm iteration and the next is
+less than <code>TolX</code> the optimization stops.  Must be a positive scalar.
+</p>
+</dd>
+<dt>TypicalX</dt>
+<dt>Updating</dt>
+</dl>
+
+<p><strong>See also:</strong> <a href="#XREFoptimget">optimget</a>.
+</p></dd></dl>
+
+
+<a name="XREFoptimget"></a><dl>
+<dt><a name="index-optimget"></a>Function File: <em></em> <strong>optimget</strong> <em>(<var>options</var>, <var>parname</var>)</em></dt>
+<dt><a name="index-optimget-1"></a>Function File: <em></em> <strong>optimget</strong> <em>(<var>options</var>, <var>parname</var>, <var>default</var>)</em></dt>
+<dd><p>Return the specific option <var>parname</var> from the optimization options
+structure <var>options</var> created by <code>optimset</code>.
+</p>
+<p>If <var>parname</var> is not defined then return <var>default</var> if supplied,
+otherwise return an empty matrix.
+</p>
+<p><strong>See also:</strong> <a href="#XREFoptimset">optimset</a>.
+</p></dd></dl>
+
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Nonlinear-Programming.html#Nonlinear-Programming" accesskey="p" rel="prev">Nonlinear Programming</a>, Up: <a href="Optimization.html#Optimization" accesskey="u" rel="up">Optimization</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Processing Data in Cell Arrays</title>
+
+<meta name="description" content="GNU Octave: Processing Data in Cell Arrays">
+<meta name="keywords" content="GNU Octave: Processing Data in Cell Arrays">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Cell-Arrays.html#Cell-Arrays" rel="up" title="Cell Arrays">
+<link href="Comma-Separated-Lists.html#Comma-Separated-Lists" rel="next" title="Comma Separated Lists">
+<link href="Cell-Arrays-of-Strings.html#Cell-Arrays-of-Strings" rel="prev" title="Cell Arrays of Strings">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Processing-Data-in-Cell-Arrays"></a>
+<div class="header">
+<p>
+Previous: <a href="Cell-Arrays-of-Strings.html#Cell-Arrays-of-Strings" accesskey="p" rel="prev">Cell Arrays of Strings</a>, Up: <a href="Cell-Arrays.html#Cell-Arrays" accesskey="u" rel="up">Cell Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Processing-Data-in-Cell-Arrays-1"></a>
+<h4 class="subsection">6.2.5 Processing Data in Cell Arrays</h4>
+
+<p>Data that is stored in a cell array can be processed in several ways
+depending on the actual data.  The simplest way to process that data
+is to iterate through it using one or more <code>for</code> loops.  The same
+idea can be implemented more easily through the use of the <code>cellfun</code>
+function that calls a user-specified function on all elements of a cell
+array.  See <a href="Function-Application.html#XREFcellfun">cellfun</a>.
+</p>
+<p>An alternative is to convert the data to a different container, such as
+a matrix or a data structure.  Depending on the data this is possible
+using the <code>cell2mat</code> and <code>cell2struct</code> functions.
+</p>
+<a name="XREFcell2mat"></a><dl>
+<dt><a name="index-cell2mat"></a>Function File: <em><var>m</var> =</em> <strong>cell2mat</strong> <em>(<var>c</var>)</em></dt>
+<dd><p>Convert the cell array <var>c</var> into a matrix by concatenating all
+elements of <var>c</var> into a hyperrectangle.
+</p>
+<p>Elements of <var>c</var> must be numeric, logical, or char matrices; or cell
+arrays; or structs; and <code>cat</code> must be able to concatenate them together.
+</p>
+<p><strong>See also:</strong> <a href="Creating-Cell-Arrays.html#XREFmat2cell">mat2cell</a>, <a href="Creating-Cell-Arrays.html#XREFnum2cell">num2cell</a>.
+</p></dd></dl>
+
+
+<a name="XREFcell2struct"></a><dl>
+<dt><a name="index-cell2struct"></a>Built-in Function: <em></em> <strong>cell2struct</strong> <em>(<var>cell</var>, <var>fields</var>)</em></dt>
+<dt><a name="index-cell2struct-1"></a>Built-in Function: <em></em> <strong>cell2struct</strong> <em>(<var>cell</var>, <var>fields</var>, <var>dim</var>)</em></dt>
+<dd><p>Convert <var>cell</var> to a structure.
+</p>
+<p>The number of fields in <var>fields</var> must match the number of elements in
+<var>cell</var> along dimension <var>dim</var>, that is
+<code>numel (<var>fields</var>) == size (<var>cell</var>, <var>dim</var>)</code>.  If <var>dim</var>
+is omitted, a value of 1 is assumed.
+</p>
+<div class="example">
+<pre class="example">A = cell2struct ({&quot;Peter&quot;, &quot;Hannah&quot;, &quot;Robert&quot;;
+                   185, 170, 168},
+                 {&quot;Name&quot;,&quot;Height&quot;}, 1);
+A(1)
+   &rArr;
+      {
+        Name   = Peter
+        Height = 185
+      }
+
+</pre></div>
+
+<p><strong>See also:</strong> <a href="Processing-Data-in-Structures.html#XREFstruct2cell">struct2cell</a>, <a href="#XREFcell2mat">cell2mat</a>, <a href="Creating-Structures.html#XREFstruct">struct</a>.
+</p></dd></dl>
+
+
+
+
+
+</body>
+</html>

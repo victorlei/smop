@@ -1,0 +1,52 @@
+#! /bin/sh
+#
+# Copyright (C) 2005-2015 John W. Eaton
+#
+# This file is part of Octave.
+#
+# Octave is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 3 of the License, or (at
+# your option) any later version.
+#
+# Octave is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Octave; see the file COPYING.  If not, see
+# <http://www.gnu.org/licenses/>.
+
+if [ $# -ne 2 ]; then
+  echo "usage: get-errno-list [--perl PERL|--python PYTHON]" 1>&2
+  exit 1
+fi
+
+if [ $1 = "--perl" ]; then
+  PERL="$2";
+  $PERL -e 'foreach $key (keys(%!)) {
+    $x .= "#if defined ($key)\n    { \"$key\", $key, },\n#endif\n";
+  }
+  while (<>) {
+    s/^ *\@SYSDEP_ERRNO_LIST\@/$ x/;
+    print;
+  }'
+
+elif [ $1 = "--python" ]; then
+  PYTHON="$2";
+  $PYTHON -c '
+from errno import errorcode
+from sys import stdin
+
+t = "#if defined (%s)\n    { \"%s\", %s, },\n#endif\n"
+errstr = ""
+for k in errorcode.keys ():
+    errstr += t % tuple(3*[errorcode[k]])
+
+for l in stdin:
+    print l.replace("@SYSDEP_ERRNO_LIST@", errstr),
+'
+fi
+
+exit $?

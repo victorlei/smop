@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Using the Emacs Info Reader for Octave</title>
+
+<meta name="description" content="GNU Octave: Using the Emacs Info Reader for Octave">
+<meta name="keywords" content="GNU Octave: Using the Emacs Info Reader for Octave">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Emacs-Octave-Support.html#Emacs-Octave-Support" rel="up" title="Emacs Octave Support">
+<link href="Grammar-and-Parser.html#Grammar-and-Parser" rel="next" title="Grammar and Parser">
+<link href="Running-Octave-from-Within-Emacs.html#Running-Octave-from-Within-Emacs" rel="prev" title="Running Octave from Within Emacs">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Using-the-Emacs-Info-Reader-for-Octave"></a>
+<div class="header">
+<p>
+Previous: <a href="Running-Octave-from-Within-Emacs.html#Running-Octave-from-Within-Emacs" accesskey="p" rel="prev">Running Octave from Within Emacs</a>, Up: <a href="Emacs-Octave-Support.html#Emacs-Octave-Support" accesskey="u" rel="up">Emacs Octave Support</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Using-the-Emacs-Info-Reader-for-Octave-1"></a>
+<h3 class="appendixsec">H.4 Using the Emacs Info Reader for Octave</h3>
+
+<p>You may also use the Emacs Info reader with Octave&rsquo;s <code>doc</code> function.
+For this, the package <samp>gnuserv</samp> needs to be installed.
+</p>
+<p>If <samp>gnuserv</samp> is installed, add the lines
+</p><div class="lisp">
+<pre class="lisp">(autoload 'octave-help &quot;octave-hlp&quot; nil t)
+(require 'gnuserv)
+(gnuserv-start)
+</pre></div>
+<p>to your <samp>.emacs</samp> file.
+</p>
+<p>You can use either &lsquo;plain&rsquo; Emacs Info or the function <code>octave-help</code>
+as your Octave info reader (for &lsquo;<samp>help -i</samp>&rsquo;).  In the former case,
+use <code>info_program (&quot;info-emacs-info&quot;)</code>.
+The latter is perhaps more attractive because it allows one to look up keys
+in the indices of <em>several</em> info files related to Octave (provided
+that the Emacs variable <code>octave-help-files</code> is set correctly).  In
+this case, use <code>info_program (&quot;info-emacs-octave-help&quot;)</code>.
+</p>
+<p>If you use Octave from within Emacs, it is best to add these settings to
+your <samp>~/.emacs-octave</samp> startup file (or the file pointed to by the
+Emacs variable <code>inferior-octave-startup-file</code>).
+</p>
+
+
+
+
+</body>
+</html>

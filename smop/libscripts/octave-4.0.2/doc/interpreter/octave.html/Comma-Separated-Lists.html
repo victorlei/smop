@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Comma Separated Lists</title>
+
+<meta name="description" content="GNU Octave: Comma Separated Lists">
+<meta name="keywords" content="GNU Octave: Comma Separated Lists">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Data-Containers.html#Data-Containers" rel="up" title="Data Containers">
+<link href="Comma-Separated-Lists-Generated-from-Cell-Arrays.html#Comma-Separated-Lists-Generated-from-Cell-Arrays" rel="next" title="Comma Separated Lists Generated from Cell Arrays">
+<link href="Processing-Data-in-Cell-Arrays.html#Processing-Data-in-Cell-Arrays" rel="prev" title="Processing Data in Cell Arrays">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Comma-Separated-Lists"></a>
+<div class="header">
+<p>
+Previous: <a href="Cell-Arrays.html#Cell-Arrays" accesskey="p" rel="prev">Cell Arrays</a>, Up: <a href="Data-Containers.html#Data-Containers" accesskey="u" rel="up">Data Containers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Comma-Separated-Lists-1"></a>
+<h3 class="section">6.3 Comma Separated Lists</h3>
+<a name="index-comma-separated-lists"></a>
+<a name="index-cs_002dlists"></a>
+
+<p>Comma separated lists <a name="DOCF2" href="#FOOT2"><sup>2</sup></a> are the basic argument type
+to all Octave functions - both for input and return arguments.  In the
+example
+</p>
+<div class="example">
+<pre class="example">max (<var>a</var>, <var>b</var>)
+</pre></div>
+
+<p>&lsquo;<samp><var>a</var>, <var>b</var></samp>&rsquo; is a comma separated list.  Comma separated lists
+can appear on both the right and left hand side of an assignment.  For
+example
+</p>
+<div class="example">
+<pre class="example">x = [1 0 1 0 0 1 1; 0 0 0 0 0 0 7];
+[<var>i</var>, <var>j</var>] = find (<var>x</var>, 2, &quot;last&quot;);
+</pre></div>
+
+<p>Here, &lsquo;<samp><var>x</var>, 2, &quot;last&quot;</samp>&rsquo; is a comma separated list constituting
+the input arguments of <code>find</code>.  <code>find</code> returns a comma
+separated list of output arguments which is assigned element by
+element to the comma separated list &lsquo;<samp><var>i</var>, <var>j</var></samp>&rsquo;.
+</p>
+<p>Another example of where comma separated lists are used is in the
+creation of a new array with <code>[]</code> (see <a href="Matrices.html#Matrices">Matrices</a>) or the
+creation of a cell array with <code>{}</code> (see <a href="Basic-Usage-of-Cell-Arrays.html#Basic-Usage-of-Cell-Arrays">Basic Usage of Cell Arrays</a>).  In the expressions
+</p>
+<div class="example">
+<pre class="example">a = [1, 2, 3, 4];
+c = {4, 5, 6, 7};
+</pre></div>
+
+<p>both &lsquo;<samp>1, 2, 3, 4</samp>&rsquo; and &lsquo;<samp>4, 5, 6, 7</samp>&rsquo; are comma separated lists.
+</p>
+<p>Comma separated lists cannot be directly manipulated by the
+user.  However, both structure arrays and cell arrays can be converted
+into comma separated lists, and thus used in place of explicitly
+written comma separated lists.  This feature is useful in many ways,
+as will be shown in the following subsections.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Comma-Separated-Lists-Generated-from-Cell-Arrays.html#Comma-Separated-Lists-Generated-from-Cell-Arrays" accesskey="1">Comma Separated Lists Generated from Cell Arrays</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Comma-Separated-Lists-Generated-from-Structure-Arrays.html#Comma-Separated-Lists-Generated-from-Structure-Arrays" accesskey="2">Comma Separated Lists Generated from Structure Arrays</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<div class="footnote">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h3><a name="FOOT2" href="#DOCF2">(2)</a></h3>
+<p>Comma-separated lists are also sometimes
+informally referred to as <em>cs-lists</em>.</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Cell-Arrays.html#Cell-Arrays" accesskey="p" rel="prev">Cell Arrays</a>, Up: <a href="Data-Containers.html#Data-Containers" accesskey="u" rel="up">Data Containers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Array and Sparse Class Differences</title>
+
+<meta name="description" content="GNU Octave: Array and Sparse Class Differences">
+<meta name="keywords" content="GNU Octave: Array and Sparse Class Differences">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Sparse-Matrices-in-Oct_002dFiles.html#Sparse-Matrices-in-Oct_002dFiles" rel="up" title="Sparse Matrices in Oct-Files">
+<link href="Creating-Sparse-Matrices-in-Oct_002dFiles.html#Creating-Sparse-Matrices-in-Oct_002dFiles" rel="next" title="Creating Sparse Matrices in Oct-Files">
+<link href="Sparse-Matrices-in-Oct_002dFiles.html#Sparse-Matrices-in-Oct_002dFiles" rel="prev" title="Sparse Matrices in Oct-Files">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Array-and-Sparse-Class-Differences"></a>
+<div class="header">
+<p>
+Next: <a href="Creating-Sparse-Matrices-in-Oct_002dFiles.html#Creating-Sparse-Matrices-in-Oct_002dFiles" accesskey="n" rel="next">Creating Sparse Matrices in Oct-Files</a>, Up: <a href="Sparse-Matrices-in-Oct_002dFiles.html#Sparse-Matrices-in-Oct_002dFiles" accesskey="u" rel="up">Sparse Matrices in Oct-Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Array-and-Sparse-Class-Differences-1"></a>
+<h4 class="subsubsection">A.1.6.1 Array and Sparse Class Differences</h4>
+
+<p>The number of elements in a sparse matrix is considered to be the number
+of nonzero elements rather than the product of the dimensions.  Therefore
+</p>
+<div class="example">
+<pre class="example">SparseMatrix sm;
+&hellip;
+int nel = sm.nelem ();
+</pre></div>
+
+<p>returns the number of nonzero elements.  If the user really requires the
+number of elements in the matrix, including the nonzero elements, they
+should use <code>numel</code> rather than <code>nelem</code>.  Note that for very
+large matrices, where the product of the two dimensions is larger than
+the representation of an unsigned int, then <code>numel</code> can overflow.
+An example is <code>speye (1e6)</code> which will create a matrix with a million
+rows and columns, but only a million nonzero elements.  Therefore the
+number of rows by the number of columns in this case is more than two
+hundred times the maximum value that can be represented by an unsigned int.
+The use of <code>numel</code> should therefore be avoided useless it is known
+it won&rsquo;t overflow.
+</p>
+<p>Extreme care must be take with the elem method and the <code>&quot;()&quot;</code> operator,
+which perform basically the same function.  The reason is that if a
+sparse object is non-const, then Octave will assume that a
+request for a zero element in a sparse matrix is in fact a request
+to create this element so it can be filled.  Therefore a piece of
+code like
+</p>
+<div class="example">
+<pre class="example">SparseMatrix sm;
+&hellip;
+for (int j = 0; j &lt; nc; j++)
+  for (int i = 0; i &lt; nr; i++)
+    std::cerr &lt;&lt; &quot; (&quot; &lt;&lt; i &lt;&lt; &quot;,&quot; &lt;&lt; j &lt;&lt; &quot;): &quot; &lt;&lt; sm(i,j) &lt;&lt; std::endl;
+</pre></div>
+
+<p>is a great way of turning the sparse matrix into a dense one, and a
+very slow way at that since it reallocates the sparse object at each
+zero element in the matrix.
+</p>
+<p>An easy way of preventing the above from happening is to create a temporary
+constant version of the sparse matrix.  Note that only the container for
+the sparse matrix will be copied, while the actual representation of the
+data will be shared between the two versions of the sparse matrix.  So this
+is not a costly operation.  For example, the above would become
+</p>
+<div class="example">
+<pre class="example">SparseMatrix sm;
+&hellip;
+const SparseMatrix tmp (sm);
+for (int j = 0; j &lt; nc; j++)
+  for (int i = 0; i &lt; nr; i++)
+    std::cerr &lt;&lt; &quot; (&quot; &lt;&lt; i &lt;&lt; &quot;,&quot; &lt;&lt; j &lt;&lt; &quot;): &quot; &lt;&lt; tmp(i,j) &lt;&lt; std::endl;
+</pre></div>
+
+<p>Finally, as the sparse types aren&rsquo;t represented by a contiguous
+block of memory, the <code>fortran_vec</code> method of the <code>Array&lt;T&gt;</code>
+is not available.  It is, however, replaced by three separate methods
+<code>ridx</code>, <code>cidx</code> and <code>data</code>, that access the raw compressed
+column format that Octave sparse matrices are stored in.  These methods can be
+used in a manner similar to <code>elem</code> to allow the matrix to be accessed or
+filled.  However, in that case it is up to the user to respect the sparse
+matrix compressed column format.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Creating-Sparse-Matrices-in-Oct_002dFiles.html#Creating-Sparse-Matrices-in-Oct_002dFiles" accesskey="n" rel="next">Creating Sparse Matrices in Oct-Files</a>, Up: <a href="Sparse-Matrices-in-Oct_002dFiles.html#Sparse-Matrices-in-Oct_002dFiles" accesskey="u" rel="up">Sparse Matrices in Oct-Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

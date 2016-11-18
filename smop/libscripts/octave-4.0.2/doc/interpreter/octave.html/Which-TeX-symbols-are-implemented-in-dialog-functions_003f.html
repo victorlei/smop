@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Which TeX symbols are implemented in dialog functions?</title>
+
+<meta name="description" content="GNU Octave: Which TeX symbols are implemented in dialog functions?">
+<meta name="keywords" content="GNU Octave: Which TeX symbols are implemented in dialog functions?">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions" rel="up" title="FAQ - Frequently asked Questions">
+<link href="Packages.html#Packages" rel="next" title="Packages">
+<link href="How-can-I-handle-memory-limitations_003f.html#How-can-I-handle-memory-limitations_003f" rel="prev" title="How can I handle memory limitations?">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Which-TeX-symbols-are-implemented-in-dialog-functions_003f"></a>
+<div class="header">
+<p>
+Previous: <a href="How-can-I-handle-memory-limitations_003f.html#How-can-I-handle-memory-limitations_003f" accesskey="p" rel="prev">How can I handle memory limitations?</a>, Up: <a href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions" accesskey="u" rel="up">FAQ - Frequently asked Questions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Which-TeX-symbols-are-implemented-in-dialog-functions_003f-1"></a>
+<h4 class="subsection">37.3.5 Which TeX symbols are implemented in dialog functions?</h4>
+<a name="index-symbols_002c-translation-table"></a>
+<a name="index-TeX-symbols_002c-translation-table"></a>
+<a name="index-translation-table-for-TeX-symbols"></a>
+
+<p>The dialog functions contain a translation table for TeX like symbol codes.
+Thus messages and labels can be tailored to show some common mathematical
+symbols or Greek characters.  No further TeX formatting codes are supported.
+ The characters are translated to their Unicode equivalent.  However, not all
+characters may be displayable on your system.  This depends on the font used by
+the Java system on your computer.
+</p>
+<p>Each TeX symbol code must be terminated by a space character to make it
+distinguishable from the surrounding text.  Therefore the string &lsquo;<samp>\alpha
+=12.0</samp>&rsquo; will produce the desired result, whereas &lsquo;<samp>\alpha=12.0</samp>&rsquo; would
+produce the literal text <var>&rsquo;\alpha=12.0&rsquo;</var>.
+</p>
+
+<p><strong>See also:</strong> errordlg, helpdlg, inputdlg, listdlg, msgbox, questdlg, warndlg.
+</p>
+<div class="float">
+<p>The table below shows each TeX character code and the corresponding Unicode
+character:
+</p><table>
+<tr><td width="18%">\alpha</td><td width="10%">&rsquo;α&rsquo;</td><td width="5%"></td><td width="18%">\beta</td><td width="10%">&rsquo;β&rsquo;</td><td width="5%"></td><td width="18%">\gamma</td><td width="10%">&rsquo;γ&rsquo;</td></tr>
+<tr><td width="18%">\delta</td><td width="10%">&rsquo;δ&rsquo;</td><td width="5%"></td><td width="18%">\epsilon</td><td width="10%">&rsquo;ε&rsquo;</td><td width="5%"></td><td width="18%">\zeta</td><td width="10%">&rsquo;ζ&rsquo;</td></tr>
+<tr><td width="18%">\eta</td><td width="10%">&rsquo;η&rsquo;</td><td width="5%"></td><td width="18%">\theta</td><td width="10%">&rsquo;θ&rsquo;</td><td width="5%"></td><td width="18%">\vartheta</td><td width="10%">&rsquo;ϑ&rsquo;</td></tr>
+<tr><td width="18%">\iota</td><td width="10%">&rsquo;ι&rsquo;</td><td width="5%"></td><td width="18%">\kappa</td><td width="10%">&rsquo;κ&rsquo;</td><td width="5%"></td><td width="18%">\lambda</td><td width="10%">&rsquo;λ&rsquo;</td></tr>
+<tr><td width="18%">\mu</td><td width="10%">&rsquo;μ&rsquo;</td><td width="5%"></td><td width="18%">\nu</td><td width="10%">&rsquo;ν&rsquo;</td><td width="5%"></td><td width="18%">\xi</td><td width="10%">&rsquo;ξ&rsquo;</td></tr>
+<tr><td width="18%">\pi</td><td width="10%">&rsquo;π&rsquo;</td><td width="5%"></td><td width="18%">\rho</td><td width="10%">&rsquo;ρ&rsquo;</td><td width="5%"></td><td width="18%">\sigma</td><td width="10%">&rsquo;σ&rsquo;</td></tr>
+<tr><td width="18%">\varsigma</td><td width="10%">&rsquo;ς&rsquo;</td><td width="5%"></td><td width="18%">\tau</td><td width="10%">&rsquo;τ&rsquo;</td><td width="5%"></td><td width="18%">\phi</td><td width="10%">&rsquo;φ&rsquo;</td></tr>
+<tr><td width="18%">\chi</td><td width="10%">&rsquo;χ&rsquo;</td><td width="5%"></td><td width="18%">\psi</td><td width="10%">&rsquo;ψ&rsquo;</td><td width="5%"></td><td width="18%">\omega</td><td width="10%">&rsquo;ω&rsquo;</td></tr>
+<tr><td width="18%">\upsilon</td><td width="10%">&rsquo;υ&rsquo;</td><td width="5%"></td><td width="18%">\Gamma</td><td width="10%">&rsquo;Γ&rsquo;</td><td width="5%"></td><td width="18%">\Delta</td><td width="10%">&rsquo;Δ&rsquo;</td></tr>
+<tr><td width="18%">\Theta</td><td width="10%">&rsquo;Θ&rsquo;</td><td width="5%"></td><td width="18%">\Lambda</td><td width="10%">&rsquo;Λ&rsquo;</td><td width="5%"></td><td width="18%">\Pi</td><td width="10%">&rsquo;Π&rsquo;</td></tr>
+<tr><td width="18%">\Xi</td><td width="10%">&rsquo;Ξ&rsquo;</td><td width="5%"></td><td width="18%">\Sigma</td><td width="10%">&rsquo;Σ&rsquo;</td><td width="5%"></td><td width="18%">\Upsilon</td><td width="10%">&rsquo;Υ&rsquo;</td></tr>
+<tr><td width="18%">\Phi</td><td width="10%">&rsquo;Φ&rsquo;</td><td width="5%"></td><td width="18%">\Psi</td><td width="10%">&rsquo;Ψ&rsquo;</td><td width="5%"></td><td width="18%">\Omega</td><td width="10%">&rsquo;Ω&rsquo;</td></tr>
+<tr><td width="18%">\Im</td><td width="10%">&rsquo;ℑ&rsquo;</td><td width="5%"></td><td width="18%">\Re</td><td width="10%">&rsquo;ℜ&rsquo;</td><td width="5%"></td><td width="18%">\leq</td><td width="10%">&rsquo;≤&rsquo;</td></tr>
+<tr><td width="18%">\geq</td><td width="10%">&rsquo;≥&rsquo;</td><td width="5%"></td><td width="18%">\neq</td><td width="10%">&rsquo;≠&rsquo;</td><td width="5%"></td><td width="18%">\pm</td><td width="10%">&rsquo;±&rsquo;</td></tr>
+<tr><td width="18%">\infty</td><td width="10%">&rsquo;∞&rsquo;</td><td width="5%"></td><td width="18%">\partial</td><td width="10%">&rsquo;∂&rsquo;</td><td width="5%"></td><td width="18%">\approx</td><td width="10%">&rsquo;≈&rsquo;</td></tr>
+<tr><td width="18%">\circ</td><td width="10%">&rsquo;∘&rsquo;</td><td width="5%"></td><td width="18%">\bullet</td><td width="10%">&rsquo;•&rsquo;</td><td width="5%"></td><td width="18%">\times</td><td width="10%">&rsquo;×&rsquo;</td></tr>
+<tr><td width="18%">\sim</td><td width="10%">&rsquo;~&rsquo;</td><td width="5%"></td><td width="18%">\nabla</td><td width="10%">&rsquo;∇&rsquo;</td><td width="5%"></td><td width="18%">\ldots</td><td width="10%">&rsquo;…&rsquo;</td></tr>
+<tr><td width="18%">\exists</td><td width="10%">&rsquo;∃&rsquo;</td><td width="5%"></td><td width="18%">\neg</td><td width="10%">&rsquo;¬&rsquo;</td><td width="5%"></td><td width="18%">\aleph</td><td width="10%">&rsquo;ℵ&rsquo;</td></tr>
+<tr><td width="18%">\forall</td><td width="10%">&rsquo;∀&rsquo;</td><td width="5%"></td><td width="18%">\cong</td><td width="10%">&rsquo;≅&rsquo;</td><td width="5%"></td><td width="18%">\wp</td><td width="10%">&rsquo;℘&rsquo;</td></tr>
+<tr><td width="18%">\propto</td><td width="10%">&rsquo;∝&rsquo;</td><td width="5%"></td><td width="18%">\otimes</td><td width="10%">&rsquo;⊗&rsquo;</td><td width="5%"></td><td width="18%">\oplus</td><td width="10%">&rsquo;⊕&rsquo;</td></tr>
+<tr><td width="18%">\oslash</td><td width="10%">&rsquo;⊘&rsquo;</td><td width="5%"></td><td width="18%">\cap</td><td width="10%">&rsquo;∩&rsquo;</td><td width="5%"></td><td width="18%">\cup</td><td width="10%">&rsquo;∪&rsquo;</td></tr>
+<tr><td width="18%">\ni</td><td width="10%">&rsquo;∋&rsquo;</td><td width="5%"></td><td width="18%">\in</td><td width="10%">&rsquo;∈&rsquo;</td><td width="5%"></td><td width="18%">\div</td><td width="10%">&rsquo;÷&rsquo;</td></tr>
+<tr><td width="18%">\equiv</td><td width="10%">&rsquo;≡&rsquo;</td><td width="5%"></td><td width="18%">\int</td><td width="10%">&rsquo;∫&rsquo;</td><td width="5%"></td><td width="18%">\perp</td><td width="10%">&rsquo;⊥&rsquo;</td></tr>
+<tr><td width="18%">\wedge</td><td width="10%">&rsquo;∧&rsquo;</td><td width="5%"></td><td width="18%">\vee</td><td width="10%">&rsquo;∨&rsquo;</td><td width="5%"></td><td width="18%">\supseteq</td><td width="10%">&rsquo;⊇&rsquo;</td></tr>
+<tr><td width="18%">\supset</td><td width="10%">&rsquo;⊃&rsquo;</td><td width="5%"></td><td width="18%">\subseteq</td><td width="10%">&rsquo;⊆&rsquo;</td><td width="5%"></td><td width="18%">\subset</td><td width="10%">&rsquo;⊂&rsquo;</td></tr>
+<tr><td width="18%">\clubsuit</td><td width="10%">&rsquo;♣&rsquo;</td><td width="5%"></td><td width="18%">\spadesuit</td><td width="10%">&rsquo;♠&rsquo;</td><td width="5%"></td><td width="18%">\heartsuit</td><td width="10%">&rsquo;♥&rsquo;</td></tr>
+<tr><td width="18%">\diamondsuit</td><td width="10%">&rsquo;♦&rsquo;</td><td width="5%"></td><td width="18%">\copyright</td><td width="10%">&rsquo;©&rsquo;</td><td width="5%"></td><td width="18%">\leftarrow</td><td width="10%">&rsquo;←&rsquo;</td></tr>
+<tr><td width="18%">\uparrow</td><td width="10%">&rsquo;↑&rsquo;</td><td width="5%"></td><td width="18%">\rightarrow</td><td width="10%">&rsquo;→&rsquo;</td><td width="5%"></td><td width="18%">\downarrow</td><td width="10%">&rsquo;↓&rsquo;</td></tr>
+<tr><td width="18%">\leftrightarrow</td><td width="10%">&rsquo;↔&rsquo;</td><td width="5%"></td><td width="18%">\updownarrow</td><td width="10%">&rsquo;↕&rsquo;</td><td width="5%"></td></tr>
+</table>
+
+<div class="float-caption"><p><strong>Table: </strong>TeX character codes and the resulting symbols.</p></div></div>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="How-can-I-handle-memory-limitations_003f.html#How-can-I-handle-memory-limitations_003f" accesskey="p" rel="prev">How can I handle memory limitations?</a>, Up: <a href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions" accesskey="u" rel="up">FAQ - Frequently asked Questions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

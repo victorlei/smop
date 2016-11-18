@@ -1,0 +1,1116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Manipulating Strings</title>
+
+<meta name="description" content="GNU Octave: Manipulating Strings">
+<meta name="keywords" content="GNU Octave: Manipulating Strings">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Strings.html#Strings" rel="up" title="Strings">
+<link href="String-Conversions.html#String-Conversions" rel="next" title="String Conversions">
+<link href="Comparing-Strings.html#Comparing-Strings" rel="prev" title="Comparing Strings">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Manipulating-Strings"></a>
+<div class="header">
+<p>
+Next: <a href="String-Conversions.html#String-Conversions" accesskey="n" rel="next">String Conversions</a>, Previous: <a href="Comparing-Strings.html#Comparing-Strings" accesskey="p" rel="prev">Comparing Strings</a>, Up: <a href="Strings.html#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Manipulating-Strings-1"></a>
+<h3 class="section">5.5 Manipulating Strings</h3>
+
+<p>Octave supports a wide range of functions for manipulating strings.
+Since a string is just a matrix, simple manipulations can be accomplished
+using standard operators.  The following example shows how to replace
+all blank characters with underscores.
+</p>
+<div class="example">
+<pre class="example">quote = ...
+  &quot;First things first, but not necessarily in that order&quot;;
+quote( quote == &quot; &quot; ) = &quot;_&quot;
+&rArr; quote =
+    First_things_first,_but_not_necessarily_in_that_order
+</pre></div>
+
+<p>For more complex manipulations, such as searching, replacing, and
+general regular expressions, the following functions come with Octave.
+</p>
+<a name="XREFdeblank"></a><dl>
+<dt><a name="index-deblank"></a>Function File: <em></em> <strong>deblank</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Remove trailing whitespace and nulls from <var>s</var>.
+</p>
+<p>If <var>s</var> is a matrix, <var>deblank</var> trims each row to the length of
+longest string.  If <var>s</var> is a cell array of strings, operate
+recursively on each string element.
+</p>
+<p>Examples:
+</p>
+<div class="example">
+<pre class="example">deblank (&quot;    abc  &quot;)
+     &rArr;  &quot;    abc&quot;
+
+deblank ([&quot; abc   &quot;; &quot;   def   &quot;])
+     &rArr;  [&quot; abc  &quot; ; &quot;   def&quot;]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFstrtrim">strtrim</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrtrim"></a><dl>
+<dt><a name="index-strtrim"></a>Function File: <em></em> <strong>strtrim</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Remove leading and trailing whitespace from <var>s</var>.
+</p>
+<p>If <var>s</var> is a matrix, <var>strtrim</var> trims each row to the length of
+longest string.  If <var>s</var> is a cell array of strings, operate recursively
+on each string element.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">strtrim (&quot;    abc  &quot;)
+     &rArr;  &quot;abc&quot;
+
+strtrim ([&quot; abc   &quot;; &quot;   def   &quot;])
+     &rArr;  [&quot;abc  &quot;  ; &quot;  def&quot;]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFdeblank">deblank</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrtrunc"></a><dl>
+<dt><a name="index-strtrunc"></a>Function File: <em></em> <strong>strtrunc</strong> <em>(<var>s</var>, <var>n</var>)</em></dt>
+<dd><p>Truncate the character string <var>s</var> to length <var>n</var>.
+</p>
+<p>If <var>s</var> is a character matrix, then the number of columns is adjusted.
+</p>
+<p>If <var>s</var> is a cell array of strings, then the operation is performed
+on each cell element and the new cell array is returned.
+</p></dd></dl>
+
+
+<a name="XREFfindstr"></a><dl>
+<dt><a name="index-findstr"></a>Function File: <em></em> <strong>findstr</strong> <em>(<var>s</var>, <var>t</var>)</em></dt>
+<dt><a name="index-findstr-1"></a>Function File: <em></em> <strong>findstr</strong> <em>(<var>s</var>, <var>t</var>, <var>overlap</var>)</em></dt>
+<dd><p>Return the vector of all positions in the longer of the two strings <var>s</var>
+and <var>t</var> where an occurrence of the shorter of the two starts.
+</p>
+<p>If the optional argument <var>overlap</var> is true (default), the returned
+vector can include overlapping positions.  For example:
+</p>
+<div class="example">
+<pre class="example">findstr (&quot;ababab&quot;, &quot;a&quot;)
+     &rArr; [1, 3, 5];
+findstr (&quot;abababa&quot;, &quot;aba&quot;, 0)
+     &rArr; [1, 5]
+</pre></div>
+
+<p><strong>Caution:</strong> <code>findstr</code> is scheduled for deprecation.  Use
+<code>strfind</code> in all new code.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstrfind">strfind</a>, <a href="#XREFstrmatch">strmatch</a>, <a href="Comparing-Strings.html#XREFstrcmp">strcmp</a>, <a href="Comparing-Strings.html#XREFstrncmp">strncmp</a>, <a href="Comparing-Strings.html#XREFstrcmpi">strcmpi</a>, <a href="Comparing-Strings.html#XREFstrncmpi">strncmpi</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFfind">find</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrchr"></a><dl>
+<dt><a name="index-strchr"></a>Function File: <em><var>idx</var> =</em> <strong>strchr</strong> <em>(<var>str</var>, <var>chars</var>)</em></dt>
+<dt><a name="index-strchr-1"></a>Function File: <em><var>idx</var> =</em> <strong>strchr</strong> <em>(<var>str</var>, <var>chars</var>, <var>n</var>)</em></dt>
+<dt><a name="index-strchr-2"></a>Function File: <em><var>idx</var> =</em> <strong>strchr</strong> <em>(<var>str</var>, <var>chars</var>, <var>n</var>, <var>direction</var>)</em></dt>
+<dt><a name="index-strchr-3"></a>Function File: <em>[<var>i</var>, <var>j</var>] =</em> <strong>strchr</strong> <em>(&hellip;)</em></dt>
+<dd><p>Search for the string <var>str</var> for occurrences of characters from
+the set <var>chars</var>.
+</p>
+<p>The return value(s), as well as the <var>n</var> and <var>direction</var> arguments
+behave identically as in <code>find</code>.
+</p>
+<p>This will be faster than using regexp in most cases.
+</p>
+
+<p><strong>See also:</strong> <a href="Finding-Elements-and-Checking-Conditions.html#XREFfind">find</a>.
+</p></dd></dl>
+
+
+<a name="XREFindex"></a><dl>
+<dt><a name="index-index"></a>Function File: <em></em> <strong>index</strong> <em>(<var>s</var>, <var>t</var>)</em></dt>
+<dt><a name="index-index-1"></a>Function File: <em></em> <strong>index</strong> <em>(<var>s</var>, <var>t</var>, <var>direction</var>)</em></dt>
+<dd><p>Return the position of the first occurrence of the string <var>t</var> in the
+string <var>s</var>, or 0 if no occurrence is found.
+</p>
+<p><var>s</var> may also be a string array or cell array of strings.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">index (&quot;Teststring&quot;, &quot;t&quot;)
+    &rArr; 4
+</pre></div>
+
+<p>If <var>direction</var> is <code>&quot;first&quot;</code>, return the first element found.
+If <var>direction</var> is <code>&quot;last&quot;</code>, return the last element found.
+</p>
+
+<p><strong>See also:</strong> <a href="Finding-Elements-and-Checking-Conditions.html#XREFfind">find</a>, <a href="#XREFrindex">rindex</a>.
+</p></dd></dl>
+
+
+<a name="XREFrindex"></a><dl>
+<dt><a name="index-rindex"></a>Function File: <em></em> <strong>rindex</strong> <em>(<var>s</var>, <var>t</var>)</em></dt>
+<dd><p>Return the position of the last occurrence of the character string
+<var>t</var> in the character string <var>s</var>, or 0 if no occurrence is
+found.
+</p>
+<p><var>s</var> may also be a string array or cell array of strings.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">rindex (&quot;Teststring&quot;, &quot;t&quot;)
+     &rArr; 6
+</pre></div>
+
+<p>The <code>rindex</code> function is equivalent to <code>index</code> with
+<var>direction</var> set to <code>&quot;last&quot;</code>.
+</p>
+
+<p><strong>See also:</strong> <a href="Finding-Elements-and-Checking-Conditions.html#XREFfind">find</a>, <a href="#XREFindex">index</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrfind"></a><dl>
+<dt><a name="index-strfind"></a>Built-in Function: <em><var>idx</var> =</em> <strong>strfind</strong> <em>(<var>str</var>, <var>pattern</var>)</em></dt>
+<dt><a name="index-strfind-1"></a>Built-in Function: <em><var>idx</var> =</em> <strong>strfind</strong> <em>(<var>cellstr</var>, <var>pattern</var>)</em></dt>
+<dt><a name="index-strfind-2"></a>Built-in Function: <em><var>idx</var> =</em> <strong>strfind</strong> <em>(&hellip;, &quot;overlaps&quot;, <var>val</var>)</em></dt>
+<dd><p>Search for <var>pattern</var> in the string <var>str</var> and return the starting
+index of every such occurrence in the vector <var>idx</var>.
+</p>
+<p>If there is no such occurrence, or if <var>pattern</var> is longer than
+<var>str</var>, or if <var>pattern</var> itself is empty, then <var>idx</var> is the empty
+array <code>[]</code>.
+</p>
+<p>The optional argument <code>&quot;overlaps&quot;</code> determines whether the pattern
+can match at every position in <var>str</var> (true), or only for unique
+occurrences of the complete pattern (false).  The default is true.
+</p>
+<p>If a cell array of strings <var>cellstr</var> is specified then <var>idx</var> is a
+cell array of vectors, as specified above.
+</p>
+<p>Examples:
+</p>
+<div class="example">
+<pre class="example">strfind (&quot;abababa&quot;, &quot;aba&quot;)
+     &rArr; [1, 3, 5]
+
+strfind (&quot;abababa&quot;, &quot;aba&quot;, &quot;overlaps&quot;, false)
+     &rArr; [1, 5]
+
+strfind ({&quot;abababa&quot;, &quot;bebebe&quot;, &quot;ab&quot;}, &quot;aba&quot;)
+     &rArr;
+        {
+          [1,1] =
+
+             1   3   5
+
+          [1,2] = [](1x0)
+          [1,3] = [](1x0)
+        }
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFfindstr">findstr</a>, <a href="#XREFstrmatch">strmatch</a>, <a href="#XREFregexp">regexp</a>, <a href="#XREFregexpi">regexpi</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFfind">find</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrjoin"></a><dl>
+<dt><a name="index-strjoin"></a>Function File: <em><var>str</var> =</em> <strong>strjoin</strong> <em>(<var>cstr</var>)</em></dt>
+<dt><a name="index-strjoin-1"></a>Function File: <em><var>str</var> =</em> <strong>strjoin</strong> <em>(<var>cstr</var>, <var>delimiter</var>)</em></dt>
+<dd><p>Join the elements of the cell string array, <var>cstr</var>, into a single
+string.
+</p>
+<p>If no <var>delimiter</var> is specified, the elements of <var>cstr</var> are
+separated by a space.
+</p>
+<p>If <var>delimiter</var> is specified as a string, the cell string array is
+joined using the string.  Escape sequences are supported.
+</p>
+<p>If <var>delimiter</var> is a cell string array whose length is one less than
+<var>cstr</var>, then the elements of <var>cstr</var> are joined by interleaving the
+cell string elements of <var>delimiter</var>.  Escape sequences are not
+supported.
+</p>
+<div class="example">
+<pre class="example">strjoin ({'Octave','Scilab','Lush','Yorick'}, '*')
+      &rArr; 'Octave*Scilab*Lush*Yorick'
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFstrsplit">strsplit</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrmatch"></a><dl>
+<dt><a name="index-strmatch"></a>Function File: <em></em> <strong>strmatch</strong> <em>(<var>s</var>, <var>A</var>)</em></dt>
+<dt><a name="index-strmatch-1"></a>Function File: <em></em> <strong>strmatch</strong> <em>(<var>s</var>, <var>A</var>, &quot;exact&quot;)</em></dt>
+<dd><p>Return indices of entries of <var>A</var> which begin with the string <var>s</var>.
+</p>
+<p>The second argument <var>A</var> must be a string, character matrix, or a cell
+array of strings.
+</p>
+<p>If the third argument <code>&quot;exact&quot;</code> is not given, then <var>s</var> only
+needs to match <var>A</var> up to the length of <var>s</var>.  Trailing spaces and
+nulls in <var>s</var> and <var>A</var> are ignored when matching.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">strmatch (&quot;apple&quot;, &quot;apple juice&quot;)
+     &rArr; 1
+
+strmatch (&quot;apple&quot;, [&quot;apple  &quot;; &quot;apple juice&quot;; &quot;an apple&quot;])
+     &rArr; [1; 2]
+
+strmatch (&quot;apple&quot;, [&quot;apple  &quot;; &quot;apple juice&quot;; &quot;an apple&quot;], &quot;exact&quot;)
+     &rArr; [1]
+</pre></div>
+
+<p><strong>Caution:</strong> <code>strmatch</code> is scheduled for deprecation.  Use
+<code>strncmp</code> (normal case), or <code>strcmp</code> (<code>&quot;exact&quot;</code> case), or
+<code>regexp</code> in all new code.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstrfind">strfind</a>, <a href="#XREFfindstr">findstr</a>, <a href="Comparing-Strings.html#XREFstrcmp">strcmp</a>, <a href="Comparing-Strings.html#XREFstrncmp">strncmp</a>, <a href="Comparing-Strings.html#XREFstrcmpi">strcmpi</a>, <a href="Comparing-Strings.html#XREFstrncmpi">strncmpi</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFfind">find</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrtok"></a><dl>
+<dt><a name="index-strtok"></a>Function File: <em>[<var>tok</var>, <var>rem</var>] =</em> <strong>strtok</strong> <em>(<var>str</var>)</em></dt>
+<dt><a name="index-strtok-1"></a>Function File: <em>[<var>tok</var>, <var>rem</var>] =</em> <strong>strtok</strong> <em>(<var>str</var>, <var>delim</var>)</em></dt>
+<dd>
+<p>Find all characters in the string <var>str</var> up to, but not including, the
+first character which is in the string <var>delim</var>.
+</p>
+<p><var>str</var> may also be a cell array of strings in which case the function
+executes on every individual string and returns a cell array of tokens and
+remainders.
+</p>
+<p>Leading delimiters are ignored.  If <var>delim</var> is not specified,
+whitespace is assumed.
+</p>
+<p>If <var>rem</var> is requested, it contains the remainder of the string, starting
+at the first delimiter.
+</p>
+<p>Examples:
+</p>
+<div class="example">
+<pre class="example">strtok (&quot;this is the life&quot;)
+     &rArr; &quot;this&quot;
+
+[tok, rem] = strtok (&quot;14*27+31&quot;, &quot;+-*/&quot;)
+     &rArr;
+        tok = 14
+        rem = *27+31
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFindex">index</a>, <a href="#XREFstrsplit">strsplit</a>, <a href="#XREFstrchr">strchr</a>, <a href="Character-Class-Functions.html#XREFisspace">isspace</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrsplit"></a><dl>
+<dt><a name="index-strsplit"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(<var>str</var>)</em></dt>
+<dt><a name="index-strsplit-1"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(<var>str</var>, <var>del</var>)</em></dt>
+<dt><a name="index-strsplit-2"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(&hellip;, <var>name</var>, <var>value</var>)</em></dt>
+<dt><a name="index-strsplit-3"></a>Function File: <em>[<var>cstr</var>, <var>matches</var>] =</em> <strong>strsplit</strong> <em>(&hellip;)</em></dt>
+<dd><p>Split the string <var>str</var> using the delimiters specified by <var>del</var> and
+return a cell string array of substrings.
+</p>
+<p>If a delimiter is not specified the string is split at whitespace
+<code>{&quot; &quot;, &quot;\f&quot;, &quot;\n&quot;, &quot;\r&quot;, &quot;\t&quot;, &quot;\v&quot;}</code>.  Otherwise, the delimiter,
+<var>del</var> must be a string or cell array of strings.  By default,
+consecutive delimiters in the input string <var>s</var> are collapsed into one
+resulting in a single split.
+</p>
+<p>Supported <var>name</var>/<var>value</var> pair arguments are:
+</p>
+<ul>
+<li> <var>collapsedelimiters</var> which may take the value of <code>true</code>
+(default) or <code>false</code>.
+
+</li><li> <var>delimitertype</var> which may take the value of <code>&quot;simple&quot;</code>
+(default) or <code>&quot;regularexpression&quot;</code>.  A simple delimiter
+matches the text exactly as written.  Otherwise, the syntax for regular
+expressions outlined in <code>regexp</code> is used.
+</li></ul>
+
+<p>The optional second output, <var>matches</var>, returns the delimiters which were
+matched in the original string.
+</p>
+<p>Examples with simple delimiters:
+</p>
+<div class="example">
+<pre class="example">strsplit (&quot;a b c&quot;)
+      &rArr;
+          {
+            [1,1] = a
+            [1,2] = b
+            [1,3] = c
+          }
+
+strsplit (&quot;a,b,c&quot;, &quot;,&quot;)
+      &rArr;
+          {
+            [1,1] = a
+            [1,2] = b
+            [1,3] = c
+          }
+
+strsplit (&quot;a foo b,bar c&quot;, {&quot; &quot;, &quot;,&quot;, &quot;foo&quot;, &quot;bar&quot;})
+      &rArr;
+          {
+            [1,1] = a
+            [1,2] = b
+            [1,3] = c
+          }
+
+strsplit (&quot;a,,b, c&quot;, {&quot;,&quot;, &quot; &quot;}, &quot;collapsedelimiters&quot;, false)
+      &rArr;
+          {
+            [1,1] = a
+            [1,2] =
+            [1,3] = b
+            [1,4] =
+            [1,5] = c
+          }
+
+</pre></div>
+
+<p>Examples with regularexpression delimiters:
+</p>
+<div class="smallexample">
+<pre class="smallexample">strsplit (&quot;a foo b,bar c&quot;, ',|\s|foo|bar', &quot;delimitertype&quot;, &quot;regularexpression&quot;)
+&rArr;
+{
+            [1,1] = a
+            [1,2] = b
+            [1,3] = c
+}
+
+strsplit (&quot;a,,b, c&quot;, '[, ]', &quot;collapsedelimiters&quot;, false, &quot;delimitertype&quot;, &quot;regularexpression&quot;)
+&rArr;
+{
+            [1,1] = a
+            [1,2] =
+            [1,3] = b
+            [1,4] =
+            [1,5] = c
+}
+
+strsplit (&quot;a,\t,b, c&quot;, {',', '\s'}, &quot;delimitertype&quot;, &quot;regularexpression&quot;)
+&rArr;
+{
+            [1,1] = a
+            [1,2] = b
+            [1,3] = c
+}
+
+strsplit (&quot;a,\t,b, c&quot;, {',', ' ', '\t'}, &quot;collapsedelimiters&quot;, false)
+&rArr;
+{
+            [1,1] = a
+            [1,2] =
+            [1,3] =
+            [1,4] = b
+            [1,5] =
+            [1,6] = c
+}
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFostrsplit">ostrsplit</a>, <a href="#XREFstrjoin">strjoin</a>, <a href="#XREFstrtok">strtok</a>, <a href="#XREFregexp">regexp</a>.
+</p></dd></dl>
+
+
+<a name="XREFostrsplit"></a><dl>
+<dt><a name="index-ostrsplit"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>ostrsplit</strong> <em>(<var>s</var>, <var>sep</var>)</em></dt>
+<dt><a name="index-ostrsplit-1"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>ostrsplit</strong> <em>(<var>s</var>, <var>sep</var>, <var>strip_empty</var>)</em></dt>
+<dd><p>Split the string <var>s</var> using one or more separators <var>sep</var> and return
+a cell array of strings.
+</p>
+<p>Consecutive separators and separators at boundaries result in empty
+strings, unless <var>strip_empty</var> is true.  The default value of
+<var>strip_empty</var> is false.
+</p>
+<p>2-D character arrays are split at separators and at the original column
+boundaries.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">ostrsplit (&quot;a,b,c&quot;, &quot;,&quot;)
+      &rArr;
+          {
+            [1,1] = a
+            [1,2] = b
+            [1,3] = c
+          }
+
+ostrsplit ([&quot;a,b&quot; ; &quot;cde&quot;], &quot;,&quot;)
+      &rArr;
+          {
+            [1,1] = a
+            [1,2] = b
+            [1,3] = cde
+          }
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFstrsplit">strsplit</a>, <a href="#XREFstrtok">strtok</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrread"></a><dl>
+<dt><a name="index-strread"></a>Function File: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>)</em></dt>
+<dt><a name="index-strread-1"></a>Function File: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>, <var>format</var>)</em></dt>
+<dt><a name="index-strread-2"></a>Function File: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>, <var>format</var>, <var>format_repeat</var>)</em></dt>
+<dt><a name="index-strread-3"></a>Function File: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>, <var>format</var>, <var>prop1</var>, <var>value1</var>, &hellip;)</em></dt>
+<dt><a name="index-strread-4"></a>Function File: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>, <var>format</var>, <var>format_repeat</var>, <var>prop1</var>, <var>value1</var>, &hellip;)</em></dt>
+<dd><p>Read data from a string.
+</p>
+<p>The string <var>str</var> is split into words that are repeatedly matched to the
+specifiers in <var>format</var>.  The first word is matched to the first
+specifier, the second to the second specifier and so forth.  If there are
+more words than specifiers, the process is repeated until all words have
+been processed.
+</p>
+<p>The string <var>format</var> describes how the words in <var>str</var> should be
+parsed.  It may contain any combination of the following specifiers:
+</p>
+<dl compact="compact">
+<dt><code>%s</code></dt>
+<dd><p>The word is parsed as a string.
+</p>
+</dd>
+<dt><code>%f</code></dt>
+<dt><code>%n</code></dt>
+<dd><p>The word is parsed as a number and converted to double.
+</p>
+</dd>
+<dt><code>%d</code></dt>
+<dt><code>%u</code></dt>
+<dd><p>The word is parsed as a number and converted to int32.
+</p>
+</dd>
+<dt><code>%*', '%*f', '%*s</code></dt>
+<dd><p>The word is skipped.
+</p>
+<p>For %s and %d, %f, %n, %u and the associated %*s &hellip; specifiers an
+optional width can be specified as %Ns, etc. where N is an integer &gt; 1.
+For %f, format specifiers like %N.Mf are allowed.
+</p>
+</dd>
+<dt><code>literals</code></dt>
+<dd><p>In addition the format may contain literal character strings; these will be
+skipped during reading.
+</p></dd>
+</dl>
+
+<p>Parsed word corresponding to the first specifier are returned in the first
+output argument and likewise for the rest of the specifiers.
+</p>
+<p>By default, <var>format</var> is <tt>&quot;%f&quot;</tt>, meaning that numbers are read from
+<var>str</var>.  This will do if <var>str</var> contains only numeric fields.
+</p>
+<p>For example, the string
+</p>
+<div class="example">
+<pre class="example"><var>str</var> = &quot;\
+Bunny Bugs   5.5\n\
+Duck Daffy  -7.5e-5\n\
+Penguin Tux   6&quot;
+</pre></div>
+
+<p>can be read using
+</p>
+<div class="example">
+<pre class="example">[<var>a</var>, <var>b</var>, <var>c</var>] = strread (<var>str</var>, &quot;%s %s %f&quot;);
+</pre></div>
+
+<p>Optional numeric argument <var>format_repeat</var> can be used for limiting the
+number of items read:
+</p>
+<dl compact="compact">
+<dt>-1</dt>
+<dd><p>(default) read all of the string until the end.
+</p>
+</dd>
+<dt>N</dt>
+<dd><p>Read N times <var>nargout</var> items.  0 (zero) is an acceptable value for
+<var>format_repeat</var>.
+</p></dd>
+</dl>
+
+<p>The behavior of <code>strread</code> can be changed via property-value pairs.  The
+following properties are recognized:
+</p>
+<dl compact="compact">
+<dt><code>&quot;commentstyle&quot;</code></dt>
+<dd><p>Parts of <var>str</var> are considered comments and will be skipped.
+<var>value</var> is the comment style and can be any of the following.
+</p>
+<ul>
+<li> <code>&quot;shell&quot;</code>
+Everything from <code>#</code> characters to the nearest end-of-line is skipped.
+
+</li><li> <code>&quot;c&quot;</code>
+Everything between <code>/*</code> and <code>*/</code> is skipped.
+
+</li><li> <code>&quot;c++&quot;</code>
+Everything from <code>//</code> characters to the nearest end-of-line is skipped.
+
+</li><li> <code>&quot;matlab&quot;</code>
+Everything from <code>%</code> characters to the nearest end-of-line is skipped.
+
+</li><li> user-supplied.  Two options:
+(1) One string, or 1x1 cell string: Skip everything to the right of it;
+(2) 2x1 cell string array: Everything between the left and right strings
+is skipped.
+</li></ul>
+
+</dd>
+<dt><code>&quot;delimiter&quot;</code></dt>
+<dd><p>Any character in <var>value</var> will be used to split <var>str</var> into words
+(default value = any whitespace).  Note that whitespace is implicitly added
+to the set of delimiter characters unless a <code>&quot;%s&quot;</code> format conversion
+specifier is supplied; see <code>&quot;whitespace&quot;</code> parameter below.  The set
+of delimiter characters cannot be empty; if needed Octave substitutes a
+space as delimiter.
+</p>
+</dd>
+<dt><code>&quot;emptyvalue&quot;</code></dt>
+<dd><p>Value to return for empty numeric values in non-whitespace delimited data.
+The default is NaN.  When the data type does not support NaN (int32 for
+example), then default is zero.
+</p>
+</dd>
+<dt><code>&quot;multipledelimsasone&quot;</code></dt>
+<dd><p>Treat a series of consecutive delimiters, without whitespace in between,
+as a single delimiter.  Consecutive delimiter series need not be vertically
+<code>&quot;aligned&quot;</code>.
+</p>
+</dd>
+<dt><code>&quot;treatasempty&quot;</code></dt>
+<dd><p>Treat single occurrences (surrounded by delimiters or whitespace) of the
+string(s) in <var>value</var> as missing values.
+</p>
+</dd>
+<dt><code>&quot;returnonerror&quot;</code></dt>
+<dd><p>If <var>value</var> true (1, default), ignore read errors and return normally.
+If false (0), return an error.
+</p>
+</dd>
+<dt><code>&quot;whitespace&quot;</code></dt>
+<dd><p>Any character in <var>value</var> will be interpreted as whitespace and trimmed;
+the string defining whitespace must be enclosed in double quotes for proper
+processing of special characters like <code>&quot;\t&quot;</code>.  In
+each data field, multiple consecutive whitespace characters are collapsed
+into one space and leading and trailing whitespace is removed.  The default
+value for whitespace is
+<code>&quot;
+\b\r\n\t&quot;</code>
+(note the space).  Whitespace is always added to the set of delimiter
+characters unless at least one <code>&quot;%s&quot;</code> format conversion specifier is
+supplied; in that case only whitespace explicitly specified in
+<code>&quot;delimiter&quot;</code> is retained as delimiter and removed from the set of
+whitespace characters.  If whitespace characters are to be kept as-is (in
+e.g., strings), specify an empty value (i.e., <code>&quot;&quot;</code>) for
+<code>&quot;whitespace&quot;</code>; obviously, whitespace cannot be a delimiter then.
+</p>
+</dd>
+</dl>
+
+<p>When the number of words in <var>str</var> doesn&rsquo;t match an exact multiple of
+the number of format conversion specifiers, strread&rsquo;s behavior depends on
+the last character of <var>str</var>:
+</p>
+<dl compact="compact">
+<dt>last character = <code>&quot;\n&quot;</code></dt>
+<dd><p>Data columns are padded with empty fields or Nan so that all columns have
+equal length
+</p>
+</dd>
+<dt>last character is not <code>&quot;\n&quot;</code></dt>
+<dd><p>Data columns are not padded; strread returns columns of unequal length
+</p>
+</dd>
+</dl>
+
+
+<p><strong>See also:</strong> <a href="Simple-File-I_002fO.html#XREFtextscan">textscan</a>, <a href="Simple-File-I_002fO.html#XREFtextread">textread</a>, <a href="Simple-File-I_002fO.html#XREFload">load</a>, <a href="Simple-File-I_002fO.html#XREFdlmread">dlmread</a>, <a href="Formatted-Input.html#XREFfscanf">fscanf</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrrep"></a><dl>
+<dt><a name="index-strrep"></a>Built-in Function: <em><var>newstr</var> =</em> <strong>strrep</strong> <em>(<var>str</var>, <var>ptn</var>, <var>rep</var>)</em></dt>
+<dt><a name="index-strrep-1"></a>Built-in Function: <em><var>newstr</var> =</em> <strong>strrep</strong> <em>(<var>cellstr</var>, <var>ptn</var>, <var>rep</var>)</em></dt>
+<dt><a name="index-strrep-2"></a>Built-in Function: <em><var>newstr</var> =</em> <strong>strrep</strong> <em>(&hellip;, &quot;overlaps&quot;, <var>val</var>)</em></dt>
+<dd><p>Replace all occurrences of the pattern <var>ptn</var> in the string <var>str</var>
+with the string <var>rep</var> and return the result.
+</p>
+<p>The optional argument <code>&quot;overlaps&quot;</code> determines whether the pattern
+can match at every position in <var>str</var> (true), or only for unique
+occurrences of the complete pattern (false).  The default is true.
+</p>
+<p><var>s</var> may also be a cell array of strings, in which case the replacement is
+done for each element and a cell array is returned.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">strrep (&quot;This is a test string&quot;, &quot;is&quot;, &quot;&amp;%$&quot;)
+    &rArr;  &quot;Th&amp;%$ &amp;%$ a test string&quot;
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFregexprep">regexprep</a>, <a href="#XREFstrfind">strfind</a>, <a href="#XREFfindstr">findstr</a>.
+</p></dd></dl>
+
+
+<a name="XREFsubstr"></a><dl>
+<dt><a name="index-substr"></a>Function File: <em></em> <strong>substr</strong> <em>(<var>s</var>, <var>offset</var>)</em></dt>
+<dt><a name="index-substr-1"></a>Function File: <em></em> <strong>substr</strong> <em>(<var>s</var>, <var>offset</var>, <var>len</var>)</em></dt>
+<dd><p>Return the substring of <var>s</var> which starts at character number
+<var>offset</var> and is <var>len</var> characters long.
+</p>
+<p>Position numbering for offsets begins with 1.  If <var>offset</var> is negative,
+extraction starts that far from the end of the string.
+</p>
+<p>If <var>len</var> is omitted, the substring extends to the end of <var>s</var>.  A
+negative value for <var>len</var> extracts to within <var>len</var> characters of
+the end of the string
+</p>
+<p>Examples:
+</p>
+<div class="example">
+<pre class="example">substr (&quot;This is a test string&quot;, 6, 9)
+     &rArr; &quot;is a test&quot;
+substr (&quot;This is a test string&quot;, -11)
+     &rArr; &quot;test string&quot;
+substr (&quot;This is a test string&quot;, -11, -7)
+     &rArr; &quot;test&quot;
+</pre></div>
+
+<p>This function is patterned after the equivalent function in Perl.
+</p></dd></dl>
+
+
+<a name="XREFregexp"></a><dl>
+<dt><a name="index-regexp"></a>Built-in Function: <em>[<var>s</var>, <var>e</var>, <var>te</var>, <var>m</var>, <var>t</var>, <var>nm</var>, <var>sp</var>] =</em> <strong>regexp</strong> <em>(<var>str</var>, <var>pat</var>)</em></dt>
+<dt><a name="index-regexp-1"></a>Built-in Function: <em>[&hellip;] =</em> <strong>regexp</strong> <em>(<var>str</var>, <var>pat</var>, &quot;<var>opt1</var>&quot;, &hellip;)</em></dt>
+<dd><p>Regular expression string matching.
+</p>
+<p>Search for <var>pat</var> in <var>str</var> and return the positions and substrings of
+any matches, or empty values if there are none.
+</p>
+<p>The matched pattern <var>pat</var> can include any of the standard regex
+operators, including:
+</p>
+<dl compact="compact">
+<dt><code>.</code></dt>
+<dd><p>Match any character
+</p>
+</dd>
+<dt><code>* + ? {}</code></dt>
+<dd><p>Repetition operators, representing
+</p>
+<dl compact="compact">
+<dt><code>*</code></dt>
+<dd><p>Match zero or more times
+</p>
+</dd>
+<dt><code>+</code></dt>
+<dd><p>Match one or more times
+</p>
+</dd>
+<dt><code>?</code></dt>
+<dd><p>Match zero or one times
+</p>
+</dd>
+<dt><code>{<var>n</var>}</code></dt>
+<dd><p>Match exactly <var>n</var> times
+</p>
+</dd>
+<dt><code>{<var>n</var>,}</code></dt>
+<dd><p>Match <var>n</var> or more times
+</p>
+</dd>
+<dt><code>{<var>m</var>,<var>n</var>}</code></dt>
+<dd><p>Match between <var>m</var> and <var>n</var> times
+</p></dd>
+</dl>
+
+</dd>
+<dt><code>[&hellip;] [^&hellip;]</code></dt>
+<dd>
+<p>List operators.  The pattern will match any character listed between &quot;[&quot;
+and &quot;]&quot;.  If the first character is &quot;^&quot; then the pattern is inverted and
+any character except those listed between brackets will match.
+</p>
+<p>Escape sequences defined below can also be used inside list operators.  For
+example, a template for a floating point number might be <code>[-+.\d]+</code>.
+</p>
+</dd>
+<dt><code>() (?:)</code></dt>
+<dd><p>Grouping operator.  The first form, parentheses only, also creates a token.
+</p>
+</dd>
+<dt><code>|</code></dt>
+<dd><p>Alternation operator.  Match one of a choice of regular expressions.  The
+alternatives must be delimited by the grouping operator <code>()</code> above.
+</p>
+</dd>
+<dt><code>^ $</code></dt>
+<dd><p>Anchoring operators.  Requires pattern to occur at the start (<code>^</code>) or
+end (<code>$</code>) of the string.
+</p></dd>
+</dl>
+
+<p>In addition, the following escaped characters have special meaning.
+</p>
+<dl compact="compact">
+<dt><code>\d</code></dt>
+<dd><p>Match any digit
+</p>
+</dd>
+<dt><code>\D</code></dt>
+<dd><p>Match any non-digit
+</p>
+</dd>
+<dt><code>\s</code></dt>
+<dd><p>Match any whitespace character
+</p>
+</dd>
+<dt><code>\S</code></dt>
+<dd><p>Match any non-whitespace character
+</p>
+</dd>
+<dt><code>\w</code></dt>
+<dd><p>Match any word character
+</p>
+</dd>
+<dt><code>\W</code></dt>
+<dd><p>Match any non-word character
+</p>
+</dd>
+<dt><code>\&lt;</code></dt>
+<dd><p>Match the beginning of a word
+</p>
+</dd>
+<dt><code>\&gt;</code></dt>
+<dd><p>Match the end of a word
+</p>
+</dd>
+<dt><code>\B</code></dt>
+<dd><p>Match within a word
+</p></dd>
+</dl>
+
+<p>Implementation Note: For compatibility with <small>MATLAB</small>, escape sequences
+in <var>pat</var> (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are expanded
+even when <var>pat</var> has been defined with single quotes.  To disable
+expansion use a second backslash before the escape sequence (e.g.,
+&quot;\\n&quot;) or use the <code>regexptranslate</code>
+function.
+</p>
+<p>The outputs of <code>regexp</code> default to the order given below
+</p>
+<dl compact="compact">
+<dt><var>s</var></dt>
+<dd><p>The start indices of each matching substring
+</p>
+</dd>
+<dt><var>e</var></dt>
+<dd><p>The end indices of each matching substring
+</p>
+</dd>
+<dt><var>te</var></dt>
+<dd><p>The extents of each matched token surrounded by <code>(&hellip;)</code> in
+<var>pat</var>
+</p>
+</dd>
+<dt><var>m</var></dt>
+<dd><p>A cell array of the text of each match
+</p>
+</dd>
+<dt><var>t</var></dt>
+<dd><p>A cell array of the text of each token matched
+</p>
+</dd>
+<dt><var>nm</var></dt>
+<dd><p>A structure containing the text of each matched named token, with the name
+being used as the fieldname.  A named token is denoted by
+<code>(?&lt;name&gt;&hellip;)</code>.
+</p>
+</dd>
+<dt><var>sp</var></dt>
+<dd><p>A cell array of the text not returned by match, i.e., what remains if you
+split the string based on <var>pat</var>.
+</p></dd>
+</dl>
+
+<p>Particular output arguments, or the order of the output arguments, can be
+selected by additional <var>opt</var> arguments.  These are strings and the
+correspondence between the output arguments and the optional argument
+are
+</p>
+<table>
+<tr><td width="20%"></td><td width="30%"><code>'start'</code></td><td width="30%"><var>s</var></td><td width="20%"></td></tr>
+<tr><td width="20%"></td><td width="30%"><code>'end'</code></td><td width="30%"><var>e</var></td><td width="20%"></td></tr>
+<tr><td width="20%"></td><td width="30%"><code>'tokenExtents'</code></td><td width="30%"><var>te</var></td><td width="20%"></td></tr>
+<tr><td width="20%"></td><td width="30%"><code>'match'</code></td><td width="30%"><var>m</var></td><td width="20%"></td></tr>
+<tr><td width="20%"></td><td width="30%"><code>'tokens'</code></td><td width="30%"><var>t</var></td><td width="20%"></td></tr>
+<tr><td width="20%"></td><td width="30%"><code>'names'</code></td><td width="30%"><var>nm</var></td><td width="20%"></td></tr>
+<tr><td width="20%"></td><td width="30%"><code>'split'</code></td><td width="30%"><var>sp</var></td><td width="20%"></td></tr>
+</table>
+
+<p>Additional arguments are summarized below.
+</p>
+<dl compact="compact">
+<dt>&lsquo;<samp>once</samp>&rsquo;</dt>
+<dd><p>Return only the first occurrence of the pattern.
+</p>
+</dd>
+<dt>&lsquo;<samp>matchcase</samp>&rsquo;</dt>
+<dd><p>Make the matching case sensitive.  (default)
+</p>
+<p>Alternatively, use (?-i) in the pattern.
+</p>
+</dd>
+<dt>&lsquo;<samp>ignorecase</samp>&rsquo;</dt>
+<dd><p>Ignore case when matching the pattern to the string.
+</p>
+<p>Alternatively, use (?i) in the pattern.
+</p>
+</dd>
+<dt>&lsquo;<samp>stringanchors</samp>&rsquo;</dt>
+<dd><p>Match the anchor characters at the beginning and end of the string.
+(default)
+</p>
+<p>Alternatively, use (?-m) in the pattern.
+</p>
+</dd>
+<dt>&lsquo;<samp>lineanchors</samp>&rsquo;</dt>
+<dd><p>Match the anchor characters at the beginning and end of the line.
+</p>
+<p>Alternatively, use (?m) in the pattern.
+</p>
+</dd>
+<dt>&lsquo;<samp>dotall</samp>&rsquo;</dt>
+<dd><p>The pattern <code>.</code> matches all characters including the newline character.
+ (default)
+</p>
+<p>Alternatively, use (?s) in the pattern.
+</p>
+</dd>
+<dt>&lsquo;<samp>dotexceptnewline</samp>&rsquo;</dt>
+<dd><p>The pattern <code>.</code> matches all characters except the newline character.
+</p>
+<p>Alternatively, use (?-s) in the pattern.
+</p>
+</dd>
+<dt>&lsquo;<samp>literalspacing</samp>&rsquo;</dt>
+<dd><p>All characters in the pattern, including whitespace, are significant and are
+used in pattern matching.  (default)
+</p>
+<p>Alternatively, use (?-x) in the pattern.
+</p>
+</dd>
+<dt>&lsquo;<samp>freespacing</samp>&rsquo;</dt>
+<dd><p>The pattern may include arbitrary whitespace and also comments beginning with
+the character &lsquo;<samp>#</samp>&rsquo;.
+</p>
+<p>Alternatively, use (?x) in the pattern.
+</p>
+</dd>
+<dt>&lsquo;<samp>noemptymatch</samp>&rsquo;</dt>
+<dd><p>Zero-length matches are not returned.  (default)
+</p>
+</dd>
+<dt>&lsquo;<samp>emptymatch</samp>&rsquo;</dt>
+<dd><p>Return zero-length matches.
+</p>
+<p><code>regexp ('a', 'b*', 'emptymatch')</code> returns <code>[1 2]</code> because there
+are zero or more <code>'b'</code> characters at positions 1 and end-of-string.
+</p>
+</dd>
+</dl>
+
+<p><strong>See also:</strong> <a href="#XREFregexpi">regexpi</a>, <a href="#XREFstrfind">strfind</a>, <a href="#XREFregexprep">regexprep</a>.
+</p></dd></dl>
+
+
+<a name="XREFregexpi"></a><dl>
+<dt><a name="index-regexpi"></a>Built-in Function: <em>[<var>s</var>, <var>e</var>, <var>te</var>, <var>m</var>, <var>t</var>, <var>nm</var>, <var>sp</var>] =</em> <strong>regexpi</strong> <em>(<var>str</var>, <var>pat</var>)</em></dt>
+<dt><a name="index-regexpi-1"></a>Built-in Function: <em>[&hellip;] =</em> <strong>regexpi</strong> <em>(<var>str</var>, <var>pat</var>, &quot;<var>opt1</var>&quot;, &hellip;)</em></dt>
+<dd>
+<p>Case insensitive regular expression string matching.
+</p>
+<p>Search for <var>pat</var> in <var>str</var> and return the positions and substrings of
+any matches, or empty values if there are none.  See <a href="#XREFregexp">regexp</a>,
+for details on the syntax of the search pattern.
+</p>
+<p><strong>See also:</strong> <a href="#XREFregexp">regexp</a>.
+</p></dd></dl>
+
+
+<a name="XREFregexprep"></a><dl>
+<dt><a name="index-regexprep"></a>Built-in Function: <em><var>outstr</var> =</em> <strong>regexprep</strong> <em>(<var>string</var>, <var>pat</var>, <var>repstr</var>)</em></dt>
+<dt><a name="index-regexprep-1"></a>Built-in Function: <em><var>outstr</var> =</em> <strong>regexprep</strong> <em>(<var>string</var>, <var>pat</var>, <var>repstr</var>, &quot;<var>opt1</var>&quot;, &hellip;)</em></dt>
+<dd><p>Replace occurrences of pattern <var>pat</var> in <var>string</var> with <var>repstr</var>.
+</p>
+<p>The pattern is a regular expression as documented for <code>regexp</code>.
+See <a href="#XREFregexp">regexp</a>.
+</p>
+<p>The replacement string may contain <code>$i</code>, which substitutes for the ith
+set of parentheses in the match string.  For example,
+</p>
+<div class="example">
+<pre class="example">regexprep (&quot;Bill Dunn&quot;, '(\w+) (\w+)', '$2, $1')
+</pre></div>
+
+<p>returns &quot;Dunn, Bill&quot;
+</p>
+<p>Options in addition to those of <code>regexp</code> are
+</p>
+<dl compact="compact">
+<dt>&lsquo;<samp>once</samp>&rsquo;</dt>
+<dd><p>Replace only the first occurrence of <var>pat</var> in the result.
+</p>
+</dd>
+<dt>&lsquo;<samp>warnings</samp>&rsquo;</dt>
+<dd><p>This option is present for compatibility but is ignored.
+</p>
+</dd>
+</dl>
+
+<p>Implementation Note: For compatibility with <small>MATLAB</small>, escape sequences
+in <var>pat</var> (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are expanded
+even when <var>pat</var> has been defined with single quotes.  To disable
+expansion use a second backslash before the escape sequence (e.g.,
+&quot;\\n&quot;) or use the <code>regexptranslate</code>
+function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFregexp">regexp</a>, <a href="#XREFregexpi">regexpi</a>, <a href="#XREFstrrep">strrep</a>.
+</p></dd></dl>
+
+
+<a name="XREFregexptranslate"></a><dl>
+<dt><a name="index-regexptranslate"></a>Function File: <em></em> <strong>regexptranslate</strong> <em>(<var>op</var>, <var>s</var>)</em></dt>
+<dd><p>Translate a string for use in a regular expression.
+</p>
+<p>This may include either wildcard replacement or special character escaping.
+</p>
+<p>The behavior is controlled by <var>op</var> which can take the following
+values
+</p>
+<dl compact="compact">
+<dt><code>&quot;wildcard&quot;</code></dt>
+<dd><p>The wildcard characters <code>.</code>, <code>*</code>, and <code>?</code> are replaced with
+wildcards that are appropriate for a regular expression.  For example:
+</p>
+<div class="example">
+<pre class="example">regexptranslate (&quot;wildcard&quot;, &quot;*.m&quot;)
+     &rArr; &quot;.*\.m&quot;
+</pre></div>
+
+</dd>
+<dt><code>&quot;escape&quot;</code></dt>
+<dd><p>The characters <code>$.?[]</code>, that have special meaning for regular
+expressions are escaped so that they are treated literally.  For example:
+</p>
+<div class="example">
+<pre class="example">regexptranslate (&quot;escape&quot;, &quot;12.5&quot;)
+     &rArr; &quot;12\.5&quot;
+</pre></div>
+
+</dd>
+</dl>
+
+<p><strong>See also:</strong> <a href="#XREFregexp">regexp</a>, <a href="#XREFregexpi">regexpi</a>, <a href="#XREFregexprep">regexprep</a>.
+</p></dd></dl>
+
+
+<a name="XREFuntabify"></a><dl>
+<dt><a name="index-untabify"></a>Function File: <em></em> <strong>untabify</strong> <em>(<var>t</var>)</em></dt>
+<dt><a name="index-untabify-1"></a>Function File: <em></em> <strong>untabify</strong> <em>(<var>t</var>, <var>tw</var>)</em></dt>
+<dt><a name="index-untabify-2"></a>Function File: <em></em> <strong>untabify</strong> <em>(<var>t</var>, <var>tw</var>, <var>deblank</var>)</em></dt>
+<dd><p>Replace TAB characters in <var>t</var> with spaces.
+</p>
+<p>The input, <var>t</var>, may be either a 2-D character array, or a cell array of
+character strings.  The output is the same class as the input.
+</p>
+<p>The tab width is specified by <var>tw</var>, and defaults to eight.
+</p>
+<p>If the optional argument <var>deblank</var> is true, then the spaces will be
+removed from the end of the character data.
+</p>
+<p>The following example reads a file and writes an untabified version of the
+same file with trailing spaces stripped.
+</p>
+<div class="example">
+<pre class="example">fid = fopen (&quot;tabbed_script.m&quot;);
+text = char (fread (fid, &quot;uchar&quot;)');
+fclose (fid);
+fid = fopen (&quot;untabified_script.m&quot;, &quot;w&quot;);
+text = untabify (strsplit (text, &quot;\n&quot;), 8, true);
+fprintf (fid, &quot;%s\n&quot;, text{:});
+fclose (fid);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="String-Conversions.html#XREFstrjust">strjust</a>, <a href="#XREFstrsplit">strsplit</a>, <a href="#XREFdeblank">deblank</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="String-Conversions.html#String-Conversions" accesskey="n" rel="next">String Conversions</a>, Previous: <a href="Comparing-Strings.html#Comparing-Strings" accesskey="p" rel="prev">Comparing Strings</a>, Up: <a href="Strings.html#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

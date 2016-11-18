@@ -1,0 +1,94 @@
+## Disable the next line if you really need to see the
+## thread create/exit messages.
+
+set print thread-events off
+
+## Helpful macros for debugging Octave.
+
+############################################################
+## Display a dim-vector object.
+
+define display-dims
+  echo ndims: \
+  output $arg0.rep[-1]
+  echo \ndims: \
+  output *$arg0.rep@$arg0.rep[-1]
+  echo \n
+  dont-repeat
+end
+
+document display-dims
+Usage: display-dims DIM_VECTOR
+Display the contents of an Octave dimension vector.
+end
+
+############################################################
+## Display a dense array object.
+
+define display-dense-array
+  echo array object: \
+  output $arg0
+  echo \ndimensions:\n
+  display-dims $arg0.dimensions
+  echo \nrep = \
+  output *$arg0.rep
+  echo \nrep.data = \
+  output *$arg0.rep.data@$arg0.rep.len
+  echo \n
+  dont-repeat
+end
+
+document display-dense-array
+Usage: display-dense-array ARRAY
+Display the contents of an ordinary, i.e., dense Octave array.
+
+See also [display-sparse-array] for showing the contents
+of sparse Octave arrays.
+end
+
+############################################################
+## Display a sparse array object.
+
+define display-sparse-array
+  echo sparse object: \
+  output $arg0
+  echo \ndimensions.rep[0] = \
+  display-dims $arg0.dimensions
+  echo \ndimensions.rep[1] = \
+  output $arg0.dimensions.rep[1]
+  echo \nrep = \
+  output *$arg0.rep
+  echo \nrep.d = \
+  output *$arg0.rep.d@$arg0.rep.nzmx
+  echo \nrep.r = \
+  output *$arg0.rep.r@$arg0.rep.nzmx
+  echo \nrep.c = \
+  output *$arg0.rep.c@($arg0.rep.ncols+1)
+  echo \n
+  dont-repeat
+end
+
+document display-sparse-array
+Usage: display-sparse-array SPARSE_ARRAY
+Display the contents of a sparse Octave array.
+
+See also [display-dense-array] for showing the contents
+of ordinary Octave arrays.
+end
+
+############################################################
+
+## Display Octave debugging stack
+
+define show-octave-dbstack
+  call show_octave_dbstack ()
+end
+
+document show-octave-dbstack
+Usage: show-octave-dbstack
+Display the contents of the current Octave debugging stack.
+
+This is the function stack that the Octave interpreter is processing
+and will be different from the C++ stack being debugged with gdb.
+end
+

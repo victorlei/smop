@@ -1,0 +1,386 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Finding Elements and Checking Conditions</title>
+
+<meta name="description" content="GNU Octave: Finding Elements and Checking Conditions">
+<meta name="keywords" content="GNU Octave: Finding Elements and Checking Conditions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Matrix-Manipulation.html#Matrix-Manipulation" rel="up" title="Matrix Manipulation">
+<link href="Rearranging-Matrices.html#Rearranging-Matrices" rel="next" title="Rearranging Matrices">
+<link href="Matrix-Manipulation.html#Matrix-Manipulation" rel="prev" title="Matrix Manipulation">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Finding-Elements-and-Checking-Conditions"></a>
+<div class="header">
+<p>
+Next: <a href="Rearranging-Matrices.html#Rearranging-Matrices" accesskey="n" rel="next">Rearranging Matrices</a>, Up: <a href="Matrix-Manipulation.html#Matrix-Manipulation" accesskey="u" rel="up">Matrix Manipulation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Finding-Elements-and-Checking-Conditions-1"></a>
+<h3 class="section">16.1 Finding Elements and Checking Conditions</h3>
+
+<p>The functions <code>any</code> and <code>all</code> are useful for determining
+whether any or all of the elements of a matrix satisfy some condition.
+The <code>find</code> function is also useful in determining which elements of
+a matrix meet a specified condition.
+</p>
+<a name="XREFany"></a><dl>
+<dt><a name="index-any"></a>Built-in Function: <em></em> <strong>any</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-any-1"></a>Built-in Function: <em></em> <strong>any</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>For a vector argument, return true (logical 1) if any element of the vector
+is nonzero.
+</p>
+<p>For a matrix argument, return a row vector of logical ones and
+zeros with each element indicating whether any of the elements of the
+corresponding column of the matrix are nonzero.  For example:
+</p>
+<div class="example">
+<pre class="example">any (eye (2, 4))
+ &rArr; [ 1, 1, 0, 0 ]
+</pre></div>
+
+<p>If the optional argument <var>dim</var> is supplied, work along dimension
+<var>dim</var>.  For example:
+</p>
+<div class="example">
+<pre class="example">any (eye (2, 4), 2)
+ &rArr; [ 1; 1 ]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFall">all</a>.
+</p></dd></dl>
+
+
+<a name="XREFall"></a><dl>
+<dt><a name="index-all"></a>Built-in Function: <em></em> <strong>all</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-all-1"></a>Built-in Function: <em></em> <strong>all</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>For a vector argument, return true (logical 1) if all elements of the vector
+are nonzero.
+</p>
+<p>For a matrix argument, return a row vector of logical ones and
+zeros with each element indicating whether all of the elements of the
+corresponding column of the matrix are nonzero.  For example:
+</p>
+<div class="example">
+<pre class="example">all ([2, 3; 1, 0])
+    &rArr; [ 1, 0 ]
+</pre></div>
+
+<p>If the optional argument <var>dim</var> is supplied, work along dimension
+<var>dim</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFany">any</a>.
+</p></dd></dl>
+
+
+<p>Since the comparison operators (see <a href="Comparison-Ops.html#Comparison-Ops">Comparison Ops</a>) return matrices
+of ones and zeros, it is easy to test a matrix for many things, not just
+whether the elements are nonzero.  For example,
+</p>
+<div class="example">
+<pre class="example">all (all (rand (5) &lt; 0.9))
+     &rArr; 0
+</pre></div>
+
+<p>tests a random 5 by 5 matrix to see if all of its elements are less
+than 0.9.
+</p>
+<p>Note that in conditional contexts (like the test clause of <code>if</code> and
+<code>while</code> statements) Octave treats the test as if you had typed
+<code>all (all (condition))</code>.
+</p>
+<a name="XREFxor"></a><dl>
+<dt><a name="index-xor"></a>Function File: <em><var>z</var> =</em> <strong>xor</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-xor-1"></a>Function File: <em><var>z</var> =</em> <strong>xor</strong> <em>(<var>x1</var>, <var>x2</var>, &hellip;)</em></dt>
+<dd><p>Return the <em>exclusive or</em> of <var>x</var> and <var>y</var>.
+</p>
+<p>For boolean expressions <var>x</var> and <var>y</var>,
+<code>xor (<var>x</var>, <var>y</var>)</code> is true if and only if one of <var>x</var> or
+<var>y</var> is true.  Otherwise, if <var>x</var> and <var>y</var> are both true or both
+false, <code>xor</code> returns false.
+</p>
+<p>The truth table for the xor operation is
+</p>
+<table>
+<tr><td width="44%"></td><td width="3%"><var>x</var></td><td width="5%"><var>y</var></td><td width="3%"><var>z</var></td><td width="44%"></td></tr>
+<tr><td width="44%"></td><td width="3%">-</td><td width="5%">-</td><td width="3%">-</td><td width="44%"></td></tr>
+<tr><td width="44%"></td><td width="3%">0</td><td width="5%">0</td><td width="3%">0</td><td width="44%"></td></tr>
+<tr><td width="44%"></td><td width="3%">1</td><td width="5%">0</td><td width="3%">1</td><td width="44%"></td></tr>
+<tr><td width="44%"></td><td width="3%">0</td><td width="5%">1</td><td width="3%">1</td><td width="44%"></td></tr>
+<tr><td width="44%"></td><td width="3%">1</td><td width="5%">1</td><td width="3%">0</td><td width="44%"></td></tr>
+</table>
+
+<p>If more than two arguments are given the xor operation is applied
+cumulatively from left to right:
+</p>
+<div class="example">
+<pre class="example">(&hellip;((x1 XOR x2) XOR x3) XOR &hellip;)
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Element_002dby_002delement-Boolean-Operators.html#XREFand">and</a>, <a href="Element_002dby_002delement-Boolean-Operators.html#XREFor">or</a>, <a href="Element_002dby_002delement-Boolean-Operators.html#XREFnot">not</a>.
+</p></dd></dl>
+
+
+<a name="XREFdiff"></a><dl>
+<dt><a name="index-diff"></a>Built-in Function: <em></em> <strong>diff</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-diff-1"></a>Built-in Function: <em></em> <strong>diff</strong> <em>(<var>x</var>, <var>k</var>)</em></dt>
+<dt><a name="index-diff-2"></a>Built-in Function: <em></em> <strong>diff</strong> <em>(<var>x</var>, <var>k</var>, <var>dim</var>)</em></dt>
+<dd><p>If <var>x</var> is a vector of length <em>n</em>, <code>diff&nbsp;(<var>x</var>)</code><!-- /@w --> is the
+vector of first differences
+ <var>x</var>(2) - <var>x</var>(1), &hellip;, <var>x</var>(n) - <var>x</var>(n-1).
+</p>
+<p>If <var>x</var> is a matrix, <code>diff&nbsp;(<var>x</var>)</code><!-- /@w --> is the matrix of column
+differences along the first non-singleton dimension.
+</p>
+<p>The second argument is optional.  If supplied,
+<code>diff&nbsp;(<var>x</var>,&nbsp;<var>k</var>)</code><!-- /@w -->, where <var>k</var> is a non-negative integer,
+returns the <var>k</var>-th differences.  It is possible that <var>k</var> is larger
+than the first non-singleton dimension of the matrix.  In this case,
+<code>diff</code> continues to take the differences along the next
+non-singleton dimension.
+</p>
+<p>The dimension along which to take the difference can be explicitly
+stated with the optional variable <var>dim</var>.  In this case the
+<var>k</var>-th order differences are calculated along this dimension.
+In the case where <var>k</var> exceeds <code>size&nbsp;(<var>x</var>,&nbsp;<var>dim</var>)</code><!-- /@w -->
+an empty matrix is returned.
+</p>
+<p><strong>See also:</strong> <a href="Rearranging-Matrices.html#XREFsort">sort</a>, <a href="Short_002dcircuit-Boolean-Operators.html#XREFmerge">merge</a>.
+</p></dd></dl>
+
+
+<a name="XREFisinf"></a><dl>
+<dt><a name="index-isinf"></a>Mapping Function: <em></em> <strong>isinf</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>x</var> are
+infinite and false where they are not.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">isinf ([13, Inf, NA, NaN])
+      &rArr; [ 0, 1, 0, 0 ]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFisfinite">isfinite</a>, <a href="#XREFisnan">isnan</a>, <a href="Missing-Data.html#XREFisna">isna</a>.
+</p></dd></dl>
+
+
+<a name="XREFisnan"></a><dl>
+<dt><a name="index-isnan"></a>Mapping Function: <em></em> <strong>isnan</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>x</var> are
+NaN values and false where they are not.
+</p>
+<p>NA values are also considered NaN values.  For example:
+</p>
+<div class="example">
+<pre class="example">isnan ([13, Inf, NA, NaN])
+      &rArr; [ 0, 0, 1, 1 ]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="Missing-Data.html#XREFisna">isna</a>, <a href="#XREFisinf">isinf</a>, <a href="#XREFisfinite">isfinite</a>.
+</p></dd></dl>
+
+
+<a name="XREFisfinite"></a><dl>
+<dt><a name="index-isfinite"></a>Mapping Function: <em></em> <strong>isfinite</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>x</var> are
+finite values and false where they are not.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">isfinite ([13, Inf, NA, NaN])
+     &rArr; [ 1, 0, 0, 0 ]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFisinf">isinf</a>, <a href="#XREFisnan">isnan</a>, <a href="Missing-Data.html#XREFisna">isna</a>.
+</p></dd></dl>
+
+
+<a name="XREFcommon_005fsize"></a><dl>
+<dt><a name="index-common_005fsize"></a>Function File: <em>[<var>err</var>, <var>y1</var>, &hellip;] =</em> <strong>common_size</strong> <em>(<var>x1</var>, &hellip;)</em></dt>
+<dd><p>Determine if all input arguments are either scalar or of common size.
+</p>
+<p>If true, <var>err</var> is zero, and <var>yi</var> is a matrix of the common size
+with all entries equal to <var>xi</var> if this is a scalar or <var>xi</var>
+otherwise.  If the inputs cannot be brought to a common size, <var>err</var> is
+1, and <var>yi</var> is <var>xi</var>.  For example:
+</p>
+<div class="example">
+<pre class="example">[errorcode, a, b] = common_size ([1 2; 3 4], 5)
+     &rArr; errorcode = 0
+     &rArr; a = [ 1, 2; 3, 4 ]
+     &rArr; b = [ 5, 5; 5, 5 ]
+</pre></div>
+
+<p>This is useful for implementing functions where arguments can either be
+scalars or of common size.
+</p></dd></dl>
+
+
+<a name="XREFfind"></a><dl>
+<dt><a name="index-find"></a>Built-in Function: <em><var>idx</var> =</em> <strong>find</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-find-1"></a>Built-in Function: <em><var>idx</var> =</em> <strong>find</strong> <em>(<var>x</var>, <var>n</var>)</em></dt>
+<dt><a name="index-find-2"></a>Built-in Function: <em><var>idx</var> =</em> <strong>find</strong> <em>(<var>x</var>, <var>n</var>, <var>direction</var>)</em></dt>
+<dt><a name="index-find-3"></a>Built-in Function: <em>[i, j] =</em> <strong>find</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-find-4"></a>Built-in Function: <em>[i, j, v] =</em> <strong>find</strong> <em>(&hellip;)</em></dt>
+<dd><p>Return a vector of indices of nonzero elements of a matrix, as a row if
+<var>x</var> is a row vector or as a column otherwise.
+</p>
+<p>To obtain a single index for each matrix element, Octave pretends that the
+columns of a matrix form one long vector (like Fortran arrays are stored).
+For example:
+</p>
+<div class="example">
+<pre class="example">find (eye (2))
+  &rArr; [ 1; 4 ]
+</pre></div>
+
+<p>If two inputs are given, <var>n</var> indicates the maximum number of elements to
+find from the beginning of the matrix or vector.
+</p>
+<p>If three inputs are given, <var>direction</var> should be one of
+<code>&quot;first&quot;</code> or <code>&quot;last&quot;</code>, requesting only the first or last
+<var>n</var> indices, respectively.  However, the indices are always returned in
+ascending order.
+</p>
+<p>If two outputs are requested, <code>find</code> returns the row and column
+indices of nonzero elements of a matrix.  For example:
+</p>
+<div class="example">
+<pre class="example">[i, j] = find (2 * eye (2))
+    &rArr; i = [ 1; 2 ]
+    &rArr; j = [ 1; 2 ]
+</pre></div>
+
+<p>If three outputs are requested, <code>find</code> also returns a vector
+containing the nonzero values.  For example:
+</p>
+<div class="example">
+<pre class="example">[i, j, v] = find (3 * eye (2))
+       &rArr; i = [ 1; 2 ]
+       &rArr; j = [ 1; 2 ]
+       &rArr; v = [ 3; 3 ]
+</pre></div>
+
+<p>Note that this function is particularly useful for sparse matrices, as
+it extracts the nonzero elements as vectors, which can then be used to
+create the original matrix.  For example:
+</p>
+<div class="example">
+<pre class="example">sz = size (a);
+[i, j, v] = find (a);
+b = sparse (i, j, v, sz(1), sz(2));
+</pre></div>
+
+<p><strong>See also:</strong> <a href="Information.html#XREFnonzeros">nonzeros</a>.
+</p></dd></dl>
+
+
+<a name="XREFlookup"></a><dl>
+<dt><a name="index-lookup"></a>Built-in Function: <em><var>idx</var> =</em> <strong>lookup</strong> <em>(<var>table</var>, <var>y</var>)</em></dt>
+<dt><a name="index-lookup-1"></a>Built-in Function: <em><var>idx</var> =</em> <strong>lookup</strong> <em>(<var>table</var>, <var>y</var>, <var>opt</var>)</em></dt>
+<dd><p>Lookup values in a sorted table.
+</p>
+<p>This function is usually used as a prelude to interpolation.
+</p>
+<p>If table is increasing and <code>idx = lookup (table, y)</code>, then
+<code>table(idx(i)) &lt;= y(i) &lt; table(idx(i+1))</code> for all <code>y(i)</code> within
+the table.  If <code>y(i) &lt; table(1)</code> then <code>idx(i)</code> is 0.  If
+<code>y(i) &gt;= table(end)</code> or <code>isnan (y(i))</code> then <code>idx(i)</code> is
+<code>n</code>.
+</p>
+<p>If the table is decreasing, then the tests are reversed.
+For non-strictly monotonic tables, empty intervals are always skipped.
+The result is undefined if <var>table</var> is not monotonic, or if
+<var>table</var> contains a NaN.
+</p>
+<p>The complexity of the lookup is O(M*log(N)) where N is the size of
+<var>table</var> and M is the size of <var>y</var>.  In the special case when <var>y</var>
+is also sorted, the complexity is O(min(M*log(N),M+N)).
+</p>
+<p><var>table</var> and <var>y</var> can also be cell arrays of strings
+(or <var>y</var> can be a single string).  In this case, string lookup
+is performed using lexicographical comparison.
+</p>
+<p>If <var>opts</var> is specified, it must be a string with letters indicating
+additional options.
+</p>
+<dl compact="compact">
+<dt><code>m</code></dt>
+<dd><p><code>table(idx(i)) == val(i)</code> if <code>val(i)</code>
+occurs in table; otherwise, <code>idx(i)</code> is zero.
+</p>
+</dd>
+<dt><code>b</code></dt>
+<dd><p><code>idx(i)</code> is a logical 1 or 0, indicating whether
+<code>val(i)</code> is contained in table or not.
+</p>
+</dd>
+<dt><code>l</code></dt>
+<dd><p>For numeric lookups
+the leftmost subinterval shall be extended to infinity (i.e., all indices
+at least 1)
+</p>
+</dd>
+<dt><code>r</code></dt>
+<dd><p>For numeric lookups
+the rightmost subinterval shall be extended to infinity (i.e., all indices
+at most n-1).
+</p></dd>
+</dl>
+</dd></dl>
+
+
+<p>If you wish to check if a variable exists at all, instead of properties
+its elements may have, consult <a href="Status-of-Variables.html#Status-of-Variables">Status of Variables</a>.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Rearranging-Matrices.html#Rearranging-Matrices" accesskey="n" rel="next">Rearranging Matrices</a>, Up: <a href="Matrix-Manipulation.html#Matrix-Manipulation" accesskey="u" rel="up">Matrix Manipulation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

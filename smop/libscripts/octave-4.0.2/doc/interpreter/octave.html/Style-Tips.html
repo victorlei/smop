@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Style Tips</title>
+
+<meta name="description" content="GNU Octave: Style Tips">
+<meta name="keywords" content="GNU Octave: Style Tips">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Tips-and-Standards.html#Tips-and-Standards" rel="up" title="Tips and Standards">
+<link href="Comment-Tips.html#Comment-Tips" rel="next" title="Comment Tips">
+<link href="Tips-and-Standards.html#Tips-and-Standards" rel="prev" title="Tips and Standards">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Style-Tips"></a>
+<div class="header">
+<p>
+Next: <a href="Comment-Tips.html#Comment-Tips" accesskey="n" rel="next">Comment Tips</a>, Up: <a href="Tips-and-Standards.html#Tips-and-Standards" accesskey="u" rel="up">Tips and Standards</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Writing-Clean-Octave-Programs"></a>
+<h3 class="section">C.1 Writing Clean Octave Programs</h3>
+
+<p>Here are some tips for avoiding common errors in writing Octave code
+intended for widespread use:
+</p>
+<ul>
+<li> Since all global variables share the same name space, and all functions
+share another name space, you should choose a short word to distinguish
+your program from other Octave programs.  Then take care to begin the
+names of all global variables, constants, and functions with the chosen
+prefix.  This helps avoid name conflicts.
+
+<p>If you write a function that you think ought to be added to Octave under
+a certain name, such as <code>fiddle_matrix</code>, don&rsquo;t call it by that name
+in your program.  Call it <code>mylib_fiddle_matrix</code> in your program,
+and send mail to <a href="mailto:maintainers@octave.org">maintainers@octave.org</a> suggesting that it
+be added to Octave.  If and when it is, the name can be changed easily
+enough.
+</p>
+<p>If one prefix is insufficient, your package may use two or three
+alternative common prefixes, so long as they make sense.
+</p>
+<p>Separate the prefix from the rest of the symbol name with an underscore
+&lsquo;<samp>_</samp>&rsquo;.  This will be consistent with Octave itself and with most
+Octave programs.
+</p>
+</li><li> When you encounter an error condition, call the function <code>error</code>
+(or <code>usage</code>).  The <code>error</code> and <code>usage</code> functions do not
+return.
+See <a href="Errors.html#Errors">Errors</a>.
+
+</li><li> Please put a copyright notice on the file if you give copies to anyone.
+Use the same lines that appear at the top of the function files
+distributed with Octave.  If you have not signed papers to assign the
+copyright to anyone else, then place your name in the copyright notice.
+</li></ul>
+
+
+
+
+
+</body>
+</html>

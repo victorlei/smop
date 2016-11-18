@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: The DESCRIPTION File</title>
+
+<meta name="description" content="GNU Octave: The DESCRIPTION File">
+<meta name="keywords" content="GNU Octave: The DESCRIPTION File">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Creating-Packages.html#Creating-Packages" rel="up" title="Creating Packages">
+<link href="The-INDEX-File.html#The-INDEX-File" rel="next" title="The INDEX File">
+<link href="Creating-Packages.html#Creating-Packages" rel="prev" title="Creating Packages">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="The-DESCRIPTION-File"></a>
+<div class="header">
+<p>
+Next: <a href="The-INDEX-File.html#The-INDEX-File" accesskey="n" rel="next">The INDEX File</a>, Up: <a href="Creating-Packages.html#Creating-Packages" accesskey="u" rel="up">Creating Packages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="The-DESCRIPTION-File-1"></a>
+<h4 class="subsection">38.4.1 The DESCRIPTION File</h4>
+
+<p>The <samp>DESCRIPTION</samp> file contains various information about the
+package, such as its name, author, and version.  This file has a very
+simple format
+</p>
+<ul>
+<li> Lines starting with &lsquo;<samp>#</samp>&rsquo; are comments.
+
+</li><li> Lines starting with a blank character are continuations from the
+previous line.
+
+</li><li> Everything else is of the form <code>NameOfOption: ValueOfOption</code>.
+</li></ul>
+
+<p>The following is a simple example of a <samp>DESCRIPTION</samp> file
+</p>
+<div class="example">
+<pre class="example">Name: The name of my package
+Version: 1.0.0
+Date: 2007-18-04
+Author: The name (and possibly email) of the package author.
+Maintainer: The name (and possibly email) of the current
+ package maintainer.
+Title: The title of the package
+Description: A short description of the package.  If this
+ description gets too long for one line it can continue
+ on the next by adding a space to the beginning of the
+ following lines.
+License: GPLv3+
+</pre></div>
+
+<p>The package manager currently recognizes the following keywords
+</p>
+<dl compact="compact">
+<dt><code>Name</code></dt>
+<dd><p>Name of the package.
+</p>
+</dd>
+<dt><code>Version</code></dt>
+<dd><p>Version of the package.  A package version must be 3 numbers separated
+by dots.
+</p>
+</dd>
+<dt><code>Date</code></dt>
+<dd><p>Date of last update.
+</p>
+</dd>
+<dt><code>Author</code></dt>
+<dd><p>Original author of the package.
+</p>
+</dd>
+<dt><code>Maintainer</code></dt>
+<dd><p>Maintainer of the package.
+</p>
+</dd>
+<dt><code>Title</code></dt>
+<dd><p>A one line description of the package.
+</p>
+</dd>
+<dt><code>Description</code></dt>
+<dd><p>A one paragraph description of the package.
+</p>
+</dd>
+<dt><code>Categories</code></dt>
+<dd><p>Optional keyword describing the package (if no <samp>INDEX</samp> file is
+given this is mandatory).
+</p>
+</dd>
+<dt><code>Problems</code></dt>
+<dd><p>Optional list of known problems.
+</p>
+</dd>
+<dt><code>Url</code></dt>
+<dd><p>Optional list of homepages related to the package.
+</p>
+</dd>
+<dt><code>Autoload</code></dt>
+<dd><p>Optional field that sets the default loading behavior for the package.
+If set to <code>yes</code>, <code>true</code> or <code>on</code>, then Octave will
+automatically load the package when starting.  Otherwise the package
+must be manually loaded with the pkg load command.  This default
+behavior can be overridden when the package is installed.
+</p>
+</dd>
+<dt><code>Depends</code></dt>
+<dd><p>A list of other Octave packages that this package depends on.  This can
+include dependencies on particular versions, with a format
+</p>
+<div class="example">
+<pre class="example">Depends: package (&gt;= 1.0.0)
+</pre></div>
+
+<p>Possible operators are <code>&lt;</code>, <code>&lt;=</code>, <code>==</code>, <code>&gt;=</code> or
+<code>&gt;</code>.  If the part of the dependency in <code>()</code> is missing, any
+version of the package is acceptable.  Multiple dependencies can be
+defined either as a comma separated list or on separate <code>Depends</code>
+lines.
+</p>
+</dd>
+<dt><code>License</code></dt>
+<dd><p>An optional short description of the used license (e.g., GPL version 3
+or newer).  This is optional since the file <samp>COPYING</samp> is mandatory.
+</p>
+</dd>
+<dt><code>SystemRequirements</code></dt>
+<dd><p>These are the external install dependencies of the package and are not
+checked by the package manager.  This is here as a hint to the
+distribution packager.  They follow the same conventions as the
+<code>Depends</code> keyword.
+</p>
+</dd>
+<dt><code>BuildRequires</code></dt>
+<dd><p>These are the external build dependencies of the package and are not
+checked by the package manager.  This is here as a hint to the
+distribution packager.  They follow the same conventions as the
+<code>Depends</code> keyword.  Note that in general, packaging systems such
+as <code>rpm</code> or <code>deb</code> and autoprobe the install dependencies
+from the build dependencies, and therefore the often a
+<code>BuildRequires</code> dependency removes the need for a
+<code>SystemRequirements</code> dependency.
+</p>
+</dd>
+</dl>
+
+<p>The developer is free to add additional arguments to the
+<samp>DESCRIPTION</samp> file for their own purposes.  One further detail to
+aid the packager is that the <code>SystemRequirements</code> and
+<code>BuildRequires</code> keywords can have a distribution dependent section,
+and the automatic build process will use these.  An example of the
+format of this is
+</p>
+<div class="example">
+<pre class="example">BuildRequires: libtermcap-devel [Mandriva] libtermcap2-devel
+</pre></div>
+
+<p>where the first package name will be used as a default and if the
+RPMs are built on a Mandriva distribution, then the second package
+name will be used instead.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="The-INDEX-File.html#The-INDEX-File" accesskey="n" rel="next">The INDEX File</a>, Up: <a href="Creating-Packages.html#Creating-Packages" accesskey="u" rel="up">Creating Packages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,768 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Rearranging Matrices</title>
+
+<meta name="description" content="GNU Octave: Rearranging Matrices">
+<meta name="keywords" content="GNU Octave: Rearranging Matrices">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Matrix-Manipulation.html#Matrix-Manipulation" rel="up" title="Matrix Manipulation">
+<link href="Special-Utility-Matrices.html#Special-Utility-Matrices" rel="next" title="Special Utility Matrices">
+<link href="Finding-Elements-and-Checking-Conditions.html#Finding-Elements-and-Checking-Conditions" rel="prev" title="Finding Elements and Checking Conditions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Rearranging-Matrices"></a>
+<div class="header">
+<p>
+Next: <a href="Special-Utility-Matrices.html#Special-Utility-Matrices" accesskey="n" rel="next">Special Utility Matrices</a>, Previous: <a href="Finding-Elements-and-Checking-Conditions.html#Finding-Elements-and-Checking-Conditions" accesskey="p" rel="prev">Finding Elements and Checking Conditions</a>, Up: <a href="Matrix-Manipulation.html#Matrix-Manipulation" accesskey="u" rel="up">Matrix Manipulation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Rearranging-Matrices-1"></a>
+<h3 class="section">16.2 Rearranging Matrices</h3>
+
+<a name="XREFfliplr"></a><dl>
+<dt><a name="index-fliplr"></a>Function File: <em></em> <strong>fliplr</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Flip array left to right.
+</p>
+<p>Return a copy of <var>x</var> with the order of the columns reversed.  In other
+words, <var>x</var> is flipped left-to-right about a vertical axis.  For example:
+</p>
+<div class="example">
+<pre class="example">fliplr ([1, 2; 3, 4])
+     &rArr;  2  1
+         4  3
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFflipud">flipud</a>, <a href="#XREFflip">flip</a>, <a href="#XREFrot90">rot90</a>, <a href="#XREFrotdim">rotdim</a>.
+</p></dd></dl>
+
+
+<a name="XREFflipud"></a><dl>
+<dt><a name="index-flipud"></a>Function File: <em></em> <strong>flipud</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Flip array upside down.
+</p>
+<p>Return a copy of <var>x</var> with the order of the rows reversed.  In other
+words, <var>x</var> is flipped upside-down about a horizontal axis.  For example:
+</p>
+<div class="example">
+<pre class="example">flipud ([1, 2; 3, 4])
+     &rArr;  3  4
+         1  2
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFfliplr">fliplr</a>, <a href="#XREFflip">flip</a>, <a href="#XREFrot90">rot90</a>, <a href="#XREFrotdim">rotdim</a>.
+</p></dd></dl>
+
+
+<a name="XREFflip"></a><dl>
+<dt><a name="index-flip"></a>Function File: <em></em> <strong>flip</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-flip-1"></a>Function File: <em></em> <strong>flip</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>Flip array across dimension <var>dim</var>.
+</p>
+<p>Return a copy of <var>x</var> flipped about the dimension <var>dim</var>.
+<var>dim</var> defaults to the first non-singleton dimension.
+For example:
+</p>
+<div class="example">
+<pre class="example">flip ([1  2  3  4])
+      &rArr;  4  3  2  1
+
+flip ([1; 2; 3; 4])
+      &rArr;  4
+          3
+          2
+          1
+
+flip ([1 2; 3 4])
+      &rArr;  3  4
+          1  2
+
+flip ([1 2; 3 4], 2)
+      &rArr;  2  1
+          4  3
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFfliplr">fliplr</a>, <a href="#XREFflipud">flipud</a>, <a href="#XREFrot90">rot90</a>, <a href="#XREFrotdim">rotdim</a>, <a href="#XREFpermute">permute</a>, <a href="Arithmetic-Ops.html#XREFtranspose">transpose</a>.
+</p></dd></dl>
+
+
+<a name="XREFrot90"></a><dl>
+<dt><a name="index-rot90"></a>Function File: <em></em> <strong>rot90</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-rot90-1"></a>Function File: <em></em> <strong>rot90</strong> <em>(<var>A</var>, <var>k</var>)</em></dt>
+<dd><p>Rotate array by 90 degree increments.
+</p>
+<p>Return a copy of <var>A</var> with the elements rotated counterclockwise in
+90-degree increments.
+</p>
+<p>The second argument is optional, and specifies how many 90-degree rotations
+are to be applied (the default value is 1).  Negative values of <var>k</var>
+rotate the matrix in a clockwise direction.
+For example,
+</p>
+<div class="example">
+<pre class="example">rot90 ([1, 2; 3, 4], -1)
+    &rArr;  3  1
+        4  2
+</pre></div>
+
+<p>rotates the given matrix clockwise by 90 degrees.  The following are all
+equivalent statements:
+</p>
+<div class="example">
+<pre class="example">rot90 ([1, 2; 3, 4], -1)
+rot90 ([1, 2; 3, 4], 3)
+rot90 ([1, 2; 3, 4], 7)
+</pre></div>
+
+<p>The rotation is always performed on the plane of the first two dimensions,
+i.e., rows and columns.  To perform a rotation on any other plane, use
+<code>rotdim</code>.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFrotdim">rotdim</a>, <a href="#XREFfliplr">fliplr</a>, <a href="#XREFflipud">flipud</a>, <a href="#XREFflip">flip</a>.
+</p></dd></dl>
+
+
+<a name="XREFrotdim"></a><dl>
+<dt><a name="index-rotdim"></a>Function File: <em></em> <strong>rotdim</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-rotdim-1"></a>Function File: <em></em> <strong>rotdim</strong> <em>(<var>x</var>, <var>n</var>)</em></dt>
+<dt><a name="index-rotdim-2"></a>Function File: <em></em> <strong>rotdim</strong> <em>(<var>x</var>, <var>n</var>, <var>plane</var>)</em></dt>
+<dd><p>Return a copy of <var>x</var> with the elements rotated counterclockwise in
+90-degree increments.
+</p>
+<p>The second argument <var>n</var> is optional, and specifies how many 90-degree
+rotations are to be applied (the default value is 1).  Negative values of
+<var>n</var> rotate the matrix in a clockwise direction.
+</p>
+<p>The third argument is also optional and defines the plane of the rotation.
+If present, <var>plane</var> is a two element vector containing two different
+valid dimensions of the matrix.  When <var>plane</var> is not given the first two
+non-singleton dimensions are used.
+</p>
+<p>For example,
+</p>
+<div class="example">
+<pre class="example">rotdim ([1, 2; 3, 4], -1, [1, 2])
+     &rArr;  3  1
+         4  2
+</pre></div>
+
+<p>rotates the given matrix clockwise by 90 degrees.  The following are all
+equivalent statements:
+</p>
+<div class="example">
+<pre class="example">rotdim ([1, 2; 3, 4], -1, [1, 2])
+rotdim ([1, 2; 3, 4], 3, [1, 2])
+rotdim ([1, 2; 3, 4], 7, [1, 2])
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFrot90">rot90</a>, <a href="#XREFfliplr">fliplr</a>, <a href="#XREFflipud">flipud</a>, <a href="#XREFflip">flip</a>.
+</p></dd></dl>
+
+
+<a name="XREFcat"></a><dl>
+<dt><a name="index-cat"></a>Built-in Function: <em></em> <strong>cat</strong> <em>(<var>dim</var>, <var>array1</var>, <var>array2</var>, &hellip;, <var>arrayN</var>)</em></dt>
+<dd><p>Return the concatenation of N-D array objects, <var>array1</var>,
+<var>array2</var>, &hellip;, <var>arrayN</var> along dimension <var>dim</var>.
+</p>
+<div class="example">
+<pre class="example">A = ones (2, 2);
+B = zeros (2, 2);
+cat (2, A, B)
+  &rArr; 1 1 0 0
+     1 1 0 0
+</pre></div>
+
+<p>Alternatively, we can concatenate <var>A</var> and <var>B</var> along the
+second dimension in the following way:
+</p>
+<div class="example">
+<pre class="example">[A, B]
+</pre></div>
+
+<p><var>dim</var> can be larger than the dimensions of the N-D array objects
+and the result will thus have <var>dim</var> dimensions as the
+following example shows:
+</p>
+<div class="example">
+<pre class="example">cat (4, ones (2, 2), zeros (2, 2))
+  &rArr; ans(:,:,1,1) =
+
+       1 1
+       1 1
+
+     ans(:,:,1,2) =
+
+       0 0
+       0 0
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFhorzcat">horzcat</a>, <a href="#XREFvertcat">vertcat</a>.
+</p></dd></dl>
+
+
+<a name="XREFhorzcat"></a><dl>
+<dt><a name="index-horzcat"></a>Built-in Function: <em></em> <strong>horzcat</strong> <em>(<var>array1</var>, <var>array2</var>, &hellip;, <var>arrayN</var>)</em></dt>
+<dd><p>Return the horizontal concatenation of N-D array objects, <var>array1</var>,
+<var>array2</var>, &hellip;, <var>arrayN</var> along dimension 2.
+</p>
+<p>Arrays may also be concatenated horizontally using the syntax for creating
+new matrices.  For example:
+</p>
+<div class="example">
+<pre class="example"><var>hcat</var> = [ <var>array1</var>, <var>array2</var>, &hellip; ]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFcat">cat</a>, <a href="#XREFvertcat">vertcat</a>.
+</p></dd></dl>
+
+
+<a name="XREFvertcat"></a><dl>
+<dt><a name="index-vertcat"></a>Built-in Function: <em></em> <strong>vertcat</strong> <em>(<var>array1</var>, <var>array2</var>, &hellip;, <var>arrayN</var>)</em></dt>
+<dd><p>Return the vertical concatenation of N-D array objects, <var>array1</var>,
+<var>array2</var>, &hellip;, <var>arrayN</var> along dimension 1.
+</p>
+<p>Arrays may also be concatenated vertically using the syntax for creating
+new matrices.  For example:
+</p>
+<div class="example">
+<pre class="example"><var>vcat</var> = [ <var>array1</var>; <var>array2</var>; &hellip; ]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFcat">cat</a>, <a href="#XREFhorzcat">horzcat</a>.
+</p></dd></dl>
+
+
+<a name="XREFpermute"></a><dl>
+<dt><a name="index-permute"></a>Built-in Function: <em></em> <strong>permute</strong> <em>(<var>A</var>, <var>perm</var>)</em></dt>
+<dd><p>Return the generalized transpose for an N-D array object <var>A</var>.
+</p>
+<p>The permutation vector <var>perm</var> must contain the elements
+<code>1:ndims&nbsp;(A)</code><!-- /@w --> (in any order, but each element must appear only
+once).  The <var>N</var>th dimension of <var>A</var> gets remapped to dimension
+<code><var>PERM</var>(<var>N</var>)</code>.  For example:
+</p>
+<div class="example">
+<pre class="example"><var>x</var> = zeros ([2, 3, 5, 7]);
+size (<var>x</var>)
+   &rArr;  2   3   5   7
+
+size (permute (<var>x</var>, [2, 1, 3, 4]))
+   &rArr;  3   2   5   7
+
+size (permute (<var>x</var>, [1, 3, 4, 2]))
+   &rArr;  2   5   7   3
+
+## The identity permutation
+size (permute (<var>x</var>, [1, 2, 3, 4]))
+   &rArr;  2   3   5   7
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFipermute">ipermute</a>.
+</p></dd></dl>
+
+
+<a name="XREFipermute"></a><dl>
+<dt><a name="index-ipermute"></a>Built-in Function: <em></em> <strong>ipermute</strong> <em>(<var>A</var>, <var>iperm</var>)</em></dt>
+<dd><p>The inverse of the <code>permute</code> function.
+</p>
+<p>The expression
+</p>
+<div class="example">
+<pre class="example">ipermute (permute (A, perm), perm)
+</pre></div>
+
+<p>returns the original array <var>A</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFpermute">permute</a>.
+</p></dd></dl>
+
+
+<a name="XREFreshape"></a><dl>
+<dt><a name="index-reshape"></a>Built-in Function: <em></em> <strong>reshape</strong> <em>(<var>A</var>, <var>m</var>, <var>n</var>, &hellip;)</em></dt>
+<dt><a name="index-reshape-1"></a>Built-in Function: <em></em> <strong>reshape</strong> <em>(<var>A</var>, [<var>m</var> <var>n</var> &hellip;])</em></dt>
+<dt><a name="index-reshape-2"></a>Built-in Function: <em></em> <strong>reshape</strong> <em>(<var>A</var>, &hellip;, [], &hellip;)</em></dt>
+<dt><a name="index-reshape-3"></a>Built-in Function: <em></em> <strong>reshape</strong> <em>(<var>A</var>, <var>size</var>)</em></dt>
+<dd><p>Return a matrix with the specified dimensions (<var>m</var>, <var>n</var>, &hellip;)
+whose elements are taken from the matrix <var>A</var>.
+</p>
+<p>The elements of the matrix are accessed in column-major order (like Fortran
+arrays are stored).
+</p>
+<p>The following code demonstrates reshaping a 1x4 row vector into a 2x2 square
+matrix.
+</p>
+<div class="example">
+<pre class="example">reshape ([1, 2, 3, 4], 2, 2)
+      &rArr;  1  3
+          2  4
+</pre></div>
+
+<p>Note that the total number of elements in the original matrix
+(<code>prod (size (<var>A</var>))</code>) must match the total number of elements
+in the new matrix (<code>prod ([<var>m</var> <var>n</var> &hellip;])</code>).
+</p>
+<p>A single dimension of the return matrix may be left unspecified and Octave
+will determine its size automatically.  An empty matrix ([]) is used to flag
+the unspecified dimension.
+</p>
+<p><strong>See also:</strong> <a href="#XREFresize">resize</a>, <a href="#XREFvec">vec</a>, <a href="#XREFpostpad">postpad</a>, <a href="#XREFcat">cat</a>, <a href="Object-Sizes.html#XREFsqueeze">squeeze</a>.
+</p></dd></dl>
+
+
+<a name="XREFresize"></a><dl>
+<dt><a name="index-resize"></a>Built-in Function: <em></em> <strong>resize</strong> <em>(<var>x</var>, <var>m</var>)</em></dt>
+<dt><a name="index-resize-1"></a>Built-in Function: <em></em> <strong>resize</strong> <em>(<var>x</var>, <var>m</var>, <var>n</var>, &hellip;)</em></dt>
+<dt><a name="index-resize-2"></a>Built-in Function: <em></em> <strong>resize</strong> <em>(<var>x</var>, [<var>m</var> <var>n</var> &hellip;])</em></dt>
+<dd><p>Resize <var>x</var> cutting off elements as necessary.
+</p>
+<p>In the result, element with certain indices is equal to the corresponding
+element of <var>x</var> if the indices are within the bounds of <var>x</var>;
+otherwise, the element is set to zero.
+</p>
+<p>In other words, the statement
+</p>
+<div class="example">
+<pre class="example">y = resize (x, dv)
+</pre></div>
+
+<p>is equivalent to the following code:
+</p>
+<div class="example">
+<pre class="example">y = zeros (dv, class (x));
+sz = min (dv, size (x));
+for i = 1:length (sz)
+  idx{i} = 1:sz(i);
+endfor
+y(idx{:}) = x(idx{:});
+</pre></div>
+
+<p>but is performed more efficiently.
+</p>
+<p>If only <var>m</var> is supplied, and it is a scalar, the dimension of the
+result is <var>m</var>-by-<var>m</var>.
+If <var>m</var>, <var>n</var>, &hellip; are all scalars, then the dimensions of
+the result are <var>m</var>-by-<var>n</var>-by-&hellip;.
+If given a vector as input, then the
+dimensions of the result are given by the elements of that vector.
+</p>
+<p>An object can be resized to more dimensions than it has;
+in such case the missing dimensions are assumed to be 1.
+Resizing an object to fewer dimensions is not possible.
+</p>
+<p><strong>See also:</strong> <a href="#XREFreshape">reshape</a>, <a href="#XREFpostpad">postpad</a>, <a href="#XREFprepad">prepad</a>, <a href="#XREFcat">cat</a>.
+</p></dd></dl>
+
+
+<a name="XREFcircshift"></a><dl>
+<dt><a name="index-circshift"></a>Function File: <em><var>y</var> =</em> <strong>circshift</strong> <em>(<var>x</var>, <var>n</var>)</em></dt>
+<dd><p>Circularly shift the values of the array <var>x</var>.
+</p>
+<p><var>n</var> must be a vector of integers no longer than the number of
+dimensions in <var>x</var>.  The values of <var>n</var> can be either positive or
+negative, which determines the direction in which the values or <var>x</var>
+are shifted.  If an element of <var>n</var> is zero, then the corresponding
+dimension of <var>x</var> will not be shifted.  For example:
+</p>
+<div class="example">
+<pre class="example">x = [1, 2, 3; 4, 5, 6; 7, 8, 9];
+circshift (x, 1)
+&rArr;  7, 8, 9
+    1, 2, 3
+    4, 5, 6
+circshift (x, -2)
+&rArr;  7, 8, 9
+    1, 2, 3
+    4, 5, 6
+circshift (x, [0,1])
+&rArr;  3, 1, 2
+    6, 4, 5
+    9, 7, 8
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFpermute">permute</a>, <a href="#XREFipermute">ipermute</a>, <a href="#XREFshiftdim">shiftdim</a>.
+</p></dd></dl>
+
+
+<a name="XREFshift"></a><dl>
+<dt><a name="index-shift"></a>Function File: <em></em> <strong>shift</strong> <em>(<var>x</var>, <var>b</var>)</em></dt>
+<dt><a name="index-shift-1"></a>Function File: <em></em> <strong>shift</strong> <em>(<var>x</var>, <var>b</var>, <var>dim</var>)</em></dt>
+<dd><p>If <var>x</var> is a vector, perform a circular shift of length <var>b</var> of
+the elements of <var>x</var>.
+</p>
+<p>If <var>x</var> is a matrix, do the same for each column of <var>x</var>.
+</p>
+<p>If the optional <var>dim</var> argument is given, operate along this dimension.
+</p></dd></dl>
+
+
+<a name="XREFshiftdim"></a><dl>
+<dt><a name="index-shiftdim"></a>Function File: <em><var>y</var> =</em> <strong>shiftdim</strong> <em>(<var>x</var>, <var>n</var>)</em></dt>
+<dt><a name="index-shiftdim-1"></a>Function File: <em>[<var>y</var>, <var>ns</var>] =</em> <strong>shiftdim</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Shift the dimensions of <var>x</var> by <var>n</var>, where <var>n</var> must be
+an integer scalar.
+</p>
+<p>When <var>n</var> is positive, the dimensions of <var>x</var> are shifted to the left,
+with the leading dimensions circulated to the end.  If <var>n</var> is negative,
+then the dimensions of <var>x</var> are shifted to the right, with <var>n</var>
+leading singleton dimensions added.
+</p>
+<p>Called with a single argument, <code>shiftdim</code>, removes the leading
+singleton dimensions, returning the number of dimensions removed in the
+second output argument <var>ns</var>.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">x = ones (1, 2, 3);
+size (shiftdim (x, -1))
+   &rArr; [1, 1, 2, 3]
+size (shiftdim (x, 1))
+   &rArr; [2, 3]
+[b, ns] = shiftdim (x)
+   &rArr; b = [1, 1, 1; 1, 1, 1]
+   &rArr; ns = 1
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFreshape">reshape</a>, <a href="#XREFpermute">permute</a>, <a href="#XREFipermute">ipermute</a>, <a href="#XREFcircshift">circshift</a>, <a href="Object-Sizes.html#XREFsqueeze">squeeze</a>.
+</p></dd></dl>
+
+
+<a name="XREFsort"></a><dl>
+<dt><a name="index-sort"></a>Built-in Function: <em>[<var>s</var>, <var>i</var>] =</em> <strong>sort</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-sort-1"></a>Built-in Function: <em>[<var>s</var>, <var>i</var>] =</em> <strong>sort</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-sort-2"></a>Built-in Function: <em>[<var>s</var>, <var>i</var>] =</em> <strong>sort</strong> <em>(<var>x</var>, <var>mode</var>)</em></dt>
+<dt><a name="index-sort-3"></a>Built-in Function: <em>[<var>s</var>, <var>i</var>] =</em> <strong>sort</strong> <em>(<var>x</var>, <var>dim</var>, <var>mode</var>)</em></dt>
+<dd><p>Return a copy of <var>x</var> with the elements arranged in increasing order.
+</p>
+<p>For matrices, <code>sort</code> orders the elements within columns
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">sort ([1, 2; 2, 3; 3, 1])
+   &rArr;  1  1
+       2  2
+       3  3
+</pre></div>
+
+<p>If the optional argument <var>dim</var> is given, then the matrix is sorted
+along the dimension defined by <var>dim</var>.  The optional argument <code>mode</code>
+defines the order in which the values will be sorted.  Valid values of
+<code>mode</code> are <code>&quot;ascend&quot;</code> or <code>&quot;descend&quot;</code>.
+</p>
+<p>The <code>sort</code> function may also be used to produce a matrix
+containing the original row indices of the elements in the sorted
+matrix.  For example:
+</p>
+<div class="example">
+<pre class="example">[s, i] = sort ([1, 2; 2, 3; 3, 1])
+  &rArr; s = 1  1
+         2  2
+         3  3
+  &rArr; i = 1  3
+         2  1
+         3  2
+</pre></div>
+
+<p>For equal elements, the indices are such that equal elements are listed
+in the order in which they appeared in the original list.
+</p>
+<p>Sorting of complex entries is done first by magnitude
+(<code>abs&nbsp;(<var>z</var>)</code><!-- /@w -->) and for any ties by phase angle
+(<code>angle&nbsp;(z)</code><!-- /@w -->).  For example:
+</p>
+<div class="example">
+<pre class="example">sort ([1+i; 1; 1-i])
+    &rArr; 1 + 0i
+       1 - 1i
+       1 + 1i
+</pre></div>
+
+<p>NaN values are treated as being greater than any other value and are sorted
+to the end of the list.
+</p>
+<p>The <code>sort</code> function may also be used to sort strings and cell arrays
+of strings, in which case ASCII dictionary order (uppercase &rsquo;A&rsquo; precedes
+lowercase &rsquo;a&rsquo;) of the strings is used.
+</p>
+<p>The algorithm used in <code>sort</code> is optimized for the sorting of partially
+ordered lists.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsortrows">sortrows</a>, <a href="#XREFissorted">issorted</a>.
+</p></dd></dl>
+
+
+<a name="XREFsortrows"></a><dl>
+<dt><a name="index-sortrows"></a>Function File: <em>[<var>s</var>, <var>i</var>] =</em> <strong>sortrows</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-sortrows-1"></a>Function File: <em>[<var>s</var>, <var>i</var>] =</em> <strong>sortrows</strong> <em>(<var>A</var>, <var>c</var>)</em></dt>
+<dd><p>Sort the rows of the matrix <var>A</var> according to the order of the columns
+specified in <var>c</var>.
+</p>
+<p>If <var>c</var> is omitted, a lexicographical sort is used.  By default ascending
+order is used however if elements of <var>c</var> are negative then the
+corresponding column is sorted in descending order.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsort">sort</a>.
+</p></dd></dl>
+
+
+<a name="XREFissorted"></a><dl>
+<dt><a name="index-issorted"></a>Built-in Function: <em></em> <strong>issorted</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-issorted-1"></a>Built-in Function: <em></em> <strong>issorted</strong> <em>(<var>a</var>, <var>mode</var>)</em></dt>
+<dt><a name="index-issorted-2"></a>Built-in Function: <em></em> <strong>issorted</strong> <em>(<var>a</var>, &quot;rows&quot;, <var>mode</var>)</em></dt>
+<dd><p>Return true if the array is sorted according to <var>mode</var>, which
+may be either <code>&quot;ascending&quot;</code>, <code>&quot;descending&quot;</code>, or
+<code>&quot;either&quot;</code>.
+</p>
+<p>By default,  <var>mode</var> is <code>&quot;ascending&quot;</code>.  NaNs are treated in the
+same manner as <code>sort</code>.
+</p>
+<p>If the optional argument <code>&quot;rows&quot;</code> is supplied, check whether
+the array is sorted by rows as output by the function <code>sortrows</code>
+(with no options).
+</p>
+<p>This function does not support sparse matrices.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsort">sort</a>, <a href="#XREFsortrows">sortrows</a>.
+</p></dd></dl>
+
+
+
+<a name="XREFnth_005felement"></a><dl>
+<dt><a name="index-nth_005felement"></a>Built-in Function: <em></em> <strong>nth_element</strong> <em>(<var>x</var>, <var>n</var>)</em></dt>
+<dt><a name="index-nth_005felement-1"></a>Built-in Function: <em></em> <strong>nth_element</strong> <em>(<var>x</var>, <var>n</var>, <var>dim</var>)</em></dt>
+<dd><p>Select the n-th smallest element of a vector, using the ordering defined by
+<code>sort</code>.
+</p>
+<p>The result is equivalent to <code>sort(<var>x</var>)(<var>n</var>)</code>.
+</p>
+<p><var>n</var> can also be a contiguous range, either ascending <code>l:u</code>
+or descending <code>u:-1:l</code>, in which case a range of elements is returned.
+</p>
+<p>If <var>x</var> is an array, <code>nth_element</code> operates along the dimension
+defined by <var>dim</var>, or the first non-singleton dimension if <var>dim</var> is
+not given.
+</p>
+<p>Programming Note: nth_element encapsulates the C++ standard library
+algorithms nth_element and partial_sort.  On average, the complexity of the
+operation is O(M*log(K)), where <code>M&nbsp;=&nbsp;size&nbsp;(<var>x</var>,&nbsp;<var>dim</var>)</code><!-- /@w --> and
+<code>K&nbsp;=&nbsp;length&nbsp;(<var>n</var>)</code><!-- /@w -->.  This function is intended for cases where
+the ratio K/M is small; otherwise, it may be better to use <code>sort</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsort">sort</a>, <a href="Utility-Functions.html#XREFmin">min</a>, <a href="Utility-Functions.html#XREFmax">max</a>.
+</p></dd></dl>
+
+
+<a name="XREFtriu"></a><a name="XREFtril"></a><dl>
+<dt><a name="index-tril"></a>Function File: <em></em> <strong>tril</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-tril-1"></a>Function File: <em></em> <strong>tril</strong> <em>(<var>A</var>, <var>k</var>)</em></dt>
+<dt><a name="index-tril-2"></a>Function File: <em></em> <strong>tril</strong> <em>(<var>A</var>, <var>k</var>, <var>pack</var>)</em></dt>
+<dt><a name="index-triu"></a>Function File: <em></em> <strong>triu</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-triu-1"></a>Function File: <em></em> <strong>triu</strong> <em>(<var>A</var>, <var>k</var>)</em></dt>
+<dt><a name="index-triu-2"></a>Function File: <em></em> <strong>triu</strong> <em>(<var>A</var>, <var>k</var>, <var>pack</var>)</em></dt>
+<dd><p>Return a new matrix formed by extracting the lower (<code>tril</code>)
+or upper (<code>triu</code>) triangular part of the matrix <var>A</var>, and
+setting all other elements to zero.
+</p>
+<p>The second argument is optional, and specifies how many diagonals above or
+below the main diagonal should also be set to zero.
+</p>
+<p>The default value of <var>k</var> is zero, so that <code>triu</code> and <code>tril</code>
+normally include the main diagonal as part of the result.
+</p>
+<p>If the value of <var>k</var> is nonzero integer, the selection of elements starts
+at an offset of <var>k</var> diagonals above or below the main diagonal; above
+for positive <var>k</var> and below for negative <var>k</var>.
+</p>
+<p>The absolute value of <var>k</var> must not be greater than the number of
+subdiagonals or superdiagonals.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">tril (ones (3), -1)
+     &rArr;  0  0  0
+         1  0  0
+         1  1  0
+</pre></div>
+
+<p>and
+</p>
+<div class="example">
+<pre class="example">tril (ones (3), 1)
+     &rArr;  1  1  0
+         1  1  1
+         1  1  1
+</pre></div>
+
+<p>If the option <code>&quot;pack&quot;</code> is given as third argument, the extracted
+elements are not inserted into a matrix, but rather stacked column-wise one
+above other.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdiag">diag</a>.
+</p></dd></dl>
+
+
+<a name="XREFvec"></a><dl>
+<dt><a name="index-vec"></a>Built-in Function: <em><var>v</var> =</em> <strong>vec</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-vec-1"></a>Built-in Function: <em><var>v</var> =</em> <strong>vec</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>Return the vector obtained by stacking the columns of the matrix <var>x</var>
+one above the other.
+</p>
+<p>Without <var>dim</var> this is equivalent to <code><var>x</var>(:)</code>.
+</p>
+<p>If <var>dim</var> is supplied, the dimensions of <var>v</var> are set to <var>dim</var>
+with all elements along the last dimension.  This is equivalent to
+<code>shiftdim (<var>x</var>(:), 1-<var>dim</var>)</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFvech">vech</a>, <a href="#XREFresize">resize</a>, <a href="#XREFcat">cat</a>.
+</p></dd></dl>
+
+
+<a name="XREFvech"></a><dl>
+<dt><a name="index-vech"></a>Function File: <em></em> <strong>vech</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return the vector obtained by eliminating all superdiagonal elements of
+the square matrix <var>x</var> and stacking the result one column above the
+other.
+</p>
+<p>This has uses in matrix calculus where the underlying matrix is symmetric
+and it would be pointless to keep values above the main diagonal.
+</p>
+<p><strong>See also:</strong> <a href="#XREFvec">vec</a>.
+</p></dd></dl>
+
+
+<a name="XREFprepad"></a><dl>
+<dt><a name="index-prepad"></a>Function File: <em></em> <strong>prepad</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
+<dt><a name="index-prepad-1"></a>Function File: <em></em> <strong>prepad</strong> <em>(<var>x</var>, <var>l</var>, <var>c</var>)</em></dt>
+<dt><a name="index-prepad-2"></a>Function File: <em></em> <strong>prepad</strong> <em>(<var>x</var>, <var>l</var>, <var>c</var>, <var>dim</var>)</em></dt>
+<dd><p>Prepend the scalar value <var>c</var> to the vector <var>x</var> until it is of length
+<var>l</var>.  If <var>c</var> is not given, a value of 0 is used.
+</p>
+<p>If <code>length (<var>x</var>) &gt; <var>l</var></code>, elements from the beginning of <var>x</var>
+are removed until a vector of length <var>l</var> is obtained.
+</p>
+<p>If <var>x</var> is a matrix, elements are prepended or removed from each row.
+</p>
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p>If <var>dim</var> is larger than the dimensions of <var>x</var>, the result will have
+<var>dim</var> dimensions.
+</p>
+<p><strong>See also:</strong> <a href="#XREFpostpad">postpad</a>, <a href="#XREFcat">cat</a>, <a href="#XREFresize">resize</a>.
+</p></dd></dl>
+
+
+<a name="XREFpostpad"></a><dl>
+<dt><a name="index-postpad"></a>Function File: <em></em> <strong>postpad</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
+<dt><a name="index-postpad-1"></a>Function File: <em></em> <strong>postpad</strong> <em>(<var>x</var>, <var>l</var>, <var>c</var>)</em></dt>
+<dt><a name="index-postpad-2"></a>Function File: <em></em> <strong>postpad</strong> <em>(<var>x</var>, <var>l</var>, <var>c</var>, <var>dim</var>)</em></dt>
+<dd><p>Append the scalar value <var>c</var> to the vector <var>x</var> until it is of length
+<var>l</var>.  If <var>c</var> is not given, a value of 0 is used.
+</p>
+<p>If <code>length (<var>x</var>) &gt; <var>l</var></code>, elements from the end of <var>x</var> are
+removed until a vector of length <var>l</var> is obtained.
+</p>
+<p>If <var>x</var> is a matrix, elements are appended or removed from each row.
+</p>
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p>If <var>dim</var> is larger than the dimensions of <var>x</var>, the result will have
+<var>dim</var> dimensions.
+</p>
+<p><strong>See also:</strong> <a href="#XREFprepad">prepad</a>, <a href="#XREFcat">cat</a>, <a href="#XREFresize">resize</a>.
+</p></dd></dl>
+
+
+<a name="XREFdiag"></a><dl>
+<dt><a name="index-diag"></a>Built-in Function: <em><var>M</var> =</em> <strong>diag</strong> <em>(<var>v</var>)</em></dt>
+<dt><a name="index-diag-1"></a>Built-in Function: <em><var>M</var> =</em> <strong>diag</strong> <em>(<var>v</var>, <var>k</var>)</em></dt>
+<dt><a name="index-diag-2"></a>Built-in Function: <em><var>M</var> =</em> <strong>diag</strong> <em>(<var>v</var>, <var>m</var>, <var>n</var>)</em></dt>
+<dt><a name="index-diag-3"></a>Built-in Function: <em><var>v</var> =</em> <strong>diag</strong> <em>(<var>M</var>)</em></dt>
+<dt><a name="index-diag-4"></a>Built-in Function: <em><var>v</var> =</em> <strong>diag</strong> <em>(<var>M</var>, <var>k</var>)</em></dt>
+<dd><p>Return a diagonal matrix with vector <var>v</var> on diagonal <var>k</var>.
+</p>
+<p>The second argument is optional.  If it is positive, the vector is placed on
+the <var>k</var>-th superdiagonal.  If it is negative, it is placed on the
+<var>-k</var>-th subdiagonal.  The default value of <var>k</var> is 0, and the vector
+is placed on the main diagonal.  For example:
+</p>
+<div class="example">
+<pre class="example">diag ([1, 2, 3], 1)
+   &rArr;  0  1  0  0
+       0  0  2  0
+       0  0  0  3
+       0  0  0  0
+</pre></div>
+
+<p>The 3-input form returns a diagonal matrix with vector <var>v</var> on the main
+diagonal and the resulting matrix being of size <var>m</var> rows x <var>n</var>
+columns.
+</p>
+<p>Given a matrix argument, instead of a vector, <code>diag</code> extracts the
+<var>k</var>-th diagonal of the matrix.
+</p></dd></dl>
+
+
+<a name="XREFblkdiag"></a><dl>
+<dt><a name="index-blkdiag"></a>Function File: <em></em> <strong>blkdiag</strong> <em>(<var>A</var>, <var>B</var>, <var>C</var>, &hellip;)</em></dt>
+<dd><p>Build a block diagonal matrix from <var>A</var>, <var>B</var>, <var>C</var>, &hellip;
+</p>
+<p>All arguments must be numeric and either two-dimensional matrices or
+scalars.  If any argument is of type sparse, the output will also be sparse.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdiag">diag</a>, <a href="#XREFhorzcat">horzcat</a>, <a href="#XREFvertcat">vertcat</a>, <a href="Creating-Sparse-Matrices.html#XREFsparse">sparse</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Special-Utility-Matrices.html#Special-Utility-Matrices" accesskey="n" rel="next">Special Utility Matrices</a>, Previous: <a href="Finding-Elements-and-Checking-Conditions.html#Finding-Elements-and-Checking-Conditions" accesskey="p" rel="prev">Finding Elements and Checking Conditions</a>, Up: <a href="Matrix-Manipulation.html#Matrix-Manipulation" accesskey="u" rel="up">Matrix Manipulation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

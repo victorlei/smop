@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Mex-Files</title>
+
+<meta name="description" content="GNU Octave: Mex-Files">
+<meta name="keywords" content="GNU Octave: Mex-Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="External-Code-Interface.html#External-Code-Interface" rel="up" title="External Code Interface">
+<link href="Getting-Started-with-Mex_002dFiles.html#Getting-Started-with-Mex_002dFiles" rel="next" title="Getting Started with Mex-Files">
+<link href="Documentation-and-Test-of-Oct_002dFiles.html#Documentation-and-Test-of-Oct_002dFiles" rel="prev" title="Documentation and Test of Oct-Files">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Mex_002dFiles"></a>
+<div class="header">
+<p>
+Next: <a href="Standalone-Programs.html#Standalone-Programs" accesskey="n" rel="next">Standalone Programs</a>, Previous: <a href="Oct_002dFiles.html#Oct_002dFiles" accesskey="p" rel="prev">Oct-Files</a>, Up: <a href="External-Code-Interface.html#External-Code-Interface" accesskey="u" rel="up">External Code Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Mex_002dFiles-1"></a>
+<h3 class="section">A.2 Mex-Files</h3>
+<a name="index-mex_002dfiles"></a>
+<a name="index-mex"></a>
+
+<p>Octave includes an interface to allow legacy mex-files to be compiled
+and used with Octave.  This interface can also be used to share code
+between Octave and <small>MATLAB</small> users.  However, as mex-files expose
+<small>MATLAB</small>&rsquo;s internal API, and the internal structure of Octave is
+different, a mex-file can never have the same performance in Octave as
+the equivalent oct-file.  In particular, to support the manner in which
+variables are passed to mex functions there are a significant number of
+additional copies of memory blocks when calling or returning from a
+mex-file function.  For this reason, it is recommended that any new code
+be written with the oct-file interface previously discussed.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Getting-Started-with-Mex_002dFiles.html#Getting-Started-with-Mex_002dFiles" accesskey="1">Getting Started with Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Working-with-Matrices-and-Arrays-in-Mex_002dFiles.html#Working-with-Matrices-and-Arrays-in-Mex_002dFiles" accesskey="2">Working with Matrices and Arrays in Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Character-Strings-in-Mex_002dFiles.html#Character-Strings-in-Mex_002dFiles" accesskey="3">Character Strings in Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Cell-Arrays-with-Mex_002dFiles.html#Cell-Arrays-with-Mex_002dFiles" accesskey="4">Cell Arrays with Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Structures-with-Mex_002dFiles.html#Structures-with-Mex_002dFiles" accesskey="5">Structures with Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Sparse-Matrices-with-Mex_002dFiles.html#Sparse-Matrices-with-Mex_002dFiles" accesskey="6">Sparse Matrices with Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Calling-Other-Functions-in-Mex_002dFiles.html#Calling-Other-Functions-in-Mex_002dFiles" accesskey="7">Calling Other Functions in Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+
+
+</body>
+</html>

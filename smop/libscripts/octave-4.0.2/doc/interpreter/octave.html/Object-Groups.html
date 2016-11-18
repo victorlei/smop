@@ -1,0 +1,439 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Object Groups</title>
+
+<meta name="description" content="GNU Octave: Object Groups">
+<meta name="keywords" content="GNU Octave: Object Groups">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Advanced-Plotting.html#Advanced-Plotting" rel="up" title="Advanced Plotting">
+<link href="Data-Sources-in-Object-Groups.html#Data-Sources-in-Object-Groups" rel="next" title="Data Sources in Object Groups">
+<link href="Application_002ddefined-Data.html#Application_002ddefined-Data" rel="prev" title="Application-defined Data">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Object-Groups"></a>
+<div class="header">
+<p>
+Next: <a href="Graphics-Toolkits.html#Graphics-Toolkits" accesskey="n" rel="next">Graphics Toolkits</a>, Previous: <a href="Application_002ddefined-Data.html#Application_002ddefined-Data" accesskey="p" rel="prev">Application-defined Data</a>, Up: <a href="Advanced-Plotting.html#Advanced-Plotting" accesskey="u" rel="up">Advanced Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Object-Groups-1"></a>
+<h4 class="subsection">15.4.6 Object Groups</h4>
+<a name="index-object-groups"></a>
+
+<p>A number of Octave high level plot functions return groups of other
+graphics objects or they return graphics objects that have their
+properties linked in such a way that changes to one of the properties
+results in changes in the others.  A graphic object that groups other
+objects is an <code>hggroup</code>
+</p>
+<a name="XREFhggroup"></a><dl>
+<dt><a name="index-hggroup"></a>Function File: <em></em> <strong>hggroup</strong> <em>()</em></dt>
+<dt><a name="index-hggroup-1"></a>Function File: <em></em> <strong>hggroup</strong> <em>(<var>hax</var>)</em></dt>
+<dt><a name="index-hggroup-2"></a>Function File: <em></em> <strong>hggroup</strong> <em>(&hellip;, <var>property</var>, <var>value</var>, &hellip;)</em></dt>
+<dt><a name="index-hggroup-3"></a>Function File: <em><var>h</var> =</em> <strong>hggroup</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create handle graphics group object with axes parent <var>hax</var>.
+</p>
+<p>If no parent is specified, the group is created in the current axes.
+</p>
+<p>Multiple property/value pairs may be specified for the hggroup, but they
+must appear in pairs.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created
+hggroup object.
+</p>
+<p>Programming Note: An hggroup is a way to group base graphics objects such
+as line objects or patch objects into a single unit which can react
+appropriately.  For example, the individual lines of a contour plot are
+collected into a single hggroup so that they can be made visible/invisible
+with a single command, <code>set (hg_handle, &quot;visible&quot;, &quot;off&quot;)</code>.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFaddproperty">addproperty</a>, <a href="#XREFaddlistener">addlistener</a>.
+</p></dd></dl>
+
+
+<p>For example a simple use of a <code>hggroup</code> might be
+</p>
+<div class="example">
+<pre class="example">x = 0:0.1:10;
+hg = hggroup ();
+plot (x, sin (x), &quot;color&quot;, [1, 0, 0], &quot;parent&quot;, hg);
+hold on
+plot (x, cos (x), &quot;color&quot;, [0, 1, 0], &quot;parent&quot;, hg);
+set (hg, &quot;visible&quot;, &quot;off&quot;);
+</pre></div>
+
+<p>which groups the two plots into a single object and controls their
+visibility directly.  The default properties of an <code>hggroup</code> are
+the same as the set of common properties for the other graphics
+objects.  Additional properties can be added with the <code>addproperty</code>
+function.
+</p>
+<a name="XREFaddproperty"></a><dl>
+<dt><a name="index-addproperty"></a>Built-in Function: <em></em> <strong>addproperty</strong> <em>(<var>name</var>, <var>h</var>, <var>type</var>)</em></dt>
+<dt><a name="index-addproperty-1"></a>Built-in Function: <em></em> <strong>addproperty</strong> <em>(<var>name</var>, <var>h</var>, <var>type</var>, <var>arg</var>, &hellip;)</em></dt>
+<dd><p>Create a new property named <var>name</var> in graphics object <var>h</var>.
+</p>
+<p><var>type</var> determines the type of the property to create.  <var>args</var>
+usually contains the default value of the property, but additional
+arguments might be given, depending on the type of the property.
+</p>
+<p>The supported property types are:
+</p>
+<dl compact="compact">
+<dt><code>string</code></dt>
+<dd><p>A string property.  <var>arg</var> contains the default string value.
+</p>
+</dd>
+<dt><code>any</code></dt>
+<dd><p>An un-typed property.  This kind of property can hold any octave
+value.  <var>args</var> contains the default value.
+</p>
+</dd>
+<dt><code>radio</code></dt>
+<dd><p>A string property with a limited set of accepted values.  The first
+argument must be a string with all accepted values separated by
+a vertical bar (&rsquo;|&rsquo;).  The default value can be marked by enclosing
+it with a &rsquo;{&rsquo; &rsquo;}&rsquo; pair.  The default value may also be given as
+an optional second string argument.
+</p>
+</dd>
+<dt><code>boolean</code></dt>
+<dd><p>A boolean property.  This property type is equivalent to a radio
+property with &quot;on|off&quot; as accepted values.  <var>arg</var> contains
+the default property value.
+</p>
+</dd>
+<dt><code>double</code></dt>
+<dd><p>A scalar double property.  <var>arg</var> contains the default value.
+</p>
+</dd>
+<dt><code>handle</code></dt>
+<dd><p>A handle property.  This kind of property holds the handle of a
+graphics object.  <var>arg</var> contains the default handle value.
+When no default value is given, the property is initialized to
+the empty matrix.
+</p>
+</dd>
+<dt><code>data</code></dt>
+<dd><p>A data (matrix) property.  <var>arg</var> contains the default data
+value.  When no default value is given, the data is initialized to
+the empty matrix.
+</p>
+</dd>
+<dt><code>color</code></dt>
+<dd><p>A color property.  <var>arg</var> contains the default color value.
+When no default color is given, the property is set to black.
+An optional second string argument may be given to specify an
+additional set of accepted string values (like a radio property).
+</p></dd>
+</dl>
+
+<p><var>type</var> may also be the concatenation of a core object type and
+a valid property name for that object type.  The property created
+then has the same characteristics as the referenced property (type,
+possible values, hidden state&hellip;).  This allows one to clone an
+existing property into the graphics object <var>h</var>.
+</p>
+<p>Examples:
+</p>
+<div class="example">
+<pre class="example">addproperty (&quot;my_property&quot;, gcf, &quot;string&quot;, &quot;a string value&quot;);
+addproperty (&quot;my_radio&quot;, gcf, &quot;radio&quot;, &quot;val_1|val_2|{val_3}&quot;);
+addproperty (&quot;my_style&quot;, gcf, &quot;linelinestyle&quot;, &quot;--&quot;);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFaddlistener">addlistener</a>, <a href="#XREFhggroup">hggroup</a>.
+</p></dd></dl>
+
+
+<p>Once a property in added to an <code>hggroup</code>, it is not linked to any
+other property of either the children of the group, or any other
+graphics object.  Add so to control the way in which this newly added
+property is used, the <code>addlistener</code> function is used to define a
+callback function that is executed when the property is altered.
+</p>
+<a name="XREFaddlistener"></a><dl>
+<dt><a name="index-addlistener"></a>Built-in Function: <em></em> <strong>addlistener</strong> <em>(<var>h</var>, <var>prop</var>, <var>fcn</var>)</em></dt>
+<dd><p>Register <var>fcn</var> as listener for the property <var>prop</var> of the graphics
+object <var>h</var>.
+</p>
+<p>Property listeners are executed (in order of registration) when the property
+is set.  The new value is already available when the listeners are executed.
+</p>
+<p><var>prop</var> must be a string naming a valid property in <var>h</var>.
+</p>
+<p><var>fcn</var> can be a function handle, a string or a cell array whose first
+element is a function handle.  If <var>fcn</var> is a function handle, the
+corresponding function should accept at least 2 arguments, that will be
+set to the object handle and the empty matrix respectively.  If <var>fcn</var>
+is a string, it must be any valid octave expression.  If <var>fcn</var> is a cell
+array, the first element must be a function handle with the same signature
+as described above.  The next elements of the cell array are passed
+as additional arguments to the function.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">function my_listener (h, dummy, p1)
+  fprintf (&quot;my_listener called with p1=%s\n&quot;, p1);
+endfunction
+
+addlistener (gcf, &quot;position&quot;, {@my_listener, &quot;my string&quot;})
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFaddproperty">addproperty</a>, <a href="#XREFhggroup">hggroup</a>.
+</p></dd></dl>
+
+
+<a name="XREFdellistener"></a><dl>
+<dt><a name="index-dellistener"></a>Built-in Function: <em></em> <strong>dellistener</strong> <em>(<var>h</var>, <var>prop</var>, <var>fcn</var>)</em></dt>
+<dd><p>Remove the registration of <var>fcn</var> as a listener for the property
+<var>prop</var> of the graphics object <var>h</var>.
+</p>
+<p>The function <var>fcn</var> must be the same variable (not just the same value),
+as was passed to the original call to <code>addlistener</code>.
+</p>
+<p>If <var>fcn</var> is not defined then all listener functions of <var>prop</var>
+are removed.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">function my_listener (h, dummy, p1)
+  fprintf (&quot;my_listener called with p1=%s\n&quot;, p1);
+endfunction
+
+c = {@my_listener, &quot;my string&quot;};
+addlistener (gcf, &quot;position&quot;, c);
+dellistener (gcf, &quot;position&quot;, c);
+</pre></div>
+
+</dd></dl>
+
+
+<p>An example of the use of these two functions might be
+</p>
+<div class="example">
+<pre class="example">x = 0:0.1:10;
+hg = hggroup ();
+h = plot (x, sin (x), &quot;color&quot;, [1, 0, 0], &quot;parent&quot;, hg);
+addproperty (&quot;linestyle&quot;, hg, &quot;linelinestyle&quot;, get (h, &quot;linestyle&quot;));
+addlistener (hg, &quot;linestyle&quot;, @update_props);
+hold on
+plot (x, cos (x), &quot;color&quot;, [0, 1, 0], &quot;parent&quot;, hg);
+
+function update_props (h, d)
+  set (get (h, &quot;children&quot;), &quot;linestyle&quot;, get (h, &quot;linestyle&quot;));
+endfunction
+</pre></div>
+
+<p>that adds a <code>linestyle</code> property to the <code>hggroup</code> and
+propagating any changes its value to the children of the group.  The
+<code>linkprop</code> function can be used to simplify the above to be
+</p>
+<div class="example">
+<pre class="example">x = 0:0.1:10;
+hg = hggroup ();
+h1 = plot (x, sin (x), &quot;color&quot;, [1, 0, 0], &quot;parent&quot;, hg);
+addproperty (&quot;linestyle&quot;, hg, &quot;linelinestyle&quot;, get (h, &quot;linestyle&quot;));
+hold on
+h2 = plot (x, cos (x), &quot;color&quot;, [0, 1, 0], &quot;parent&quot;, hg);
+hlink = linkprop ([hg, h1, h2], &quot;color&quot;);
+</pre></div>
+
+<a name="XREFlinkprop"></a><dl>
+<dt><a name="index-linkprop"></a>Function File: <em><var>hlink</var> =</em> <strong>linkprop</strong> <em>(<var>h</var>, &quot;<var>prop</var>&quot;)</em></dt>
+<dt><a name="index-linkprop-1"></a>Function File: <em><var>hlink</var> =</em> <strong>linkprop</strong> <em>(<var>h</var>, {&quot;<var>prop1</var>&quot;, &quot;<var>prop2</var>&quot;, &hellip;})</em></dt>
+<dd><p>Link graphic object properties, such that a change in one is propagated to
+the others.
+</p>
+<p>The input <var>h</var> is a vector of graphic handles to link.
+</p>
+<p><var>prop</var> may be a string when linking a single property, or a cell array
+of strings for multiple properties.  During the linking process all
+properties in <var>prop</var> will initially be set to the values that exist on
+the first object in the list <var>h</var>.
+</p>
+<p>The function returns <var>hlink</var> which is a special object describing the
+link.  As long as the reference <var>hlink</var> exists the link between graphic
+objects will be active.  This means that <var>hlink</var> must be preserved in
+a workspace variable, a global variable, or otherwise stored using a
+function such as <code>setappdata</code>, <code>guidata</code>.  To unlink properties,
+execute <code>clear <var>hlink</var></code>.
+</p>
+<p>An example of the use of <code>linkprop</code> is
+</p>
+<div class="example">
+<pre class="example">x = 0:0.1:10;
+subplot (1,2,1);
+h1 = plot (x, sin (x));
+subplot (1,2,2);
+h2 = plot (x, cos (x));
+hlink = linkprop ([h1, h2], {&quot;color&quot;,&quot;linestyle&quot;});
+set (h1, &quot;color&quot;, &quot;green&quot;);
+set (h2, &quot;linestyle&quot;, &quot;--&quot;);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFlinkaxes">linkaxes</a>.
+</p></dd></dl>
+
+
+<a name="XREFlinkaxes"></a><dl>
+<dt><a name="index-linkaxes"></a>Function File: <em></em> <strong>linkaxes</strong> <em>(<var>hax</var>)</em></dt>
+<dt><a name="index-linkaxes-1"></a>Function File: <em></em> <strong>linkaxes</strong> <em>(<var>hax</var>, <var>optstr</var>)</em></dt>
+<dd><p>Link the axis limits of 2-D plots such that a change in one is propagated
+to the others.
+</p>
+<p>The axes handles to be linked are passed as the first argument <var>hax</var>.
+</p>
+<p>The optional second argument is a string which defines which axis limits
+will be linked.  The possible values for <var>optstr</var> are:
+</p>
+<dl compact="compact">
+<dt><code>&quot;x&quot;</code></dt>
+<dd><p>Link x-axes
+</p>
+</dd>
+<dt><code>&quot;y&quot;</code></dt>
+<dd><p>Link y-axes
+</p>
+</dd>
+<dt><code>&quot;xy&quot;</code> (default)</dt>
+<dd><p>Link both axes
+</p>
+</dd>
+<dt><code>&quot;off&quot;</code></dt>
+<dd><p>Turn off linking
+</p></dd>
+</dl>
+
+<p>If unspecified the default is to link both X and Y axes.
+</p>
+<p>When linking, the limits from the first axes in <var>hax</var> are applied to the
+other axes in the list.  Subsequent changes to any one of the axes will be
+propagated to the others.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFlinkprop">linkprop</a>, <a href="#XREFaddproperty">addproperty</a>.
+</p></dd></dl>
+
+
+<p>These capabilities are used in a number of basic graphics objects.
+The <code>hggroup</code> objects created by the functions of Octave contain
+one or more graphics object and are used to:
+</p>
+<ul>
+<li> group together multiple graphics objects,
+
+</li><li> create linked properties between different graphics objects, and
+
+</li><li> to hide the nominal user data, from the actual data of the objects.
+</li></ul>
+
+<p>For example the <code>stem</code> function creates a stem series where each
+<code>hggroup</code> of the stem series contains two line objects representing
+the body and head of the stem.  The <code>ydata</code> property of the
+<code>hggroup</code> of the stem series represents the head of the stem,
+whereas the body of the stem is between the baseline and this value.  For
+example
+</p>
+<div class="example">
+<pre class="example">h = stem (1:4)
+get (h, &quot;xdata&quot;)
+&rArr; [  1   2   3   4]'
+get (get (h, &quot;children&quot;)(1), &quot;xdata&quot;)
+&rArr; [  1   1 NaN   2   2 NaN   3   3 NaN   4   4 NaN]'
+</pre></div>
+
+<p>shows the difference between the <code>xdata</code> of the <code>hggroup</code>
+of a stem series object and the underlying line.
+</p>
+<p>The basic properties of such group objects is that they consist of one
+or more linked <code>hggroup</code>, and that changes in certain properties of
+these groups are propagated to other members of the group.  Whereas,
+certain properties of the members of the group only apply to the current
+member.
+</p>
+<p>In addition the members of the group can also be linked to other
+graphics objects through callback functions.  For example the baseline of
+the <code>bar</code> or <code>stem</code> functions is a line object, whose length
+and position are automatically adjusted, based on changes to the
+corresponding hggroup elements.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Data-Sources-in-Object-Groups.html#Data-Sources-in-Object-Groups" accesskey="1">Data Sources in Object Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Area-Series.html#Area-Series" accesskey="2">Area Series</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Bar-Series.html#Bar-Series" accesskey="3">Bar Series</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Contour-Groups.html#Contour-Groups" accesskey="4">Contour Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Error-Bar-Series.html#Error-Bar-Series" accesskey="5">Error Bar Series</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Line-Series.html#Line-Series" accesskey="6">Line Series</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Quiver-Group.html#Quiver-Group" accesskey="7">Quiver Group</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Scatter-Group.html#Scatter-Group" accesskey="8">Scatter Group</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Stair-Group.html#Stair-Group" accesskey="9">Stair Group</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Stem-Series.html#Stem-Series">Stem Series</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Surface-Group.html#Surface-Group">Surface Group</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Graphics-Toolkits.html#Graphics-Toolkits" accesskey="n" rel="next">Graphics Toolkits</a>, Previous: <a href="Application_002ddefined-Data.html#Application_002ddefined-Data" accesskey="p" rel="prev">Application-defined Data</a>, Up: <a href="Advanced-Plotting.html#Advanced-Plotting" accesskey="u" rel="up">Advanced Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

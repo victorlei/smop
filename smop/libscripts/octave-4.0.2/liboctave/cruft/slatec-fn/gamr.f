@@ -1,0 +1,42 @@
+*DECK GAMR
+      FUNCTION GAMR (X)
+C***BEGIN PROLOGUE  GAMR
+C***PURPOSE  Compute the reciprocal of the Gamma function.
+C***LIBRARY   SLATEC (FNLIB)
+C***CATEGORY  C7A
+C***TYPE      SINGLE PRECISION (GAMR-S, DGAMR-D, CGAMR-C)
+C***KEYWORDS  FNLIB, RECIPROCAL GAMMA FUNCTION, SPECIAL FUNCTIONS
+C***AUTHOR  Fullerton, W., (LANL)
+C***DESCRIPTION
+C
+C GAMR is a single precision function that evaluates the reciprocal
+C of the gamma function for single precision argument X.
+C
+C***REFERENCES  (NONE)
+C***ROUTINES CALLED  ALGAMS, GAMMA, XERCLR, XGETF, XSETF
+C***REVISION HISTORY  (YYMMDD)
+C   770701  DATE WRITTEN
+C   861211  REVISION DATE from Version 3.2
+C   891214  Prologue converted to Version 4.0 format.  (BAB)
+C   900727  Added EXTERNAL statement.  (WRB)
+C***END PROLOGUE  GAMR
+      EXTERNAL GAMMA
+C***FIRST EXECUTABLE STATEMENT  GAMR
+      GAMR = 0.0
+      IF (X.LE.0.0 .AND. AINT(X).EQ.X) RETURN
+C
+      CALL XGETF (IROLD)
+      CALL XSETF (1)
+      IF (ABS(X).GT.10.0) GO TO 10
+      GAMR = 1.0/GAMMA(X)
+      CALL XERCLR
+      CALL XSETF (IROLD)
+      RETURN
+C
+ 10   CALL ALGAMS (X, ALNGX, SGNGX)
+      CALL XERCLR
+      CALL XSETF (IROLD)
+      GAMR = SGNGX * EXP(-ALNGX)
+      RETURN
+C
+      END

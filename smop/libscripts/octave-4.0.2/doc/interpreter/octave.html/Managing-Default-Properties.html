@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Managing Default Properties</title>
+
+<meta name="description" content="GNU Octave: Managing Default Properties">
+<meta name="keywords" content="GNU Octave: Managing Default Properties">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Graphics-Data-Structures.html#Graphics-Data-Structures" rel="up" title="Graphics Data Structures">
+<link href="Advanced-Plotting.html#Advanced-Plotting" rel="next" title="Advanced Plotting">
+<link href="Searching-Properties.html#Searching-Properties" rel="prev" title="Searching Properties">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Managing-Default-Properties"></a>
+<div class="header">
+<p>
+Previous: <a href="Searching-Properties.html#Searching-Properties" accesskey="p" rel="prev">Searching Properties</a>, Up: <a href="Graphics-Data-Structures.html#Graphics-Data-Structures" accesskey="u" rel="up">Graphics Data Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Managing-Default-Properties-1"></a>
+<h4 class="subsection">15.3.5 Managing Default Properties</h4>
+<a name="index-default-graphics-properties"></a>
+<a name="index-graphics-properties_002c-default"></a>
+
+<p>Object properties have two classes of default values, <em>factory
+defaults</em> (the initial values) and <em>user-defined defaults</em>, which
+may override the factory defaults.
+</p>
+<p>Although default values may be set for any object, they are set in
+parent objects and apply to child objects, of the specified object type.
+For example, setting the default <code>color</code> property of <code>line</code>
+objects to <code>&quot;green&quot;</code>, for the <code>root</code> object, will result in all
+<code>line</code> objects inheriting the <code>color</code> <code>&quot;green&quot;</code> as the default
+value.
+</p>
+<div class="example">
+<pre class="example">set (0, &quot;defaultlinecolor&quot;, &quot;green&quot;);
+</pre></div>
+
+<p>sets the default line color for all objects.  The rule for constructing
+the property name to set a default value is
+</p>
+<div class="example">
+<pre class="example">default + <var>object-type</var> + <var>property-name</var>
+</pre></div>
+
+<p>This rule can lead to some strange looking names, for example
+<code>defaultlinelinewidth&quot;</code> specifies the default <code>linewidth</code>
+property for <code>line</code> objects.
+</p>
+<p>The example above used the root figure object, 0, so the default
+property value will apply to all line objects.  However, default values
+are hierarchical, so defaults set in a figure objects override those
+set in the root figure object.  Likewise, defaults set in axes objects
+override those set in figure or root figure objects.  For example,
+</p>
+<div class="example">
+<pre class="example">subplot (2, 1, 1);
+set (0, &quot;defaultlinecolor&quot;, &quot;red&quot;);
+set (1, &quot;defaultlinecolor&quot;, &quot;green&quot;);
+set (gca (), &quot;defaultlinecolor&quot;, &quot;blue&quot;);
+line (1:10, rand (1, 10));
+subplot (2, 1, 2);
+line (1:10, rand (1, 10));
+figure (2)
+line (1:10, rand (1, 10));
+</pre></div>
+
+<p>produces two figures.  The line in first subplot window of the first
+figure is blue because it inherits its color from its parent axes
+object.  The line in the second subplot window of the first figure is
+green because it inherits its color from its parent figure object.  The
+line in the second figure window is red because it inherits its color
+from the global root figure parent object.
+</p>
+<p>To remove a user-defined default setting, set the default property to
+the value <code>&quot;remove&quot;</code>.  For example,
+</p>
+<div class="example">
+<pre class="example">set (gca (), &quot;defaultlinecolor&quot;, &quot;remove&quot;);
+</pre></div>
+
+<p>removes the user-defined default line color setting from the current axes
+object.  To quickly remove all user-defined defaults use the <code>reset</code>
+function.
+</p>
+<a name="XREFreset"></a><dl>
+<dt><a name="index-reset"></a>Built-in Function: <em></em> <strong>reset</strong> <em>(<var>h</var>)</em></dt>
+<dd><p>Reset the properties of the graphic object <var>h</var> to their default values.
+</p>
+<p>For figures, the properties <code>&quot;position&quot;</code>, <code>&quot;units&quot;</code>,
+<code>&quot;windowstyle&quot;</code>, and <code>&quot;paperunits&quot;</code> are not affected.
+For axes, the properties <code>&quot;position&quot;</code> and <code>&quot;units&quot;</code> are
+not affected.
+</p>
+<p>The input <var>h</var> may also be a vector of graphic handles in which case
+each individual object will be reset.
+</p>
+<p><strong>See also:</strong> <a href="Manipulation-of-Plot-Windows.html#XREFcla">cla</a>, <a href="Manipulation-of-Plot-Windows.html#XREFclf">clf</a>, <a href="Manipulation-of-Plot-Windows.html#XREFnewplot">newplot</a>.
+</p></dd></dl>
+
+
+<p>Getting the <code>&quot;default&quot;</code> property of an object returns a list of
+user-defined defaults set for the object.  For example,
+</p>
+<div class="example">
+<pre class="example">get (gca (), &quot;default&quot;);
+</pre></div>
+
+<p>returns a list of user-defined default values for the current axes
+object.
+</p>
+<p>Factory default values are stored in the root figure object.  The
+command
+</p>
+<div class="example">
+<pre class="example">get (0, &quot;factory&quot;);
+</pre></div>
+
+<p>returns a list of factory defaults.
+</p>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Searching-Properties.html#Searching-Properties" accesskey="p" rel="prev">Searching Properties</a>, Up: <a href="Graphics-Data-Structures.html#Graphics-Data-Structures" accesskey="u" rel="up">Graphics Data Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

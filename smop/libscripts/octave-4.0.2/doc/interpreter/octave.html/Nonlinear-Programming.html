@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Nonlinear Programming</title>
+
+<meta name="description" content="GNU Octave: Nonlinear Programming">
+<meta name="keywords" content="GNU Octave: Nonlinear Programming">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Optimization.html#Optimization" rel="up" title="Optimization">
+<link href="Linear-Least-Squares.html#Linear-Least-Squares" rel="next" title="Linear Least Squares">
+<link href="Quadratic-Programming.html#Quadratic-Programming" rel="prev" title="Quadratic Programming">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Nonlinear-Programming"></a>
+<div class="header">
+<p>
+Next: <a href="Linear-Least-Squares.html#Linear-Least-Squares" accesskey="n" rel="next">Linear Least Squares</a>, Previous: <a href="Quadratic-Programming.html#Quadratic-Programming" accesskey="p" rel="prev">Quadratic Programming</a>, Up: <a href="Optimization.html#Optimization" accesskey="u" rel="up">Optimization</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Nonlinear-Programming-1"></a>
+<h3 class="section">25.3 Nonlinear Programming</h3>
+
+<p>Octave can also perform general nonlinear minimization using a
+successive quadratic programming solver.
+</p>
+<a name="XREFsqp"></a><dl>
+<dt><a name="index-sqp"></a>Function File: <em>[<var>x</var>, <var>obj</var>, <var>info</var>, <var>iter</var>, <var>nf</var>, <var>lambda</var>] =</em> <strong>sqp</strong> <em>(<var>x0</var>, <var>phi</var>)</em></dt>
+<dt><a name="index-sqp-1"></a>Function File: <em>[&hellip;] =</em> <strong>sqp</strong> <em>(<var>x0</var>, <var>phi</var>, <var>g</var>)</em></dt>
+<dt><a name="index-sqp-2"></a>Function File: <em>[&hellip;] =</em> <strong>sqp</strong> <em>(<var>x0</var>, <var>phi</var>, <var>g</var>, <var>h</var>)</em></dt>
+<dt><a name="index-sqp-3"></a>Function File: <em>[&hellip;] =</em> <strong>sqp</strong> <em>(<var>x0</var>, <var>phi</var>, <var>g</var>, <var>h</var>, <var>lb</var>, <var>ub</var>)</em></dt>
+<dt><a name="index-sqp-4"></a>Function File: <em>[&hellip;] =</em> <strong>sqp</strong> <em>(<var>x0</var>, <var>phi</var>, <var>g</var>, <var>h</var>, <var>lb</var>, <var>ub</var>, <var>maxiter</var>)</em></dt>
+<dt><a name="index-sqp-5"></a>Function File: <em>[&hellip;] =</em> <strong>sqp</strong> <em>(<var>x0</var>, <var>phi</var>, <var>g</var>, <var>h</var>, <var>lb</var>, <var>ub</var>, <var>maxiter</var>, <var>tol</var>)</em></dt>
+<dd><p>Minimize an objective function using sequential quadratic programming (SQP).
+</p>
+<p>Solve the nonlinear program
+</p>
+<div class="example">
+<pre class="example">min phi (x)
+ x
+</pre></div>
+
+<p>subject to
+</p>
+<div class="example">
+<pre class="example">g(x)  = 0
+h(x) &gt;= 0
+lb &lt;= x &lt;= ub
+</pre></div>
+
+<p>using a sequential quadratic programming method.
+</p>
+<p>The first argument is the initial guess for the vector <var>x0</var>.
+</p>
+<p>The second argument is a function handle pointing to the objective function
+<var>phi</var>.  The objective function must accept one vector argument and
+return a scalar.
+</p>
+<p>The second argument may also be a 2- or 3-element cell array of function
+handles.  The first element should point to the objective function, the
+second should point to a function that computes the gradient of the
+objective function, and the third should point to a function that computes
+the Hessian of the objective function.  If the gradient function is not
+supplied, the gradient is computed by finite differences.  If the Hessian
+function is not supplied, a BFGS update formula is used to approximate the
+Hessian.
+</p>
+<p>When supplied, the gradient function <code><var>phi</var>{2}</code> must accept one
+vector argument and return a vector.  When supplied, the Hessian function
+<code><var>phi</var>{3}</code> must accept one vector argument and return a matrix.
+</p>
+<p>The third and fourth arguments <var>g</var> and <var>h</var> are function handles
+pointing to functions that compute the equality constraints and the
+inequality constraints, respectively.  If the problem does not have
+equality (or inequality) constraints, then use an empty matrix ([]) for
+<var>g</var> (or <var>h</var>).  When supplied, these equality and inequality
+constraint functions must accept one vector argument and return a vector.
+</p>
+<p>The third and fourth arguments may also be 2-element cell arrays of
+function handles.  The first element should point to the constraint
+function and the second should point to a function that computes the
+gradient of the constraint function:
+</p>
+<div class="example">
+<pre class="example">            [ d f(x)   d f(x)        d f(x) ]
+transpose ( [ ------   -----   ...   ------ ] )
+            [  dx_1     dx_2          dx_N  ]
+</pre></div>
+
+<p>The fifth and sixth arguments, <var>lb</var> and <var>ub</var>, contain lower and
+upper bounds on <var>x</var>.  These must be consistent with the equality and
+inequality constraints <var>g</var> and <var>h</var>.  If the arguments are vectors
+then <var>x</var>(i) is bound by <var>lb</var>(i) and <var>ub</var>(i).  A bound can also
+be a scalar in which case all elements of <var>x</var> will share the same
+bound.  If only one bound (lb, ub) is specified then the other will
+default to (-<var>realmax</var>, +<var>realmax</var>).
+</p>
+<p>The seventh argument <var>maxiter</var> specifies the maximum number of
+iterations.  The default value is 100.
+</p>
+<p>The eighth argument <var>tol</var> specifies the tolerance for the stopping
+criteria.  The default value is <code>sqrt (eps)</code>.
+</p>
+<p>The value returned in <var>info</var> may be one of the following:
+</p>
+<dl compact="compact">
+<dt>101</dt>
+<dd><p>The algorithm terminated normally.
+All constraints meet the specified tolerance.
+</p>
+</dd>
+<dt>102</dt>
+<dd><p>The BFGS update failed.
+</p>
+</dd>
+<dt>103</dt>
+<dd><p>The maximum number of iterations was reached.
+</p>
+</dd>
+<dt>104</dt>
+<dd><p>The stepsize has become too small, i.e.,
+delta <var>x</var>,
+is less than <code><var>tol</var> * norm (x)</code>.
+</p></dd>
+</dl>
+
+<p>An example of calling <code>sqp</code>:
+</p>
+<div class="example">
+<pre class="example">function r = g (x)
+  r = [ sumsq(x)-10;
+        x(2)*x(3)-5*x(4)*x(5);
+        x(1)^3+x(2)^3+1 ];
+endfunction
+
+function obj = phi (x)
+  obj = exp (prod (x)) - 0.5*(x(1)^3+x(2)^3+1)^2;
+endfunction
+
+x0 = [-1.8; 1.7; 1.9; -0.8; -0.8];
+
+[x, obj, info, iter, nf, lambda] = sqp (x0, @phi, @g, [])
+
+x =
+
+  -1.71714
+   1.59571
+   1.82725
+  -0.76364
+  -0.76364
+
+obj = 0.053950
+info = 101
+iter = 8
+nf = 10
+lambda =
+
+  -0.0401627
+   0.0379578
+  -0.0052227
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Quadratic-Programming.html#XREFqp">qp</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Linear-Least-Squares.html#Linear-Least-Squares" accesskey="n" rel="next">Linear Least Squares</a>, Previous: <a href="Quadratic-Programming.html#Quadratic-Programming" accesskey="p" rel="prev">Quadratic Programming</a>, Up: <a href="Optimization.html#Optimization" accesskey="u" rel="up">Optimization</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

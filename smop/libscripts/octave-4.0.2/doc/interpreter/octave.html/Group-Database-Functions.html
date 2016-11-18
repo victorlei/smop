@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Group Database Functions</title>
+
+<meta name="description" content="GNU Octave: Group Database Functions">
+<meta name="keywords" content="GNU Octave: Group Database Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="System-Utilities.html#System-Utilities" rel="up" title="System Utilities">
+<link href="System-Information.html#System-Information" rel="next" title="System Information">
+<link href="Password-Database-Functions.html#Password-Database-Functions" rel="prev" title="Password Database Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Group-Database-Functions"></a>
+<div class="header">
+<p>
+Next: <a href="System-Information.html#System-Information" accesskey="n" rel="next">System Information</a>, Previous: <a href="Password-Database-Functions.html#Password-Database-Functions" accesskey="p" rel="prev">Password Database Functions</a>, Up: <a href="System-Utilities.html#System-Utilities" accesskey="u" rel="up">System Utilities</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Group-Database-Functions-1"></a>
+<h3 class="section">36.10 Group Database Functions</h3>
+
+<p>Octave&rsquo;s group database functions return information in a structure
+with the following fields.
+</p>
+<dl compact="compact">
+<dt><code>name</code></dt>
+<dd><p>The user name.
+</p>
+</dd>
+<dt><code>passwd</code></dt>
+<dd><p>The encrypted password, if available.
+</p>
+</dd>
+<dt><code>gid</code></dt>
+<dd><p>The numeric group id.
+</p>
+</dd>
+<dt><code>mem</code></dt>
+<dd><p>The members of the group.
+</p></dd>
+</dl>
+
+<p>In the descriptions of the following functions, this data structure is
+referred to as a <var>grp_struct</var>.
+</p>
+<a name="XREFgetgrent"></a><dl>
+<dt><a name="index-getgrent"></a>Built-in Function: <em><var>grp_struct</var> =</em> <strong>getgrent</strong> <em>()</em></dt>
+<dd><p>Return an entry from the group database, opening it if necessary.
+</p>
+<p>Once the end of data has been reached, <code>getgrent</code> returns 0.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsetgrent">setgrent</a>, <a href="#XREFendgrent">endgrent</a>.
+</p></dd></dl>
+
+
+<a name="XREFgetgrgid"></a><dl>
+<dt><a name="index-getgrgid"></a>Built-in Function: <em><var>grp_struct</var> =</em> <strong>getgrgid</strong> <em>(<var>gid</var>).</em></dt>
+<dd><p>Return the first entry from the group database with the group ID
+<var>gid</var>.
+</p>
+<p>If the group ID does not exist in the database, <code>getgrgid</code> returns 0.
+</p>
+<p><strong>See also:</strong> <a href="#XREFgetgrnam">getgrnam</a>.
+</p></dd></dl>
+
+
+<a name="XREFgetgrnam"></a><dl>
+<dt><a name="index-getgrnam"></a>Built-in Function: <em><var>grp_struct</var> =</em> <strong>getgrnam</strong> <em>(<var>name</var>)</em></dt>
+<dd><p>Return the first entry from the group database with the group name
+<var>name</var>.
+</p>
+<p>If the group name does not exist in the database, <code>getgrnam</code> returns 0.
+</p>
+<p><strong>See also:</strong> <a href="#XREFgetgrgid">getgrgid</a>.
+</p></dd></dl>
+
+
+<a name="XREFsetgrent"></a><dl>
+<dt><a name="index-setgrent"></a>Built-in Function: <em></em> <strong>setgrent</strong> <em>()</em></dt>
+<dd><p>Return the internal pointer to the beginning of the group database.
+</p>
+<p><strong>See also:</strong> <a href="#XREFgetgrent">getgrent</a>, <a href="#XREFendgrent">endgrent</a>.
+</p></dd></dl>
+
+
+<a name="XREFendgrent"></a><dl>
+<dt><a name="index-endgrent"></a>Built-in Function: <em></em> <strong>endgrent</strong> <em>()</em></dt>
+<dd><p>Close the group database.
+</p>
+<p><strong>See also:</strong> <a href="#XREFgetgrent">getgrent</a>, <a href="#XREFsetgrent">setgrent</a>.
+</p></dd></dl>
+
+
+
+
+
+</body>
+</html>

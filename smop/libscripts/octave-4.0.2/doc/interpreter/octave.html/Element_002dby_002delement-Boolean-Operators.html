@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Element-by-element Boolean Operators</title>
+
+<meta name="description" content="GNU Octave: Element-by-element Boolean Operators">
+<meta name="keywords" content="GNU Octave: Element-by-element Boolean Operators">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Boolean-Expressions.html#Boolean-Expressions" rel="up" title="Boolean Expressions">
+<link href="Short_002dcircuit-Boolean-Operators.html#Short_002dcircuit-Boolean-Operators" rel="next" title="Short-circuit Boolean Operators">
+<link href="Boolean-Expressions.html#Boolean-Expressions" rel="prev" title="Boolean Expressions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Element_002dby_002delement-Boolean-Operators"></a>
+<div class="header">
+<p>
+Next: <a href="Short_002dcircuit-Boolean-Operators.html#Short_002dcircuit-Boolean-Operators" accesskey="n" rel="next">Short-circuit Boolean Operators</a>, Up: <a href="Boolean-Expressions.html#Boolean-Expressions" accesskey="u" rel="up">Boolean Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Element_002dby_002delement-Boolean-Operators-1"></a>
+<h4 class="subsection">8.5.1 Element-by-element Boolean Operators</h4>
+<a name="index-element_002dby_002delement-evaluation"></a>
+
+<p>An <em>element-by-element boolean expression</em> is a combination of
+comparison expressions using the boolean
+operators &ldquo;or&rdquo; (&lsquo;<samp>|</samp>&rsquo;), &ldquo;and&rdquo; (&lsquo;<samp>&amp;</samp>&rsquo;), and &ldquo;not&rdquo; (&lsquo;<samp>!</samp>&rsquo;),
+along with parentheses to control nesting.  The truth of the boolean
+expression is computed by combining the truth values of the
+corresponding elements of the component expressions.  A value is
+considered to be false if it is zero, and true otherwise.
+</p>
+<p>Element-by-element boolean expressions can be used wherever comparison
+expressions can be used.  They can be used in <code>if</code> and <code>while</code>
+statements.  However, a matrix value used as the condition in an
+<code>if</code> or <code>while</code> statement is only true if <em>all</em> of its
+elements are nonzero.
+</p>
+<p>Like comparison operations, each element of an element-by-element
+boolean expression also has a numeric value (1 if true, 0 if false) that
+comes into play if the result of the boolean expression is stored in a
+variable, or used in arithmetic.
+</p>
+<p>Here are descriptions of the three element-by-element boolean operators.
+</p>
+<dl compact="compact">
+<dt><code><var>boolean1</var> &amp; <var>boolean2</var></code></dt>
+<dd><a name="index-_0026"></a>
+<p>Elements of the result are true if both corresponding elements of
+<var>boolean1</var> and <var>boolean2</var> are true.
+</p>
+</dd>
+<dt><code><var>boolean1</var> | <var>boolean2</var></code></dt>
+<dd><a name="index-_007c"></a>
+<p>Elements of the result are true if either of the corresponding elements
+of <var>boolean1</var> or <var>boolean2</var> is true.
+</p>
+</dd>
+<dt><code>! <var>boolean</var></code></dt>
+<dt><code>~ <var>boolean</var></code></dt>
+<dd><a name="index-_007e"></a>
+<a name="index-_0021"></a>
+<p>Each element of the result is true if the corresponding element of
+<var>boolean</var> is false.
+</p></dd>
+</dl>
+
+<p>These operators work on an element-by-element basis.  For example, the
+expression
+</p>
+<div class="example">
+<pre class="example">[1, 0; 0, 1] &amp; [1, 0; 2, 3]
+</pre></div>
+
+<p>returns a two by two identity matrix.
+</p>
+<p>For the binary operators, broadcasting rules apply.  See <a href="Broadcasting.html#Broadcasting">Broadcasting</a>.
+In particular, if one of the operands is a scalar and the other a
+matrix, the operator is applied to the scalar and each element of the
+matrix.
+</p>
+<p>For the binary element-by-element boolean operators, both subexpressions
+<var>boolean1</var> and <var>boolean2</var> are evaluated before computing the
+result.  This can make a difference when the expressions have side
+effects.  For example, in the expression
+</p>
+<div class="example">
+<pre class="example">a &amp; b++
+</pre></div>
+
+<p>the value of the variable <var>b</var> is incremented even if the variable
+<var>a</var> is zero.
+</p>
+<p>This behavior is necessary for the boolean operators to work as
+described for matrix-valued operands.
+</p>
+<a name="index-_0026-1"></a>
+<a name="XREFand"></a><dl>
+<dt><a name="index-and"></a>Built-in Function: <em><var>z</var> =</em> <strong>and</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-and-1"></a>Built-in Function: <em><var>z</var> =</em> <strong>and</strong> <em>(<var>x1</var>, <var>x2</var>, &hellip;)</em></dt>
+<dd><p>Return the logical AND of <var>x</var> and <var>y</var>.
+</p>
+<p>This function is equivalent to the operator syntax <code>x&nbsp;&amp;&nbsp;y</code><!-- /@w -->.  If
+more than two arguments are given, the logical AND is applied cumulatively
+from left to right:
+</p>
+<div class="example">
+<pre class="example">(&hellip;((x1 &amp; x2) &amp; x3) &amp; &hellip;)
+</pre></div>
+
+<p>At least one argument is required.
+</p>
+<p><strong>See also:</strong> <a href="#XREFor">or</a>, <a href="#XREFnot">not</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFxor">xor</a>.
+</p></dd></dl>
+
+
+<a name="index-_007e-1"></a>
+<a name="index-_0021-1"></a>
+<a name="XREFnot"></a><dl>
+<dt><a name="index-not"></a>Built-in Function: <em><var>z</var> =</em> <strong>not</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return the logical NOT of <var>x</var>.
+</p>
+<p>This function is equivalent to the operator syntax <code>!&nbsp;x</code><!-- /@w -->.
+</p>
+<p><strong>See also:</strong> <a href="#XREFand">and</a>, <a href="#XREFor">or</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFxor">xor</a>.
+</p></dd></dl>
+
+
+<a name="index-_007c-1"></a>
+<a name="XREFor"></a><dl>
+<dt><a name="index-or"></a>Built-in Function: <em><var>z</var> =</em> <strong>or</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-or-1"></a>Built-in Function: <em><var>z</var> =</em> <strong>or</strong> <em>(<var>x1</var>, <var>x2</var>, &hellip;)</em></dt>
+<dd><p>Return the logical OR of <var>x</var> and <var>y</var>.
+</p>
+<p>This function is equivalent to the operator syntax <code>x&nbsp;|&nbsp;y</code><!-- /@w -->.  If
+more than two arguments are given, the logical OR is applied cumulatively
+from left to right:
+</p>
+<div class="example">
+<pre class="example">(&hellip;((x1 | x2) | x3) | &hellip;)
+</pre></div>
+
+<p>At least one argument is required.
+</p>
+<p><strong>See also:</strong> <a href="#XREFand">and</a>, <a href="#XREFnot">not</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFxor">xor</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Short_002dcircuit-Boolean-Operators.html#Short_002dcircuit-Boolean-Operators" accesskey="n" rel="next">Short-circuit Boolean Operators</a>, Up: <a href="Boolean-Expressions.html#Boolean-Expressions" accesskey="u" rel="up">Boolean Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

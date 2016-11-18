@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Structures with Mex-Files</title>
+
+<meta name="description" content="GNU Octave: Structures with Mex-Files">
+<meta name="keywords" content="GNU Octave: Structures with Mex-Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Mex_002dFiles.html#Mex_002dFiles" rel="up" title="Mex-Files">
+<link href="Sparse-Matrices-with-Mex_002dFiles.html#Sparse-Matrices-with-Mex_002dFiles" rel="next" title="Sparse Matrices with Mex-Files">
+<link href="Cell-Arrays-with-Mex_002dFiles.html#Cell-Arrays-with-Mex_002dFiles" rel="prev" title="Cell Arrays with Mex-Files">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Structures-with-Mex_002dFiles"></a>
+<div class="header">
+<p>
+Next: <a href="Sparse-Matrices-with-Mex_002dFiles.html#Sparse-Matrices-with-Mex_002dFiles" accesskey="n" rel="next">Sparse Matrices with Mex-Files</a>, Previous: <a href="Cell-Arrays-with-Mex_002dFiles.html#Cell-Arrays-with-Mex_002dFiles" accesskey="p" rel="prev">Cell Arrays with Mex-Files</a>, Up: <a href="Mex_002dFiles.html#Mex_002dFiles" accesskey="u" rel="up">Mex-Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Structures-with-Mex_002dFiles-1"></a>
+<h4 class="subsection">A.2.5 Structures with Mex-Files</h4>
+
+<p>The basic function to create a structure in a mex-file is
+<code>mxCreateStructMatrix</code> which creates a structure array with a two
+dimensional matrix, or <code>mxCreateStructArray</code>.
+</p>
+<div class="example">
+<pre class="example">mxArray *mxCreateStructArray (int ndims, int *dims,
+                              int num_keys,
+                              const char **keys);
+mxArray *mxCreateStructMatrix (int rows, int cols,
+                               int num_keys,
+                               const char **keys);
+</pre></div>
+
+<p>Accessing the fields of the structure can then be performed with
+<code>mxGetField</code> and <code>mxSetField</code> or alternatively with the
+<code>mxGetFieldByNumber</code> and <code>mxSetFieldByNumber</code> functions.
+</p>
+<div class="example">
+<pre class="example">mxArray *mxGetField (const mxArray *ptr, mwIndex index,
+                     const char *key);
+mxArray *mxGetFieldByNumber (const mxArray *ptr,
+                             mwIndex index, int key_num);
+void mxSetField (mxArray *ptr, mwIndex index,
+                 const char *key, mxArray *val);
+void mxSetFieldByNumber (mxArray *ptr, mwIndex index,
+                         int key_num, mxArray *val);
+</pre></div>
+
+<p>A difference between the oct-file interface to structures and the
+mex-file version is that the functions to operate on structures in
+mex-files directly include an <code>index</code> over the elements of the
+arrays of elements per <code>field</code>; Whereas, the oct-file structure
+includes a Cell Array per field of the structure.
+</p>
+<p>An example that demonstrates the use of structures in a mex-file can be
+found in the file <samp>mystruct.c</samp> shown below.
+</p>
+<div class="example">
+<pre class="verbatim">#include &quot;mex.h&quot;
+
+void
+mexFunction (int nlhs, mxArray* plhs[],
+             int nrhs, const mxArray* prhs[])
+{
+  int i;
+  mwIndex j;
+  mxArray *v;
+  const char *keys[] = { &quot;this&quot;, &quot;that&quot; };
+
+  if (nrhs != 1 || ! mxIsStruct (prhs[0]))
+    mexErrMsgTxt (&quot;ARG1 must be a struct&quot;);
+
+  for (i = 0; i &lt; mxGetNumberOfFields (prhs[0]); i++)
+    for (j = 0; j &lt; mxGetNumberOfElements (prhs[0]); j++)
+      {
+        mexPrintf (&quot;field %s(%d) = &quot;, mxGetFieldNameByNumber (prhs[0], i), j);
+        v = mxGetFieldByNumber (prhs[0], j, i);
+        mexCallMATLAB (0, NULL, 1, &amp;v, &quot;disp&quot;);
+      }
+
+  v = mxCreateStructMatrix (2, 2, 2, keys);
+
+  mxSetFieldByNumber (v, 0, 0, mxCreateString (&quot;this1&quot;));
+  mxSetFieldByNumber (v, 0, 1, mxCreateString (&quot;that1&quot;));
+  mxSetFieldByNumber (v, 1, 0, mxCreateString (&quot;this2&quot;));
+  mxSetFieldByNumber (v, 1, 1, mxCreateString (&quot;that2&quot;));
+  mxSetFieldByNumber (v, 2, 0, mxCreateString (&quot;this3&quot;));
+  mxSetFieldByNumber (v, 2, 1, mxCreateString (&quot;that3&quot;));
+  mxSetFieldByNumber (v, 3, 0, mxCreateString (&quot;this4&quot;));
+  mxSetFieldByNumber (v, 3, 1, mxCreateString (&quot;that4&quot;));
+
+  if (nlhs)
+    plhs[0] = v;
+}
+</pre><pre class="example">
+
+</pre></div>
+
+<p>An example of the behavior of this function within Octave is then
+</p>
+<div class="example">
+<pre class="example">a(1).f1 = &quot;f11&quot;; a(1).f2 = &quot;f12&quot;;
+a(2).f1 = &quot;f21&quot;; a(2).f2 = &quot;f22&quot;;
+b = mystruct (a);
+&rArr;  field f1(0) = f11
+    field f1(1) = f21
+    field f2(0) = f12
+    field f2(1) = f22
+b
+&rArr; 2x2 struct array containing the fields:
+
+     this
+     that
+
+b(3)
+&rArr; scalar structure containing the fields:
+
+     this = this3
+     that = that3
+</pre></div>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Sparse-Matrices-with-Mex_002dFiles.html#Sparse-Matrices-with-Mex_002dFiles" accesskey="n" rel="next">Sparse Matrices with Mex-Files</a>, Previous: <a href="Cell-Arrays-with-Mex_002dFiles.html#Cell-Arrays-with-Mex_002dFiles" accesskey="p" rel="prev">Cell Arrays with Mex-Files</a>, Up: <a href="Mex_002dFiles.html#Mex_002dFiles" accesskey="u" rel="up">Mex-Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

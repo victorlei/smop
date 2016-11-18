@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Command Line Editing</title>
+
+<meta name="description" content="GNU Octave: Command Line Editing">
+<meta name="keywords" content="GNU Octave: Command Line Editing">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Getting-Started.html#Getting-Started" rel="up" title="Getting Started">
+<link href="Cursor-Motion.html#Cursor-Motion" rel="next" title="Cursor Motion">
+<link href="Getting-Help.html#Getting-Help" rel="prev" title="Getting Help">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Command-Line-Editing"></a>
+<div class="header">
+<p>
+Next: <a href="Errors.html#Errors" accesskey="n" rel="next">Errors</a>, Previous: <a href="Getting-Help.html#Getting-Help" accesskey="p" rel="prev">Getting Help</a>, Up: <a href="Getting-Started.html#Getting-Started" accesskey="u" rel="up">Getting Started</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Command-Line-Editing-1"></a>
+<h3 class="section">2.4 Command Line Editing</h3>
+<a name="index-command_002dline-editing"></a>
+<a name="index-editing-the-command-line"></a>
+
+<p>Octave uses the GNU Readline library to provide an extensive set of
+command-line editing and history features.  Only the most common
+features are described in this manual.  In addition, all of the editing
+functions can be bound to different key strokes at the user&rsquo;s discretion.
+This manual assumes no changes from the default Emacs bindings.  See the GNU
+Readline Library manual for more information on customizing Readline and
+for a complete feature list.
+</p>
+<p>To insert printing characters (letters, digits, symbols, etc.), simply
+type the character.  Octave will insert the character at the cursor and
+advance the cursor forward.
+</p>
+<p>Many of the command-line editing functions operate using control
+characters.  For example, the character <kbd>Control-a</kbd> moves the cursor
+to the beginning of the line.  To type <kbd>C-a</kbd>, hold down <tt class="key">CTRL</tt>
+and then press <tt class="key">a</tt>.  In the following sections, control characters
+such as <kbd>Control-a</kbd> are written as <kbd>C-a</kbd>.
+</p>
+<p>Another set of command-line editing functions use Meta characters.  To
+type <kbd>M-u</kbd>, hold down the <tt class="key">META</tt> key and press <tt class="key">u</tt>.  Depending
+on the keyboard, the <tt class="key">META</tt> key may be labeled <tt class="key">ALT</tt> or
+even <tt class="key">WINDOWS</tt>.  If your terminal does not have a <tt class="key">META</tt> key, you
+can still type Meta characters using two-character sequences starting
+with <kbd>ESC</kbd>.  Thus, to enter <kbd>M-u</kbd>, you would type
+<tt class="key">ESC</tt> <tt class="key">u</tt>.  The <kbd>ESC</kbd> character sequences are also allowed on
+terminals with real Meta keys.  In the following sections, Meta
+characters such as <kbd>Meta-u</kbd> are written as <kbd>M-u</kbd>.
+</p>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Cursor-Motion.html#Cursor-Motion" accesskey="1">Cursor Motion</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Killing-and-Yanking.html#Killing-and-Yanking" accesskey="2">Killing and Yanking</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Commands-For-Text.html#Commands-For-Text" accesskey="3">Commands For Text</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Commands-For-Completion.html#Commands-For-Completion" accesskey="4">Commands For Completion</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Commands-For-History.html#Commands-For-History" accesskey="5">Commands For History</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Customizing-readline.html#Customizing-readline" accesskey="6">Customizing readline</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Customizing-the-Prompt.html#Customizing-the-Prompt" accesskey="7">Customizing the Prompt</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Diary-and-Echo-Commands.html#Diary-and-Echo-Commands" accesskey="8">Diary and Echo Commands</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Errors.html#Errors" accesskey="n" rel="next">Errors</a>, Previous: <a href="Getting-Help.html#Getting-Help" accesskey="p" rel="prev">Getting Help</a>, Up: <a href="Getting-Started.html#Getting-Started" accesskey="u" rel="up">Getting Started</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

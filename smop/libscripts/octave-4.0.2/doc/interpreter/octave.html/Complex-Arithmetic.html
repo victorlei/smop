@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Complex Arithmetic</title>
+
+<meta name="description" content="GNU Octave: Complex Arithmetic">
+<meta name="keywords" content="GNU Octave: Complex Arithmetic">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arithmetic.html#Arithmetic" rel="up" title="Arithmetic">
+<link href="Trigonometry.html#Trigonometry" rel="next" title="Trigonometry">
+<link href="Exponents-and-Logarithms.html#Exponents-and-Logarithms" rel="prev" title="Exponents and Logarithms">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Complex-Arithmetic"></a>
+<div class="header">
+<p>
+Next: <a href="Trigonometry.html#Trigonometry" accesskey="n" rel="next">Trigonometry</a>, Previous: <a href="Exponents-and-Logarithms.html#Exponents-and-Logarithms" accesskey="p" rel="prev">Exponents and Logarithms</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Complex-Arithmetic-1"></a>
+<h3 class="section">17.2 Complex Arithmetic</h3>
+
+<p>In the descriptions of the following functions,
+<var>z</var> is the complex number <var>x</var> + <var>i</var><var>y</var>, where <var>i</var> is
+defined as <code>sqrt (-1)</code>.
+</p>
+<a name="XREFabs"></a><dl>
+<dt><a name="index-abs"></a>Mapping Function: <em></em> <strong>abs</strong> <em>(<var>z</var>)</em></dt>
+<dd><p>Compute the magnitude of <var>z</var>.
+</p>
+<p>The magnitude is defined as
+|<var>z</var>| = <code>sqrt (x^2 + y^2)</code>.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">abs (3 + 4i)
+     &rArr; 5
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFarg">arg</a>.
+</p></dd></dl>
+
+
+<a name="XREFarg"></a><dl>
+<dt><a name="index-arg"></a>Mapping Function: <em></em> <strong>arg</strong> <em>(<var>z</var>)</em></dt>
+<dt><a name="index-angle"></a>Mapping Function: <em></em> <strong>angle</strong> <em>(<var>z</var>)</em></dt>
+<dd><p>Compute the argument, i.e., angle of <var>z</var>.
+</p>
+<p>This is defined as,
+<var>theta</var> = <code>atan2 (<var>y</var>, <var>x</var>)</code>,
+in radians.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">arg (3 + 4i)
+     &rArr; 0.92730
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFabs">abs</a>.
+</p></dd></dl>
+
+
+<a name="XREFconj"></a><dl>
+<dt><a name="index-conj"></a>Mapping Function: <em></em> <strong>conj</strong> <em>(<var>z</var>)</em></dt>
+<dd><p>Return the complex conjugate of <var>z</var>.
+</p>
+<p>The complex conjugate is defined as
+<code>conj (<var>z</var>)</code> = <var>x</var> - <var>i</var><var>y</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFreal">real</a>, <a href="#XREFimag">imag</a>.
+</p></dd></dl>
+
+
+<a name="XREFcplxpair"></a><dl>
+<dt><a name="index-cplxpair"></a>Function File: <em></em> <strong>cplxpair</strong> <em>(<var>z</var>)</em></dt>
+<dt><a name="index-cplxpair-1"></a>Function File: <em></em> <strong>cplxpair</strong> <em>(<var>z</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-cplxpair-2"></a>Function File: <em></em> <strong>cplxpair</strong> <em>(<var>z</var>, <var>tol</var>, <var>dim</var>)</em></dt>
+<dd><p>Sort the numbers <var>z</var> into complex conjugate pairs ordered by
+increasing real part.
+</p>
+<p>The negative imaginary complex numbers are placed first within each pair.
+All real numbers (those with
+<code>abs (imag (<var>z</var>) / <var>z</var>) &lt; <var>tol</var></code>) are placed after the
+complex pairs.
+</p>
+<p>If <var>tol</var> is unspecified the default value is 100*<code>eps</code>.
+</p>
+<p>By default the complex pairs are sorted along the first non-singleton
+dimension of <var>z</var>.  If <var>dim</var> is specified, then the complex pairs are
+sorted along this dimension.
+</p>
+<p>Signal an error if some complex numbers could not be paired.  Signal an
+error if all complex numbers are not exact conjugates (to within <var>tol</var>).
+Note that there is no defined order for pairs with identical real parts but
+differing imaginary parts.
+</p>
+<div class="smallexample">
+<pre class="smallexample">cplxpair (exp(2i*pi*[0:4]'/5)) == exp(2i*pi*[3; 2; 4; 1; 0]/5)
+</pre></div>
+</dd></dl>
+
+
+<a name="XREFimag"></a><dl>
+<dt><a name="index-imag"></a>Mapping Function: <em></em> <strong>imag</strong> <em>(<var>z</var>)</em></dt>
+<dd><p>Return the imaginary part of <var>z</var> as a real number.
+</p>
+<p><strong>See also:</strong> <a href="#XREFreal">real</a>, <a href="#XREFconj">conj</a>.
+</p></dd></dl>
+
+
+<a name="XREFreal"></a><dl>
+<dt><a name="index-real"></a>Mapping Function: <em></em> <strong>real</strong> <em>(<var>z</var>)</em></dt>
+<dd><p>Return the real part of <var>z</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFimag">imag</a>, <a href="#XREFconj">conj</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Trigonometry.html#Trigonometry" accesskey="n" rel="next">Trigonometry</a>, Previous: <a href="Exponents-and-Logarithms.html#Exponents-and-Logarithms" accesskey="p" rel="prev">Exponents and Logarithms</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

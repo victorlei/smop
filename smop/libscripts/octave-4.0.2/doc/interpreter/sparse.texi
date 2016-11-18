@@ -1,0 +1,3070 @@
+@c DO NOT EDIT!  Generated automatically by munge-texi.pl.
+
+@c Copyright (C) 2004-2015 David Bateman
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@ifhtml
+@set htmltex
+@end ifhtml
+@iftex
+@set htmltex
+@end iftex
+
+@node Sparse Matrices
+@chapter Sparse Matrices
+
+@menu
+* Basics::                      Creation and Manipulation of Sparse Matrices
+* Sparse Linear Algebra::       Linear Algebra on Sparse Matrices
+* Iterative Techniques::        Iterative Techniques
+* Real Life Example::           Using Sparse Matrices
+@end menu
+
+@node Basics
+@section Creation and Manipulation of Sparse Matrices
+
+The size of mathematical problems that can be treated at any particular
+time is generally limited by the available computing resources.  Both,
+the speed of the computer and its available memory place limitation on
+the problem size.
+
+There are many classes of mathematical problems which give rise to
+matrices, where a large number of the elements are zero.  In this case
+it makes sense to have a special matrix type to handle this class of
+problems where only the nonzero elements of the matrix are
+stored.  Not only does this reduce the amount of memory to store the
+matrix, but it also means that operations on this type of matrix can
+take advantage of the a priori knowledge of the positions of the
+nonzero elements to accelerate their calculations.
+
+A matrix type that stores only the nonzero elements is generally called
+sparse.  It is the purpose of this document to discuss the basics of the
+storage and creation of sparse matrices and the fundamental operations
+on them.
+
+@menu
+* Storage of Sparse Matrices::
+* Creating Sparse Matrices::
+* Information::
+* Operators and Functions::
+@end menu
+
+@node Storage of Sparse Matrices
+@subsection Storage of Sparse Matrices
+
+It is not strictly speaking necessary for the user to understand how
+sparse matrices are stored.  However, such an understanding will help
+to get an understanding of the size of sparse matrices.  Understanding
+the storage technique is also necessary for those users wishing to
+create their own oct-files.
+
+There are many different means of storing sparse matrix data.  What all
+of the methods have in common is that they attempt to reduce the complexity
+and storage given a priori knowledge of the particular class of problems
+that will be solved.  A good summary of the available techniques for storing
+sparse matrix is given by @nospell{Saad} @footnote{Y. Saad "SPARSKIT: A basic
+toolkit for sparse matrix computation", 1994,
+@url{http://www-users.cs.umn.edu/~saad/software/SPARSKIT/paper.ps}}.
+With full matrices, knowledge of the point of an element of the matrix
+within the matrix is implied by its position in the computers memory.
+However, this is not the case for sparse matrices, and so the positions
+of the nonzero elements of the matrix must equally be stored.
+
+An obvious way to do this is by storing the elements of the matrix as
+triplets, with two elements being their position in the array
+(rows and column) and the third being the data itself.  This is conceptually
+easy to grasp, but requires more storage than is strictly needed.
+
+The storage technique used within Octave is the compressed column
+format.  It is similar to the Yale format.
+@footnote{@url{http://en.wikipedia.org/wiki/Sparse_matrix#Yale_format}}
+In this format the position of each element in a row and the data are
+stored as previously.  However, if we assume that all elements in the
+same column are stored adjacent in the computers memory, then we only
+need to store information on the number of nonzero elements in each
+column, rather than their positions.  Thus assuming that the matrix has
+more nonzero elements than there are columns in the matrix, we win in
+terms of the amount of memory used.
+
+In fact, the column index contains one more element than the number of
+columns, with the first element always being zero.  The advantage of
+this is a simplification in the code, in that there is no special case
+for the first or last columns.  A short example, demonstrating this in
+C is.
+
+@example
+@group
+  for (j = 0; j < nc; j++)
+    for (i = cidx(j); i < cidx(j+1); i++)
+       printf ("nonzero element (%i,%i) is %d\n",
+           ridx(i), j, data(i));
+@end group
+@end example
+
+A clear understanding might be had by considering an example of how the
+above applies to an example matrix.  Consider the matrix
+
+@example
+@group
+    1   2   0  0
+    0   0   0  3
+    0   0   0  4
+@end group
+@end example
+
+The nonzero elements of this matrix are
+
+@example
+@group
+   (1, 1)  @result{} 1
+   (1, 2)  @result{} 2
+   (2, 4)  @result{} 3
+   (3, 4)  @result{} 4
+@end group
+@end example
+
+This will be stored as three vectors @var{cidx}, @var{ridx} and @var{data},
+representing the column indexing, row indexing and data respectively.  The
+contents of these three vectors for the above matrix will be
+
+@example
+@group
+  @var{cidx} = [0, 1, 2, 2, 4]
+  @var{ridx} = [0, 0, 1, 2]
+  @var{data} = [1, 2, 3, 4]
+@end group
+@end example
+
+Note that this is the representation of these elements with the first row
+and column assumed to start at zero, while in Octave itself the row and
+column indexing starts at one.  Thus the number of elements in the
+@var{i}-th column is given by @code{@var{cidx} (@var{i} + 1) -
+@var{cidx} (@var{i})}.
+
+Although Octave uses a compressed column format, it should be noted
+that compressed row formats are equally possible.  However, in the
+context of mixed operations between mixed sparse and dense matrices,
+it makes sense that the elements of the sparse matrices are in the
+same order as the dense matrices.  Octave stores dense matrices in
+column major ordering, and so sparse matrices are equally stored in
+this manner.
+
+A further constraint on the sparse matrix storage used by Octave is that
+all elements in the rows are stored in increasing order of their row
+index, which makes certain operations faster.  However, it imposes
+the need to sort the elements on the creation of sparse matrices.  Having
+disordered elements is potentially an advantage in that it makes operations
+such as concatenating two sparse matrices together easier and faster, however
+it adds complexity and speed problems elsewhere.
+
+@node Creating Sparse Matrices
+@subsection Creating Sparse Matrices
+
+There are several means to create sparse matrix.
+
+@table @asis
+@item Returned from a function
+There are many functions that directly return sparse matrices.  These include
+@dfn{speye}, @dfn{sprand}, @dfn{diag}, etc.
+
+@item Constructed from matrices or vectors
+The function @dfn{sparse} allows a sparse matrix to be constructed from
+three vectors representing the row, column and data.  Alternatively, the
+function @dfn{spconvert} uses a three column matrix format to allow easy
+importation of data from elsewhere.
+
+@item Created and then filled
+The function @dfn{sparse} or @dfn{spalloc} can be used to create an empty
+matrix that is then filled by the user
+
+@item From a user binary program
+The user can directly create the sparse matrix within an oct-file.
+@end table
+
+There are several basic functions to return specific sparse
+matrices.  For example the sparse identity matrix, is a matrix that is
+often needed.  It therefore has its own function to create it as
+@code{speye (@var{n})} or @code{speye (@var{r}, @var{c})}, which
+creates an @var{n}-by-@var{n} or @var{r}-by-@var{c} sparse identity
+matrix.
+
+Another typical sparse matrix that is often needed is a random distribution
+of random elements.  The functions @dfn{sprand} and @dfn{sprandn} perform
+this for uniform and normal random distributions of elements.  They have exactly
+the same calling convention, where @code{sprand (@var{r}, @var{c}, @var{d})},
+creates an @var{r}-by-@var{c} sparse matrix with a density of filled
+elements of @var{d}.
+
+Other functions of interest that directly create sparse matrices, are
+@dfn{diag} or its generalization @dfn{spdiags}, that can take the
+definition of the diagonals of the matrix and create the sparse matrix
+that corresponds to this.  For example,
+
+@example
+s = diag (sparse (randn (1,n)), -1);
+@end example
+
+@noindent
+creates a sparse (@var{n}+1)-by-(@var{n}+1) sparse matrix with a single
+diagonal defined.
+
+@c spdiags scripts/sparse/spdiags.m
+@anchor{XREFspdiags}
+@deftypefn  {Function File} {@var{B} =} spdiags (@var{A})
+@deftypefnx {Function File} {[@var{B}, @var{d}] =} spdiags (@var{A})
+@deftypefnx {Function File} {@var{B} =} spdiags (@var{A}, @var{d})
+@deftypefnx {Function File} {@var{A} =} spdiags (@var{v}, @var{d}, @var{A})
+@deftypefnx {Function File} {@var{A} =} spdiags (@var{v}, @var{d}, @var{m}, @var{n})
+A generalization of the function @code{diag}.
+
+Called with a single input argument, the nonzero diagonals @var{d} of
+@var{A} are extracted.
+
+With two arguments the diagonals to extract are given by the vector @var{d}.
+
+The other two forms of @code{spdiags} modify the input matrix by replacing
+the diagonals.  They use the columns of @var{v} to replace the diagonals
+represented by the vector @var{d}.  If the sparse matrix @var{A} is
+defined then the diagonals of this matrix are replaced.  Otherwise a
+matrix of @var{m} by @var{n} is created with the diagonals given by the
+columns of @var{v}.
+
+Negative values of @var{d} represent diagonals below the main diagonal, and
+positive values of @var{d} diagonals above the main diagonal.
+
+For example:
+
+@example
+@group
+spdiags (reshape (1:12, 4, 3), [-1 0 1], 5, 4)
+   @result{} 5 10  0  0
+      1  6 11  0
+      0  2  7 12
+      0  0  3  8
+      0  0  0  4
+@end group
+@end example
+
+@seealso{@ref{XREFdiag,,diag}}
+@end deftypefn
+
+
+@c speye scripts/sparse/speye.m
+@anchor{XREFspeye}
+@deftypefn  {Function File} {@var{s} =} speye (@var{m}, @var{n})
+@deftypefnx {Function File} {@var{s} =} speye (@var{m})
+@deftypefnx {Function File} {@var{s} =} speye (@var{sz})
+Return a sparse identity matrix of size @var{m}x@var{n}.
+
+The implementation is significantly more efficient than
+@code{sparse (eye (@var{m}))} as the full matrix is not constructed.
+
+Called with a single argument a square matrix of size
+@var{m}-by-@var{m} is created.  If called with a single vector argument
+@var{sz}, this argument is taken to be the size of the matrix to create.
+@seealso{@ref{XREFsparse,,sparse}, @ref{XREFspdiags,,spdiags}, @ref{XREFeye,,eye}}
+@end deftypefn
+
+
+@c spones scripts/sparse/spones.m
+@anchor{XREFspones}
+@deftypefn {Function File} {@var{r} =} spones (@var{S})
+Replace the nonzero entries of @var{S} with ones.
+
+This creates a sparse matrix with the same structure as @var{S}.
+@seealso{@ref{XREFsparse,,sparse}, @ref{XREFsprand,,sprand}, @ref{XREFsprandn,,sprandn}, @ref{XREFsprandsym,,sprandsym}, @ref{XREFspfun,,spfun}, @ref{XREFspy,,spy}}
+@end deftypefn
+
+
+@c sprand scripts/sparse/sprand.m
+@anchor{XREFsprand}
+@deftypefn  {Function File} {} sprand (@var{m}, @var{n}, @var{d})
+@deftypefnx {Function File} {} sprand (@var{m}, @var{n}, @var{d}, @var{rc})
+@deftypefnx {Function File} {} sprand (@var{s})
+Generate a sparse matrix with uniformly distributed random values.
+
+The size of the matrix is @var{m}x@var{n} with a density of values @var{d}.
+@var{d} must be between 0 and 1.  Values will be uniformly distributed on
+the interval (0, 1).
+
+If called with a single matrix argument, a sparse matrix is generated with
+random values wherever the matrix @var{s} is nonzero.
+
+If called with a scalar fourth argument @var{rc}, a random sparse matrix
+with reciprocal condition number @var{rc} is generated.  If @var{rc} is
+a vector, then it specifies the first singular values of the generated
+matrix (@code{length (@var{rc}) <= min (@var{m}, @var{n})}).
+
+@seealso{@ref{XREFsprandn,,sprandn}, @ref{XREFsprandsym,,sprandsym}, @ref{XREFrand,,rand}}
+@end deftypefn
+
+
+@c sprandn scripts/sparse/sprandn.m
+@anchor{XREFsprandn}
+@deftypefn  {Function File} {} sprandn (@var{m}, @var{n}, @var{d})
+@deftypefnx {Function File} {} sprandn (@var{m}, @var{n}, @var{d}, @var{rc})
+@deftypefnx {Function File} {} sprandn (@var{s})
+Generate a sparse matrix with normally distributed random values.
+
+The size of the matrix is @var{m}x@var{n} with a density of values @var{d}.
+@var{d} must be between 0 and 1.  Values will be normally distributed with a
+mean of 0 and a variance of 1.
+
+If called with a single matrix argument, a sparse matrix is generated with
+random values wherever the matrix @var{s} is nonzero.
+
+If called with a scalar fourth argument @var{rc}, a random sparse matrix
+with reciprocal condition number @var{rc} is generated.  If @var{rc} is
+a vector, then it specifies the first singular values of the generated
+matrix (@code{length (@var{rc}) <= min (@var{m}, @var{n})}).
+
+@seealso{@ref{XREFsprand,,sprand}, @ref{XREFsprandsym,,sprandsym}, @ref{XREFrandn,,randn}}
+@end deftypefn
+
+
+@c sprandsym scripts/sparse/sprandsym.m
+@anchor{XREFsprandsym}
+@deftypefn  {Function File} {} sprandsym (@var{n}, @var{d})
+@deftypefnx {Function File} {} sprandsym (@var{s})
+Generate a symmetric random sparse matrix.
+
+The size of the matrix will be @var{n}x@var{n}, with a density of values
+given by @var{d}.  @var{d} must be between 0 and 1 inclusive.  Values will
+be normally distributed with a mean of zero and a variance of 1.
+
+If called with a single matrix argument, a random sparse matrix is generated
+wherever the matrix @var{s} is nonzero in its lower triangular part.
+@seealso{@ref{XREFsprand,,sprand}, @ref{XREFsprandn,,sprandn}, @ref{XREFspones,,spones}, @ref{XREFsparse,,sparse}}
+@end deftypefn
+
+
+The recommended way for the user to create a sparse matrix, is to create
+two vectors containing the row and column index of the data and a third
+vector of the same size containing the data to be stored.  For example,
+
+@example
+@group
+  ri = ci = d = [];
+  for j = 1:c
+    ri = [ri; randperm(r,n)'];
+    ci = [ci; j*ones(n,1)];
+    d = [d; rand(n,1)];
+  endfor
+  s = sparse (ri, ci, d, r, c);
+@end group
+@end example
+
+@noindent
+creates an @var{r}-by-@var{c} sparse matrix with a random distribution
+of @var{n} (<@var{r}) elements per column.  The elements of the vectors
+do not need to be sorted in any particular order as Octave will sort
+them prior to storing the data.  However, pre-sorting the data will
+make the creation of the sparse matrix faster.
+
+The function @dfn{spconvert} takes a three or four column real matrix.
+The first two columns represent the row and column index respectively and
+the third and four columns, the real and imaginary parts of the sparse
+matrix.  The matrix can contain zero elements and the elements can be
+sorted in any order.  Adding zero elements is a convenient way to define
+the size of the sparse matrix.  For example:
+
+@example
+@group
+s = spconvert ([1 2 3 4; 1 3 4 4; 1 2 3 0]')
+@result{} Compressed Column Sparse (rows=4, cols=4, nnz=3)
+      (1 , 1) -> 1
+      (2 , 3) -> 2
+      (3 , 4) -> 3
+@end group
+@end example
+
+An example of creating and filling a matrix might be
+
+@example
+@group
+k = 5;
+nz = r * k;
+s = spalloc (r, c, nz)
+for j = 1:c
+  idx = randperm (r);
+  s (:, j) = [zeros(r - k, 1); ...
+        rand(k, 1)] (idx);
+endfor
+@end group
+@end example
+
+It should be noted, that due to the way that the Octave
+assignment functions are written that the assignment will reallocate
+the memory used by the sparse matrix at each iteration of the above loop.
+Therefore the @dfn{spalloc} function ignores the @var{nz} argument and
+does not pre-assign the memory for the matrix.  Therefore, it is vitally
+important that code using to above structure should be vectorized
+as much as possible to minimize the number of assignments and reduce the
+number of memory allocations.
+
+@c full libinterp/corefcn/data.cc
+@anchor{XREFfull}
+@deftypefn {Built-in Function} {@var{FM} =} full (@var{SM})
+Return a full storage matrix from a sparse, diagonal, or permutation matrix,
+or a range.
+@seealso{@ref{XREFsparse,,sparse}, @ref{XREFissparse,,issparse}}
+@end deftypefn
+
+
+@c spalloc libinterp/corefcn/sparse.cc
+@anchor{XREFspalloc}
+@deftypefn {Built-in Function} {@var{s} =} spalloc (@var{m}, @var{n}, @var{nz})
+Create an @var{m}-by-@var{n} sparse matrix with pre-allocated space for at
+most @var{nz} nonzero elements.
+
+This is useful for building a matrix incrementally by a sequence of indexed
+assignments.  Subsequent indexed assignments after @code{spalloc} will reuse
+the pre-allocated memory, provided they are of one of the simple forms
+
+@itemize
+@item @code{@var{s}(I:J) = @var{x}}
+
+@item @code{@var{s}(:,I:J) = @var{x}}
+
+@item @code{@var{s}(K:L,I:J) = @var{x}}
+@end itemize
+
+@b{and} that the following conditions are met:
+
+@itemize
+@item the assignment does not decrease nnz (@var{S}).
+
+@item after the assignment, nnz (@var{S}) does not exceed @var{nz}.
+
+@item no index is out of bounds.
+@end itemize
+
+Partial movement of data may still occur, but in general the assignment will
+be more memory and time efficient under these circumstances.  In particular,
+it is possible to efficiently build a pre-allocated sparse matrix from a
+contiguous block of columns.
+
+The amount of pre-allocated memory for a given matrix may be queried using
+the function @code{nzmax}.
+@seealso{@ref{XREFnzmax,,nzmax}, @ref{XREFsparse,,sparse}}
+@end deftypefn
+
+
+@c sparse libinterp/corefcn/sparse.cc
+@anchor{XREFsparse}
+@deftypefn  {Built-in Function} {@var{s} =} sparse (@var{a})
+@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{sv}, @var{m}, @var{n})
+@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{sv})
+@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{m}, @var{n})
+@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{s}, @var{m}, @var{n}, "unique")
+@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{sv}, @var{m}, @var{n}, @var{nzmax})
+Create a sparse matrix from a full matrix, or row, column, value triplets.
+
+If @var{a} is a full matrix, convert it to a sparse matrix representation,
+removing all zero values in the process.
+
+Given the integer index vectors @var{i} and @var{j}, and a 1-by-@code{nnz}
+vector of real or complex values @var{sv}, construct the sparse matrix
+@code{S(@var{i}(@var{k}),@var{j}(@var{k})) = @var{sv}(@var{k})} with overall
+dimensions @var{m} and @var{n}.  If any of @var{sv}, @var{i} or @var{j} are
+scalars, they are expanded to have a common size.
+
+If @var{m} or @var{n} are not specified their values are derived from the
+maximum index in the vectors @var{i} and @var{j} as given by
+@code{@var{m} = max (@var{i})}, @code{@var{n} = max (@var{j})}.
+
+@strong{Note}: if multiple values are specified with the same @var{i},
+@var{j} indices, the corresponding value in @var{s} will be the sum of the
+values at the repeated location.  See @code{accumarray} for an example of how
+to produce different behavior, such as taking the minimum instead.
+
+If the option @qcode{"unique"} is given, and more than one value is
+specified at the same @var{i}, @var{j} indices, then the last specified
+value will be used.
+
+@code{sparse (@var{m}, @var{n})} will create an empty @var{m}x@var{n} sparse
+matrix and is equivalent to @code{sparse ([], [], [], @var{m}, @var{n})}
+
+The argument @code{nzmax} is ignored but accepted for compatibility with
+@sc{matlab}.
+
+Example 1 (sum at repeated indices):
+
+@example
+@group
+@var{i} = [1 1 2]; @var{j} = [1 1 2]; @var{sv} = [3 4 5];
+sparse (@var{i}, @var{j}, @var{sv}, 3, 4)
+@result{}
+Compressed Column Sparse (rows = 3, cols = 4, nnz = 2 [17%])
+
+  (1, 1) ->  7
+  (2, 2) ->  5
+@end group
+@end example
+
+Example 2 ("unique" option):
+
+@example
+@group
+@var{i} = [1 1 2]; @var{j} = [1 1 2]; @var{sv} = [3 4 5];
+sparse (@var{i}, @var{j}, @var{sv}, 3, 4, "unique")
+@result{}
+Compressed Column Sparse (rows = 3, cols = 4, nnz = 2 [17%])
+
+  (1, 1) ->  4
+  (2, 2) ->  5
+@end group
+@end example
+@seealso{@ref{XREFfull,,full}, @ref{XREFaccumarray,,accumarray}, @ref{XREFspalloc,,spalloc}, @ref{XREFspdiags,,spdiags}, @ref{XREFspeye,,speye}, @ref{XREFspones,,spones}, @ref{XREFsprand,,sprand}, @ref{XREFsprandn,,sprandn}, @ref{XREFsprandsym,,sprandsym}, @ref{XREFspconvert,,spconvert}, @ref{XREFspfun,,spfun}}
+@end deftypefn
+
+
+@c spconvert scripts/sparse/spconvert.m
+@anchor{XREFspconvert}
+@deftypefn {Function File} {@var{x} =} spconvert (@var{m})
+Convert a simple sparse matrix format easily generated by other programs
+into Octave's internal sparse format.
+
+The input @var{m} is either a 3 or 4 column real matrix, containing the
+row, column, real, and imaginary parts of the elements of the sparse
+matrix.  An element with a zero real and imaginary part can be used to
+force a particular matrix size.
+@seealso{@ref{XREFsparse,,sparse}}
+@end deftypefn
+
+
+The above problem of memory reallocation can be avoided in
+oct-files.  However, the construction of a sparse matrix from an oct-file
+is more complex than can be discussed here.  @xref{External Code Interface},
+for a full description of the techniques involved.
+
+@node Information
+@subsection Finding Information about Sparse Matrices
+
+There are a number of functions that allow information concerning
+sparse matrices to be obtained.  The most basic of these is
+@dfn{issparse} that identifies whether a particular Octave object is
+in fact a sparse matrix.
+
+Another very basic function is @dfn{nnz} that returns the number of
+nonzero entries there are in a sparse matrix, while the function
+@dfn{nzmax} returns the amount of storage allocated to the sparse
+matrix.  Note that Octave tends to crop unused memory at the first
+opportunity for sparse objects.  There are some cases of user created
+sparse objects where the value returned by @dfn{nzmax} will not be
+the same as @dfn{nnz}, but in general they will give the same
+result.  The function @dfn{spstats} returns some basic statistics on
+the columns of a sparse matrix including the number of elements, the
+mean and the variance of each column.
+
+@c issparse libinterp/corefcn/sparse.cc
+@anchor{XREFissparse}
+@deftypefn {Built-in Function} {} issparse (@var{x})
+Return true if @var{x} is a sparse matrix.
+@seealso{@ref{XREFismatrix,,ismatrix}}
+@end deftypefn
+
+
+@c nnz libinterp/corefcn/data.cc
+@anchor{XREFnnz}
+@deftypefn {Built-in Function} {@var{n} =} nnz (@var{a})
+Return the number of nonzero elements in @var{a}.
+@seealso{@ref{XREFnzmax,,nzmax}, @ref{XREFnonzeros,,nonzeros}, @ref{XREFfind,,find}}
+@end deftypefn
+
+
+@c nonzeros scripts/sparse/nonzeros.m
+@anchor{XREFnonzeros}
+@deftypefn {Function File} {} nonzeros (@var{s})
+Return a vector of the nonzero values of the sparse matrix @var{s}.
+@seealso{@ref{XREFfind,,find}, @ref{XREFnnz,,nnz}}
+@end deftypefn
+
+
+@c nzmax libinterp/corefcn/data.cc
+@anchor{XREFnzmax}
+@deftypefn {Built-in Function} {@var{n} =} nzmax (@var{SM})
+Return the amount of storage allocated to the sparse matrix @var{SM}.
+
+Note that Octave tends to crop unused memory at the first opportunity
+for sparse objects.  Thus, in general the value of @code{nzmax} will be the
+same as @code{nnz} except for some cases of user-created sparse objects.
+@seealso{@ref{XREFnnz,,nnz}, @ref{XREFspalloc,,spalloc}, @ref{XREFsparse,,sparse}}
+@end deftypefn
+
+
+@c spstats scripts/sparse/spstats.m
+@anchor{XREFspstats}
+@deftypefn  {Function File} {[@var{count}, @var{mean}, @var{var}] =} spstats (@var{S})
+@deftypefnx {Function File} {[@var{count}, @var{mean}, @var{var}] =} spstats (@var{S}, @var{j})
+Return the stats for the nonzero elements of the sparse matrix @var{S}.
+
+@var{count} is the number of nonzeros in each column, @var{mean} is the mean
+of the nonzeros in each column, and @var{var} is the variance of the
+nonzeros in each column.
+
+Called with two input arguments, if @var{S} is the data and @var{j} is the
+bin number for the data, compute the stats for each bin.  In this case,
+bins can contain data values of zero, whereas with
+@code{spstats (@var{S})} the zeros may disappear.
+@end deftypefn
+
+
+When solving linear equations involving sparse matrices Octave
+determines the means to solve the equation based on the type of the
+matrix (@pxref{Sparse Linear Algebra}).  Octave probes the
+matrix type when the div (/) or ldiv (\) operator is first used with
+the matrix and then caches the type.  However the @dfn{matrix_type}
+function can be used to determine the type of the sparse matrix prior
+to use of the div or ldiv operators.  For example,
+
+@example
+@group
+a = tril (sprandn (1024, 1024, 0.02), -1) ...
+    + speye (1024);
+matrix_type (a);
+ans = Lower
+@end group
+@end example
+
+@noindent
+shows that Octave correctly determines the matrix type for lower
+triangular matrices.  @dfn{matrix_type} can also be used to force
+the type of a matrix to be a particular type.  For example:
+
+@example
+@group
+a = matrix_type (tril (sprandn (1024, ...
+   1024, 0.02), -1) + speye (1024), "Lower");
+@end group
+@end example
+
+This allows the cost of determining the matrix type to be
+avoided.  However, incorrectly defining the matrix type will result in
+incorrect results from solutions of linear equations, and so it is
+entirely the responsibility of the user to correctly identify the
+matrix type
+
+There are several graphical means of finding out information about
+sparse matrices.  The first is the @dfn{spy} command, which displays
+the structure of the nonzero elements of the
+matrix.  @xref{fig:spmatrix}, for an example of the use of
+@dfn{spy}.  More advanced graphical information can be obtained with the
+@dfn{treeplot}, @dfn{etreeplot} and @dfn{gplot} commands.
+
+@float Figure,fig:spmatrix
+@center @image{spmatrix,4in}
+@caption{Structure of simple sparse matrix.}
+@end float
+
+One use of sparse matrices is in graph theory, where the
+interconnections between nodes are represented as an adjacency
+matrix.  That is, if the i-th node in a graph is connected to the j-th
+node.  Then the ij-th node (and in the case of undirected graphs the
+@nospell{ji-th} node) of the sparse adjacency matrix is nonzero.  If each node
+is then associated with a set of coordinates, then the @dfn{gplot}
+command can be used to graphically display the interconnections
+between nodes.
+
+As a trivial example of the use of @dfn{gplot} consider the example,
+
+@example
+@group
+A = sparse ([2,6,1,3,2,4,3,5,4,6,1,5],
+    [1,1,2,2,3,3,4,4,5,5,6,6],1,6,6);
+xy = [0,4,8,6,4,2;5,0,5,7,5,7]';
+gplot (A,xy)
+@end group
+@end example
+
+@noindent
+which creates an adjacency matrix @code{A} where node 1 is connected
+to nodes 2 and 6, node 2 with nodes 1 and 3, etc.  The coordinates of
+the nodes are given in the n-by-2 matrix @code{xy}.
+@ifset htmltex
+@xref{fig:gplot}.
+
+@float Figure,fig:gplot
+@center @image{gplot,4in}
+@caption{Simple use of the @dfn{gplot} command.}
+@end float
+@end ifset
+
+The dependencies between the nodes of a Cholesky@tie{}factorization can be
+calculated in linear time without explicitly needing to calculate the
+Cholesky@tie{}factorization by the @code{etree} command.  This command
+returns the elimination tree of the matrix and can be displayed
+graphically by the command @code{treeplot (etree (A))} if @code{A} is
+symmetric or @code{treeplot (etree (A+A'))} otherwise.
+
+@c spy scripts/sparse/spy.m
+@anchor{XREFspy}
+@deftypefn  {Function File} {} spy (@var{x})
+@deftypefnx {Function File} {} spy (@dots{}, @var{markersize})
+@deftypefnx {Function File} {} spy (@dots{}, @var{line_spec})
+Plot the sparsity pattern of the sparse matrix @var{x}.
+
+If the argument @var{markersize} is given as a scalar value, it is used to
+determine the point size in the plot.
+
+If the string @var{line_spec} is given it is passed to @code{plot} and
+determines the appearance of the plot.
+@seealso{@ref{XREFplot,,plot}, @ref{XREFgplot,,gplot}}
+@end deftypefn
+
+
+@c etree libinterp/dldfcn/colamd.cc
+@anchor{XREFetree}
+@deftypefn  {Loadable Function} {@var{p} =} etree (@var{S})
+@deftypefnx {Loadable Function} {@var{p} =} etree (@var{S}, @var{typ})
+@deftypefnx {Loadable Function} {[@var{p}, @var{q}] =} etree (@var{S}, @var{typ})
+
+Return the elimination tree for the matrix @var{S}.
+
+By default @var{S} is assumed to be symmetric and the symmetric elimination
+tree is returned.  The argument @var{typ} controls whether a symmetric or
+column elimination tree is returned.  Valid values of @var{typ} are
+@qcode{"sym"} or @qcode{"col"}, for symmetric or column elimination tree
+respectively.
+
+Called with a second argument, @code{etree} also returns the postorder
+permutations on the tree.
+@end deftypefn
+
+
+@c etreeplot scripts/sparse/etreeplot.m
+@anchor{XREFetreeplot}
+@deftypefn  {Function File} {} etreeplot (@var{A})
+@deftypefnx {Function File} {} etreeplot (@var{A}, @var{node_style}, @var{edge_style})
+Plot the elimination tree of the matrix @var{A} or
+@tcode{@var{A}+@var{A}'} if @var{A} in not symmetric.
+
+The optional parameters @var{node_style} and @var{edge_style} define the
+output style.
+@seealso{@ref{XREFtreeplot,,treeplot}, @ref{XREFgplot,,gplot}}
+@end deftypefn
+
+
+@c gplot scripts/sparse/gplot.m
+@anchor{XREFgplot}
+@deftypefn  {Function File} {} gplot (@var{A}, @var{xy})
+@deftypefnx {Function File} {} gplot (@var{A}, @var{xy}, @var{line_style})
+@deftypefnx {Function File} {[@var{x}, @var{y}] =} gplot (@var{A}, @var{xy})
+Plot a graph defined by @var{A} and @var{xy} in the graph theory sense.
+
+@var{A} is the adjacency matrix of the array to be plotted and @var{xy} is
+an @var{n}-by-2 matrix containing the coordinates of the nodes of the graph.
+
+The optional parameter @var{line_style} defines the output style for the
+plot.  Called with no output arguments the graph is plotted directly.
+Otherwise, return the coordinates of the plot in @var{x} and @var{y}.
+@seealso{@ref{XREFtreeplot,,treeplot}, @ref{XREFetreeplot,,etreeplot}, @ref{XREFspy,,spy}}
+@end deftypefn
+
+
+@c treeplot scripts/sparse/treeplot.m
+@anchor{XREFtreeplot}
+@deftypefn  {Function File} {} treeplot (@var{tree})
+@deftypefnx {Function File} {} treeplot (@var{tree}, @var{node_style}, @var{edge_style})
+Produce a graph of tree or forest.
+
+The first argument is vector of predecessors.
+
+The optional parameters @var{node_style} and @var{edge_style} define the
+output plot style.
+
+The complexity of the algorithm is O(n) in terms of is time and memory
+requirements.
+@seealso{@ref{XREFetreeplot,,etreeplot}, @ref{XREFgplot,,gplot}}
+@end deftypefn
+
+
+@c treelayout scripts/sparse/treelayout.m
+@anchor{XREFtreelayout}
+@deftypefn  {Function File} {} treelayout (@var{tree})
+@deftypefnx {Function File} {} treelayout (@var{tree}, @var{permutation})
+treelayout lays out a tree or a forest.
+
+The first argument @var{tree} is a vector of predecessors.
+
+The parameter @var{permutation} is an optional postorder permutation.
+
+The complexity of the algorithm is O(n) in terms of time and memory
+requirements.
+@seealso{@ref{XREFetreeplot,,etreeplot}, @ref{XREFgplot,,gplot}, @ref{XREFtreeplot,,treeplot}}
+@end deftypefn
+
+
+@node Operators and Functions
+@subsection Basic Operators and Functions on Sparse Matrices
+
+@menu
+* Sparse Functions::
+* Return Types of Operators and Functions::
+* Mathematical Considerations::
+@end menu
+
+@node Sparse Functions
+@subsubsection Sparse Functions
+
+Many Octave functions have been overloaded to work with either sparse or full
+matrices.  There is no difference in calling convention when using an
+overloaded function with a sparse matrix, however, there is also no access to
+potentially sparse-specific features.  At any time the sparse matrix specific
+version of a function can be used by explicitly calling its function name.
+
+The table below lists all of the sparse functions of Octave.  Note that the
+names of the specific sparse forms of the functions are typically the same as
+the general versions with a @dfn{sp} prefix.  In the table below, and in the
+rest of this article, the specific sparse versions of functions are used.
+
+@c Table includes in comments the missing sparse functions
+
+@table @asis
+@item Generate sparse matrices:
+  @dfn{spalloc}, @dfn{spdiags}, @dfn{speye}, @dfn{sprand},
+  @dfn{sprandn}, @dfn{sprandsym}
+
+@item Sparse matrix conversion:
+  @dfn{full}, @dfn{sparse}, @dfn{spconvert}
+
+@item Manipulate sparse matrices
+  @dfn{issparse}, @dfn{nnz}, @dfn{nonzeros}, @dfn{nzmax},
+  @dfn{spfun}, @dfn{spones}, @dfn{spy}
+
+@item Graph Theory:
+  @dfn{etree}, @dfn{etreeplot}, @dfn{gplot},
+  @dfn{treeplot}
+@c @dfn{treelayout}
+
+@item Sparse matrix reordering:
+  @dfn{amd}, @dfn{ccolamd}, @dfn{colamd}, @dfn{colperm}, @dfn{csymamd},
+  @dfn{dmperm}, @dfn{symamd}, @dfn{randperm}, @dfn{symrcm}
+
+@item Linear algebra:
+  @dfn{condest}, @dfn{eigs}, @dfn{matrix_type},
+  @dfn{normest}, @dfn{sprank}, @dfn{spaugment}, @dfn{svds}
+
+@item Iterative techniques:
+  @dfn{ichol}, @dfn{ilu}, @dfn{pcg}, @dfn{pcr}
+@c @dfn{bicg}, @dfn{bicgstab}, @dfn{cholinc}, @dfn{cgs}, @dfn{gmres},
+@c @dfn{lsqr}, @dfn{minres}, @dfn{qmr}, @dfn{symmlq}
+
+@item Miscellaneous:
+  @dfn{spparms}, @dfn{symbfact}, @dfn{spstats}
+@end table
+
+In addition all of the standard Octave mapper functions (i.e., basic
+math functions that take a single argument) such as @dfn{abs}, etc.
+can accept sparse matrices.  The reader is referred to the documentation
+supplied with these functions within Octave itself for further
+details.
+
+@node Return Types of Operators and Functions
+@subsubsection Return Types of Operators and Functions
+
+The two basic reasons to use sparse matrices are to reduce the memory
+usage and to not have to do calculations on zero elements.  The two are
+closely related in that the computation time on a sparse matrix operator
+or function is roughly linear with the number of nonzero elements.
+
+Therefore, there is a certain density of nonzero elements of a matrix
+where it no longer makes sense to store it as a sparse matrix, but rather
+as a full matrix.  For this reason operators and functions that have a
+high probability of returning a full matrix will always return one.  For
+example adding a scalar constant to a sparse matrix will almost always
+make it a full matrix, and so the example,
+
+@example
+@group
+speye (3) + 0
+@result{}   1  0  0
+  0  1  0
+  0  0  1
+@end group
+@end example
+
+@noindent
+returns a full matrix as can be seen.
+
+
+Additionally, if @code{sparse_auto_mutate} is true, all sparse functions
+test the amount of memory occupied by the sparse matrix to see if the
+amount of storage used is larger than the amount used by the full
+equivalent.  Therefore @code{speye (2) * 1} will return a full matrix as
+the memory used is smaller for the full version than the sparse version.
+
+As all of the mixed operators and functions between full and sparse
+matrices exist, in general this does not cause any problems.  However,
+one area where it does cause a problem is where a sparse matrix is
+promoted to a full matrix, where subsequent operations would resparsify
+the matrix.  Such cases are rare, but can be artificially created, for
+example @code{(fliplr (speye (3)) + speye (3)) - speye (3)} gives a full
+matrix when it should give a sparse one.  In general, where such cases
+occur, they impose only a small memory penalty.
+
+There is however one known case where this behavior of Octave's
+sparse matrices will cause a problem.  That is in the handling of the
+@dfn{diag} function.  Whether @dfn{diag} returns a sparse or full matrix
+depending on the type of its input arguments.  So
+
+@example
+ a = diag (sparse ([1,2,3]), -1);
+@end example
+
+@noindent
+should return a sparse matrix.  To ensure this actually happens, the
+@dfn{sparse} function, and other functions based on it like @dfn{speye},
+always returns a sparse matrix, even if the memory used will be larger
+than its full representation.
+
+@c sparse_auto_mutate libinterp/octave-value/ov-base.cc
+@anchor{XREFsparse_auto_mutate}
+@deftypefn  {Built-in Function} {@var{val} =} sparse_auto_mutate ()
+@deftypefnx {Built-in Function} {@var{old_val} =} sparse_auto_mutate (@var{new_val})
+@deftypefnx {Built-in Function} {} sparse_auto_mutate (@var{new_val}, "local")
+Query or set the internal variable that controls whether Octave will
+automatically mutate sparse matrices to full matrices to save memory.
+
+For example:
+
+@example
+@group
+s = speye (3);
+sparse_auto_mutate (false);
+s(:, 1) = 1;
+typeinfo (s)
+@result{} sparse matrix
+sparse_auto_mutate (true);
+s(1, :) = 1;
+typeinfo (s)
+@result{} matrix
+@end group
+@end example
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@end deftypefn
+
+
+Note that the @code{sparse_auto_mutate} option is incompatible with
+@sc{matlab}, and so it is off by default.
+
+@node Mathematical Considerations
+@subsubsection Mathematical Considerations
+
+The attempt has been made to make sparse matrices behave in exactly the
+same manner as there full counterparts.  However, there are certain differences
+and especially differences with other products sparse implementations.
+
+First, the @qcode{"./"} and @qcode{".^"} operators must be used with care.
+Consider what the examples
+
+@example
+@group
+  s = speye (4);
+  a1 = s .^ 2;
+  a2 = s .^ s;
+  a3 = s .^ -2;
+  a4 = s ./ 2;
+  a5 = 2 ./ s;
+  a6 = s ./ s;
+@end group
+@end example
+
+@noindent
+will give.  The first example of @var{s} raised to the power of 2 causes
+no problems.  However @var{s} raised element-wise to itself involves a
+large number of terms @code{0 .^ 0} which is 1. There @code{@var{s} .^
+@var{s}} is a full matrix.
+
+Likewise @code{@var{s} .^ -2} involves terms like @code{0 .^ -2} which
+is infinity, and so @code{@var{s} .^ -2} is equally a full matrix.
+
+For the "./" operator @code{@var{s} ./ 2} has no problems, but
+@code{2 ./ @var{s}} involves a large number of infinity terms as well
+and is equally a full matrix.  The case of @code{@var{s} ./ @var{s}}
+involves terms like @code{0 ./ 0} which is a @code{NaN} and so this
+is equally a full matrix with the zero elements of @var{s} filled with
+@code{NaN} values.
+
+The above behavior is consistent with full matrices, but is not
+consistent with sparse implementations in other products.
+
+A particular problem of sparse matrices comes about due to the fact that
+as the zeros are not stored, the sign-bit of these zeros is equally not
+stored.  In certain cases the sign-bit of zero is important.  For example:
+
+@example
+@group
+ a = 0 ./ [-1, 1; 1, -1];
+ b = 1 ./ a
+ @result{} -Inf            Inf
+     Inf           -Inf
+ c = 1 ./ sparse (a)
+ @result{}  Inf            Inf
+     Inf            Inf
+@end group
+@end example
+
+To correct this behavior would mean that zero elements with a negative
+sign-bit would need to be stored in the matrix to ensure that their
+sign-bit was respected.  This is not done at this time, for reasons of
+efficiency, and so the user is warned that calculations where the sign-bit
+of zero is important must not be done using sparse matrices.
+
+In general any function or operator used on a sparse matrix will
+result in a sparse matrix with the same or a larger number of nonzero
+elements than the original matrix.  This is particularly true for the
+important case of sparse matrix factorizations.  The usual way to
+address this is to reorder the matrix, such that its factorization is
+sparser than the factorization of the original matrix.  That is the
+factorization of @code{L * U = P * S * Q} has sparser terms @code{L}
+and @code{U} than the equivalent factorization @code{L * U = S}.
+
+Several functions are available to reorder depending on the type of the
+matrix to be factorized.  If the matrix is symmetric positive-definite,
+then @dfn{symamd} or @dfn{csymamd} should be used.  Otherwise
+@dfn{amd}, @dfn{colamd} or @dfn{ccolamd} should be used.  For completeness
+the reordering functions @dfn{colperm} and @dfn{randperm} are
+also available.
+
+@xref{fig:simplematrix}, for an example of the structure of a simple
+positive definite matrix.
+
+@float Figure,fig:simplematrix
+@center @image{spmatrix,4in}
+@caption{Structure of simple sparse matrix.}
+@end float
+
+The standard Cholesky@tie{}factorization of this matrix can be
+obtained by the same command that would be used for a full
+matrix.  This can be visualized with the command
+@code{r = chol (A); spy (r);}.
+@xref{fig:simplechol}.
+The original matrix had
+@ifinfo
+@ifnothtml
+43
+@end ifnothtml
+@end ifinfo
+@ifset htmltex
+598
+@end ifset
+nonzero terms, while this Cholesky@tie{}factorization has
+@ifinfo
+@ifnothtml
+71,
+@end ifnothtml
+@end ifinfo
+@ifset htmltex
+10200,
+@end ifset
+with only half of the symmetric matrix being stored.  This
+is a significant level of fill in, and although not an issue
+for such a small test case, can represents a large overhead
+in working with other sparse matrices.
+
+The appropriate sparsity preserving permutation of the original
+matrix is given by @dfn{symamd} and the factorization using this
+reordering can be visualized using the command @code{q = symamd (A);
+r = chol (A(q,q)); spy (r)}.  This gives
+@ifinfo
+@ifnothtml
+29
+@end ifnothtml
+@end ifinfo
+@ifset htmltex
+399
+@end ifset
+nonzero terms which is a significant improvement.
+
+The Cholesky@tie{}factorization itself can be used to determine the
+appropriate sparsity preserving reordering of the matrix during the
+factorization, In that case this might be obtained with three return
+arguments as @code{[r, p, q] = chol (A); spy (r)}.
+
+@float Figure,fig:simplechol
+@center @image{spchol,4in}
+@caption{Structure of the unpermuted Cholesky@tie{}factorization of the above matrix.}
+@end float
+
+@float Figure,fig:simplecholperm
+@center @image{spcholperm,4in}
+@caption{Structure of the permuted Cholesky@tie{}factorization of the above matrix.}
+@end float
+
+In the case of an asymmetric matrix, the appropriate sparsity
+preserving permutation is @dfn{colamd} and the factorization using
+this reordering can be visualized using the command
+@code{q = colamd (A); [l, u, p] = lu (A(:,q)); spy (l+u)}.
+
+Finally, Octave implicitly reorders the matrix when using the div (/)
+and ldiv (\) operators, and so no the user does not need to explicitly
+reorder the matrix to maximize performance.
+
+@c amd libinterp/dldfcn/amd.cc
+@anchor{XREFamd}
+@deftypefn  {Loadable Function} {@var{p} =} amd (@var{S})
+@deftypefnx {Loadable Function} {@var{p} =} amd (@var{S}, @var{opts})
+
+Return the approximate minimum degree permutation of a matrix.
+
+This is a permutation such that the Cholesky@tie{}factorization of
+@code{@var{S} (@var{p}, @var{p})} tends to be sparser than the
+Cholesky@tie{}factorization of @var{S} itself.  @code{amd} is typically
+faster than @code{symamd} but serves a similar purpose.
+
+The optional parameter @var{opts} is a structure that controls the behavior
+of @code{amd}.  The fields of the structure are
+
+@table @asis
+@item @var{opts}.dense
+Determines what @code{amd} considers to be a dense row or column of the
+input matrix.  Rows or columns with more than @code{max (16, (dense *
+sqrt (@var{n})))} entries, where @var{n} is the order of the matrix @var{S},
+are ignored by @code{amd} during the calculation of the permutation.
+The value of dense must be a positive scalar and the default value is 10.0
+
+@item @var{opts}.aggressive
+If this value is a nonzero scalar, then @code{amd} performs aggressive
+absorption.  The default is not to perform aggressive absorption.
+@end table
+
+The author of the code itself is Timothy A. Davis
+@email{davis@@cise.ufl.edu}, University of Florida
+(see @url{http://www.cise.ufl.edu/research/sparse/amd}).
+@seealso{@ref{XREFsymamd,,symamd}, @ref{XREFcolamd,,colamd}}
+@end deftypefn
+
+
+@c ccolamd libinterp/dldfcn/ccolamd.cc
+@anchor{XREFccolamd}
+@deftypefn  {Loadable Function} {@var{p} =} ccolamd (@var{S})
+@deftypefnx {Loadable Function} {@var{p} =} ccolamd (@var{S}, @var{knobs})
+@deftypefnx {Loadable Function} {@var{p} =} ccolamd (@var{S}, @var{knobs}, @var{cmember})
+@deftypefnx {Loadable Function} {[@var{p}, @var{stats}] =} ccolamd (@dots{})
+
+Constrained column approximate minimum degree permutation.
+
+@code{@var{p} = ccolamd (@var{S})} returns the column approximate minimum
+degree permutation vector for the sparse matrix @var{S}.  For a non-symmetric
+matrix @var{S}, @code{@var{S}(:, @var{p})} tends to have sparser
+LU@tie{}factors than @var{S}.
+@code{chol (@var{S}(:, @var{p})' * @var{S}(:, @var{p}))} also tends to be
+sparser than @code{chol (@var{S}' * @var{S})}.
+@code{@var{p} = ccolamd (@var{S}, 1)} optimizes the ordering for
+@code{lu (@var{S}(:, @var{p}))}.  The ordering is followed by a column
+elimination tree post-ordering.
+
+@var{knobs} is an optional 1-element to 5-element input vector, with a
+default value of @code{[0 10 10 1 0]} if not present or empty.  Entries not
+present are set to their defaults.
+
+@table @code
+@item @var{knobs}(1)
+if nonzero, the ordering is optimized for @code{lu (S(:, p))}.  It will be a
+poor ordering for @code{chol (@var{S}(:, @var{p})' * @var{S}(:, @var{p}))}.
+This is the most important knob for ccolamd.
+
+@item @var{knobs}(2)
+if @var{S} is m-by-n, rows with more than
+@code{max (16, @var{knobs}(2) * sqrt (n))} entries are ignored.
+
+@item @var{knobs}(3)
+columns with more than
+@code{max (16, @var{knobs}(3) * sqrt (min (@var{m}, @var{n})))} entries are
+ignored and ordered last in the output permutation
+(subject to the cmember constraints).
+
+@item @var{knobs}(4)
+if nonzero, aggressive absorption is performed.
+
+@item @var{knobs}(5)
+if nonzero, statistics and knobs are printed.
+
+@end table
+
+@var{cmember} is an optional vector of length @math{n}.  It defines the
+constraints on the column ordering.  If @code{@var{cmember}(j) = @var{c}},
+then column @var{j} is in constraint set @var{c} (@var{c} must be in the
+range 1 to n).  In the output permutation @var{p}, all columns in set 1
+appear first, followed by all columns in set 2, and so on.
+@code{@var{cmember} = ones (1,n)} if not present or empty.
+@code{ccolamd (@var{S}, [], 1 : n)} returns @code{1 : n}
+
+@code{@var{p} = ccolamd (@var{S})} is about the same as
+@code{@var{p} = colamd (@var{S})}.  @var{knobs} and its default values
+differ.  @code{colamd} always does aggressive absorption, and it finds an
+ordering suitable for both @code{lu (@var{S}(:, @var{p}))} and @code{chol
+(@var{S}(:, @var{p})' * @var{S}(:, @var{p}))}; it cannot optimize its
+ordering for @code{lu (@var{S}(:, @var{p}))} to the extent that
+@code{ccolamd (@var{S}, 1)} can.
+
+@var{stats} is an optional 20-element output vector that provides data
+about the ordering and the validity of the input matrix @var{S}.  Ordering
+statistics are in @code{@var{stats}(1 : 3)}.  @code{@var{stats}(1)} and
+@code{@var{stats}(2)} are the number of dense or empty rows and columns
+ignored by @sc{ccolamd} and @code{@var{stats}(3)} is the number of garbage
+collections performed on the internal data structure used by @sc{ccolamd}
+(roughly of size @code{2.2 * nnz (@var{S}) + 4 * @var{m} + 7 * @var{n}}
+integers).
+
+@code{@var{stats}(4 : 7)} provide information if CCOLAMD was able to
+continue.  The matrix is OK if @code{@var{stats}(4)} is zero, or 1 if
+invalid.  @code{@var{stats}(5)} is the rightmost column index that is
+unsorted or contains duplicate entries, or zero if no such column exists.
+@code{@var{stats}(6)} is the last seen duplicate or out-of-order row
+index in the column index given by @code{@var{stats}(5)}, or zero if no
+such row index exists.  @code{@var{stats}(7)} is the number of duplicate
+or out-of-order row indices.  @code{@var{stats}(8 : 20)} is always zero in
+the current version of @sc{ccolamd} (reserved for future use).
+
+The authors of the code itself are @nospell{S. Larimore, T. Davis}
+(Univ. of Florida) and @nospell{S. Rajamanickam} in collaboration with
+@nospell{J. Bilbert and E. Ng}.  Supported by the National Science Foundation
+@nospell{(DMS-9504974, DMS-9803599, CCR-0203270)}, and a grant from
+@nospell{Sandia} National Lab.
+See @url{http://www.cise.ufl.edu/research/sparse} for
+ccolamd, csymamd, amd, colamd, symamd, and other related orderings.
+@seealso{@ref{XREFcolamd,,colamd}, @ref{XREFcsymamd,,csymamd}}
+@end deftypefn
+
+
+@c colamd libinterp/dldfcn/colamd.cc
+@anchor{XREFcolamd}
+@deftypefn  {Loadable Function} {@var{p} =} colamd (@var{S})
+@deftypefnx {Loadable Function} {@var{p} =} colamd (@var{S}, @var{knobs})
+@deftypefnx {Loadable Function} {[@var{p}, @var{stats}] =} colamd (@var{S})
+@deftypefnx {Loadable Function} {[@var{p}, @var{stats}] =} colamd (@var{S}, @var{knobs})
+
+Compute the column approximate minimum degree permutation.
+
+@code{@var{p} = colamd (@var{S})} returns the column approximate minimum
+degree permutation vector for the sparse matrix @var{S}.  For a
+non-symmetric matrix @var{S}, @code{@var{S}(:,@var{p})} tends to have
+sparser LU@tie{}factors than @var{S}.  The Cholesky@tie{}factorization of
+@code{@var{S}(:,@var{p})' * @var{S}(:,@var{p})} also tends to be sparser
+than that of @code{@var{S}' * @var{S}}.
+
+@var{knobs} is an optional one- to three-element input vector.  If @var{S} is
+m-by-n, then rows with more than @code{max(16,@var{knobs}(1)*sqrt(n))}
+entries are ignored.  Columns with more than
+@code{max (16,@var{knobs}(2)*sqrt(min(m,n)))} entries are removed prior to
+ordering, and ordered last in the output permutation @var{p}.  Only
+completely dense rows or columns are removed if @code{@var{knobs}(1)} and
+@code{@var{knobs}(2)} are < 0, respectively.  If @code{@var{knobs}(3)} is
+nonzero, @var{stats} and @var{knobs} are printed.  The default is
+@code{@var{knobs} = [10 10 0]}.  Note that @var{knobs} differs from earlier
+versions of colamd.
+
+@var{stats} is an optional 20-element output vector that provides data
+about the ordering and the validity of the input matrix @var{S}.  Ordering
+statistics are in @code{@var{stats}(1:3)}.  @code{@var{stats}(1)} and
+@code{@var{stats}(2)} are the number of dense or empty rows and columns
+ignored by @sc{colamd} and @code{@var{stats}(3)} is the number of garbage
+collections performed on the internal data structure used by @sc{colamd}
+(roughly of size @code{2.2 * nnz(@var{S}) + 4 * @var{m} + 7 * @var{n}}
+integers).
+
+Octave built-in functions are intended to generate valid sparse matrices,
+with no duplicate entries, with ascending row indices of the nonzeros
+in each column, with a non-negative number of entries in each column (!)
+and so on.  If a matrix is invalid, then @sc{colamd} may or may not be able
+to continue.  If there are duplicate entries (a row index appears two or
+more times in the same column) or if the row indices in a column are out
+of order, then @sc{colamd} can correct these errors by ignoring the duplicate
+entries and sorting each column of its internal copy of the matrix
+@var{S} (the input matrix @var{S} is not repaired, however).  If a matrix
+is invalid in other ways then @sc{colamd} cannot continue, an error message
+is printed, and no output arguments (@var{p} or @var{stats}) are returned.
+@sc{colamd} is thus a simple way to check a sparse matrix to see if it's
+valid.
+
+@code{@var{stats}(4:7)} provide information if @sc{colamd} was able to
+continue.  The matrix is OK if @code{@var{stats}(4)} is zero, or 1 if
+invalid.  @code{@var{stats}(5)} is the rightmost column index that is
+unsorted or contains duplicate entries, or zero if no such column exists.
+@code{@var{stats}(6)} is the last seen duplicate or out-of-order row
+index in the column index given by @code{@var{stats}(5)}, or zero if no
+such row index exists.  @code{@var{stats}(7)} is the number of duplicate
+or out-of-order row indices.  @code{@var{stats}(8:20)} is always zero in
+the current version of @sc{colamd} (reserved for future use).
+
+The ordering is followed by a column elimination tree post-ordering.
+
+The authors of the code itself are @nospell{Stefan I. Larimore} and
+@nospell{Timothy A. Davis @email{davis@@cise.ufl.edu}}, University of Florida.  The algorithm was developed in collaboration with @nospell{John Gilbert},
+Xerox PARC, and @nospell{Esmond Ng}, Oak Ridge National Laboratory.  (see
+@url{http://www.cise.ufl.edu/research/sparse/colamd})
+@seealso{@ref{XREFcolperm,,colperm}, @ref{XREFsymamd,,symamd}, @ref{XREFccolamd,,ccolamd}}
+@end deftypefn
+
+
+@c colperm scripts/sparse/colperm.m
+@anchor{XREFcolperm}
+@deftypefn {Function File} {@var{p} =} colperm (@var{s})
+Return the column permutations such that the columns of
+@code{@var{s} (:, @var{p})} are ordered in terms of increasing number of
+nonzero elements.
+
+If @var{s} is symmetric, then @var{p} is chosen such that
+@code{@var{s} (@var{p}, @var{p})} orders the rows and columns with
+increasing number of nonzeros elements.
+@end deftypefn
+
+
+@c csymamd libinterp/dldfcn/ccolamd.cc
+@anchor{XREFcsymamd}
+@deftypefn  {Loadable Function} {@var{p} =} csymamd (@var{S})
+@deftypefnx {Loadable Function} {@var{p} =} csymamd (@var{S}, @var{knobs})
+@deftypefnx {Loadable Function} {@var{p} =} csymamd (@var{S}, @var{knobs}, @var{cmember})
+@deftypefnx {Loadable Function} {[@var{p}, @var{stats}] =} csymamd (@dots{})
+
+For a symmetric positive definite matrix @var{S}, return the permutation
+vector @var{p} such that @code{@var{S}(@var{p},@var{p})} tends to have a
+sparser Cholesky@tie{}factor than @var{S}.
+
+Sometimes @code{csymamd} works well for symmetric indefinite matrices too. 
+The matrix @var{S} is assumed to be symmetric; only the strictly lower
+triangular part is referenced.  @var{S} must be square.  The ordering is
+followed by an elimination tree post-ordering.
+
+@var{knobs} is an optional 1-element to 3-element input vector, with a
+default value of @code{[10 1 0]}.  Entries not present are set to their
+defaults.
+
+@table @code
+@item @var{knobs}(1)
+If @var{S} is n-by-n, then rows and columns with more than
+@code{max(16,@var{knobs}(1)*sqrt(n))} entries are ignored, and ordered
+last in the output permutation (subject to the cmember constraints).
+
+@item @var{knobs}(2)
+If nonzero, aggressive absorption is performed.
+
+@item @var{knobs}(3)
+If nonzero, statistics and knobs are printed.
+
+@end table
+
+@var{cmember} is an optional vector of length n. It defines the constraints
+on the ordering.  If @code{@var{cmember}(j) = @var{S}}, then row/column j is
+in constraint set @var{c} (@var{c} must be in the range 1 to n).  In the
+output permutation @var{p}, rows/columns in set 1 appear first, followed
+by all rows/columns in set 2, and so on.  @code{@var{cmember} = ones (1,n)}
+if not present or empty.  @code{csymamd (@var{S},[],1:n)} returns @code{1:n}.
+
+@code{@var{p} = csymamd (@var{S})} is about the same as
+@code{@var{p} = symamd (@var{S})}.  @var{knobs} and its default values
+differ.
+
+@code{@var{stats}(4:7)} provide information if CCOLAMD was able to
+continue.  The matrix is OK if @code{@var{stats}(4)} is zero, or 1 if
+invalid.  @code{@var{stats}(5)} is the rightmost column index that is
+unsorted or contains duplicate entries, or zero if no such column exists.
+@code{@var{stats}(6)} is the last seen duplicate or out-of-order row
+index in the column index given by @code{@var{stats}(5)}, or zero if no
+such row index exists.  @code{@var{stats}(7)} is the number of duplicate
+or out-of-order row indices.  @code{@var{stats}(8:20)} is always zero in
+the current version of @sc{ccolamd} (reserved for future use).
+
+The authors of the code itself are @nospell{S. Larimore, T. Davis}
+(Univ. of Florida) and @nospell{S. Rajamanickam} in collaboration with
+@nospell{J. Bilbert and E. Ng}.  Supported by the National Science Foundation
+@nospell{(DMS-9504974, DMS-9803599, CCR-0203270)}, and a grant from
+@nospell{Sandia} National Lab.
+See @url{http://www.cise.ufl.edu/research/sparse} for
+ccolamd, csymamd, amd, colamd, symamd, and other related orderings.
+@seealso{@ref{XREFsymamd,,symamd}, @ref{XREFccolamd,,ccolamd}}
+@end deftypefn
+
+
+@c dmperm libinterp/dldfcn/dmperm.cc
+@anchor{XREFdmperm}
+@deftypefn  {Loadable Function} {@var{p} =} dmperm (@var{S})
+@deftypefnx {Loadable Function} {[@var{p}, @var{q}, @var{r}, @var{S}] =} dmperm (@var{S})
+
+@cindex @nospell{Dulmage-Mendelsohn} decomposition
+Perform a @nospell{Dulmage-Mendelsohn} permutation of the sparse matrix
+@var{S}.
+
+With a single output argument @code{dmperm} performs the row permutations
+@var{p} such that @code{@var{S}(@var{p},:)} has no zero elements on the
+diagonal.
+
+Called with two or more output arguments, returns the row and column
+permutations, such that @code{@var{S}(@var{p}, @var{q})} is in block
+triangular form.  The values of @var{r} and @var{S} define the boundaries
+of the blocks.  If @var{S} is square then @code{@var{r} == @var{S}}.
+
+The method used is described in: @nospell{A. Pothen & C.-J. Fan.}
+@cite{Computing the Block Triangular Form of a Sparse Matrix}.
+ACM Trans. Math. Software, 16(4):303-324, 1990.
+@seealso{@ref{XREFcolamd,,colamd}, @ref{XREFccolamd,,ccolamd}}
+@end deftypefn
+
+
+@c symamd libinterp/dldfcn/colamd.cc
+@anchor{XREFsymamd}
+@deftypefn  {Loadable Function} {@var{p} =} symamd (@var{S})
+@deftypefnx {Loadable Function} {@var{p} =} symamd (@var{S}, @var{knobs})
+@deftypefnx {Loadable Function} {[@var{p}, @var{stats}] =} symamd (@var{S})
+@deftypefnx {Loadable Function} {[@var{p}, @var{stats}] =} symamd (@var{S}, @var{knobs})
+
+For a symmetric positive definite matrix @var{S}, returns the permutation
+vector p such that @code{@var{S}(@var{p}, @var{p})} tends to have a
+sparser Cholesky@tie{}factor than @var{S}.
+
+Sometimes @code{symamd} works well for symmetric indefinite matrices too. 
+The matrix @var{S} is assumed to be symmetric; only the strictly lower
+triangular part is referenced.  @var{S} must be square.
+
+@var{knobs} is an optional one- to two-element input vector.  If @var{S} is
+n-by-n, then rows and columns with more than
+@code{max (16,@var{knobs}(1)*sqrt(n))} entries are removed prior to ordering,
+and ordered last in the output permutation @var{p}.  No rows/columns are
+removed if @code{@var{knobs}(1) < 0}.  If @code{@var{knobs} (2)} is nonzero,
+@code{stats} and @var{knobs} are printed.  The default is
+@code{@var{knobs} = [10 0]}.  Note that @var{knobs} differs from earlier
+versions of @code{symamd}.
+
+@var{stats} is an optional 20-element output vector that provides data
+about the ordering and the validity of the input matrix @var{S}.  Ordering
+statistics are in @code{@var{stats}(1:3)}.
+@code{@var{stats}(1) = @var{stats}(2)} is the number of dense or empty rows
+and columns ignored by SYMAMD and @code{@var{stats}(3)} is the number of
+garbage collections performed on the internal data structure used by SYMAMD
+(roughly of size @code{8.4 * nnz (tril (@var{S}, -1)) + 9 * @var{n}}
+integers).
+
+Octave built-in functions are intended to generate valid sparse matrices,
+with no duplicate entries, with ascending row indices of the nonzeros
+in each column, with a non-negative number of entries in each column (!)
+and so on.  If a matrix is invalid, then SYMAMD may or may not be able
+to continue.  If there are duplicate entries (a row index appears two or
+more times in the same column) or if the row indices in a column are out
+of order, then SYMAMD can correct these errors by ignoring the duplicate
+entries and sorting each column of its internal copy of the matrix S (the
+input matrix S is not repaired, however).  If a matrix is invalid in
+other ways then SYMAMD cannot continue, an error message is printed, and
+no output arguments (@var{p} or @var{stats}) are returned.  SYMAMD is
+thus a simple way to check a sparse matrix to see if it's valid.
+
+@code{@var{stats}(4:7)} provide information if SYMAMD was able to
+continue.  The matrix is OK if @code{@var{stats} (4)} is zero, or 1
+if invalid.  @code{@var{stats}(5)} is the rightmost column index that
+is unsorted or contains duplicate entries, or zero if no such column
+exists.  @code{@var{stats}(6)} is the last seen duplicate or out-of-order
+row index in the column index given by @code{@var{stats}(5)}, or zero
+if no such row index exists.  @code{@var{stats}(7)} is the number of
+duplicate or out-of-order row indices.  @code{@var{stats}(8:20)} is
+always zero in the current version of SYMAMD (reserved for future use).
+
+The ordering is followed by a column elimination tree post-ordering.
+
+The authors of the code itself are @nospell{Stefan I. Larimore} and
+@nospell{Timothy A. Davis @email{davis@@cise.ufl.edu}}, University of Florida.  The algorithm was developed in collaboration with @nospell{John Gilbert},
+Xerox PARC, and @nospell{Esmond Ng}, Oak Ridge National Laboratory.  (see
+@url{http://www.cise.ufl.edu/research/sparse/colamd})
+@seealso{@ref{XREFcolperm,,colperm}, @ref{XREFcolamd,,colamd}}
+@end deftypefn
+
+
+@c symrcm libinterp/dldfcn/symrcm.cc
+@anchor{XREFsymrcm}
+@deftypefn {Loadable Function} {@var{p} =} symrcm (@var{S})
+Return the symmetric reverse @nospell{Cuthill-McKee} permutation of @var{S}.
+
+@var{p} is a permutation vector such that
+@code{@var{S}(@var{p}, @var{p})} tends to have its diagonal elements closer
+to the diagonal than @var{S}.  This is a good preordering for LU or
+Cholesky@tie{}factorization of matrices that come from ``long, skinny''
+problems.  It works for both symmetric and asymmetric @var{S}.
+
+The algorithm represents a heuristic approach to the NP-complete bandwidth
+minimization problem.  The implementation is based in the descriptions found
+in
+
+@nospell{E. Cuthill, J. McKee}. @cite{Reducing the Bandwidth of Sparse
+Symmetric Matrices}. Proceedings of the 24th ACM National Conference,
+157--172 1969, Brandon Press, New Jersey.
+
+@nospell{A. George, J.W.H. Liu}. @cite{Computer Solution of Large Sparse
+Positive Definite Systems}, Prentice Hall Series in Computational
+Mathematics, ISBN 0-13-165274-5, 1981.
+
+@seealso{@ref{XREFcolperm,,colperm}, @ref{XREFcolamd,,colamd}, @ref{XREFsymamd,,symamd}}
+@end deftypefn
+
+
+@node Sparse Linear Algebra
+@section Linear Algebra on Sparse Matrices
+
+Octave includes a polymorphic solver for sparse matrices, where
+the exact solver used to factorize the matrix, depends on the properties
+of the sparse matrix itself.  Generally, the cost of determining the matrix type
+is small relative to the cost of factorizing the matrix itself, but in any
+case the matrix type is cached once it is calculated, so that it is not
+re-determined each time it is used in a linear equation.
+
+The selection tree for how the linear equation is solve is
+
+@enumerate 1
+@item If the matrix is diagonal, solve directly and goto 8
+
+@item If the matrix is a permuted diagonal, solve directly taking into
+account the permutations.  Goto 8
+
+@item If the matrix is square, banded and if the band density is less
+than that given by @code{spparms ("bandden")} continue, else goto 4.
+
+@enumerate a
+@item If the matrix is tridiagonal and the right-hand side is not sparse
+continue, else goto 3b.
+
+@enumerate
+@item If the matrix is Hermitian, with a positive real diagonal, attempt
+      Cholesky@tie{}factorization using @sc{lapack} xPTSV.
+
+@item If the above failed or the matrix is not Hermitian with a positive
+      real diagonal use Gaussian elimination with pivoting using
+      @sc{lapack} xGTSV, and goto 8.
+@end enumerate
+
+@item If the matrix is Hermitian with a positive real diagonal, attempt
+      Cholesky@tie{}factorization using @sc{lapack} xPBTRF.
+
+@item if the above failed or the matrix is not Hermitian with a positive
+      real diagonal use Gaussian elimination with pivoting using
+      @sc{lapack} xGBTRF, and goto 8.
+@end enumerate
+
+@item If the matrix is upper or lower triangular perform a sparse forward
+or backward substitution, and goto 8
+
+@item If the matrix is an upper triangular matrix with column permutations
+or lower triangular matrix with row permutations, perform a sparse forward
+or backward substitution, and goto 8
+
+@item If the matrix is square, Hermitian with a real positive diagonal, attempt
+sparse Cholesky@tie{}factorization using @sc{cholmod}.
+
+@item If the sparse Cholesky@tie{}factorization failed or the matrix is not
+Hermitian with a real positive diagonal, and the matrix is square, factorize
+using @sc{umfpack}.
+
+@item If the matrix is not square, or any of the previous solvers flags
+a singular or near singular matrix, find a minimum norm solution using
+@sc{cxsparse}@footnote{The @sc{cholmod}, @sc{umfpack} and @sc{cxsparse}
+packages were written by Tim Davis and are available at
+@url{http://www.cise.ufl.edu/research/sparse/}}.
+@end enumerate
+
+The band density is defined as the number of nonzero values in the band
+divided by the total number of values in the full band.  The banded
+matrix solvers can be entirely disabled by using @dfn{spparms} to set
+@code{bandden} to 1 (i.e., @code{spparms ("bandden", 1)}).
+
+The QR@tie{}solver factorizes the problem with a @nospell{Dulmage-Mendelsohn}
+decomposition, to separate the problem into blocks that can be treated
+as over-determined, multiple well determined blocks, and a final
+over-determined block.  For matrices with blocks of strongly connected
+nodes this is a big win as LU@tie{}decomposition can be used for many
+blocks.  It also significantly improves the chance of finding a solution
+to over-determined problems rather than just returning a vector of
+@dfn{NaN}'s.
+
+All of the solvers above, can calculate an estimate of the condition
+number.  This can be used to detect numerical stability problems in the
+solution and force a minimum norm solution to be used.  However, for
+narrow banded, triangular or diagonal matrices, the cost of
+calculating the condition number is significant, and can in fact
+exceed the cost of factoring the matrix.  Therefore the condition
+number is not calculated in these cases, and Octave relies on simpler
+techniques to detect singular matrices or the underlying @sc{lapack} code in
+the case of banded matrices.
+
+The user can force the type of the matrix with the @code{matrix_type}
+function.  This overcomes the cost of discovering the type of the matrix.
+However, it should be noted that identifying the type of the matrix incorrectly
+will lead to unpredictable results, and so @code{matrix_type} should be
+used with care.
+
+@c normest scripts/linear-algebra/normest.m
+@anchor{XREFnormest}
+@deftypefn  {Function File} {@var{n} =} normest (@var{A})
+@deftypefnx {Function File} {@var{n} =} normest (@var{A}, @var{tol})
+@deftypefnx {Function File} {[@var{n}, @var{c}] =} normest (@dots{})
+Estimate the 2-norm of the matrix @var{A} using a power series analysis.
+
+This is typically used for large matrices, where the cost of calculating
+@code{norm (@var{A})} is prohibitive and an approximation to the 2-norm is
+acceptable.
+
+@var{tol} is the tolerance to which the 2-norm is calculated.  By default
+@var{tol} is 1e-6.
+
+The optional output @var{c} returns the number of iterations needed for
+@code{normest} to converge.
+@end deftypefn
+
+
+@c onenormest scripts/linear-algebra/onenormest.m
+@anchor{XREFonenormest}
+@deftypefn  {Function File} {[@var{est}, @var{v}, @var{w}, @var{iter}] =} onenormest (@var{A}, @var{t})
+@deftypefnx {Function File} {[@var{est}, @var{v}, @var{w}, @var{iter}] =} onenormest (@var{apply}, @var{apply_t}, @var{n}, @var{t})
+
+Apply @nospell{Higham and Tisseur's} randomized block 1-norm estimator to
+matrix @var{A} using @var{t} test vectors.
+
+If @var{t} exceeds 5, then only 5 test vectors are used.
+
+If the matrix is not explicit, e.g., when estimating the norm of
+@code{inv (@var{A})} given an LU@tie{}factorization, @code{onenormest}
+applies @var{A} and its conjugate transpose through a pair of functions
+@var{apply} and @var{apply_t}, respectively, to a dense matrix of size
+@var{n} by @var{t}.  The implicit version requires an explicit dimension
+@var{n}.
+
+Returns the norm estimate @var{est}, two vectors @var{v} and @var{w} related
+by norm @code{(@var{w}, 1) = @var{est} * norm (@var{v}, 1)}, and the number
+of iterations @var{iter}.  The number of iterations is limited to 10 and is
+at least 2.
+
+References:
+
+@itemize
+@item
+@nospell{N.J. Higham and F. Tisseur}, @cite{A Block Algorithm
+for Matrix 1-Norm Estimation, with an Application to 1-Norm
+Pseudospectra}. SIMAX vol 21, no 4, pp 1185-1201.
+@url{http://dx.doi.org/10.1137/S0895479899356080}
+
+@item
+@nospell{N.J. Higham and F. Tisseur}, @cite{A Block Algorithm
+for Matrix 1-Norm Estimation, with an Application to 1-Norm
+Pseudospectra}. @url{http://citeseer.ist.psu.edu/223007.html}
+@end itemize
+
+@seealso{@ref{XREFcondest,,condest}, @ref{XREFnorm,,norm}, @ref{XREFcond,,cond}}
+@end deftypefn
+
+
+@c condest scripts/linear-algebra/condest.m
+@anchor{XREFcondest}
+@deftypefn  {Function File} {} condest (@var{A})
+@deftypefnx {Function File} {} condest (@var{A}, @var{t})
+@deftypefnx {Function File} {[@var{est}, @var{v}] =} condest (@dots{})
+@deftypefnx {Function File} {[@var{est}, @var{v}] =} condest (@var{A}, @var{solve}, @var{solve_t}, @var{t})
+@deftypefnx {Function File} {[@var{est}, @var{v}] =} condest (@var{apply}, @var{apply_t}, @var{solve}, @var{solve_t}, @var{n}, @var{t})
+
+Estimate the 1-norm condition number of a matrix @var{A} using @var{t} test
+vectors using a randomized 1-norm estimator.
+
+If @var{t} exceeds 5, then only 5 test vectors are used.
+
+If the matrix is not explicit, e.g., when estimating the condition
+number of @var{A} given an LU@tie{}factorization, @code{condest} uses the
+following functions:
+
+@table @var
+@item apply
+@code{A*x} for a matrix @code{x} of size @var{n} by @var{t}.
+
+@item apply_t
+@code{A'*x} for a matrix @code{x} of size @var{n} by @var{t}.
+
+@item solve
+@code{A \ b} for a matrix @code{b} of size @var{n} by @var{t}.
+
+@item solve_t
+@code{A' \ b} for a matrix @code{b} of size @var{n} by @var{t}.
+@end table
+
+The implicit version requires an explicit dimension @var{n}.
+
+@code{condest} uses a randomized algorithm to approximate the 1-norms.
+
+@code{condest} returns the 1-norm condition estimate @var{est} and a vector
+@var{v} satisfying @code{norm (A*v, 1) == norm (A, 1) * norm
+(@var{v}, 1) / @var{est}}.  When @var{est} is large, @var{v} is an
+approximate null vector.
+
+References:
+
+@itemize
+@item
+@nospell{N.J. Higham and F. Tisseur}, @cite{A Block Algorithm
+for Matrix 1-Norm Estimation, with an Application to 1-Norm
+Pseudospectra}. SIMAX vol 21, no 4, pp 1185-1201.
+@url{http://dx.doi.org/10.1137/S0895479899356080}
+
+@item
+@nospell{N.J. Higham and F. Tisseur}, @cite{A Block Algorithm
+for Matrix 1-Norm Estimation, with an Application to 1-Norm
+Pseudospectra}. @url{http://citeseer.ist.psu.edu/223007.html}
+@end itemize
+
+@seealso{@ref{XREFcond,,cond}, @ref{XREFnorm,,norm}, @ref{XREFonenormest,,onenormest}}
+@end deftypefn
+
+
+@c spparms libinterp/corefcn/spparms.cc
+@anchor{XREFspparms}
+@deftypefn  {Built-in Function} { } spparms ()
+@deftypefnx {Built-in Function} {@var{vals} =} spparms ()
+@deftypefnx {Built-in Function} {[@var{keys}, @var{vals}] =} spparms ()
+@deftypefnx {Built-in Function} {@var{val} =} spparms (@var{key})
+@deftypefnx {Built-in Function} { } spparms (@var{vals})
+@deftypefnx {Built-in Function} { } spparms ("default")
+@deftypefnx {Built-in Function} { } spparms ("tight")
+@deftypefnx {Built-in Function} { } spparms (@var{key}, @var{val})
+Query or set the parameters used by the sparse solvers and factorization
+functions.
+
+The first four calls above get information about the current settings, while
+the others change the current settings.  The parameters are stored as pairs
+of keys and values, where the values are all floats and the keys are one of
+the following strings:
+
+@table @samp
+@item spumoni
+Printing level of debugging information of the solvers (default 0)
+
+@item ths_rel
+Included for compatibility.  Not used.  (default 1)
+
+@item ths_abs
+Included for compatibility.  Not used.  (default 1)
+
+@item exact_d
+Included for compatibility.  Not used.  (default 0)
+
+@item supernd
+Included for compatibility.  Not used.  (default 3)
+
+@item rreduce
+Included for compatibility.  Not used.  (default 3)
+
+@item wh_frac
+Included for compatibility.  Not used.  (default 0.5)
+
+@item autommd
+Flag whether the LU/QR and the '\' and '/' operators will automatically
+use the sparsity preserving mmd functions (default 1)
+
+@item autoamd
+Flag whether the LU and the '\' and '/' operators will automatically
+use the sparsity preserving amd functions (default 1)
+
+@item piv_tol
+The pivot tolerance of the @sc{umfpack} solvers (default 0.1)
+
+@item sym_tol
+The pivot tolerance of the @sc{umfpack} symmetric solvers (default 0.001)
+
+@item bandden
+The density of nonzero elements in a banded matrix before it is treated
+by the @sc{lapack} banded solvers (default 0.5)
+
+@item umfpack
+Flag whether the @sc{umfpack} or mmd solvers are used for the LU, '\' and
+'/' operations (default 1)
+@end table
+
+The value of individual keys can be set with
+@code{spparms (@var{key}, @var{val})}.
+The default values can be restored with the special keyword
+@qcode{"default"}.  The special keyword @qcode{"tight"} can be used to
+set the mmd solvers to attempt a sparser solution at the potential cost of
+longer running time.
+@seealso{@ref{XREFchol,,chol}, @ref{XREFcolamd,,colamd}, @ref{XREFlu,,lu}, @ref{XREFqr,,qr}, @ref{XREFsymamd,,symamd}}
+@end deftypefn
+
+
+@c sprank libinterp/dldfcn/dmperm.cc
+@anchor{XREFsprank}
+@deftypefn {Loadable Function} {@var{p} =} sprank (@var{S})
+@cindex structural rank
+
+Calculate the structural rank of the sparse matrix @var{S}.
+
+Note that only the structure of the matrix is used in this calculation based
+on a @nospell{Dulmage-Mendelsohn} permutation to block triangular form.  As
+such the numerical rank of the matrix @var{S} is bounded by
+@code{sprank (@var{S}) >= rank (@var{S})}.  Ignoring floating point errors
+@code{sprank (@var{S}) == rank (@var{S})}.
+@seealso{@ref{XREFdmperm,,dmperm}}
+@end deftypefn
+
+
+@c symbfact libinterp/dldfcn/symbfact.cc
+@anchor{XREFsymbfact}
+@deftypefn  {Loadable Function} {[@var{count}, @var{h}, @var{parent}, @var{post}, @var{r}] =} symbfact (@var{S})
+@deftypefnx {Loadable Function} {[@dots{}] =} symbfact (@var{S}, @var{typ})
+@deftypefnx {Loadable Function} {[@dots{}] =} symbfact (@var{S}, @var{typ}, @var{mode})
+
+Perform a symbolic factorization analysis on the sparse matrix @var{S}.
+
+The input variables are
+
+@table @var
+@item S
+@var{S} is a complex or real sparse matrix.
+
+@item typ
+Is the type of the factorization and can be one of
+
+@table @samp
+@item sym
+Factorize @var{S}.  This is the default.
+
+@item col
+Factorize @code{@var{S}' * @var{S}}.
+
+@item row
+Factorize @tcode{@var{S} * @var{S}'}.
+
+@item lo
+Factorize @tcode{@var{S}'}
+@end table
+
+@item mode
+The default is to return the Cholesky@tie{}factorization for @var{r}, and if
+@var{mode} is @qcode{'L'}, the conjugate transpose of the
+Cholesky@tie{}factorization is returned.  The conjugate transpose version is
+faster and uses less memory, but returns the same values for @var{count},
+@var{h}, @var{parent} and @var{post} outputs.
+@end table
+
+The output variables are
+
+@table @var
+@item count
+The row counts of the Cholesky@tie{}factorization as determined by @var{typ}.
+
+@item h
+The height of the elimination tree.
+
+@item parent
+The elimination tree itself.
+
+@item post
+A sparse boolean matrix whose structure is that of the Cholesky
+factorization as determined by @var{typ}.
+@end table
+@end deftypefn
+
+
+For non square matrices, the user can also utilize the @code{spaugment}
+function to find a least squares solution to a linear equation.
+
+@c spaugment scripts/sparse/spaugment.m
+@anchor{XREFspaugment}
+@deftypefn {Function File} {@var{s} =} spaugment (@var{A}, @var{c})
+Create the augmented matrix of @var{A}.
+
+This is given by
+
+@example
+@group
+[@var{c} * eye(@var{m}, @var{m}), @var{A};
+            @var{A}', zeros(@var{n}, @var{n})]
+@end group
+@end example
+
+@noindent
+This is related to the least squares solution of
+@code{@var{A} \ @var{b}}, by
+
+@example
+@group
+@var{s} * [ @var{r} / @var{c}; x] = [ @var{b}, zeros(@var{n}, columns(@var{b})) ]
+@end group
+@end example
+
+@noindent
+where @var{r} is the residual error
+
+@example
+@var{r} = @var{b} - @var{A} * @var{x}
+@end example
+
+As the matrix @var{s} is symmetric indefinite it can be factorized with
+@code{lu}, and the minimum norm solution can therefore be found without the
+need for a @code{qr} factorization.  As the residual error will be
+@code{zeros (@var{m}, @var{m})} for underdetermined problems, and example
+can be
+
+@example
+@group
+m = 11; n = 10; mn = max (m, n);
+A = spdiags ([ones(mn,1), 10*ones(mn,1), -ones(mn,1)],
+             [-1, 0, 1], m, n);
+x0 = A \ ones (m,1);
+s = spaugment (A);
+[L, U, P, Q] = lu (s);
+x1 = Q * (U \ (L \ (P  * [ones(m,1); zeros(n,1)])));
+x1 = x1(end - n + 1 : end);
+@end group
+@end example
+
+To find the solution of an overdetermined problem needs an estimate of the
+residual error @var{r} and so it is more complex to formulate a minimum norm
+solution using the @code{spaugment} function.
+
+In general the left division operator is more stable and faster than using
+the @code{spaugment} function.
+@seealso{@ref{XREFmldivide,,mldivide}}
+@end deftypefn
+
+
+Finally, the function @code{eigs} can be used to calculate a limited
+number of eigenvalues and eigenvectors based on a selection criteria
+and likewise for @code{svds} which calculates a limited number of
+singular values and vectors.
+
+@c eigs scripts/sparse/eigs.m
+@anchor{XREFeigs}
+@deftypefn  {Function File} {@var{d} =} eigs (@var{A})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{A}, @var{k})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{A}, @var{k}, @var{sigma})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{A}, @var{k}, @var{sigma}, @var{opts})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{A}, @var{B})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{A}, @var{B}, @var{k})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{A}, @var{B}, @var{k}, @var{sigma})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{A}, @var{B}, @var{k}, @var{sigma}, @var{opts})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{af}, @var{n})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{af}, @var{n}, @var{B})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{af}, @var{n}, @var{k})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{af}, @var{n}, @var{B}, @var{k})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{af}, @var{n}, @var{k}, @var{sigma})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{af}, @var{n}, @var{B}, @var{k}, @var{sigma})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{af}, @var{n}, @var{k}, @var{sigma}, @var{opts})
+@deftypefnx {Function File} {@var{d} =} eigs (@var{af}, @var{n}, @var{B}, @var{k}, @var{sigma}, @var{opts})
+@deftypefnx {Function File} {[@var{V}, @var{d}] =} eigs (@var{A}, @dots{})
+@deftypefnx {Function File} {[@var{V}, @var{d}] =} eigs (@var{af}, @var{n}, @dots{})
+@deftypefnx {Function File} {[@var{V}, @var{d}, @var{flag}] =} eigs (@var{A}, @dots{})
+@deftypefnx {Function File} {[@var{V}, @var{d}, @var{flag}] =} eigs (@var{af}, @var{n}, @dots{})
+Calculate a limited number of eigenvalues and eigenvectors of @var{A},
+based on a selection criteria.
+
+The number of eigenvalues and eigenvectors to calculate is given by
+@var{k} and defaults to 6.
+
+By default, @code{eigs} solve the equation
+@tex
+$A \nu = \lambda \nu$,
+@end tex
+@ifinfo
+@code{A * v = lambda * v},
+@end ifinfo
+where
+@tex
+$\lambda$ is a scalar representing one of the eigenvalues, and $\nu$
+@end tex
+@ifinfo
+@code{lambda} is a scalar representing one of the eigenvalues, and @code{v}
+@end ifinfo
+is the corresponding eigenvector.  If given the positive definite matrix
+@var{B} then @code{eigs} solves the general eigenvalue equation
+@tex
+$A \nu = \lambda B \nu$.
+@end tex
+@ifinfo
+@code{A * v = lambda * B * v}.
+@end ifinfo
+
+The argument @var{sigma} determines which eigenvalues are returned.
+@var{sigma} can be either a scalar or a string.  When @var{sigma} is a
+scalar, the @var{k} eigenvalues closest to @var{sigma} are returned.  If
+@var{sigma} is a string, it must have one of the following values.
+
+@table @asis
+@item @qcode{"lm"}
+Largest Magnitude (default).
+
+@item @qcode{"sm"}
+Smallest Magnitude.
+
+@item @qcode{"la"}
+Largest Algebraic (valid only for real symmetric problems).
+
+@item @qcode{"sa"}
+Smallest Algebraic (valid only for real symmetric problems).
+
+@item @qcode{"be"}
+Both Ends, with one more from the high-end if @var{k} is odd (valid only for
+real symmetric problems).
+
+@item @qcode{"lr"}
+Largest Real part (valid only for complex or unsymmetric problems).
+
+@item @qcode{"sr"}
+Smallest Real part (valid only for complex or unsymmetric problems).
+
+@item @qcode{"li"}
+Largest Imaginary part (valid only for complex or unsymmetric problems).
+
+@item @qcode{"si"}
+Smallest Imaginary part (valid only for complex or unsymmetric problems).
+@end table
+
+If @var{opts} is given, it is a structure defining possible options that
+@code{eigs} should use.  The fields of the @var{opts} structure are:
+
+@table @code
+@item issym
+If @var{af} is given, then flags whether the function @var{af} defines a
+symmetric problem.  It is ignored if @var{A} is given.  The default is false.
+
+@item isreal
+If @var{af} is given, then flags whether the function @var{af} defines a
+real problem.  It is ignored if @var{A} is given.  The default is true.
+
+@item tol
+Defines the required convergence tolerance, calculated as
+@code{tol * norm (A)}.  The default is @code{eps}.
+
+@item maxit
+The maximum number of iterations.  The default is 300.
+
+@item p
+The number of Lanzcos basis vectors to use.  More vectors will result in
+faster convergence, but a greater use of memory.  The optimal value of
+@code{p} is problem dependent and should be in the range @var{k} to @var{n}.
+The default value is @code{2 * @var{k}}.
+
+@item v0
+The starting vector for the algorithm.  An initial vector close to the
+final vector will speed up convergence.  The default is for @sc{arpack}
+to randomly generate a starting vector.  If specified, @code{v0} must be
+an @var{n}-by-1 vector where @code{@var{n} = rows (@var{A})}
+
+@item disp
+The level of diagnostic printout (0|1|2).  If @code{disp} is 0 then
+diagnostics are disabled.  The default value is 0.
+
+@item cholB
+Flag if @code{chol (@var{B})} is passed rather than @var{B}.  The default is
+false.
+
+@item permB
+The permutation vector of the Cholesky@tie{}factorization of @var{B} if
+@code{cholB} is true.  That is @code{chol (@var{B}(permB, permB))}.  The
+default is @code{1:@var{n}}.
+
+@end table
+
+It is also possible to represent @var{A} by a function denoted @var{af}.
+@var{af} must be followed by a scalar argument @var{n} defining the length
+of the vector argument accepted by @var{af}.  @var{af} can be a function
+handle, an inline function, or a string.  When @var{af} is a string it
+holds the name of the function to use.
+
+@var{af} is a function of the form @code{y = af (x)} where the required
+return value of @var{af} is determined by the value of @var{sigma}.  The
+four possible forms are
+
+@table @code
+@item A * x
+if @var{sigma} is not given or is a string other than "sm".
+
+@item A \ x
+if @var{sigma} is 0 or "sm".
+
+@item (A - sigma * I) \ x
+for the standard eigenvalue problem, where @code{I} is the identity matrix
+of the same size as @var{A}.
+
+@item (A - sigma * B) \ x
+for the general eigenvalue problem.
+@end table
+
+The return arguments of @code{eigs} depend on the number of return arguments
+requested.  With a single return argument, a vector @var{d} of length @var{k}
+is returned containing the @var{k} eigenvalues that have been found.  With
+two return arguments, @var{V} is a @var{n}-by-@var{k} matrix whose columns
+are the @var{k} eigenvectors corresponding to the returned eigenvalues.  The
+eigenvalues themselves are returned in @var{d} in the form of a
+@var{n}-by-@var{k} matrix, where the elements on the diagonal are the
+eigenvalues.
+
+Given a third return argument @var{flag}, @code{eigs} returns the status
+of the convergence.  If @var{flag} is 0 then all eigenvalues have converged.
+Any other value indicates a failure to converge.
+
+This function is based on the @sc{arpack} package, written by
+@nospell{R. Lehoucq, K. Maschhoff, D. Sorensen, and C. Yang}.  For more
+information see @url{http://www.caam.rice.edu/software/ARPACK/}.
+
+@seealso{@ref{XREFeig,,eig}, @ref{XREFsvds,,svds}}
+@end deftypefn
+
+
+@c svds scripts/sparse/svds.m
+@anchor{XREFsvds}
+@deftypefn  {Function File} {@var{s} =} svds (@var{A})
+@deftypefnx {Function File} {@var{s} =} svds (@var{A}, @var{k})
+@deftypefnx {Function File} {@var{s} =} svds (@var{A}, @var{k}, @var{sigma})
+@deftypefnx {Function File} {@var{s} =} svds (@var{A}, @var{k}, @var{sigma}, @var{opts})
+@deftypefnx {Function File} {[@var{u}, @var{s}, @var{v}] =} svds (@dots{})
+@deftypefnx {Function File} {[@var{u}, @var{s}, @var{v}, @var{flag}] =} svds (@dots{})
+
+Find a few singular values of the matrix @var{A}.
+
+The singular values are calculated using
+
+@example
+@group
+[@var{m}, @var{n}] = size (@var{A});
+@var{s} = eigs ([sparse(@var{m}, @var{m}), @var{A};
+                     @var{A}', sparse(@var{n}, @var{n})])
+@end group
+@end example
+
+The eigenvalues returned by @code{eigs} correspond to the singular values
+of @var{A}.  The number of singular values to calculate is given by @var{k}
+and defaults to 6.
+
+The argument @var{sigma} specifies which singular values to find.  When
+@var{sigma} is the string @qcode{'L'}, the default, the largest singular
+values of @var{A} are found.  Otherwise, @var{sigma} must be a real scalar
+and the singular values closest to @var{sigma} are found.  As a corollary,
+@code{@var{sigma} = 0} finds the smallest singular values.  Note that for
+relatively small values of @var{sigma}, there is a chance that the
+requested number of singular values will not be found.  In that case
+@var{sigma} should be increased.
+
+@var{opts} is a structure defining options that @code{svds} will pass
+to @code{eigs}.  The possible fields of this structure are documented in
+@code{eigs}.  By default, @code{svds} sets the following three fields:
+
+@table @code
+@item tol
+The required convergence tolerance for the singular values.  The default
+value is 1e-10.  @code{eigs} is passed @code{@var{tol} / sqrt(2)}.
+
+@item maxit
+The maximum number of iterations.  The default is 300.
+
+@item disp
+The level of diagnostic printout (0|1|2).  If @code{disp} is 0 then
+diagnostics are disabled.  The default value is 0.
+@end table
+
+If more than one output is requested then @code{svds} will return an
+approximation of the singular value decomposition of @var{A}
+
+@example
+@var{A}_approx = @var{u}*@var{s}*@var{v}'
+@end example
+
+@noindent
+where @var{A}_approx is a matrix of size @var{A} but only rank @var{k}.
+
+@var{flag} returns 0 if the algorithm has succesfully converged, and 1
+otherwise.  The test for convergence is
+
+@example
+@group
+norm (@var{A}*@var{v} - @var{u}*@var{s}, 1) <= @var{tol} * norm (@var{A}, 1)
+@end group
+@end example
+
+@code{svds} is best for finding only a few singular values from a large
+sparse matrix.  Otherwise, @code{svd (full (@var{A}))} will likely be more
+efficient.
+@end deftypefn
+@seealso{@ref{XREFsvd,,svd}, @ref{XREFeigs,,eigs}}
+
+
+@node Iterative Techniques
+@section Iterative Techniques Applied to Sparse Matrices
+
+The left division @code{\} and right division @code{/} operators,
+discussed in the previous section, use direct solvers to resolve a
+linear equation of the form @code{@var{x} = @var{A} \ @var{b}} or
+@code{@var{x} = @var{b} / @var{A}}.  Octave also includes a number of
+functions to solve sparse linear equations using iterative techniques.
+
+@c pcg scripts/sparse/pcg.m
+@anchor{XREFpcg}
+@deftypefn  {Function File} {@var{x} =} pcg (@var{A}, @var{b}, @var{tol}, @var{maxit}, @var{m1}, @var{m2}, @var{x0}, @dots{})
+@deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}, @var{eigest}] =} pcg (@dots{})
+
+Solve the linear system of equations @w{@code{@var{A} * @var{x} = @var{b}}}
+by means of the Preconditioned Conjugate Gradient iterative method.
+
+The input arguments are
+
+@itemize
+@item
+@var{A} can be either a square (preferably sparse) matrix or a function
+handle, inline function or string containing the name of a function which
+computes @w{@code{@var{A} * @var{x}}}.  In principle, @var{A} should be
+symmetric and positive definite; if @code{pcg} finds @var{A} not to be
+positive definite, a warning is printed and the @var{flag} output will be
+set.
+
+@item
+@var{b} is the right-hand side vector.
+
+@item
+@var{tol} is the required relative tolerance for the residual error,
+@w{@code{@var{b} - @var{A} * @var{x}}}.  The iteration stops if
+@w{@code{norm (@var{b} - @var{A} * @var{x})} @leq{}
+@w{@var{tol} * norm (@var{b})}}.
+If @var{tol} is omitted or empty then a tolerance of 1e-6 is used.
+
+@item
+@var{maxit} is the maximum allowable number of iterations; if @var{maxit}
+is omitted or empty then a value of 20 is used.
+
+@item
+@var{m} = @var{m1} * @var{m2} is the (left) preconditioning matrix, so that
+the iteration is (theoretically) equivalent to solving by @code{pcg}
+@w{@code{@var{P} * @var{x} = @var{m} \ @var{b}}}, with
+@w{@code{@var{P} = @var{m} \ @var{A}}}.
+Note that a proper choice of the preconditioner may dramatically improve
+the overall performance of the method.  Instead of matrices @var{m1} and
+@var{m2}, the user may pass two functions which return the results of
+applying the inverse of @var{m1} and @var{m2} to a vector (usually this is
+the preferred way of using the preconditioner).  If @var{m1} is omitted or
+empty @code{[]} then no preconditioning is applied.  If @var{m2} is
+omitted, @var{m} = @var{m1} will be used as a preconditioner.
+
+@item
+@var{x0} is the initial guess.  If @var{x0} is omitted or empty then the
+function sets @var{x0} to a zero vector by default.
+@end itemize
+
+The arguments which follow @var{x0} are treated as parameters, and passed in
+a proper way to any of the functions (@var{A} or @var{m}) which are passed
+to @code{pcg}.  See the examples below for further details.  The output
+arguments are
+
+@itemize
+@item
+@var{x} is the computed approximation to the solution of
+@w{@code{@var{A} * @var{x} = @var{b}}}.
+
+@item
+@var{flag} reports on the convergence.  A value of 0 means the solution
+converged and the tolerance criterion given by @var{tol} is satisfied.
+A value of 1 means that the @var{maxit} limit for the iteration count was
+reached.  A value of 3 indicates that the (preconditioned) matrix was found
+not to be positive definite.
+
+@item
+@var{relres} is the ratio of the final residual to its initial value,
+measured in the Euclidean norm.
+
+@item
+@var{iter} is the actual number of iterations performed.
+
+@item
+@var{resvec} describes the convergence history of the method.
+@code{@var{resvec}(i,1)} is the Euclidean norm of the residual, and
+@code{@var{resvec}(i,2)} is the preconditioned residual norm, after the
+(@var{i}-1)-th iteration, @code{@var{i} = 1, 2, @dots{}, @var{iter}+1}.
+The preconditioned residual norm is defined as
+@code{norm (@var{r}) ^ 2 = @var{r}' * (@var{m} \ @var{r})} where
+@code{@var{r} = @var{b} - @var{A} * @var{x}}, see also the
+description of @var{m}.  If @var{eigest} is not required, only
+@code{@var{resvec}(:,1)} is returned.
+
+@item
+@var{eigest} returns the estimate for the smallest @code{@var{eigest}(1)}
+and largest @code{@var{eigest}(2)} eigenvalues of the preconditioned matrix
+@w{@code{@var{P} = @var{m} \ @var{A}}}.  In particular, if no
+preconditioning is used, the estimates for the extreme eigenvalues of
+@var{A} are returned.  @code{@var{eigest}(1)} is an overestimate and
+@code{@var{eigest}(2)} is an underestimate, so that
+@code{@var{eigest}(2) / @var{eigest}(1)} is a lower bound for
+@code{cond (@var{P}, 2)}, which nevertheless in the limit should
+theoretically be equal to the actual value of the condition number.
+The method which computes @var{eigest} works only for symmetric positive
+definite @var{A} and @var{m}, and the user is responsible for verifying this
+assumption.
+@end itemize
+
+Let us consider a trivial problem with a diagonal matrix (we exploit the
+sparsity of A)
+
+@example
+@group
+n = 10;
+A = diag (sparse (1:n));
+b = rand (n, 1);
+[l, u, p] = ilu (A, struct ("droptol", 1.e-3));
+@end group
+@end example
+
+@sc{Example 1:} Simplest use of @code{pcg}
+
+@example
+x = pcg (A, b)
+@end example
+
+@sc{Example 2:} @code{pcg} with a function which computes
+@code{@var{A} * @var{x}}
+
+@example
+@group
+function y = apply_a (x)
+  y = [1:N]' .* x;
+endfunction
+
+x = pcg ("apply_a", b)
+@end group
+@end example
+
+@sc{Example 3:} @code{pcg} with a preconditioner: @var{l} * @var{u}
+
+@example
+x = pcg (A, b, 1.e-6, 500, l*u)
+@end example
+
+@sc{Example 4:} @code{pcg} with a preconditioner: @var{l} * @var{u}.
+Faster than @sc{Example 3} since lower and upper triangular matrices are
+easier to invert
+
+@example
+x = pcg (A, b, 1.e-6, 500, l, u)
+@end example
+
+@sc{Example 5:} Preconditioned iteration, with full diagnostics.  The
+preconditioner (quite strange, because even the original matrix @var{A} is
+trivial) is defined as a function
+
+@example
+@group
+function y = apply_m (x)
+  k = floor (length (x) - 2);
+  y = x;
+  y(1:k) = x(1:k) ./ [1:k]';
+endfunction
+
+[x, flag, relres, iter, resvec, eigest] = ...
+                   pcg (A, b, [], [], "apply_m");
+semilogy (1:iter+1, resvec);
+@end group
+@end example
+
+@sc{Example 6:} Finally, a preconditioner which depends on a parameter
+@var{k}.
+
+@example
+@group
+function y = apply_M (x, varargin)
+  K = varargin@{1@};
+  y = x;
+  y(1:K) = x(1:K) ./ [1:K]';
+endfunction
+
+[x, flag, relres, iter, resvec, eigest] = ...
+     pcg (A, b, [], [], "apply_m", [], [], 3)
+@end group
+@end example
+
+References:
+
+@enumerate
+@item
+C.T. Kelley, @cite{Iterative Methods for Linear and Nonlinear Equations},
+SIAM, 1995. (the base PCG algorithm)
+
+@item
+@nospell{Y. Saad}, @cite{Iterative Methods for Sparse Linear Systems},
+@nospell{PWS} 1996. (condition number estimate from PCG)
+Revised version of this book is available online at
+@url{http://www-users.cs.umn.edu/~saad/books.html}
+@end enumerate
+
+@seealso{@ref{XREFsparse,,sparse}, @ref{XREFpcr,,pcr}}
+@end deftypefn
+
+
+@c pcr scripts/sparse/pcr.m
+@anchor{XREFpcr}
+@deftypefn  {Function File} {@var{x} =} pcr (@var{A}, @var{b}, @var{tol}, @var{maxit}, @var{m}, @var{x0}, @dots{})
+@deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} pcr (@dots{})
+
+Solve the linear system of equations @code{@var{A} * @var{x} = @var{b}} by
+means of the Preconditioned Conjugate Residuals iterative method.
+
+The input arguments are
+
+@itemize
+@item
+@var{A} can be either a square (preferably sparse) matrix or a function
+handle, inline function or string containing the name of a function which
+computes @code{@var{A} * @var{x}}.  In principle @var{A} should be
+symmetric and non-singular; if @code{pcr} finds @var{A} to be numerically
+singular, you will get a warning message and the @var{flag} output
+parameter will be set.
+
+@item
+@var{b} is the right hand side vector.
+
+@item
+@var{tol} is the required relative tolerance for the residual error,
+@code{@var{b} - @var{A} * @var{x}}.  The iteration stops if
+@code{norm (@var{b} - @var{A} * @var{x}) <=
+@var{tol} * norm (@var{b} - @var{A} * @var{x0})}.
+If @var{tol} is empty or is omitted, the function sets
+@code{@var{tol} = 1e-6} by default.
+
+@item
+@var{maxit} is the maximum allowable number of iterations; if @code{[]} is
+supplied for @code{maxit}, or @code{pcr} has less arguments, a default
+value equal to 20 is used.
+
+@item
+@var{m} is the (left) preconditioning matrix, so that the iteration is
+(theoretically) equivalent to solving by
+@code{pcr} @code{@var{P} * @var{x} = @var{m} \ @var{b}}, with
+@code{@var{P} = @var{m} \ @var{A}}.  Note that a proper choice of the
+preconditioner may dramatically improve the overall performance of the
+method.  Instead of matrix @var{m}, the user may pass a function which
+returns the results of applying the inverse of @var{m} to a vector
+(usually this is the preferred way of using the preconditioner).  If
+@code{[]} is supplied for @var{m}, or @var{m} is omitted, no
+preconditioning is applied.
+
+@item
+@var{x0} is the initial guess.  If @var{x0} is empty or omitted, the
+function sets @var{x0} to a zero vector by default.
+@end itemize
+
+The arguments which follow @var{x0} are treated as parameters, and passed
+in a proper way to any of the functions (@var{A} or @var{m}) which are
+passed to @code{pcr}.  See the examples below for further details.
+
+The output arguments are
+
+@itemize
+@item
+@var{x} is the computed approximation to the solution of
+@code{@var{A} * @var{x} = @var{b}}.
+
+@item
+@var{flag} reports on the convergence.  @code{@var{flag} = 0} means the
+solution converged and the tolerance criterion given by @var{tol} is
+satisfied.  @code{@var{flag} = 1} means that the @var{maxit} limit for the
+iteration count was reached.  @code{@var{flag} = 3} reports a @code{pcr}
+breakdown, see [1] for details.
+
+@item
+@var{relres} is the ratio of the final residual to its initial value,
+measured in the Euclidean norm.
+
+@item
+@var{iter} is the actual number of iterations performed.
+
+@item
+@var{resvec} describes the convergence history of the method, so that
+@code{@var{resvec} (i)} contains the Euclidean norms of the residual after
+the (@var{i}-1)-th iteration, @code{@var{i} = 1,2, @dots{}, @var{iter}+1}.
+@end itemize
+
+Let us consider a trivial problem with a diagonal matrix (we exploit the
+sparsity of A)
+
+@example
+@group
+n = 10;
+A = sparse (diag (1:n));
+b = rand (N, 1);
+@end group
+@end example
+
+@sc{Example 1:} Simplest use of @code{pcr}
+
+@example
+x = pcr (A, b)
+@end example
+
+@sc{Example 2:} @code{pcr} with a function which computes
+@code{@var{A} * @var{x}}.
+
+@example
+@group
+function y = apply_a (x)
+  y = [1:10]' .* x;
+endfunction
+
+x = pcr ("apply_a", b)
+@end group
+@end example
+
+@sc{Example 3:}  Preconditioned iteration, with full diagnostics.  The
+preconditioner (quite strange, because even the original matrix
+@var{A} is trivial) is defined as a function
+
+@example
+@group
+function y = apply_m (x)
+  k = floor (length (x) - 2);
+  y = x;
+  y(1:k) = x(1:k) ./ [1:k]';
+endfunction
+
+[x, flag, relres, iter, resvec] = ...
+                   pcr (A, b, [], [], "apply_m")
+semilogy ([1:iter+1], resvec);
+@end group
+@end example
+
+@sc{Example 4:} Finally, a preconditioner which depends on a
+parameter @var{k}.
+
+@example
+@group
+function y = apply_m (x, varargin)
+  k = varargin@{1@};
+  y = x;
+  y(1:k) = x(1:k) ./ [1:k]';
+endfunction
+
+[x, flag, relres, iter, resvec] = ...
+                   pcr (A, b, [], [], "apply_m"', [], 3)
+@end group
+@end example
+
+References:
+
+[1] @nospell{W. Hackbusch}, @cite{Iterative Solution of Large Sparse
+Systems of Equations}, section 9.5.4; Springer, 1994
+
+@seealso{@ref{XREFsparse,,sparse}, @ref{XREFpcg,,pcg}}
+@end deftypefn
+
+
+The speed with which an iterative solver converges to a solution can be
+accelerated with the use of a pre-conditioning matrix @var{M}.  In this
+case the linear equation @code{@var{M}^-1 * @var{x} = @var{M}^-1 *
+@var{A} \ @var{b}} is solved instead.  Typical pre-conditioning matrices
+are partial factorizations of the original matrix.
+
+@c ichol scripts/sparse/ichol.m
+@anchor{XREFichol}
+@deftypefn  {Function File} {@var{L} =} ichol (@var{A})
+@deftypefnx {Function File} {@var{L} =} ichol (@var{A}, @var{opts})
+
+Compute the incomplete Cholesky factorization of the sparse square matrix
+@var{A}.
+
+By default, @code{ichol} uses only the lower triangle of @var{A} and
+produces a lower triangular factor @var{L} such that @tcode{L*L'}
+approximates @var{A}.
+
+The factor given by this routine may be useful as a preconditioner for a
+system of linear equations being solved by iterative methods such as
+PCG (Preconditioned Conjugate Gradient).
+
+The factorization may be modified by passing options in a structure
+@var{opts}.  The option name is a field of the structure and the setting
+is the value of field.  Names and specifiers are case sensitive.
+
+@table @asis
+@item type
+Type of factorization.
+
+@table @asis
+@item @qcode{"nofill"} (default)
+Incomplete Cholesky factorization with no fill-in (@nospell{IC(0)}).
+
+@item @qcode{"ict"}
+Incomplete Cholesky factorization with threshold dropping (@nospell{ICT}).
+@end table
+
+@item diagcomp
+A non-negative scalar @var{alpha} for incomplete Cholesky factorization of
+@code{@var{A} + @var{alpha} * diag (diag (@var{A}))} instead of @var{A}.
+This can be useful when @var{A} is not positive definite.  The default value
+is 0.
+
+@item droptol
+A non-negative scalar specifying the drop tolerance for factorization if
+performing @nospell{ICT}@.  The default value is 0 which produces the
+complete Cholesky factorization.
+
+Non-diagonal entries of @var{L} are set to 0 unless
+
+@code{abs (@var{L}(i,j)) >= droptol * norm (@var{A}(j:end, j), 1)}.
+
+@item michol
+Modified incomplete Cholesky factorization:
+
+@table @asis
+@item @qcode{"off"} (default)
+Row and column sums are not necessarily preserved.
+
+@item @qcode{"on"}
+The diagonal of @var{L} is modified so that row (and column) sums are
+preserved even when elements have been dropped during the factorization.
+The relationship preserved is: @code{@var{A} * e = @var{L} * @var{L}' * e},
+where e is a vector of ones.
+@end table
+
+@item shape
+
+@table @asis
+@item @qcode{"lower"} (default)
+Use only the lower triangle of @var{A} and return a lower triangular factor
+@var{L} such that @tcode{L*L'} approximates @var{A}.
+
+@item @qcode{"upper"}
+Use only the upper triangle of @var{A} and return an upper triangular factor
+@var{U} such that @code{U'*U} approximates @var{A}.
+@end table
+@end table
+
+EXAMPLES
+
+The following problem demonstrates how to factorize a sample symmetric
+positive definite matrix with the full Cholesky decomposition and with the
+incomplete one.
+
+@example
+@group
+A = [ 0.37, -0.05,  -0.05,  -0.07;
+     -0.05,  0.116,  0.0,   -0.05;
+     -0.05,  0.0,    0.116, -0.05;
+     -0.07, -0.05,  -0.05,   0.202];
+A = sparse (A);
+nnz (tril (A))
+ans =  9
+L = chol (A, "lower");
+nnz (L)
+ans =  10
+norm (A - L * L', "fro") / norm (A, "fro")
+ans =  1.1993e-16
+opts.type = "nofill";
+L = ichol (A, opts);
+nnz (L)
+ans =  9
+norm (A - L * L', "fro") / norm (A, "fro")
+ans =  0.019736
+@end group
+@end example
+
+Another example for decomposition is a finite difference matrix used to
+solve a boundary value problem on the unit square.
+
+@example
+@group
+nx = 400; ny = 200;
+hx = 1 / (nx + 1); hy = 1 / (ny + 1);
+Dxx = spdiags ([ones(nx, 1), -2*ones(nx, 1), ones(nx, 1)],
+               [-1 0 1 ], nx, nx) / (hx ^ 2);
+Dyy = spdiags ([ones(ny, 1), -2*ones(ny, 1), ones(ny, 1)],
+               [-1 0 1 ], ny, ny) / (hy ^ 2);
+A = -kron (Dxx, speye (ny)) - kron (speye (nx), Dyy);
+nnz (tril (A))
+ans =  239400
+opts.type = "nofill";
+L = ichol (A, opts);
+nnz (tril (A))
+ans =  239400
+norm (A - L * L', "fro") / norm (A, "fro")
+ans =  0.062327
+@end group
+@end example
+
+References for implemented algorithms:
+
+[1] @nospell{Y. Saad}. "Preconditioning Techniques." @cite{Iterative
+Methods for Sparse Linear Systems}, @nospell{PWS} Publishing Company, 1996.
+
+[2] @nospell{M. Jones, P. Plassmann}: @cite{An Improved Incomplete
+Cholesky Factorization}, 1992.
+@seealso{@ref{XREFchol,,chol}, @ref{XREFilu,,ilu}, @ref{XREFpcg,,pcg}}
+@end deftypefn
+
+
+@c ilu scripts/sparse/ilu.m
+@anchor{XREFilu}
+@deftypefn  {Function File} {} ilu (@var{A})
+@deftypefnx {Function File} {} ilu (@var{A}, @var{opts})
+@deftypefnx {Function File} {[@var{L}, @var{U}] =} ilu (@dots{})
+@deftypefnx {Function File} {[@var{L}, @var{U}, @var{P}] =} ilu (@dots{})
+
+Compute the incomplete LU factorization of the sparse square matrix @var{A}.
+
+@code{ilu} returns a unit lower triangular matrix @var{L}, an upper
+triangular matrix @var{U}, and optionally a permutation matrix @var{P}, such
+that @code{@var{L}*@var{U}} approximates @code{@var{P}*@var{A}}.
+
+The factors given by this routine may be useful as preconditioners for a
+system of linear equations being solved by iterative methods such as BICG
+(BiConjugate Gradients) or GMRES (Generalized Minimum Residual Method).
+
+The factorization may be modified by passing options in a structure
+@var{opts}.  The option name is a field of the structure and the setting
+is the value of field.  Names and specifiers are case sensitive.
+
+@table @code
+@item type
+Type of factorization.
+
+@table @asis
+@item @qcode{"nofill"}
+ILU factorization with no fill-in (ILU(0)).
+
+Additional supported options: @code{milu}.
+
+@item @qcode{"crout"}
+Crout version of ILU factorization (@nospell{ILUC}).
+
+Additional supported options: @code{milu}, @code{droptol}.
+
+@item @qcode{"ilutp"} (default)
+ILU factorization with threshold and pivoting.
+
+Additional supported options: @code{milu}, @code{droptol}, @code{udiag},
+@code{thresh}.
+@end table
+
+@item droptol
+A non-negative scalar specifying the drop tolerance for factorization.  The
+default value is 0 which produces the complete LU factorization.
+
+Non-diagonal entries of @var{U} are set to 0 unless
+
+@code{abs (@var{U}(i,j)) >= droptol * norm (@var{A}(:,j))}.
+
+Non-diagonal entries of @var{L} are set to 0 unless
+
+@code{abs (@var{L}(i,j)) >= droptol * norm (@var{A}(:,j))/@var{U}(j,j)}.
+
+@item milu
+Modified incomplete LU factorization:
+
+@table @asis
+@item @qcode{"row"}
+Row-sum modified incomplete LU factorization.
+The factorization preserves row sums:
+@code{@var{A} * e = @var{L} * @var{U} * e}, where e is a vector of ones.
+
+@item @qcode{"col"}
+Column-sum modified incomplete LU factorization.
+The factorization preserves column sums:
+@code{e' * @var{A} = e' * @var{L} * @var{U}}.
+
+@item @qcode{"off"} (default)
+Row and column sums are not necessarily preserved.
+@end table
+
+@item udiag
+If true, any zeros on the diagonal of the upper triangular factor are
+replaced by the local drop tolerance
+@code{droptol * norm (@var{A}(:,j))/@var{U}(j,j)}.  The default is false.
+
+@item thresh
+Pivot threshold for factorization.  It can range between 0 (diagonal
+pivoting) and 1 (default), where the maximum magnitude entry in the column
+is chosen to be the pivot.
+@end table
+
+If @code{ilu} is called with just one output, the returned matrix is
+@code{@var{L} + @var{U} - speye (size (@var{A}))}, where @var{L} is unit
+lower triangular and @var{U} is upper triangular.
+
+With two outputs, @code{ilu} returns a unit lower triangular matrix @var{L}
+and an upper triangular matrix @var{U}.  For @var{opts}.type ==
+@qcode{"ilutp"}, one of the factors is permuted based on the value of
+@var{opts}.milu.  When @var{opts}.milu == @qcode{"row"}, @var{U} is a
+column permuted upper triangular factor.  Otherwise, @var{L} is a
+row-permuted unit lower triangular factor.
+
+If there are three named outputs and @var{opts}.milu != @qcode{"row"},
+@var{P} is returned such that @var{L} and @var{U} are incomplete factors
+of @code{@var{P}*@var{A}}.  When @var{opts}.milu == @qcode{"row"}, @var{P}
+is returned such that @var{L} and @var{U} are incomplete factors of
+@code{@var{A}*@var{P}}.
+
+EXAMPLES
+
+@example
+@group
+A = gallery ("neumann", 1600) + speye (1600);
+opts.type = "nofill";
+nnz (A)
+ans = 7840
+
+nnz (lu (A))
+ans = 126478
+
+nnz (ilu (A, opts))
+ans = 7840
+@end group
+@end example
+
+This shows that @var{A} has 7,840 nonzeros, the complete LU factorization
+has 126,478 nonzeros, and the incomplete LU factorization, with 0 level of
+fill-in, has 7,840 nonzeros, the same amount as @var{A}.  Taken from:
+http://www.mathworks.com/help/matlab/ref/ilu.html
+
+@example
+@group
+A = gallery ("wathen", 10, 10);
+b = sum (A, 2);
+tol = 1e-8;
+maxit = 50;
+opts.type = "crout";
+opts.droptol = 1e-4;
+[L, U] = ilu (A, opts);
+x = bicg (A, b, tol, maxit, L, U);
+norm (A * x - b, inf)
+@end group
+@end example
+
+This example uses ILU as preconditioner for a random FEM-Matrix, which has a
+large condition number.  Without @var{L} and @var{U} BICG would not converge.
+
+@seealso{@ref{XREFlu,,lu}, @ref{XREFichol,,ichol}, @ref{XREFbicg,,bicg}, @ref{XREFgmres,,gmres}}
+@end deftypefn
+
+
+@node Real Life Example
+@section Real Life Example using Sparse Matrices
+
+A common application for sparse matrices is in the solution of Finite
+Element Models.  Finite element models allow numerical solution of
+partial differential equations that do not have closed form solutions,
+typically because of the complex shape of the domain.
+
+In order to motivate this application, we consider the boundary value
+Laplace equation.  This system can model scalar potential fields, such
+as heat or electrical potential.  Given a medium
+@tex
+$\Omega$ with boundary $\partial\Omega$.  At all points on the $\partial\Omega$
+the boundary conditions are known, and we wish to calculate the potential in
+$\Omega$.
+@end tex
+@ifnottex
+Omega with boundary dOmega.  At all points on the dOmega
+the boundary conditions are known, and we wish to calculate the potential in
+Omega.
+@end ifnottex
+Boundary conditions may specify the potential (Dirichlet
+boundary condition), its normal derivative across the boundary
+(Neumann boundary condition), or a weighted sum of the potential and
+its derivative (Cauchy boundary condition).
+
+In a thermal model, we want to calculate the temperature in
+@tex
+$\Omega$
+@end tex
+@ifnottex
+Omega
+@end ifnottex
+and know the boundary temperature (Dirichlet condition)
+or heat flux (from which we can calculate the Neumann condition
+by dividing by the thermal conductivity at the boundary).  Similarly,
+in an electrical model, we want to calculate the voltage in
+@tex
+$\Omega$
+@end tex
+@ifnottex
+Omega
+@end ifnottex
+and know the boundary voltage (Dirichlet) or current
+(Neumann condition after diving by the electrical conductivity).
+In an electrical model, it is common for much of the boundary
+to be electrically isolated; this is a Neumann boundary condition
+with the current equal to zero.
+
+The simplest finite element models will divide
+@tex
+$\Omega$
+@end tex
+@ifnottex
+Omega
+@end ifnottex
+into simplexes (triangles in 2D, pyramids in 3D).
+@ifset htmltex
+We take as a 3-D example a cylindrical liquid filled tank with a small
+non-conductive ball from the EIDORS project@footnote{EIDORS - Electrical
+Impedance Tomography and Diffuse optical Tomography Reconstruction Software
+@url{http://eidors3d.sourceforge.net}}.  This is model is designed to reflect
+an application of electrical impedance tomography, where current patterns
+are applied to such a tank in order to image the internal conductivity
+distribution.  In order to describe the FEM geometry, we have a matrix of
+vertices @code{nodes} and simplices @code{elems}.
+@end ifset
+
+The following example creates a simple rectangular 2-D electrically
+conductive medium with 10 V and 20 V imposed on opposite sides
+(Dirichlet boundary conditions).  All other edges are electrically
+isolated.
+
+@example
+@group
+   node_y = [1;1.2;1.5;1.8;2]*ones(1,11);
+   node_x = ones(5,1)*[1,1.05,1.1,1.2, ...
+             1.3,1.5,1.7,1.8,1.9,1.95,2];
+   nodes = [node_x(:), node_y(:)];
+
+   [h,w] = size (node_x);
+   elems = [];
+   for idx = 1:w-1
+     widx = (idx-1)*h;
+     elems = [elems; ...
+       widx+[(1:h-1);(2:h);h+(1:h-1)]'; ...
+       widx+[(2:h);h+(2:h);h+(1:h-1)]' ];
+   endfor
+
+   E = size (elems,1); # No. of simplices
+   N = size (nodes,1); # No. of vertices
+   D = size (elems,2); # dimensions+1
+@end group
+@end example
+
+This creates a N-by-2 matrix @code{nodes} and a E-by-3 matrix
+@code{elems} with values, which define finite element triangles:
+
+@example
+@group
+  nodes(1:7,:)'
+    1.00 1.00 1.00 1.00 1.00 1.05 1.05 @dots{}
+    1.00 1.20 1.50 1.80 2.00 1.00 1.20 @dots{}
+
+  elems(1:7,:)'
+    1    2    3    4    2    3    4 @dots{}
+    2    3    4    5    7    8    9 @dots{}
+    6    7    8    9    6    7    8 @dots{}
+@end group
+@end example
+
+Using a first order FEM, we approximate the electrical conductivity
+distribution in
+@tex
+$\Omega$
+@end tex
+@ifnottex
+Omega
+@end ifnottex
+as constant on each simplex (represented by the vector @code{conductivity}).
+Based on the finite element geometry, we first calculate a system (or
+stiffness) matrix for each simplex (represented as 3-by-3 elements on the
+diagonal of the element-wise system matrix @code{SE}).  Based on @code{SE}
+and a N-by-DE connectivity matrix @code{C}, representing the connections
+between simplices and vertices, the global connectivity matrix @code{S} is
+calculated.
+
+@example
+  ## Element conductivity
+  conductivity = [1*ones(1,16), ...
+         2*ones(1,48), 1*ones(1,16)];
+
+  ## Connectivity matrix
+  C = sparse ((1:D*E), reshape (elems', ...
+         D*E, 1), 1, D*E, N);
+
+  ## Calculate system matrix
+  Siidx = floor ([0:D*E-1]'/D) * D * ...
+         ones(1,D) + ones(D*E,1)*(1:D) ;
+  Sjidx = [1:D*E]'*ones (1,D);
+  Sdata = zeros (D*E,D);
+  dfact = factorial (D-1);
+  for j = 1:E
+     a = inv ([ones(D,1), ...
+         nodes(elems(j,:), :)]);
+     const = conductivity(j) * 2 / ...
+         dfact / abs (det (a));
+     Sdata(D*(j-1)+(1:D),:) = const * ...
+         a(2:D,:)' * a(2:D,:);
+  endfor
+  ## Element-wise system matrix
+  SE = sparse(Siidx,Sjidx,Sdata);
+  ## Global system matrix
+  S = C'* SE *C;
+@end example
+
+The system matrix acts like the conductivity
+@tex
+$S$
+@end tex
+@ifnottex
+@code{S}
+@end ifnottex
+in Ohm's law
+@tex
+$SV = I$.
+@end tex
+@ifnottex
+@code{S * V = I}.
+@end ifnottex
+Based on the Dirichlet and Neumann boundary conditions, we are able to
+solve for the voltages at each vertex @code{V}.
+
+@example
+  ## Dirichlet boundary conditions
+  D_nodes = [1:5, 51:55];
+  D_value = [10*ones(1,5), 20*ones(1,5)];
+
+  V = zeros (N,1);
+  V(D_nodes) = D_value;
+  idx = 1:N; # vertices without Dirichlet
+             # boundary condns
+  idx(D_nodes) = [];
+
+  ## Neumann boundary conditions.  Note that
+  ## N_value must be normalized by the
+  ## boundary length and element conductivity
+  N_nodes = [];
+  N_value = [];
+
+  Q = zeros (N,1);
+  Q(N_nodes) = N_value;
+
+  V(idx) = S(idx,idx) \ ( Q(idx) - ...
+            S(idx,D_nodes) * V(D_nodes));
+@end example
+
+Finally, in order to display the solution, we show each solved voltage
+value in the z-axis for each simplex vertex.
+@ifset htmltex
+@xref{fig:femmodel}.
+@end ifset
+
+@example
+@group
+  elemx = elems(:,[1,2,3,1])';
+  xelems = reshape (nodes(elemx, 1), 4, E);
+  yelems = reshape (nodes(elemx, 2), 4, E);
+  velems = reshape (V(elemx), 4, E);
+  plot3 (xelems,yelems,velems,"k");
+  print "grid.eps";
+@end group
+@end example
+
+
+@ifset htmltex
+@float Figure,fig:femmodel
+@center @image{grid,4in}
+@caption{Example finite element model the showing triangular elements.
+The height of each vertex corresponds to the solution value.}
+@end float
+@end ifset

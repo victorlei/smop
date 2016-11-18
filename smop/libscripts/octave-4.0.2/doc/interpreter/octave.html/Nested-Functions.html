@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Nested Functions</title>
+
+<meta name="description" content="GNU Octave: Nested Functions">
+<meta name="keywords" content="GNU Octave: Nested Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Function-Files.html#Function-Files" rel="up" title="Function Files">
+<link href="Overloading-and-Autoloading.html#Overloading-and-Autoloading" rel="next" title="Overloading and Autoloading">
+<link href="Private-Functions.html#Private-Functions" rel="prev" title="Private Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Nested-Functions"></a>
+<div class="header">
+<p>
+Next: <a href="Overloading-and-Autoloading.html#Overloading-and-Autoloading" accesskey="n" rel="next">Overloading and Autoloading</a>, Previous: <a href="Private-Functions.html#Private-Functions" accesskey="p" rel="prev">Private Functions</a>, Up: <a href="Function-Files.html#Function-Files" accesskey="u" rel="up">Function Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Nested-Functions-1"></a>
+<h4 class="subsection">11.9.4 Nested Functions</h4>
+
+<p>Nested functions are similar to subfunctions in that only the main function is
+visible outside the file.  However, they also allow for child functions to
+access the local variables in their parent function.  This shared access mimics
+using a global variable to share information &mdash; but a global variable which is
+not visible to the rest of Octave.  As a programming strategy, sharing data
+this way can create code which is difficult to maintain.  It is recommended to
+use subfunctions in place of nested functions when possible.
+</p>
+<p>As a simple example, consider a parent function <code>foo</code>, that calls a nested
+child function <code>bar</code>, with a shared variable <var>x</var>.
+</p>
+<div class="example">
+<pre class="example">function y = foo ()
+  x = 10;
+  bar ();
+  y = x;
+
+  function bar ()
+    x = 20;
+  endfunction
+endfunction
+
+foo ()
+ &rArr; 20
+</pre></div>
+
+<p>Notice that there is no special syntax for sharing <var>x</var>.  This can lead to
+problems with accidental variable sharing between a parent function and its
+child.  While normally variables are inherited, child function parameters and
+return values are local to the child function.
+</p>
+<p>Now consider the function <code>foobar</code> that uses variables <var>x</var> and
+<var>y</var>.  <code>foobar</code> calls a nested function <code>foo</code> which takes
+<var>x</var> as a parameter and returns <var>y</var>.  <code>foo</code> then calls <code>bat</code>
+which does some computation.
+</p>
+<div class="example">
+<pre class="example">function z = foobar ()
+  x = 0;
+  y = 0;
+  z = foo (5);
+  z += x + y;
+
+  function y = foo (x)
+    y = x + bat ();
+
+    function z = bat ()
+      z = x;
+    endfunction
+  endfunction
+endfunction
+
+foobar ()
+    &rArr; 10
+</pre></div>
+
+<p>It is important to note that the <var>x</var> and <var>y</var> in <code>foobar</code> remain
+zero, as in <code>foo</code> they are a return value and parameter respectively.  The
+<var>x</var> in <code>bat</code> refers to the <var>x</var> in <code>foo</code>.
+</p>
+<p>Variable inheritance leads to a problem for <code>eval</code> and scripts.  If a
+new variable is created in a parent function, it is not clear what should happen
+in nested child functions.  For example, consider a parent function <code>foo</code>
+with a nested child function <code>bar</code>:
+</p>
+<div class="example">
+<pre class="example">function y = foo (to_eval)
+  bar ();
+  eval (to_eval);
+
+  function bar ()
+    eval (&quot;x = 100;&quot;);
+    eval (&quot;y = x;&quot;);
+  endfunction
+endfunction
+
+foo (&quot;x = 5;&quot;)
+    &rArr; error: can not add variable &quot;x&quot; to a static workspace
+
+foo (&quot;y = 10;&quot;)
+    &rArr; 10
+
+foo (&quot;&quot;)
+    &rArr; 100
+</pre></div>
+
+<p>The parent function <code>foo</code> is unable to create a new variable
+<var>x</var>, but the child function <code>bar</code> was successful.  Furthermore, even
+in an <code>eval</code> statement <var>y</var> in <code>bar</code> is the same <var>y</var> as in its
+parent function <code>foo</code>.  The use of <code>eval</code> in conjunction with nested
+functions is best avoided.
+</p>
+<p>As with subfunctions, only the first nested function in a file may be called
+from the outside.  Inside a function the rules are more complicated.  In
+general a nested function may call:
+</p>
+<ol>
+<li> Globally visible functions
+
+</li><li> Any function that the nested function&rsquo;s parent can call
+
+</li><li> Sibling functions (functions that have the same parents)
+
+</li><li> Direct children
+
+</li></ol>
+
+<p>As a complex example consider a parent function <code>ex_top</code> with two
+child functions, <code>ex_a</code> and <code>ex_b</code>.  In addition, <code>ex_a</code> has two
+more child functions, <code>ex_aa</code> and <code>ex_ab</code>.  For example:
+</p>
+<div class="example">
+<pre class="example">function ex_top ()
+  ## Can call: ex_top, ex_a, and ex_b
+  ## Can NOT call: ex_aa and ex_ab
+
+  function ex_a ()
+    ## Call call everything
+
+    function ex_aa ()
+      ## Can call everything
+    endfunction
+
+    function ex_ab ()
+      ## Can call everything
+    endfunction
+  endfunction
+
+  function ex_b ()
+    ## Can call: ex_top, ex_a, and ex_b
+    ## Can NOT call: ex_aa and ex_ab
+  endfunction
+endfunction
+</pre></div>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Overloading-and-Autoloading.html#Overloading-and-Autoloading" accesskey="n" rel="next">Overloading and Autoloading</a>, Previous: <a href="Private-Functions.html#Private-Functions" accesskey="p" rel="prev">Private Functions</a>, Up: <a href="Function-Files.html#Function-Files" accesskey="u" rel="up">Function Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>Octave C++ Classes: Constructors and Assignment</title>
+
+<meta name="description" content="Octave C++ Classes: Constructors and Assignment">
+<meta name="keywords" content="Octave C++ Classes: Constructors and Assignment">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arrays.html#Arrays" rel="up" title="Arrays">
+<link href="Matrix-and-Vector-Operations.html#Matrix-and-Vector-Operations" rel="next" title="Matrix and Vector Operations">
+<link href="Arrays.html#Arrays" rel="prev" title="Arrays">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Constructors-and-Assignment"></a>
+<div class="header">
+<p>
+Previous: <a href="Arrays.html#Arrays" accesskey="p" rel="prev">Arrays</a>, Up: <a href="Arrays.html#Arrays" accesskey="u" rel="up">Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Constructors-and-Assignment-1"></a>
+<h3 class="section">3.1 Constructors and Assignment</h3>
+
+<dl>
+<dt><a name="index-Array_003cT_003e"></a>Constructor: <em></em> <strong>Array&lt;T&gt;</strong> <em>(void)</em></dt>
+<dd><p>Create an array with no elements.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-Array_003cT_003e-1"></a>Constructor: <em></em> <strong>Array&lt;T&gt;</strong> <em>(int <var>n</var> [, const T &amp;<var>val</var>])</em></dt>
+<dd><p>Create an array with <var>n</var> elements.  If the optional argument
+<var>val</var> is supplied, the elements are initialized to <var>val</var>;
+otherwise, they are left uninitialized.  If <var>n</var> is less than zero,
+the current error handler is invoked (see <a href="Error-Handling.html#Error-Handling">Error Handling</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-Array_003cT_003e-2"></a>Constructor: <em></em> <strong>Array&lt;T&gt;</strong> <em>(const Array&lt;T&gt; &amp;<var>a</var>)</em></dt>
+<dd><p>Create a copy of the <var>Array&lt;T&gt;</var> object <var>a</var>.  Memory for the
+<var>Array&lt;T&gt;</var> class is managed using a reference counting scheme, so
+the cost of this operation is independent of the size of the array.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-operator-_003d-on-Array_003cT_003e"></a>Assignment on Array&lt;T&gt;: <em>Array&lt;T&gt;&amp;</em> <strong>operator =</strong> <em>(const Array&lt;T&gt; &amp;<var>a</var>)</em></dt>
+<dd><p>Assignment operator.  Memory for the <var>Array&lt;T&gt;</var> class is managed
+using a reference counting scheme, so the cost of this operation is
+independent of the size of the array.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-capacity-on-Array_003cT_003e"></a>Method on Array&lt;T&gt;: <em>int</em> <strong>capacity</strong> <em>(void) const</em></dt>
+<dt><a name="index-length-on-Array_003cT_003e"></a>Method on Array&lt;T&gt;: <em>int</em> <strong>length</strong> <em>(void) const</em></dt>
+<dd><p>Return the length of the array.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-elem-on-Array_003cT_003e"></a>Method on Array&lt;T&gt;: <em>T&amp;</em> <strong>elem</strong> <em>(int <var>n</var>)</em></dt>
+<dt><a name="index-checkelem-on-Array_003cT_003e"></a>Method on Array&lt;T&gt;: <em>T&amp;</em> <strong>checkelem</strong> <em>(int <var>n</var>)</em></dt>
+<dd><p>If <var>n</var> is within the bounds of the array, return a reference to the
+element indexed by <var>n</var>; otherwise, the current error handler is
+invoked (see <a href="Error-Handling.html#Error-Handling">Error Handling</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-operator-_0028_0029-on-Array_003cT_003e"></a>Indexing on Array&lt;T&gt;: <em>T&amp;</em> <strong>operator ()</strong> <em>(int <var>n</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-elem-on-Array_003cT_003e-1"></a>Method on Array&lt;T&gt;: <em>T</em> <strong>elem</strong> <em>(int <var>n</var>) const</em></dt>
+<dt><a name="index-checkelem-on-Array_003cT_003e-1"></a>Method on Array&lt;T&gt;: <em>T</em> <strong>checkelem</strong> <em>(int <var>n</var>) const</em></dt>
+<dd><p>If <var>n</var> is within the bounds of the array, return the value indexed
+by <var>n</var>; otherwise, call the current error handler.
+See <a href="Error-Handling.html#Error-Handling">Error Handling</a>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-operator-_0028_0029-on-Array_003cT_003e-1"></a>Indexing on Array&lt;T&gt;: <em>T</em> <strong>operator ()</strong> <em>(int <var>n</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-xelem-on-Array_003cT_003e"></a>Method on Array&lt;T&gt;: <em>T&amp;</em> <strong>xelem</strong> <em>(int <var>n</var>)</em></dt>
+<dt><a name="index-xelem-on-Array_003cT_003e-1"></a>Method on Array&lt;T&gt;: <em>T</em> <strong>xelem</strong> <em>(int <var>n</var>) const</em></dt>
+<dd><p>Return a reference to, or the value of, the element indexed by <var>n</var>.
+These methods never perform bounds checking.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-resize-on-Array_003cT_003e"></a>Method on Array&lt;T&gt;: <em>void</em> <strong>resize</strong> <em>(int <var>n</var> [, const T &amp;<var>val</var>])</em></dt>
+<dd><p>Change the size of the array to be <var>n</var> elements.  All elements are
+unchanged, except that if <var>n</var> is greater than the current size and
+the optional argument <var>val</var> is provided, the additional elements are
+initialized to <var>val</var>; otherwise, any additional elements are left
+uninitialized.  In the current implementation, if <var>n</var> is less than
+the current size, the length is updated but no memory is released.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-data-on-Array_003cT_003e"></a>Method on Array&lt;T&gt;: <em>const T*</em> <strong>data</strong> <em>(void) const</em></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-Array2_003cT_003e"></a>Constructor: <em></em> <strong>Array2&lt;T&gt;</strong> <em>Array2&lt;T&gt; Array2 (void)</em></dt>
+<dt><a name="index-Array2_003cT_003e-1"></a>Constructor: <em></em> <strong>Array2&lt;T&gt;</strong> <em>(int <var>n</var>, int <var>m</var>)</em></dt>
+<dt><a name="index-Array2_003cT_003e-2"></a>Constructor: <em></em> <strong>Array2&lt;T&gt;</strong> <em>(int <var>n</var>, int <var>m</var>, const T &amp;<var>val</var>)</em></dt>
+<dt><a name="index-Array2_003cT_003e-3"></a>Constructor: <em></em> <strong>Array2&lt;T&gt;</strong> <em>(const Array2&lt;T&gt; &amp;<var>a</var>)</em></dt>
+<dt><a name="index-Array2_003cT_003e-4"></a>Constructor: <em></em> <strong>Array2&lt;T&gt;</strong> <em>(const DiagArray&lt;T&gt; &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d-on-Array2_003cT_003e"></a>Assignment on Array2&lt;T&gt;: <em>Array2&lt;T&gt;&amp;</em> <strong>operator =</strong> <em>(const Array2&lt;T&gt; &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-dim1-on-Array2_003cT_003e"></a>Method on Array2&lt;T&gt;: <em>int</em> <strong>dim1</strong> <em>(void) const</em></dt>
+<dt><a name="index-rows-on-Array2_003cT_003e"></a>Method on Array2&lt;T&gt;: <em>int</em> <strong>rows</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-dim2-on-Array2_003cT_003e"></a>Method on Array2&lt;T&gt;: <em>int</em> <strong>dim2</strong> <em>(void) const</em></dt>
+<dt><a name="index-cols-on-Array2_003cT_003e"></a>Method on Array2&lt;T&gt;: <em>int</em> <strong>cols</strong> <em>(void) const</em></dt>
+<dt><a name="index-columns-on-Array2_003cT_003e"></a>Method on Array2&lt;T&gt;: <em>int</em> <strong>columns</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-elem-on-Array2_003cT_003e"></a>Method on Array2&lt;T&gt;: <em>T&amp;</em> <strong>elem</strong> <em>(int <var>i</var>, int <var>j</var>)</em></dt>
+<dt><a name="index-checkelem-on-Array2_003cT_003e"></a>Method on Array2&lt;T&gt;: <em>T&amp;</em> <strong>checkelem</strong> <em>(int <var>i</var>, int <var>j</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_0028_0029-on-Array2_003cT_003e"></a>Indexing on Array2&lt;T&gt;: <em>T&amp;</em> <strong>operator ()</strong> <em>(int <var>i</var>, int <var>j</var>)</em></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-resize-on-Array2_003cT_003e"></a>Method on Array2&lt;T&gt;: <em>void</em> <strong>resize</strong> <em>(int <var>n</var>, int <var>m</var>)</em></dt>
+<dt><a name="index-resize-on-Array2_003cT_003e-1"></a>Method on Array2&lt;T&gt;: <em>void</em> <strong>resize</strong> <em>(int <var>n</var>, int <var>m</var>, const T &amp;<var>val</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-Array3_003cT_003e"></a>Constructor: <em></em> <strong>Array3&lt;T&gt;</strong> <em>(void)</em></dt>
+<dt><a name="index-Array3_003cT_003e-1"></a>Constructor: <em></em> <strong>Array3&lt;T&gt;</strong> <em>(int <var>n</var>, int <var>m</var>, int <var>k</var>)</em></dt>
+<dt><a name="index-Array3_003cT_003e-2"></a>Constructor: <em></em> <strong>Array3&lt;T&gt;</strong> <em>(int <var>n</var>, int <var>m</var>, int <var>k</var>, const T &amp;<var>val</var>)</em></dt>
+<dt><a name="index-Array3_003cT_003e-3"></a>Constructor: <em></em> <strong>Array3&lt;T&gt;</strong> <em>(const Array3&lt;T&gt; &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d-on-Array3_003cT_003e"></a>Assignment on Array3&lt;T&gt;: <em>Array3&lt;T&gt;&amp;</em> <strong>operator =</strong> <em>(const Array3&lt;T&gt; &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-dim1-on-Array3_003cT_003e"></a>Method on Array3&lt;T&gt;: <em>int</em> <strong>dim1</strong> <em>(void) const</em></dt>
+<dt><a name="index-dim2-on-Array3_003cT_003e"></a>Method on Array3&lt;T&gt;: <em>int</em> <strong>dim2</strong> <em>(void) const</em></dt>
+<dt><a name="index-dim3-on-Array3_003cT_003e"></a>Method on Array3&lt;T&gt;: <em>int</em> <strong>dim3</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-elem-on-Array3_003cT_003e"></a>Method on Array3&lt;T&gt;: <em>T&amp;</em> <strong>elem</strong> <em>(int <var>i</var>, int <var>j</var>, int <var>k</var>)</em></dt>
+<dt><a name="index-checkelem-on-Array3_003cT_003e"></a>Method on Array3&lt;T&gt;: <em>T&amp;</em> <strong>checkelem</strong> <em>(int <var>i</var>, int <var>j</var>, int <var>k</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_0028_0029-on-Array3_003cT_003e"></a>Indexing on Array3&lt;T&gt;: <em>T&amp;</em> <strong>operator ()</strong> <em>(int <var>i</var>, int <var>j</var>, int <var>k</var>)</em></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-resize-on-Array3_003cT_003e"></a>Method on Array3&lt;T&gt;: <em>void</em> <strong>resize</strong> <em>(int <var>n</var>, int <var>m</var>, int <var>k</var>)</em></dt>
+<dt><a name="index-resize-on-Array3_003cT_003e-1"></a>Method on Array3&lt;T&gt;: <em>void</em> <strong>resize</strong> <em>(int <var>n</var>, int <var>m</var>, int <var>k</var>, const T &amp;<var>val</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-DiagArray_003cT_003e"></a>Constructor: <em></em> <strong>DiagArray&lt;T&gt;</strong> <em>(void)</em></dt>
+<dt><a name="index-DiagArray_003cT_003e-1"></a>Constructor: <em></em> <strong>DiagArray&lt;T&gt;</strong> <em>(int <var>n</var>)</em></dt>
+<dt><a name="index-DiagArray_003cT_003e-2"></a>Constructor: <em></em> <strong>DiagArray&lt;T&gt;</strong> <em>(int <var>n</var>, const T &amp;<var>val</var>)</em></dt>
+<dt><a name="index-DiagArray_003cT_003e-3"></a>Constructor: <em></em> <strong>DiagArray&lt;T&gt;</strong> <em>(int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-DiagArray_003cT_003e-4"></a>Constructor: <em></em> <strong>DiagArray&lt;T&gt;</strong> <em>(int <var>r</var>, int <var>c</var>, const T &amp;<var>val</var>)</em></dt>
+<dt><a name="index-DiagArray_003cT_003e-5"></a>Constructor: <em></em> <strong>DiagArray&lt;T&gt;</strong> <em>(const Array&lt;T&gt; &amp;<var>a</var>)</em></dt>
+<dt><a name="index-DiagArray_003cT_003e-6"></a>Constructor: <em></em> <strong>DiagArray&lt;T&gt;</strong> <em>(const DiagArray&lt;T&gt; &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d-on-DiagArray_003cT_003e_0026"></a>Assignment on DiagArray&lt;T&gt;&amp;: <em></em> <strong>operator =</strong> <em>(const DiagArray&lt;T&gt; &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-dim1-on-DiagArray_003cT_003e"></a>Method on DiagArray&lt;T&gt;: <em>int</em> <strong>dim1</strong> <em>(void) const</em></dt>
+<dt><a name="index-rows-on-DiagArray_003cT_003e"></a>Method on DiagArray&lt;T&gt;: <em>int</em> <strong>rows</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-dim2-on-DiagArray_003cT_003e"></a>Method on DiagArray&lt;T&gt;: <em>int</em> <strong>dim2</strong> <em>(void) const</em></dt>
+<dt><a name="index-cols-on-DiagArray_003cT_003e"></a>Method on DiagArray&lt;T&gt;: <em>int</em> <strong>cols</strong> <em>(void) const</em></dt>
+<dt><a name="index-columns-on-DiagArray_003cT_003e"></a>Method on DiagArray&lt;T&gt;: <em>int</em> <strong>columns</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-elem-on-DiagArray_003cT_003e"></a>Method on DiagArray&lt;T&gt;: <em>T&amp;</em> <strong>elem</strong> <em>(int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-checkelem-on-DiagArray_003cT_003e"></a>Method on DiagArray&lt;T&gt;: <em>T&amp;</em> <strong>checkelem</strong> <em>(int <var>r</var>, int <var>c</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_0028_0029-on-DiagArray_003cT_003e"></a>Indexing on DiagArray&lt;T&gt;: <em>T&amp;</em> <strong>operator ()</strong> <em>(int <var>r</var>, int <var>c</var>)</em></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-resize-on-DiagArray_003cT_003e"></a>Method on DiagArray&lt;T&gt;: <em>void</em> <strong>resize</strong> <em>(int <var>n</var>, int <var>m</var>)</em></dt>
+<dt><a name="index-resize-on-DiagArray_003cT_003e-1"></a>Method on DiagArray&lt;T&gt;: <em>void</em> <strong>resize</strong> <em>(int <var>n</var>, int <var>m</var>, const T &amp;<var>val</var>)</em></dt>
+</dl>
+
+<p>The real and complex <code>ColumnVector</code> and <code>RowVector</code> classes
+all have the following functions.  These will eventually be part of an
+<code>MArray&lt;T&gt;</code> class, derived from the <code>Array&lt;T&gt;</code> class.  Then
+the <code>ColumnVector</code> and <code>RowVector</code> classes will be derived
+from the <code>MArray&lt;T&gt;</code> class.
+</p>
+<p>Element by element vector by scalar ops.
+</p>
+<dl>
+<dt><a name="index-operator-_002b"></a>: <em>RowVector</em> <strong>operator +</strong> <em>(const RowVector &amp;<var>a</var>, const double &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002d"></a>: <em>RowVector</em> <strong>operator -</strong> <em>(const RowVector &amp;<var>a</var>, const double &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002a"></a>: <em>RowVector</em> <strong>operator *</strong> <em>(const RowVector &amp;<var>a</var>, const double &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002f"></a>: <em>RowVector</em> <strong>operator /</strong> <em>(const RowVector &amp;<var>a</var>, const double &amp;<var>s</var>)</em></dt>
+</dl>
+
+<p>Element by element scalar by vector ops.
+</p>
+<dl>
+<dt><a name="index-operator-_002b-1"></a>: <em>RowVector</em> <strong>operator +</strong> <em>(const double &amp;<var>s</var>, const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d-1"></a>: <em>RowVector</em> <strong>operator -</strong> <em>(const double &amp;<var>s</var>, const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002a-1"></a>: <em>RowVector</em> <strong>operator *</strong> <em>(const double &amp;<var>s</var>, const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002f-1"></a>: <em>RowVector</em> <strong>operator /</strong> <em>(const double &amp;<var>s</var>, const RowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<p>Element by element vector by vector ops.
+</p>
+<dl>
+<dt><a name="index-operator-_002b-2"></a>: <em>RowVector</em> <strong>operator +</strong> <em>(const RowVector &amp;<var>a</var>, const RowVector &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-2"></a>: <em>RowVector</em> <strong>operator -</strong> <em>(const RowVector &amp;<var>a</var>, const RowVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-product"></a>: <em>RowVector</em> <strong>product</strong> <em>(const RowVector &amp;<var>a</var>, const RowVector &amp;<var>b</var>)</em></dt>
+<dt><a name="index-quotient"></a>: <em>RowVector</em> <strong>quotient</strong> <em>(const RowVector &amp;<var>a</var>, const RowVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<p>Unary MArray ops.
+</p>
+<dl>
+<dt><a name="index-operator-_002d-3"></a>: <em>RowVector</em> <strong>operator -</strong> <em>(const RowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+
+<p>The <code>Matrix</code> classes share the following functions.  These will
+eventually be part of an <code>MArray2&lt;T&gt;</code> class, derived from the
+<code>Array2&lt;T&gt;</code> class.  Then the <code>Matrix</code> class will be derived
+from the <code>MArray&lt;T&gt;</code> class.
+</p>
+<p>Element by element matrix by scalar ops.
+</p>
+<dl>
+<dt><a name="index-operator-_002b-3"></a>: <em>Matrix</em> <strong>operator +</strong> <em>(const Matrix &amp;<var>a</var>, const double &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002d-4"></a>: <em>Matrix</em> <strong>operator -</strong> <em>(const Matrix &amp;<var>a</var>, const double &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002a-2"></a>: <em>Matrix</em> <strong>operator *</strong> <em>(const Matrix &amp;<var>a</var>, const double &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002f-2"></a>: <em>Matrix</em> <strong>operator /</strong> <em>(const Matrix &amp;<var>a</var>, const double &amp;<var>s</var>)</em></dt>
+</dl>
+
+<p>Element by element scalar by matrix ops.
+</p>
+<dl>
+<dt><a name="index-operator-_002b-4"></a>: <em>Matrix</em> <strong>operator +</strong> <em>(const double &amp;<var>s</var>, const Matrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d-5"></a>: <em>Matrix</em> <strong>operator -</strong> <em>(const double &amp;<var>s</var>, const Matrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002a-3"></a>: <em>Matrix</em> <strong>operator *</strong> <em>(const double &amp;<var>s</var>, const Matrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002f-3"></a>: <em>Matrix</em> <strong>operator /</strong> <em>(const double &amp;<var>s</var>, const Matrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<p>Element by element matrix by matrix ops.
+</p>
+<dl>
+<dt><a name="index-operator-_002b-5"></a>: <em>Matrix</em> <strong>operator +</strong> <em>(const Matrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-6"></a>: <em>Matrix</em> <strong>operator -</strong> <em>(const Matrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-product-1"></a>: <em>Matrix</em> <strong>product</strong> <em>(const Matrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-quotient-1"></a>: <em>Matrix</em> <strong>quotient</strong> <em>(const Matrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<p>Unary matrix ops.
+</p>
+<dl>
+<dt><a name="index-operator-_002d-7"></a>: <em>Matrix</em> <strong>operator -</strong> <em>(const Matrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+
+<p>The <code>DiagMatrix</code> classes share the following functions.  These will
+eventually be part of an <code>MDiagArray&lt;T&gt;</code> class, derived from the
+<code>DiagArray&lt;T&gt;</code> class.  Then the <code>DiagMatrix</code> class will be
+derived from the <code>MDiagArray&lt;T&gt;</code> class.
+</p>
+<p>Element by element MDiagArray by scalar ops.
+</p>
+<dl>
+<dt><a name="index-operator-_002a-4"></a>: <em>DiagMatrix</em> <strong>operator *</strong> <em>(const DiagMatrix &amp;<var>a</var>, const double &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002f-4"></a>: <em>DiagMatrix</em> <strong>operator /</strong> <em>(const DiagMatrix &amp;<var>a</var>, const double &amp;<var>s</var>)</em></dt>
+</dl>
+
+<p>Element by element scalar by MDiagArray ops.
+</p>
+<dl>
+<dt><a name="index-operator-_002a-5"></a>: <em>DiagMatrix</em> <strong>operator *</strong> <em>(const double &amp;<var>s</var>, const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<p>Element by element MDiagArray by MDiagArray ops.
+</p>
+<dl>
+<dt><a name="index-operator-_002b-6"></a>: <em>DiagMatrix</em> <strong>operator +</strong> <em>(const DiagMatrix &amp;<var>a</var>, const DiagMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-8"></a>: <em>DiagMatrix</em> <strong>operator -</strong> <em>(const DiagMatrix &amp;<var>a</var>, const DiagMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-product-2"></a>: <em>DiagMatrix</em> <strong>product</strong> <em>(const DiagMatrix &amp;<var>a</var>, const DiagMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<p>Unary MDiagArray ops.
+</p>
+<dl>
+<dt><a name="index-operator-_002d-9"></a>: <em>DiagMatrix</em> <strong>operator -</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Arrays.html#Arrays" accesskey="p" rel="prev">Arrays</a>, Up: <a href="Arrays.html#Arrays" accesskey="u" rel="up">Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

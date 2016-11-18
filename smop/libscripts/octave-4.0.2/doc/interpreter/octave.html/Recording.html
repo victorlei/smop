@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Recording</title>
+
+<meta name="description" content="GNU Octave: Recording">
+<meta name="keywords" content="GNU Octave: Recording">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Audio-Recorder.html#Audio-Recorder" rel="up" title="Audio Recorder">
+<link href="Data-Retrieval.html#Data-Retrieval" rel="next" title="Data Retrieval">
+<link href="Audio-Recorder.html#Audio-Recorder" rel="prev" title="Audio Recorder">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Recording"></a>
+<div class="header">
+<p>
+Next: <a href="Data-Retrieval.html#Data-Retrieval" accesskey="n" rel="next">Data Retrieval</a>, Up: <a href="Audio-Recorder.html#Audio-Recorder" accesskey="u" rel="up">Audio Recorder</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Recording-1"></a>
+<h4 class="subsection">33.4.1 Recording</h4>
+
+<p>The following methods control the recording process.
+</p>
+<a name="XREF_0040audiorecorder_002frecord"></a><dl>
+<dt><a name="index-record"></a>Function File: <em></em> <strong>record</strong> <em>(<var>recorder</var>)</em></dt>
+<dt><a name="index-record-1"></a>Function File: <em></em> <strong>record</strong> <em>(<var>recorder</var>, <var>length</var>)</em></dt>
+<dd><p>Record audio without blocking using the audiorecorder object
+<var>recorder</var> until stopped or paused by the <var>stop</var> or <var>pause</var>
+method.
+</p>
+<p>Given the optional argument <var>length</var>, record for <var>length</var> seconds.
+</p></dd></dl>
+
+
+<a name="XREF_0040audiorecorder_002frecordblocking"></a><dl>
+<dt><a name="index-recordblocking"></a>Function File: <em></em> <strong>recordblocking</strong> <em>(<var>recorder</var>, <var>length</var>)</em></dt>
+<dd><p>Record audio with blocking (synchronous I/O).
+</p>
+<p>The length of the recording in seconds (<var>length</var>) must be specified.
+</p></dd></dl>
+
+
+<a name="XREF_0040audiorecorder_002fpause"></a><dl>
+<dt><a name="index-pause-1"></a>Function File: <em></em> <strong>pause</strong> <em>(<var>recorder</var>)</em></dt>
+<dd><p>Pause recording with audiorecorder object <var>recorder</var>.
+</p></dd></dl>
+
+
+<a name="XREF_0040audiorecorder_002fresume"></a><dl>
+<dt><a name="index-resume-1"></a>Function File: <em></em> <strong>resume</strong> <em>(<var>recorder</var>)</em></dt>
+<dd><p>Resume recording with the paused audiorecorder object <var>recorder</var>.
+</p></dd></dl>
+
+
+<a name="XREF_0040audiorecorder_002fstop"></a><dl>
+<dt><a name="index-stop-1"></a>Function File: <em></em> <strong>stop</strong> <em>(<var>recorder</var>)</em></dt>
+<dd><p>Stop the audiorecorder object <var>recorder</var> and clean up any audio streams.
+</p></dd></dl>
+
+
+<a name="XREF_0040audiorecorder_002fisrecording"></a><dl>
+<dt><a name="index-isrecording"></a>Function File: <em></em> <strong>isrecording</strong> <em>(<var>recorder</var>)</em></dt>
+<dd><p>Return true if the audiorecorder object <var>recorder</var> is currently recording
+audio and false otherwise.
+</p></dd></dl>
+
+
+
+
+
+</body>
+</html>

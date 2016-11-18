@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Root Figure Properties</title>
+
+<meta name="description" content="GNU Octave: Root Figure Properties">
+<meta name="keywords" content="GNU Octave: Root Figure Properties">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Graphics-Object-Properties.html#Graphics-Object-Properties" rel="up" title="Graphics Object Properties">
+<link href="Figure-Properties.html#Figure-Properties" rel="next" title="Figure Properties">
+<link href="Graphics-Object-Properties.html#Graphics-Object-Properties" rel="prev" title="Graphics Object Properties">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Root-Figure-Properties"></a>
+<div class="header">
+<p>
+Next: <a href="Figure-Properties.html#Figure-Properties" accesskey="n" rel="next">Figure Properties</a>, Up: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="u" rel="up">Graphics Object Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Root-Figure-Properties-1"></a>
+<h4 class="subsubsection">15.3.3.1 Root Figure Properties</h4>
+<a name="index-root-figure-properties"></a>
+
+<p>The <code>root figure</code> properties are:
+</p>
+
+
+<dl compact="compact">
+<dd>
+<a name="XREFroot_005f_005fmodified_005f_005f"></a><a name="index-root-_005f_005fmodified_005f_005f"></a>
+</dd>
+<dt><code>__modified__</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFrootbeingdeleted"></a><a name="index-root-beingdeleted"></a>
+</dd>
+<dt><code>beingdeleted</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd><p><code>beingdeleted</code> is unused.
+</p>
+
+<a name="XREFrootbusyaction"></a><a name="index-root-busyaction"></a>
+</dd>
+<dt><code>busyaction</code>: <code>&quot;cancel&quot;</code> | {<code>&quot;queue&quot;</code>}</dt>
+<dd><p><code>busyaction</code> is unused.
+</p>
+
+<a name="XREFrootbuttondownfcn"></a><a name="index-root-buttondownfcn"></a>
+</dd>
+<dt><code>buttondownfcn</code>: string | function handle, def. <code>[](0x0)</code></dt>
+<dd><p><code>buttondownfcn</code> is unused.
+</p>
+
+<a name="XREFrootcallbackobject"></a><a name="index-root-callbackobject"></a>
+</dd>
+<dt><code>callbackobject</code> (read-only): graphics handle, def. <code>[](0x0)</code></dt>
+<dd>
+
+
+<a name="XREFrootchildren"></a><a name="index-root-children"></a>
+</dd>
+<dt><code>children</code> (read-only): vector of graphics handles, def. <code>[](0x1)</code></dt>
+<dd><p>Graphics handles of the root&rsquo;s children.
+</p>
+
+<a name="XREFrootclipping"></a><a name="index-root-clipping"></a>
+</dd>
+<dt><code>clipping</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p><code>clipping</code> is unused.
+</p>
+
+<a name="XREFrootcommandwindowsize"></a><a name="index-root-commandwindowsize"></a>
+</dd>
+<dt><code>commandwindowsize</code> (read-only): def. <code>[0   0]</code></dt>
+<dd>
+
+
+<a name="XREFrootcreatefcn"></a><a name="index-root-createfcn"></a>
+</dd>
+<dt><code>createfcn</code>: string | function handle, def. <code>[](0x0)</code></dt>
+<dd><p><code>createfcn</code> is unused.
+</p>
+
+<a name="XREFrootcurrentfigure"></a><a name="index-root-currentfigure"></a>
+</dd>
+<dt><code>currentfigure</code>: graphics handle, def. <code>[](0x0)</code></dt>
+<dd><p>Graphics handle of the current figure.
+</p>
+
+<a name="XREFrootdeletefcn"></a><a name="index-root-deletefcn"></a>
+</dd>
+<dt><code>deletefcn</code>: string | function handle, def. <code>[](0x0)</code></dt>
+<dd><p><code>deletefcn</code> is unused.
+</p>
+
+<a name="XREFrootdiary"></a><a name="index-root-diary"></a>
+</dd>
+<dt><code>diary</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd><p>If <code>diary</code> is <code>&quot;on&quot;</code>, the Octave command window session is saved to file.  See <a href="#XREFrootdiaryfile">diaryfile&nbsp;property<!-- /@w --></a>.
+</p>
+
+<a name="XREFrootdiaryfile"></a><a name="index-root-diaryfile"></a>
+</dd>
+<dt><code>diaryfile</code>: string, def. <code>&quot;diary&quot;</code></dt>
+<dd><p>The name of the diary file.  See <a href="Diary-and-Echo-Commands.html#XREFdiary">diary&nbsp;function<!-- /@w --></a>.
+</p>
+
+<a name="XREFrootecho"></a><a name="index-root-echo"></a>
+</dd>
+<dt><code>echo</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd><p>Control whether Octave displays commands executed from scripts.  See <a href="Diary-and-Echo-Commands.html#XREFecho">echo&nbsp;function<!-- /@w --></a>.
+</p>
+
+<a name="XREFrooterrormessage"></a><a name="index-root-errormessage"></a>
+</dd>
+<dt><code>errormessage</code> (read-only): string, def. <code>&quot;&quot;</code></dt>
+<dd><p>The last error message raised.  See <a href="Catching-Errors.html#XREFlasterr">lasterr&nbsp;function<!-- /@w --></a>.
+</p>
+
+<a name="XREFrootfixedwidthfontname"></a><a name="index-root-fixedwidthfontname"></a>
+</dd>
+<dt><code>fixedwidthfontname</code>: string, def. <code>&quot;Courier&quot;</code></dt>
+<dd>
+
+
+<a name="XREFrootformat"></a><a name="index-root-format"></a>
+</dd>
+<dt><code>format</code>: <code>&quot;+&quot;</code> | <code>&quot;bank&quot;</code> | <code>&quot;bit&quot;</code> | <code>&quot;hex&quot;</code> | <code>&quot;long&quot;</code> | <code>&quot;longe&quot;</code> | <code>&quot;longeng&quot;</code> | <code>&quot;longg&quot;</code> | <code>&quot;native-bit&quot;</code> | <code>&quot;native-hex&quot;</code> | <code>&quot;none&quot;</code> | <code>&quot;rat&quot;</code> | {<code>&quot;short&quot;</code>} | <code>&quot;shorte&quot;</code> | <code>&quot;shorteng&quot;</code> | <code>&quot;shortg&quot;</code></dt>
+<dd><p>This property is a wrapper around the <code>format</code> function.  See <a href="Terminal-Output.html#XREFformat">format&nbsp;function<!-- /@w --></a>.
+</p>
+
+<a name="XREFrootformatspacing"></a><a name="index-root-formatspacing"></a>
+</dd>
+<dt><code>formatspacing</code>: <code>&quot;compact&quot;</code> | {<code>&quot;loose&quot;</code>}</dt>
+<dd><p>This property is a wrapper around the <code>format</code> function.  See <a href="Terminal-Output.html#XREFformat">format&nbsp;function<!-- /@w --></a>.
+</p>
+
+<a name="XREFroothandlevisibility"></a><a name="index-root-handlevisibility"></a>
+</dd>
+<dt><code>handlevisibility</code>: <code>&quot;callback&quot;</code> | <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p><code>handlevisibility</code> is unused.
+</p>
+
+<a name="XREFroothittest"></a><a name="index-root-hittest"></a>
+</dd>
+<dt><code>hittest</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p><code>hittest</code> is unused.
+</p>
+
+<a name="XREFrootinterruptible"></a><a name="index-root-interruptible"></a>
+</dd>
+<dt><code>interruptible</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p><code>interruptible</code> is unused.
+</p>
+
+<a name="XREFrootlanguage"></a><a name="index-root-language"></a>
+</dd>
+<dt><code>language</code>: string, def. <code>&quot;ascii&quot;</code></dt>
+<dd>
+
+
+<a name="XREFrootmonitorpositions"></a><a name="index-root-monitorpositions"></a>
+</dd>
+<dt><code>monitorpositions</code>:</dt>
+<dd><p><code>monitorpositions</code> is unused.
+</p>
+
+<a name="XREFrootparent"></a><a name="index-root-parent"></a>
+</dd>
+<dt><code>parent</code>: graphics handle, def. <code>[](0x0)</code></dt>
+<dd><p>Root figure has no parent graphics object.  <code>parent</code> is always empty.
+</p>
+
+<a name="XREFrootpointerlocation"></a><a name="index-root-pointerlocation"></a>
+</dd>
+<dt><code>pointerlocation</code>: two-element vector, def. <code>[0   0]</code></dt>
+<dd><p><code>pointerlocation</code> is unused.
+</p>
+
+<a name="XREFrootpointerwindow"></a><a name="index-root-pointerwindow"></a>
+</dd>
+<dt><code>pointerwindow</code> (read-only): graphics handle, def. <code>0</code></dt>
+<dd><p><code>pointerwindow</code> is unused.
+</p>
+
+<a name="XREFrootrecursionlimit"></a><a name="index-root-recursionlimit"></a>
+</dd>
+<dt><code>recursionlimit</code>: double, def. <code>256</code></dt>
+<dd><p>The maximum number of times a function can be called recursively.  See <a href="Recursion.html#XREFmax_005frecursion_005fdepth"><span class="nolinebreak">max_recursion_depth</span>&nbsp;function<!-- /@w --></a>.
+</p>
+
+<a name="XREFrootscreendepth"></a><a name="index-root-screendepth"></a>
+</dd>
+<dt><code>screendepth</code> (read-only): double</dt>
+<dd>
+
+
+<a name="XREFrootscreenpixelsperinch"></a><a name="index-root-screenpixelsperinch"></a>
+</dd>
+<dt><code>screenpixelsperinch</code> (read-only): double</dt>
+<dd>
+
+
+<a name="XREFrootscreensize"></a><a name="index-root-screensize"></a>
+</dd>
+<dt><code>screensize</code> (read-only): four-element vector</dt>
+<dd>
+
+
+<a name="XREFrootselected"></a><a name="index-root-selected"></a>
+</dd>
+<dt><code>selected</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd><p><code>selected</code> is unused.
+</p>
+
+<a name="XREFrootselectionhighlight"></a><a name="index-root-selectionhighlight"></a>
+</dd>
+<dt><code>selectionhighlight</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p><code>selectionhighlight</code> is unused.
+</p>
+
+<a name="XREFrootshowhiddenhandles"></a><a name="index-root-showhiddenhandles"></a>
+</dd>
+<dt><code>showhiddenhandles</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd><p>If <code>showhiddenhandles</code> is <code>&quot;on&quot;</code>, all graphics objects handles are visible in their parents&rsquo; children list, regardless of the value of their <code>handlevisibility</code> property.
+</p>
+
+<a name="XREFroottag"></a><a name="index-root-tag"></a>
+</dd>
+<dt><code>tag</code>: string, def. <code>&quot;&quot;</code></dt>
+<dd><p>A user-defined string to label the graphics object.
+</p>
+
+<a name="XREFroottype"></a><a name="index-root-type"></a>
+</dd>
+<dt><code>type</code> (read-only): string</dt>
+<dd><p>Class name of the graphics object.  <code>type</code> is always <code>&quot;root&quot;</code>
+</p>
+
+<a name="XREFrootuicontextmenu"></a><a name="index-root-uicontextmenu"></a>
+</dd>
+<dt><code>uicontextmenu</code>: graphics handle, def. <code>[](0x0)</code></dt>
+<dd><p><code>uicontextmenu</code> is unused.
+</p>
+
+<a name="XREFrootunits"></a><a name="index-root-units"></a>
+</dd>
+<dt><code>units</code>: <code>&quot;centimeters&quot;</code> | <code>&quot;inches&quot;</code> | <code>&quot;normalized&quot;</code> | {<code>&quot;pixels&quot;</code>} | <code>&quot;points&quot;</code></dt>
+<dd>
+
+
+<a name="XREFrootuserdata"></a><a name="index-root-userdata"></a>
+</dd>
+<dt><code>userdata</code>: Any Octave data, def. <code>[](0x0)</code></dt>
+<dd><p>User-defined data to associate with the graphics object.
+</p>
+
+<a name="XREFrootvisible"></a><a name="index-root-visible"></a>
+</dd>
+<dt><code>visible</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p><code>visible</code> is unused.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Figure-Properties.html#Figure-Properties" accesskey="n" rel="next">Figure Properties</a>, Up: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="u" rel="up">Graphics Object Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

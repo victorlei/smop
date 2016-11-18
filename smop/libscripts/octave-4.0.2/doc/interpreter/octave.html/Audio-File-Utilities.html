@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Audio File Utilities</title>
+
+<meta name="description" content="GNU Octave: Audio File Utilities">
+<meta name="keywords" content="GNU Octave: Audio File Utilities">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Audio-Processing.html#Audio-Processing" rel="up" title="Audio Processing">
+<link href="Audio-Device-Information.html#Audio-Device-Information" rel="next" title="Audio Device Information">
+<link href="Audio-Processing.html#Audio-Processing" rel="prev" title="Audio Processing">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Audio-File-Utilities"></a>
+<div class="header">
+<p>
+Next: <a href="Audio-Device-Information.html#Audio-Device-Information" accesskey="n" rel="next">Audio Device Information</a>, Up: <a href="Audio-Processing.html#Audio-Processing" accesskey="u" rel="up">Audio Processing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Audio-File-Utilities-1"></a>
+<h3 class="section">33.1 Audio File Utilities</h3>
+
+<p>The following functions allow you to read, write and retrieve
+information about audio files.  Various formats are supported including
+wav, flac and ogg vorbis.
+</p>
+<a name="XREFaudioinfo"></a><dl>
+<dt><a name="index-audioinfo"></a>Loadable Function: <em><var>info</var> =</em> <strong>audioinfo</strong> <em>(<var>filename</var>)</em></dt>
+<dd><p>Return information about an audio file specified by <var>filename</var>.
+</p></dd></dl>
+
+
+<a name="XREFaudioread"></a><dl>
+<dt><a name="index-audioread"></a>Loadable Function: <em>[<var>y</var>, <var>fs</var>] =</em> <strong>audioread</strong> <em>(<var>filename</var>)</em></dt>
+<dt><a name="index-audioread-1"></a>Loadable Function: <em>[<var>y</var>, <var>fs</var>] =</em> <strong>audioread</strong> <em>(<var>filename</var>, <var>samples</var>)</em></dt>
+<dt><a name="index-audioread-2"></a>Loadable Function: <em>[<var>y</var>, <var>fs</var>] =</em> <strong>audioread</strong> <em>(<var>filename</var>, <var>datatype</var>)</em></dt>
+<dt><a name="index-audioread-3"></a>Loadable Function: <em>[<var>y</var>, <var>fs</var>] =</em> <strong>audioread</strong> <em>(<var>filename</var>, <var>samples</var>, <var>datatype</var>)</em></dt>
+<dd><p>Read the audio file <var>filename</var> and return the audio data <var>y</var> and
+sampling rate <var>fs</var>.
+</p>
+<p>The audio data is stored as matrix with rows corresponding to audio frames
+and columns corresponding to channels.
+</p>
+<p>The optional two-element vector argument <var>samples</var> specifies starting
+and ending frames.
+</p>
+<p>The optional argument <var>datatype</var> specifies the datatype to return.
+If it is <code>&quot;native&quot;</code>, then the type of data depends on how the data
+is stored in the audio file.
+</p></dd></dl>
+
+
+<a name="XREFaudiowrite"></a><dl>
+<dt><a name="index-audiowrite"></a>Loadable Function: <em></em> <strong>audiowrite</strong> <em>(<var>filename</var>, <var>y</var>, <var>fs</var>)</em></dt>
+<dt><a name="index-audiowrite-1"></a>Loadable Function: <em></em> <strong>audiowrite</strong> <em>(<var>filename</var>, <var>y</var>, <var>fs</var>, <var>name</var>, <var>value</var>, &hellip;)</em></dt>
+<dd>
+<p>Write audio data from the matrix <var>y</var> to <var>filename</var> at sampling rate
+<var>fs</var> with the file format determined by the file extension.
+</p>
+<p>Additional name/value argument pairs may be used to specify the
+following options:
+</p>
+<dl compact="compact">
+<dt>&lsquo;<samp>BitsPerSample</samp>&rsquo;</dt>
+<dd><p>Number of bits per sample, valid values are 8, 16, 24 and 32.  Default is 16.
+</p>
+</dd>
+<dt>&lsquo;<samp>BitRate</samp>&rsquo;</dt>
+<dd><p>Valid argument name, but ignored.  Left for compatibility with <small>MATLAB</small>.
+</p>
+</dd>
+<dt>&lsquo;<samp>Quality</samp>&rsquo;</dt>
+<dd><p>Quality setting for the Ogg Vorbis compressor.  Values can range between 0
+and 100 with 100 being the highest quality setting.  Default is 75.
+</p>
+</dd>
+<dt>&lsquo;<samp>Title</samp>&rsquo;</dt>
+<dd><p>Title for the audio file.
+</p>
+</dd>
+<dt>&lsquo;<samp>Artist</samp>&rsquo;</dt>
+<dd><p>Artist name.
+</p>
+</dd>
+<dt>&lsquo;<samp>Comment</samp>&rsquo;</dt>
+<dd><p>Comment.
+</p></dd>
+</dl>
+</dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Audio-Device-Information.html#Audio-Device-Information" accesskey="n" rel="next">Audio Device Information</a>, Up: <a href="Audio-Processing.html#Audio-Processing" accesskey="u" rel="up">Audio Processing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

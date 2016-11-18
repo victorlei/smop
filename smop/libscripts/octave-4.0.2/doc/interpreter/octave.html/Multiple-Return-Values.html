@@ -1,0 +1,673 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Multiple Return Values</title>
+
+<meta name="description" content="GNU Octave: Multiple Return Values">
+<meta name="keywords" content="GNU Octave: Multiple Return Values">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Functions-and-Scripts.html#Functions-and-Scripts" rel="up" title="Functions and Scripts">
+<link href="Variable_002dlength-Argument-Lists.html#Variable_002dlength-Argument-Lists" rel="next" title="Variable-length Argument Lists">
+<link href="Defining-Functions.html#Defining-Functions" rel="prev" title="Defining Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Multiple-Return-Values"></a>
+<div class="header">
+<p>
+Next: <a href="Variable_002dlength-Argument-Lists.html#Variable_002dlength-Argument-Lists" accesskey="n" rel="next">Variable-length Argument Lists</a>, Previous: <a href="Defining-Functions.html#Defining-Functions" accesskey="p" rel="prev">Defining Functions</a>, Up: <a href="Functions-and-Scripts.html#Functions-and-Scripts" accesskey="u" rel="up">Functions and Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Multiple-Return-Values-1"></a>
+<h3 class="section">11.3 Multiple Return Values</h3>
+
+<p>Unlike many other computer languages, Octave allows you to define
+functions that return more than one value.  The syntax for defining
+functions that return multiple values is
+</p>
+<div class="example">
+<pre class="example">function [<var>ret-list</var>] = <var>name</var> (<var>arg-list</var>)
+  <var>body</var>
+endfunction
+</pre></div>
+
+<p>where <var>name</var>, <var>arg-list</var>, and <var>body</var> have the same meaning
+as before, and <var>ret-list</var> is a comma-separated list of variable
+names that will hold the values returned from the function.  The list of
+return values must have at least one element.  If <var>ret-list</var> has
+only one element, this form of the <code>function</code> statement is
+equivalent to the form described in the previous section.
+</p>
+<p>Here is an example of a function that returns two values, the maximum
+element of a vector and the index of its first occurrence in the vector.
+</p>
+<div class="example">
+<pre class="example">function [max, idx] = vmax (v)
+  idx = 1;
+  max = v (idx);
+  for i = 2:length (v)
+    if (v (i) &gt; max)
+      max = v (i);
+      idx = i;
+    endif
+  endfor
+endfunction
+</pre></div>
+
+<p>In this particular case, the two values could have been returned as
+elements of a single array, but that is not always possible or
+convenient.  The values to be returned may not have compatible
+dimensions, and it is often desirable to give the individual return
+values distinct names.
+</p>
+<p>It is possible to use the <code>nthargout</code> function to obtain only some
+of the return values or several at once in a cell array.
+See <a href="Cell-Array-Objects.html#Cell-Array-Objects">Cell Array Objects</a>.
+</p>
+<a name="XREFnthargout"></a><dl>
+<dt><a name="index-nthargout"></a>Function File: <em></em> <strong>nthargout</strong> <em>(<var>n</var>, <var>func</var>, &hellip;)</em></dt>
+<dt><a name="index-nthargout-1"></a>Function File: <em></em> <strong>nthargout</strong> <em>(<var>n</var>, <var>ntot</var>, <var>func</var>, &hellip;)</em></dt>
+<dd><p>Return the <var>n</var>th output argument of the function specified by the
+function handle or string <var>func</var>.
+</p>
+<p>Any additional arguments are passed directly to <var>func</var>.  The total
+number of arguments to call <var>func</var> with can be passed in <var>ntot</var>; by
+default <var>ntot</var> is <var>n</var>.  The input <var>n</var> can also be a vector of
+indices of the output, in which case the output will be a cell array of the
+requested output arguments.
+</p>
+<p>The intended use <code>nthargout</code> is to avoid intermediate variables.  For
+example, when finding the indices of the maximum entry of a matrix, the
+following two compositions of nthargout
+</p>
+<div class="example">
+<pre class="example"><var>m</var> = magic (5);
+cell2mat (nthargout ([1, 2], @ind2sub, size (<var>m</var>),
+                     nthargout (2, @max, <var>m</var>(:))))
+&rArr; 5   3
+</pre></div>
+
+<p>are completely equivalent to the following lines:
+</p>
+<div class="example">
+<pre class="example"><var>m</var> = magic (5);
+[~, idx] = max (<var>M</var>(:));
+[i, j] = ind2sub (size (<var>m</var>), idx);
+[i, j]
+&rArr; 5   3
+</pre></div>
+
+<p>It can also be helpful to have all output arguments in a single cell in the
+following manner:
+</p>
+<div class="example">
+<pre class="example"><var>USV</var> = nthargout ([1:3], @svd, hilb (5));
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Defining-Functions.html#XREFnargin">nargin</a>, <a href="#XREFnargout">nargout</a>, <a href="#XREFvarargin">varargin</a>, <a href="#XREFvarargout">varargout</a>, <a href="Ignoring-Arguments.html#XREFisargout">isargout</a>.
+</p></dd></dl>
+
+
+<p>In addition to setting <code>nargin</code> each time a function is called,
+Octave also automatically initializes <code>nargout</code> to the number of
+values that are expected to be returned.  This allows you to write
+functions that behave differently depending on the number of values that
+the user of the function has requested.  The implicit assignment to the
+built-in variable <code>ans</code> does not figure in the count of output
+arguments, so the value of <code>nargout</code> may be zero.
+</p>
+<p>The <code>svd</code> and <code>lu</code> functions are examples of built-in
+functions that behave differently depending on the value of
+<code>nargout</code>.
+</p>
+<p>It is possible to write functions that only set some return values.  For
+example, calling the function
+</p>
+<div class="example">
+<pre class="example">function [x, y, z] = f ()
+  x = 1;
+  z = 2;
+endfunction
+</pre></div>
+
+<p>as
+</p>
+<div class="example">
+<pre class="example">[a, b, c] = f ()
+</pre></div>
+
+<p>produces:
+</p>
+<div class="example">
+<pre class="example">a = 1
+
+b = [](0x0)
+
+c = 2
+</pre></div>
+
+<p>along with a warning.
+</p>
+<a name="XREFnargout"></a><dl>
+<dt><a name="index-nargout"></a>Built-in Function: <em></em> <strong>nargout</strong> <em>()</em></dt>
+<dt><a name="index-nargout-1"></a>Built-in Function: <em></em> <strong>nargout</strong> <em>(<var>fcn</var>)</em></dt>
+<dd><p>Report the number of output arguments from a function.
+</p>
+<p>Called from within a function, return the number of values the caller expects
+to receive.  At the top level, <code>nargout</code> with no argument is undefined
+and will produce an error.
+</p>
+<p>If called with the optional argument <var>fcn</var>&mdash;a function name or
+handle&mdash;return the number of declared output values that the function can
+produce.
+</p>
+<p>If the final output argument is <var>varargout</var> the returned value is
+negative.
+</p>
+<p>For example,
+</p>
+<div class="example">
+<pre class="example">f ()
+</pre></div>
+
+<p>will cause <code>nargout</code> to return 0 inside the function <code>f</code> and
+</p>
+<div class="example">
+<pre class="example">[s, t] = f ()
+</pre></div>
+
+<p>will cause <code>nargout</code> to return 2 inside the function <code>f</code>.
+</p>
+<p>In the second usage,
+</p>
+<div class="example">
+<pre class="example">nargout (@histc) % or nargout (&quot;histc&quot;)
+</pre></div>
+
+<p>will return 2, because <code>histc</code> has two outputs, whereas
+</p>
+<div class="example">
+<pre class="example">nargout (@imread)
+</pre></div>
+
+<p>will return -2, because <code>imread</code> has two outputs and the second is
+<var>varargout</var>.
+</p>
+<p>Programming Note.  <code>nargout</code> does not work for built-in functions and
+returns -1 for all anonymous functions.
+</p>
+<p><strong>See also:</strong> <a href="Defining-Functions.html#XREFnargin">nargin</a>, <a href="#XREFvarargout">varargout</a>, <a href="Ignoring-Arguments.html#XREFisargout">isargout</a>, <a href="#XREFnthargout">nthargout</a>.
+</p></dd></dl>
+
+
+<p>It is good practice at the head of a function to verify that it has been called
+correctly.  In Octave the following idiom is seen frequently
+</p>
+<div class="example">
+<pre class="example">if (nargin &lt; min_#_inputs || nargin &gt; max_#_inputs)
+  print_usage ();
+endif
+</pre></div>
+
+<p>which stops the function execution and prints a message about the correct
+way to call the function whenever the number of inputs is wrong.
+</p>
+<p>For compatibility with <small>MATLAB</small>, <code>narginchk</code> and <code>nargoutchk</code> are
+available which provide similar error checking.
+</p>
+<a name="XREFnarginchk"></a><dl>
+<dt><a name="index-narginchk"></a>Function File: <em></em> <strong>narginchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>)</em></dt>
+<dd><p>Check for correct number of input arguments.
+</p>
+<p>Generate an error message if the number of arguments in the calling function
+is outside the range <var>minargs</var> and <var>maxargs</var>.  Otherwise, do nothing.
+</p>
+<p>Both <var>minargs</var> and <var>maxargs</var> must be scalar numeric values.  Zero,
+Inf, and negative values are all allowed, and <var>minargs</var> and <var>maxargs</var>
+may be equal.
+</p>
+<p>Note that this function evaluates <code>nargin</code> on the caller.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFnargoutchk">nargoutchk</a>, <a href="Raising-Errors.html#XREFerror">error</a>, <a href="#XREFnargout">nargout</a>, <a href="Defining-Functions.html#XREFnargin">nargin</a>.
+</p></dd></dl>
+
+
+<a name="XREFnargoutchk"></a><dl>
+<dt><a name="index-nargoutchk"></a>Function File: <em></em> <strong>nargoutchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>)</em></dt>
+<dt><a name="index-nargoutchk-1"></a>Function File: <em><var>msgstr</var> =</em> <strong>nargoutchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>, <var>nargs</var>)</em></dt>
+<dt><a name="index-nargoutchk-2"></a>Function File: <em><var>msgstr</var> =</em> <strong>nargoutchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>, <var>nargs</var>, &quot;string&quot;)</em></dt>
+<dt><a name="index-nargoutchk-3"></a>Function File: <em><var>msgstruct</var> =</em> <strong>nargoutchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>, <var>nargs</var>, &quot;struct&quot;)</em></dt>
+<dd><p>Check for correct number of output arguments.
+</p>
+<p>In the first form, return an error if the number of arguments is not between
+<var>minargs</var> and <var>maxargs</var>.  Otherwise, do nothing.  Note that this
+function evaluates the value of <code>nargout</code> on the caller so its value
+must have not been tampered with.
+</p>
+<p>Both <var>minargs</var> and <var>maxargs</var> must be numeric scalars.  Zero, Inf,
+and negative are all valid, and they can have the same value.
+</p>
+<p>For backwards compatibility, the other forms return an appropriate error
+message string (or structure) if the number of outputs requested is
+invalid.
+</p>
+<p>This is useful for checking to that the number of output arguments supplied
+to a function is within an acceptable range.
+</p>
+<p><strong>See also:</strong> <a href="#XREFnarginchk">narginchk</a>, <a href="Raising-Errors.html#XREFerror">error</a>, <a href="#XREFnargout">nargout</a>, <a href="Defining-Functions.html#XREFnargin">nargin</a>.
+</p></dd></dl>
+
+
+<p>Besides the number of arguments, inputs can be checked for various properties.
+<code>validatestring</code> is used for string arguments and
+<code>validateattributes</code> for numeric arguments.
+</p>
+<a name="XREFvalidatestring"></a><dl>
+<dt><a name="index-validatestring"></a>Function File: <em><var>validstr</var> =</em> <strong>validatestring</strong> <em>(<var>str</var>, <var>strarray</var>)</em></dt>
+<dt><a name="index-validatestring-1"></a>Function File: <em><var>validstr</var> =</em> <strong>validatestring</strong> <em>(<var>str</var>, <var>strarray</var>, <var>funcname</var>)</em></dt>
+<dt><a name="index-validatestring-2"></a>Function File: <em><var>validstr</var> =</em> <strong>validatestring</strong> <em>(<var>str</var>, <var>strarray</var>, <var>funcname</var>, <var>varname</var>)</em></dt>
+<dt><a name="index-validatestring-3"></a>Function File: <em><var>validstr</var> =</em> <strong>validatestring</strong> <em>(&hellip;, <var>position</var>)</em></dt>
+<dd><p>Verify that <var>str</var> is an element, or substring of an element, in
+<var>strarray</var>.
+</p>
+<p>When <var>str</var> is a character string to be tested, and <var>strarray</var> is a
+cellstr of valid values, then <var>validstr</var> will be the validated form
+of <var>str</var> where validation is defined as <var>str</var> being a member
+or substring of <var>validstr</var>.  This is useful for both verifying
+and expanding short options, such as <code>&quot;r&quot;</code>, to their longer forms,
+such as <code>&quot;red&quot;</code>.  If <var>str</var> is a substring of <var>validstr</var>, and
+there are multiple matches, the shortest match will be returned if all
+matches are substrings of each other.  Otherwise, an error will be raised
+because the expansion of <var>str</var> is ambiguous.  All comparisons are case
+insensitive.
+</p>
+<p>The additional inputs <var>funcname</var>, <var>varname</var>, and <var>position</var>
+are optional and will make any generated validation error message more
+specific.
+</p>
+<p>Examples:
+</p>
+<div class="smallexample">
+<pre class="smallexample">validatestring (&quot;r&quot;, {&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;})
+&rArr; &quot;red&quot;
+
+validatestring (&quot;b&quot;, {&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;, &quot;black&quot;})
+&rArr; error: validatestring: multiple unique matches were found for 'b':
+   blue, black
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Comparing-Strings.html#XREFstrcmp">strcmp</a>, <a href="Comparing-Strings.html#XREFstrcmpi">strcmpi</a>, <a href="#XREFvalidateattributes">validateattributes</a>, <a href="#XREFinputParser">inputParser</a>.
+</p></dd></dl>
+
+
+<a name="XREFvalidateattributes"></a><dl>
+<dt><a name="index-validateattributes"></a>Function File: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>)</em></dt>
+<dt><a name="index-validateattributes-1"></a>Function File: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>, <var>arg_idx</var>)</em></dt>
+<dt><a name="index-validateattributes-2"></a>Function File: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>, <var>func_name</var>)</em></dt>
+<dt><a name="index-validateattributes-3"></a>Function File: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>, <var>func_name</var>, <var>arg_name</var>)</em></dt>
+<dt><a name="index-validateattributes-4"></a>Function File: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>, <var>func_name</var>, <var>arg_name</var>, <var>arg_idx</var>)</em></dt>
+<dd><p>Check validity of input argument.
+</p>
+<p>Confirms that the argument <var>A</var> is valid by belonging to one of
+<var>classes</var>, and holding all of the <var>attributes</var>.  If it does not,
+an error is thrown, with a message formatted accordingly.  The error
+message can be made further complete by the function name <var>fun_name</var>,
+the argument name <var>arg_name</var>, and its position in the input
+<var>arg_idx</var>.
+</p>
+<p><var>classes</var> must be a cell array of strings (an empty cell array is
+allowed) with the name of classes (remember that a class name is case
+sensitive).  In addition to the class name, the following categories
+names are also valid:
+</p>
+<dl compact="compact">
+<dt><code>&quot;float&quot;</code></dt>
+<dd><p>Floating point value comprising classes <code>&quot;double&quot;</code> and
+<code>&quot;single&quot;</code>.
+</p>
+</dd>
+<dt><code>&quot;integer&quot;</code></dt>
+<dd><p>Integer value comprising classes (u)int8, (u)int16, (u)int32, (u)int64.
+</p>
+</dd>
+<dt><code>&quot;numeric&quot;</code></dt>
+<dd><p>Numeric value comprising either a floating point or integer value.
+</p>
+</dd>
+</dl>
+
+<p><var>attributes</var> must be a cell array with names of checks for <var>A</var>.
+Some of them require an additional value to be supplied right after the
+name (see details for each below).
+</p>
+<dl compact="compact">
+<dt><code>&quot;&lt;=&quot;</code></dt>
+<dd><p>All values are less than or equal to the following value in <var>attributes</var>.
+</p>
+</dd>
+<dt><code>&quot;&lt;&quot;</code></dt>
+<dd><p>All values are less than the following value in <var>attributes</var>.
+</p>
+</dd>
+<dt><code>&quot;&gt;=&quot;</code></dt>
+<dd><p>All values are greater than or equal to the following value in
+<var>attributes</var>.
+</p>
+</dd>
+<dt><code>&quot;&gt;&quot;</code></dt>
+<dd><p>All values are greater than the following value in <var>attributes</var>.
+</p>
+</dd>
+<dt><code>&quot;2d&quot;</code></dt>
+<dd><p>A 2-dimensional matrix.  Note that vectors and empty matrices have
+2 dimensions, one of them being of length 1, or both length 0.
+</p>
+</dd>
+<dt><code>&quot;3d&quot;</code></dt>
+<dd><p>Has no more than 3 dimensions.  A 2-dimensional matrix is a 3-D matrix
+whose 3rd dimension is of length 1.
+</p>
+</dd>
+<dt><code>&quot;binary&quot;</code></dt>
+<dd><p>All values are either 1 or 0.
+</p>
+</dd>
+<dt><code>&quot;column&quot;</code></dt>
+<dd><p>Values are arranged in a single column.
+</p>
+</dd>
+<dt><code>&quot;decreasing&quot;</code></dt>
+<dd><p>No value is <var>NaN</var>, and each is less than the preceding one.
+</p>
+</dd>
+<dt><code>&quot;even&quot;</code></dt>
+<dd><p>All values are even numbers.
+</p>
+</dd>
+<dt><code>&quot;finite&quot;</code></dt>
+<dd><p>All values are finite.
+</p>
+</dd>
+<dt><code>&quot;increasing&quot;</code></dt>
+<dd><p>No value is <var>NaN</var>, and each is greater than the preceding one.
+</p>
+</dd>
+<dt><code>&quot;integer&quot;</code></dt>
+<dd><p>All values are integer.  This is different than using <code>isinteger</code>
+which only checks its an integer type.  This checks that each value in
+<var>A</var> is an integer value, i.e., it has no decimal part.
+</p>
+</dd>
+<dt><code>&quot;ncols&quot;</code></dt>
+<dd><p>Has exactly as many columns as the next value in <var>attributes</var>.
+</p>
+</dd>
+<dt><code>&quot;ndims&quot;</code></dt>
+<dd><p>Has exactly as many dimensions as the next value in <var>attributes</var>.
+</p>
+</dd>
+<dt><code>&quot;nondecreasing&quot;</code></dt>
+<dd><p>No value is <var>NaN</var>, and each is greater than or equal to the preceding
+one.
+</p>
+</dd>
+<dt><code>&quot;nonempty&quot;</code></dt>
+<dd><p>It is not empty.
+</p>
+</dd>
+<dt><code>&quot;nonincreasing&quot;</code></dt>
+<dd><p>No value is <var>NaN</var>, and each is less than or equal to the preceding one.
+</p>
+</dd>
+<dt><code>&quot;nonnan&quot;</code></dt>
+<dd><p>No value is a <code>NaN</code>.
+</p>
+</dd>
+<dt><code>&quot;nonnegative&quot;</code></dt>
+<dd><p>All values are non negative.
+</p>
+</dd>
+<dt><code>&quot;nonsparse&quot;</code></dt>
+<dd><p>It is not a sparse matrix.
+</p>
+</dd>
+<dt><code>&quot;nonzero&quot;</code></dt>
+<dd><p>No value is zero.
+</p>
+</dd>
+<dt><code>&quot;nrows&quot;</code></dt>
+<dd><p>Has exactly as many rows as the next value in <var>attributes</var>.
+</p>
+</dd>
+<dt><code>&quot;numel&quot;</code></dt>
+<dd><p>Has exactly as many elements as the next value in <var>attributes</var>.
+</p>
+</dd>
+<dt><code>&quot;odd&quot;</code></dt>
+<dd><p>All values are odd numbers.
+</p>
+</dd>
+<dt><code>&quot;positive&quot;</code></dt>
+<dd><p>All values are positive.
+</p>
+</dd>
+<dt><code>&quot;real&quot;</code></dt>
+<dd><p>It is a non-complex matrix.
+</p>
+</dd>
+<dt><code>&quot;row&quot;</code></dt>
+<dd><p>Values are arranged in a single row.
+</p>
+</dd>
+<dt><code>&quot;scalar&quot;</code></dt>
+<dd><p>It is a scalar.
+</p>
+</dd>
+<dt><code>&quot;size&quot;</code></dt>
+<dd><p>Its size has length equal to the values of the next in <var>attributes</var>.
+The next value must is an array with the length for each dimension.  To
+ignore the check for a certain dimension, the value of <code>NaN</code> can be
+used.
+</p>
+</dd>
+<dt><code>&quot;square&quot;</code></dt>
+<dd><p>Is a square matrix.
+</p>
+</dd>
+<dt><code>&quot;vector&quot;</code></dt>
+<dd><p>Values are arranged in a single vector (column or vector).
+</p>
+</dd>
+</dl>
+
+
+<p><strong>See also:</strong> <a href="Built_002din-Data-Types.html#XREFisa">isa</a>, <a href="#XREFvalidatestring">validatestring</a>, <a href="#XREFinputParser">inputParser</a>.
+</p></dd></dl>
+
+
+<p>If none of the preceding functions is sufficient there is also the class
+<code>inputParser</code> which can perform extremely complex input checking for
+functions.
+</p>
+<a name="XREFinputParser"></a><dl>
+<dt><a name="index-inputParser"></a>Function File: <em><var>p</var> =</em> <strong>inputParser</strong> <em>()</em></dt>
+<dd><p>Create object <var>p</var> of the inputParser class.
+</p>
+<p>This class is designed to allow easy parsing of function arguments.  The
+class supports four types of arguments:
+</p>
+<ol>
+<li> mandatory (see <code>addRequired</code>);
+
+</li><li> optional (see <code>addOptional</code>);
+
+</li><li> named (see <code>addParamValue</code>);
+
+</li><li> switch (see <code>addSwitch</code>).
+</li></ol>
+
+<p>After defining the function API with these methods, the supplied arguments
+can be parsed with the <code>parse</code> method and the parsing results
+accessed with the <code>Results</code> accessor.
+</p>
+</dd></dl>
+<dl>
+<dt><a name="index-inputParser_002eParameters"></a>Accessor method: <em></em> <strong>inputParser.Parameters</strong></dt>
+<dd><p>Return list of parameter names already defined.
+</p>
+</dd></dl>
+<dl>
+<dt><a name="index-inputParser_002eResults"></a>Accessor method: <em></em> <strong>inputParser.Results</strong></dt>
+<dd><p>Return structure with argument names as fieldnames and corresponding values.
+</p>
+</dd></dl>
+<dl>
+<dt><a name="index-inputParser_002eUnmatched"></a>Accessor method: <em></em> <strong>inputParser.Unmatched</strong></dt>
+<dd><p>Return structure similar to <code>Results</code>, but for unmatched parameters.
+See the <code>KeepUnmatched</code> property.
+</p>
+</dd></dl>
+<dl>
+<dt><a name="index-inputParser_002eUsingDefaults"></a>Accessor method: <em></em> <strong>inputParser.UsingDefaults</strong></dt>
+<dd><p>Return cell array with the names of arguments that are using default values.
+</p>
+</dd></dl>
+<dl>
+<dt><a name="index-inputParser_002eCaseSensitive"></a>Class property: <em></em> <strong>inputParser.CaseSensitive</strong> <em>= <var>boolean</var></em></dt>
+<dd><p>Set whether matching of argument names should be case sensitive.  Defaults
+to false.
+</p>
+</dd></dl>
+<dl>
+<dt><a name="index-inputParser_002eFunctionName"></a>Class property: <em></em> <strong>inputParser.FunctionName</strong> <em>= <var>name</var></em></dt>
+<dd><p>Set function name to be used in error messages; Defaults to empty string.
+</p>
+</dd></dl>
+<dl>
+<dt><a name="index-inputParser_002eKeepUnmatched"></a>Class property: <em></em> <strong>inputParser.KeepUnmatched</strong> <em>= <var>boolean</var></em></dt>
+<dd><p>Set whether an error should be given for non-defined arguments.  Defaults to
+false.  If set to true, the extra arguments can be accessed through
+<code>Unmatched</code> after the <code>parse</code> method.  Note that since
+<code>Switch</code> and <code>ParamValue</code> arguments can be mixed, it is
+not possible to know the unmatched type.  If argument is found unmatched
+it is assumed to be of the <code>ParamValue</code> type and it is expected to
+be followed by a value.
+</p>
+</dd></dl>
+<dl>
+<dt><a name="index-inputParser_002eStructExpand"></a>Class property: <em></em> <strong>inputParser.StructExpand</strong> <em>= <var>boolean</var></em></dt>
+<dd><p>Set whether a structure can be passed to the function instead of
+parameter/value pairs.  Defaults to true.  Not implemented yet.
+</p>
+<p>The following example shows how to use this class:
+</p>
+<div class="example">
+<pre class="example">function check (varargin)
+  p = inputParser ();                      # create object
+  p.FunctionName = &quot;check&quot;;                # set function name
+  p.addRequired (&quot;pack&quot;, @ischar);         # mandatory argument
+  p.addOptional (&quot;path&quot;, pwd(), @ischar);  # optional argument
+
+  ## create a function handle to anonymous functions for validators
+  val_mat = @(x) isvector (x) &amp;&amp; all (x &lt;= 1) &amp;&amp; all (x &gt;= 0);
+  p.addOptional (&quot;mat&quot;, [0 0], val_mat);
+
+  ## create two arguments of type &quot;ParamValue&quot;
+  val_type = @(x) any (strcmp (x, {&quot;linear&quot;, &quot;quadratic&quot;}));
+  p.addParamValue (&quot;type&quot;, &quot;linear&quot;, val_type);
+  val_verb = @(x) any (strcmp (x, {&quot;low&quot;, &quot;medium&quot;, &quot;high&quot;}));
+  p.addParamValue (&quot;tolerance&quot;, &quot;low&quot;, val_verb);
+
+  ## create a switch type of argument
+  p.addSwitch (&quot;verbose&quot;);
+
+  p.parse (varargin{:});  # Run created parser on inputs
+
+  ## the rest of the function can access inputs by using p.Results.
+  ## for example, get the tolerance input with p.Results.tolerance
+endfunction
+</pre><pre class="example">
+
+check (&quot;mech&quot;);           # valid, use defaults for other arguments
+check ();                 # error, one argument is mandatory
+check (1);                # error, since ! ischar
+check (&quot;mech&quot;, &quot;~/dev&quot;);  # valid, use defaults for other arguments
+
+check (&quot;mech&quot;, &quot;~/dev&quot;, [0 1 0 0], &quot;type&quot;, &quot;linear&quot;);  # valid
+
+## following is also valid.  Note how the Switch argument type can
+## be mixed into or before the ParamValue argument type (but it
+## must still appear after any Optional argument).
+check (&quot;mech&quot;, &quot;~/dev&quot;, [0 1 0 0], &quot;verbose&quot;, &quot;tolerance&quot;, &quot;high&quot;);
+
+## following returns an error since not all optional arguments,
+## `path' and `mat', were given before the named argument `type'.
+check (&quot;mech&quot;, &quot;~/dev&quot;, &quot;type&quot;, &quot;linear&quot;);
+</pre></div>
+
+<p><em>Note 1</em>: A function can have any mixture of the four API types but
+they must appear in a specific order.  <code>Required</code> arguments must be
+first and can be followed by any <code>Optional</code> arguments.  Only
+the <code>ParamValue</code> and <code>Switch</code> arguments may be mixed
+together and they must appear at the end.
+</p>
+<p><em>Note 2</em>: If both <code>Optional</code> and <code>ParamValue</code> arguments
+are mixed in a function API then once a string Optional argument fails to
+validate it will be considered the end of the <code>Optional</code>
+arguments.  The remaining arguments will be compared against any
+<code>ParamValue</code> or <code>Switch</code> arguments.
+</p>
+
+<p><strong>See also:</strong> <a href="Defining-Functions.html#XREFnargin">nargin</a>, <a href="#XREFvalidateattributes">validateattributes</a>, <a href="#XREFvalidatestring">validatestring</a>, <a href="#XREFvarargin">varargin</a>.
+</p></dd></dl>
+
+
+<a name="XREFvarargin"></a><a name="XREFvarargout"></a><hr>
+<div class="header">
+<p>
+Next: <a href="Variable_002dlength-Argument-Lists.html#Variable_002dlength-Argument-Lists" accesskey="n" rel="next">Variable-length Argument Lists</a>, Previous: <a href="Defining-Functions.html#Defining-Functions" accesskey="p" rel="prev">Defining Functions</a>, Up: <a href="Functions-and-Scripts.html#Functions-and-Scripts" accesskey="u" rel="up">Functions and Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

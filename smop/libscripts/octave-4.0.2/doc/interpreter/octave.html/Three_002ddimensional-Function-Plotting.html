@@ -1,0 +1,310 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Three-dimensional Function Plotting</title>
+
+<meta name="description" content="GNU Octave: Three-dimensional Function Plotting">
+<meta name="keywords" content="GNU Octave: Three-dimensional Function Plotting">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" rel="up" title="Three-Dimensional Plots">
+<link href="Three_002ddimensional-Geometric-Shapes.html#Three_002ddimensional-Geometric-Shapes" rel="next" title="Three-dimensional Geometric Shapes">
+<link href="Aspect-Ratio.html#Aspect-Ratio" rel="prev" title="Aspect Ratio">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Three_002ddimensional-Function-Plotting"></a>
+<div class="header">
+<p>
+Next: <a href="Three_002ddimensional-Geometric-Shapes.html#Three_002ddimensional-Geometric-Shapes" accesskey="n" rel="next">Three-dimensional Geometric Shapes</a>, Previous: <a href="Aspect-Ratio.html#Aspect-Ratio" accesskey="p" rel="prev">Aspect Ratio</a>, Up: <a href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" accesskey="u" rel="up">Three-Dimensional Plots</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Three_002ddimensional-Function-Plotting-1"></a>
+<h4 class="subsubsection">15.2.2.2 Three-dimensional Function Plotting</h4>
+
+<a name="XREFezplot3"></a><dl>
+<dt><a name="index-ezplot3"></a>Function File: <em></em> <strong>ezplot3</strong> <em>(<var>fx</var>, <var>fy</var>, <var>fz</var>)</em></dt>
+<dt><a name="index-ezplot3-1"></a>Function File: <em></em> <strong>ezplot3</strong> <em>(&hellip;, <var>dom</var>)</em></dt>
+<dt><a name="index-ezplot3-2"></a>Function File: <em></em> <strong>ezplot3</strong> <em>(&hellip;, <var>n</var>)</em></dt>
+<dt><a name="index-ezplot3-3"></a>Function File: <em></em> <strong>ezplot3</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-ezplot3-4"></a>Function File: <em><var>h</var> =</em> <strong>ezplot3</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot a parametrically defined curve in three dimensions.
+</p>
+<p><var>fx</var>, <var>fy</var>, and <var>fz</var> are strings, inline functions,
+or function handles with one argument defining the function.  By
+default the plot is over the domain <code>0 &lt;= <var>t</var> &lt;= 2*pi</code>
+with 500 points.
+</p>
+<p>If <var>dom</var> is a two element vector, it represents the minimum and maximum
+values of <var>t</var>.
+</p>
+<p><var>n</var> is a scalar defining the number of points to use in plotting the
+function.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created plot.
+</p>
+<div class="example">
+<pre class="example">fx = @(t) cos (t);
+fy = @(t) sin (t);
+fz = @(t) t;
+ezplot3 (fx, fy, fz, [0, 10*pi], 100);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Three_002dDimensional-Plots.html#XREFplot3">plot3</a>, <a href="Two_002ddimensional-Function-Plotting.html#XREFezplot">ezplot</a>, <a href="#XREFezmesh">ezmesh</a>, <a href="#XREFezsurf">ezsurf</a>.
+</p></dd></dl>
+
+
+<a name="XREFezmesh"></a><dl>
+<dt><a name="index-ezmesh"></a>Function File: <em></em> <strong>ezmesh</strong> <em>(<var>f</var>)</em></dt>
+<dt><a name="index-ezmesh-1"></a>Function File: <em></em> <strong>ezmesh</strong> <em>(<var>fx</var>, <var>fy</var>, <var>fz</var>)</em></dt>
+<dt><a name="index-ezmesh-2"></a>Function File: <em></em> <strong>ezmesh</strong> <em>(&hellip;, <var>dom</var>)</em></dt>
+<dt><a name="index-ezmesh-3"></a>Function File: <em></em> <strong>ezmesh</strong> <em>(&hellip;, <var>n</var>)</em></dt>
+<dt><a name="index-ezmesh-4"></a>Function File: <em></em> <strong>ezmesh</strong> <em>(&hellip;, &quot;circ&quot;)</em></dt>
+<dt><a name="index-ezmesh-5"></a>Function File: <em></em> <strong>ezmesh</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-ezmesh-6"></a>Function File: <em><var>h</var> =</em> <strong>ezmesh</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot the mesh defined by a function.
+</p>
+<p><var>f</var> is a string, inline function, or function handle with two arguments
+defining the function.  By default the plot is over the meshed domain
+<code>-2*pi &lt;= <var>x</var> | <var>y</var> &lt;= 2*pi</code> with 60 points in each dimension.
+</p>
+<p>If three functions are passed, then plot the parametrically defined
+function <code>[<var>fx</var> (<var>s</var>, <var>t</var>), <var>fy</var> (<var>s</var>, <var>t</var>),
+<var>fz</var> (<var>s</var>, <var>t</var>)]</code>.
+</p>
+<p>If <var>dom</var> is a two element vector, it represents the minimum and maximum
+values of both <var>x</var> and <var>y</var>.  If <var>dom</var> is a four element vector,
+then the minimum and maximum values are <code>[xmin xmax ymin ymax]</code>.
+</p>
+<p><var>n</var> is a scalar defining the number of points to use in each dimension.
+</p>
+<p>If the argument <code>&quot;circ&quot;</code> is given, then the function is plotted over
+a disk centered on the middle of the domain <var>dom</var>.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created
+surface object.
+</p>
+<p>Example 1: 2-argument function
+</p>
+<div class="example">
+<pre class="example">f = @(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
+ezmesh (f, [-3, 3]);
+</pre></div>
+
+<p>Example 2: parametrically defined function
+</p>
+<div class="example">
+<pre class="example">fx = @(s,t) cos (s) .* cos (t);
+fy = @(s,t) sin (s) .* cos (t);
+fz = @(s,t) sin (t);
+ezmesh (fx, fy, fz, [-pi, pi, -pi/2, pi/2], 20);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Three_002dDimensional-Plots.html#XREFmesh">mesh</a>, <a href="#XREFezmeshc">ezmeshc</a>, <a href="Two_002ddimensional-Function-Plotting.html#XREFezplot">ezplot</a>, <a href="#XREFezsurf">ezsurf</a>, <a href="#XREFezsurfc">ezsurfc</a>, <a href="Three_002dDimensional-Plots.html#XREFhidden">hidden</a>.
+</p></dd></dl>
+
+
+<a name="XREFezmeshc"></a><dl>
+<dt><a name="index-ezmeshc"></a>Function File: <em></em> <strong>ezmeshc</strong> <em>(<var>f</var>)</em></dt>
+<dt><a name="index-ezmeshc-1"></a>Function File: <em></em> <strong>ezmeshc</strong> <em>(<var>fx</var>, <var>fy</var>, <var>fz</var>)</em></dt>
+<dt><a name="index-ezmeshc-2"></a>Function File: <em></em> <strong>ezmeshc</strong> <em>(&hellip;, <var>dom</var>)</em></dt>
+<dt><a name="index-ezmeshc-3"></a>Function File: <em></em> <strong>ezmeshc</strong> <em>(&hellip;, <var>n</var>)</em></dt>
+<dt><a name="index-ezmeshc-4"></a>Function File: <em></em> <strong>ezmeshc</strong> <em>(&hellip;, &quot;circ&quot;)</em></dt>
+<dt><a name="index-ezmeshc-5"></a>Function File: <em></em> <strong>ezmeshc</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-ezmeshc-6"></a>Function File: <em><var>h</var> =</em> <strong>ezmeshc</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot the mesh and contour lines defined by a function.
+</p>
+<p><var>f</var> is a string, inline function, or function handle with two arguments
+defining the function.  By default the plot is over the meshed domain
+<code>-2*pi &lt;= <var>x</var> | <var>y</var> &lt;= 2*pi</code> with 60 points in each dimension.
+</p>
+<p>If three functions are passed, then plot the parametrically defined
+function <code>[<var>fx</var> (<var>s</var>, <var>t</var>), <var>fy</var> (<var>s</var>, <var>t</var>),
+<var>fz</var> (<var>s</var>, <var>t</var>)]</code>.
+</p>
+<p>If <var>dom</var> is a two element vector, it represents the minimum and maximum
+values of both <var>x</var> and <var>y</var>.  If <var>dom</var> is a four element vector,
+then the minimum and maximum values are <code>[xmin xmax ymin ymax]</code>.
+</p>
+<p><var>n</var> is a scalar defining the number of points to use in each dimension.
+</p>
+<p>If the argument <code>&quot;circ&quot;</code> is given, then the function is plotted over
+a disk centered on the middle of the domain <var>dom</var>.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a 2-element vector with a graphics
+handle for the created mesh plot and a second handle for the created contour
+plot.
+</p>
+<p>Example: 2-argument function
+</p>
+<div class="example">
+<pre class="example">f = @(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
+ezmeshc (f, [-3, 3]);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Three_002dDimensional-Plots.html#XREFmeshc">meshc</a>, <a href="#XREFezmesh">ezmesh</a>, <a href="Two_002ddimensional-Function-Plotting.html#XREFezplot">ezplot</a>, <a href="#XREFezsurf">ezsurf</a>, <a href="#XREFezsurfc">ezsurfc</a>, <a href="Three_002dDimensional-Plots.html#XREFhidden">hidden</a>.
+</p></dd></dl>
+
+
+<a name="XREFezsurf"></a><dl>
+<dt><a name="index-ezsurf"></a>Function File: <em></em> <strong>ezsurf</strong> <em>(<var>f</var>)</em></dt>
+<dt><a name="index-ezsurf-1"></a>Function File: <em></em> <strong>ezsurf</strong> <em>(<var>fx</var>, <var>fy</var>, <var>fz</var>)</em></dt>
+<dt><a name="index-ezsurf-2"></a>Function File: <em></em> <strong>ezsurf</strong> <em>(&hellip;, <var>dom</var>)</em></dt>
+<dt><a name="index-ezsurf-3"></a>Function File: <em></em> <strong>ezsurf</strong> <em>(&hellip;, <var>n</var>)</em></dt>
+<dt><a name="index-ezsurf-4"></a>Function File: <em></em> <strong>ezsurf</strong> <em>(&hellip;, &quot;circ&quot;)</em></dt>
+<dt><a name="index-ezsurf-5"></a>Function File: <em></em> <strong>ezsurf</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-ezsurf-6"></a>Function File: <em><var>h</var> =</em> <strong>ezsurf</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot the surface defined by a function.
+</p>
+<p><var>f</var> is a string, inline function, or function handle with two arguments
+defining the function.  By default the plot is over the meshed domain
+<code>-2*pi &lt;= <var>x</var> | <var>y</var> &lt;= 2*pi</code> with 60 points in each dimension.
+</p>
+<p>If three functions are passed, then plot the parametrically defined
+function <code>[<var>fx</var> (<var>s</var>, <var>t</var>), <var>fy</var> (<var>s</var>, <var>t</var>),
+<var>fz</var> (<var>s</var>, <var>t</var>)]</code>.
+</p>
+<p>If <var>dom</var> is a two element vector, it represents the minimum and maximum
+values of both <var>x</var> and <var>y</var>.  If <var>dom</var> is a four element vector,
+then the minimum and maximum values are <code>[xmin xmax ymin ymax]</code>.
+</p>
+<p><var>n</var> is a scalar defining the number of points to use in each dimension.
+</p>
+<p>If the argument <code>&quot;circ&quot;</code> is given, then the function is plotted over
+a disk centered on the middle of the domain <var>dom</var>.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created
+surface object.
+</p>
+<p>Example 1: 2-argument function
+</p>
+<div class="example">
+<pre class="example">f = @(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
+ezsurf (f, [-3, 3]);
+</pre></div>
+
+<p>Example 2: parametrically defined function
+</p>
+<div class="example">
+<pre class="example">fx = @(s,t) cos (s) .* cos (t);
+fy = @(s,t) sin (s) .* cos (t);
+fz = @(s,t) sin (t);
+ezsurf (fx, fy, fz, [-pi, pi, -pi/2, pi/2], 20);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Three_002dDimensional-Plots.html#XREFsurf">surf</a>, <a href="#XREFezsurfc">ezsurfc</a>, <a href="Two_002ddimensional-Function-Plotting.html#XREFezplot">ezplot</a>, <a href="#XREFezmesh">ezmesh</a>, <a href="#XREFezmeshc">ezmeshc</a>, <a href="Three_002dDimensional-Plots.html#XREFshading">shading</a>.
+</p></dd></dl>
+
+
+<a name="XREFezsurfc"></a><dl>
+<dt><a name="index-ezsurfc"></a>Function File: <em></em> <strong>ezsurfc</strong> <em>(<var>f</var>)</em></dt>
+<dt><a name="index-ezsurfc-1"></a>Function File: <em></em> <strong>ezsurfc</strong> <em>(<var>fx</var>, <var>fy</var>, <var>fz</var>)</em></dt>
+<dt><a name="index-ezsurfc-2"></a>Function File: <em></em> <strong>ezsurfc</strong> <em>(&hellip;, <var>dom</var>)</em></dt>
+<dt><a name="index-ezsurfc-3"></a>Function File: <em></em> <strong>ezsurfc</strong> <em>(&hellip;, <var>n</var>)</em></dt>
+<dt><a name="index-ezsurfc-4"></a>Function File: <em></em> <strong>ezsurfc</strong> <em>(&hellip;, &quot;circ&quot;)</em></dt>
+<dt><a name="index-ezsurfc-5"></a>Function File: <em></em> <strong>ezsurfc</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-ezsurfc-6"></a>Function File: <em><var>h</var> =</em> <strong>ezsurfc</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot the surface and contour lines defined by a function.
+</p>
+<p><var>f</var> is a string, inline function, or function handle with two arguments
+defining the function.  By default the plot is over the meshed domain
+<code>-2*pi &lt;= <var>x</var> | <var>y</var> &lt;= 2*pi</code> with 60 points in each dimension.
+</p>
+<p>If three functions are passed, then plot the parametrically defined
+function <code>[<var>fx</var> (<var>s</var>, <var>t</var>), <var>fy</var> (<var>s</var>, <var>t</var>),
+<var>fz</var> (<var>s</var>, <var>t</var>)]</code>.
+</p>
+<p>If <var>dom</var> is a two element vector, it represents the minimum and maximum
+values of both <var>x</var> and <var>y</var>.  If <var>dom</var> is a four element vector,
+then the minimum and maximum values are <code>[xmin xmax ymin ymax]</code>.
+</p>
+<p><var>n</var> is a scalar defining the number of points to use in each dimension.
+</p>
+<p>If the argument <code>&quot;circ&quot;</code> is given, then the function is plotted over
+a disk centered on the middle of the domain <var>dom</var>.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a 2-element vector with a graphics
+handle for the created surface plot and a second handle for the created
+contour plot.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">f = @(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
+ezsurfc (f, [-3, 3]);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Three_002dDimensional-Plots.html#XREFsurfc">surfc</a>, <a href="#XREFezsurf">ezsurf</a>, <a href="Two_002ddimensional-Function-Plotting.html#XREFezplot">ezplot</a>, <a href="#XREFezmesh">ezmesh</a>, <a href="#XREFezmeshc">ezmeshc</a>, <a href="Three_002dDimensional-Plots.html#XREFshading">shading</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Three_002ddimensional-Geometric-Shapes.html#Three_002ddimensional-Geometric-Shapes" accesskey="n" rel="next">Three-dimensional Geometric Shapes</a>, Previous: <a href="Aspect-Ratio.html#Aspect-Ratio" accesskey="p" rel="prev">Aspect Ratio</a>, Up: <a href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" accesskey="u" rel="up">Three-Dimensional Plots</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Assignment Ops</title>
+
+<meta name="description" content="GNU Octave: Assignment Ops">
+<meta name="keywords" content="GNU Octave: Assignment Ops">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Expressions.html#Expressions" rel="up" title="Expressions">
+<link href="Increment-Ops.html#Increment-Ops" rel="next" title="Increment Ops">
+<link href="Short_002dcircuit-Boolean-Operators.html#Short_002dcircuit-Boolean-Operators" rel="prev" title="Short-circuit Boolean Operators">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Assignment-Ops"></a>
+<div class="header">
+<p>
+Next: <a href="Increment-Ops.html#Increment-Ops" accesskey="n" rel="next">Increment Ops</a>, Previous: <a href="Boolean-Expressions.html#Boolean-Expressions" accesskey="p" rel="prev">Boolean Expressions</a>, Up: <a href="Expressions.html#Expressions" accesskey="u" rel="up">Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Assignment-Expressions"></a>
+<h3 class="section">8.6 Assignment Expressions</h3>
+<a name="index-assignment-expressions"></a>
+<a name="index-assignment-operators"></a>
+<a name="index-operators_002c-assignment"></a>
+<a name="index-expressions_002c-assignment"></a>
+
+<a name="index-_003d"></a>
+
+<p>An <em>assignment</em> is an expression that stores a new value into a
+variable.  For example, the following expression assigns the value 1 to
+the variable <code>z</code>:
+</p>
+<div class="example">
+<pre class="example">z = 1
+</pre></div>
+
+<p>After this expression is executed, the variable <code>z</code> has the value 1.
+Whatever old value <code>z</code> had before the assignment is forgotten.
+The &lsquo;<samp>=</samp>&rsquo; sign is called an <em>assignment operator</em>.
+</p>
+<p>Assignments can store string values also.  For example, the following
+expression would store the value <code>&quot;this food is good&quot;</code> in the
+variable <code>message</code>:
+</p>
+<div class="example">
+<pre class="example">thing = &quot;food&quot;
+predicate = &quot;good&quot;
+message = [ &quot;this &quot; , thing , &quot; is &quot; , predicate ]
+</pre></div>
+
+<p>(This also illustrates concatenation of strings.)
+</p>
+<a name="index-side-effect"></a>
+<p>Most operators (addition, concatenation, and so on) have no effect
+except to compute a value.  If you ignore the value, you might as well
+not use the operator.  An assignment operator is different.  It does
+produce a value, but even if you ignore the value, the assignment still
+makes itself felt through the alteration of the variable.  We call this
+a <em>side effect</em>.
+</p>
+<a name="index-lvalue"></a>
+<p>The left-hand operand of an assignment need not be a variable
+(see <a href="Variables.html#Variables">Variables</a>).  It can also be an element of a matrix
+(see <a href="Index-Expressions.html#Index-Expressions">Index Expressions</a>) or a list of return values
+(see <a href="Calling-Functions.html#Calling-Functions">Calling Functions</a>).  These are all called <em>lvalues</em>, which
+means they can appear on the left-hand side of an assignment operator.
+The right-hand operand may be any expression.  It produces the new value
+which the assignment stores in the specified variable, matrix element,
+or list of return values.
+</p>
+<p>It is important to note that variables do <em>not</em> have permanent types.
+The type of a variable is simply the type of whatever value it happens
+to hold at the moment.  In the following program fragment, the variable
+<code>foo</code> has a numeric value at first, and a string value later on:
+</p>
+<div class="example">
+<pre class="example">octave:13&gt; foo = 1
+foo = 1
+octave:13&gt; foo = &quot;bar&quot;
+foo = bar
+</pre></div>
+
+<p>When the second assignment gives <code>foo</code> a string value, the fact that
+it previously had a numeric value is forgotten.
+</p>
+<p>Assignment of a scalar to an indexed matrix sets all of the elements
+that are referenced by the indices to the scalar value.  For example, if
+<code>a</code> is a matrix with at least two columns,
+</p>
+<div class="example">
+<pre class="example">a(:, 2) = 5
+</pre></div>
+
+<p>sets all the elements in the second column of <code>a</code> to 5.
+</p>
+<p>Assigning an empty matrix &lsquo;<samp>[]</samp>&rsquo; works in most cases to allow you to
+delete rows or columns of matrices and vectors.  See <a href="Empty-Matrices.html#Empty-Matrices">Empty Matrices</a>.
+For example, given a 4 by 5 matrix <var>A</var>, the assignment
+</p>
+<div class="example">
+<pre class="example">A (3, :) = []
+</pre></div>
+
+<p>deletes the third row of <var>A</var>, and the assignment
+</p>
+<div class="example">
+<pre class="example">A (:, 1:2:5) = []
+</pre></div>
+
+<p>deletes the first, third, and fifth columns.
+</p>
+<p>An assignment is an expression, so it has a value.  Thus, <code>z = 1</code>
+as an expression has the value 1.  One consequence of this is that you
+can write multiple assignments together:
+</p>
+<div class="example">
+<pre class="example">x = y = z = 0
+</pre></div>
+
+<p>stores the value 0 in all three variables.  It does this because the
+value of <code>z = 0</code>, which is 0, is stored into <code>y</code>, and then
+the value of <code>y = z = 0</code>, which is 0, is stored into <code>x</code>.
+</p>
+<p>This is also true of assignments to lists of values, so the following is
+a valid expression
+</p>
+<div class="example">
+<pre class="example">[a, b, c] = [u, s, v] = svd (a)
+</pre></div>
+
+<p>that is exactly equivalent to
+</p>
+<div class="example">
+<pre class="example">[u, s, v] = svd (a)
+a = u
+b = s
+c = v
+</pre></div>
+
+<p>In expressions like this, the number of values in each part of the
+expression need not match.  For example, the expression
+</p>
+<div class="example">
+<pre class="example">[a, b] = [u, s, v] = svd (a)
+</pre></div>
+
+<p>is equivalent to
+</p>
+<div class="example">
+<pre class="example">[u, s, v] = svd (a)
+a = u
+b = s
+</pre></div>
+
+<p>The number of values on the left side of the expression can, however,
+not exceed the number of values on the right side.  For example, the
+following will produce an error.
+</p>
+<div class="example">
+<pre class="example">[a, b, c, d] = [u, s, v] = svd (a);
+-| error: element number 4 undefined in return list
+</pre></div>
+
+<p>The symbol <code>~</code> may be used as a placeholder in the list of lvalues,
+indicating that the corresponding return value should be ignored and not stored
+anywhere:
+</p>
+<div class="example">
+<pre class="example">[~, s, v] = svd (a);
+</pre></div>
+
+<p>This is cleaner and more memory efficient than using a dummy variable.
+The <code>nargout</code> value for the right-hand side expression is not affected.
+If the assignment is used as an expression, the return value is a
+comma-separated list with the ignored values dropped.
+</p>
+<a name="index-_002b_003d"></a>
+<p>A very common programming pattern is to increment an existing variable
+with a given value, like this
+</p>
+<div class="example">
+<pre class="example">a = a + 2;
+</pre></div>
+
+<p>This can be written in a clearer and more condensed form using the
+<code>+=</code> operator
+</p>
+<div class="example">
+<pre class="example">a += 2;
+</pre></div>
+
+<p><a name="index-_002d_003d"></a>
+<a name="index-_002a_003d"></a>
+<a name="index-_002f_003d"></a>
+Similar operators also exist for subtraction (<code>-=</code>),
+multiplication (<code>*=</code>), and division (<code>/=</code>).  An expression
+of the form
+</p>
+<div class="example">
+<pre class="example"><var>expr1</var> <var>op</var>= <var>expr2</var>
+</pre></div>
+
+<p>is evaluated as
+</p>
+<div class="example">
+<pre class="example"><var>expr1</var> = (<var>expr1</var>) <var>op</var> (<var>expr2</var>)
+</pre></div>
+
+<p>where <var>op</var> can be either <code>+</code>, <code>-</code>, <code>*</code>, or <code>/</code>,
+as long as <var>expr2</var> is a simple expression with no side effects.  If
+<var>expr2</var> also contains an assignment operator, then this expression
+is evaluated as
+</p>
+<div class="example">
+<pre class="example"><var>temp</var> = <var>expr2</var>
+<var>expr1</var> = (<var>expr1</var>) <var>op</var> <var>temp</var>
+</pre></div>
+
+<p>where <var>temp</var> is a placeholder temporary value storing the computed
+result of evaluating <var>expr2</var>.  So, the expression
+</p>
+<div class="example">
+<pre class="example">a *= b+1
+</pre></div>
+
+<p>is evaluated as
+</p>
+<div class="example">
+<pre class="example">a = a * (b+1)
+</pre></div>
+
+<p>and <em>not</em>
+</p>
+<div class="example">
+<pre class="example">a = a * b + 1
+</pre></div>
+
+<p>You can use an assignment anywhere an expression is called for.  For
+example, it is valid to write <code>x != (y = 1)</code> to set <code>y</code> to 1
+and then test whether <code>x</code> equals 1.  But this style tends to make
+programs hard to read.  Except in a one-shot program, you should rewrite
+it to get rid of such nesting of assignments.  This is never very hard.
+</p>
+<a name="index-increment-operator"></a>
+<a name="index-decrement-operator"></a>
+<a name="index-operators_002c-increment"></a>
+<a name="index-operators_002c-decrement"></a>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Increment-Ops.html#Increment-Ops" accesskey="n" rel="next">Increment Ops</a>, Previous: <a href="Boolean-Expressions.html#Boolean-Expressions" accesskey="p" rel="prev">Boolean Expressions</a>, Up: <a href="Expressions.html#Expressions" accesskey="u" rel="up">Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

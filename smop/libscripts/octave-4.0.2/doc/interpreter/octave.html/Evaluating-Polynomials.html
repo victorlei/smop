@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Evaluating Polynomials</title>
+
+<meta name="description" content="GNU Octave: Evaluating Polynomials">
+<meta name="keywords" content="GNU Octave: Evaluating Polynomials">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Polynomial-Manipulations.html#Polynomial-Manipulations" rel="up" title="Polynomial Manipulations">
+<link href="Finding-Roots.html#Finding-Roots" rel="next" title="Finding Roots">
+<link href="Polynomial-Manipulations.html#Polynomial-Manipulations" rel="prev" title="Polynomial Manipulations">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Evaluating-Polynomials"></a>
+<div class="header">
+<p>
+Next: <a href="Finding-Roots.html#Finding-Roots" accesskey="n" rel="next">Finding Roots</a>, Up: <a href="Polynomial-Manipulations.html#Polynomial-Manipulations" accesskey="u" rel="up">Polynomial Manipulations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Evaluating-Polynomials-1"></a>
+<h3 class="section">28.1 Evaluating Polynomials</h3>
+
+<p>The value of a polynomial represented by the vector <var>c</var> can be evaluated
+at the point <var>x</var> very easily, as the following example shows:
+</p>
+<div class="example">
+<pre class="example">N = length (c) - 1;
+val = dot (x.^(N:-1:0), c);
+</pre></div>
+
+<p>While the above example shows how easy it is to compute the value of a
+polynomial, it isn&rsquo;t the most stable algorithm.  With larger polynomials
+you should use more elegant algorithms, such as Horner&rsquo;s Method, which
+is exactly what the Octave function <code>polyval</code> does.
+</p>
+<p>In the case where <var>x</var> is a square matrix, the polynomial given by
+<var>c</var> is still well-defined.  As when <var>x</var> is a scalar the obvious
+implementation is easily expressed in Octave, but also in this case
+more elegant algorithms perform better.  The <code>polyvalm</code> function
+provides such an algorithm.
+</p>
+<a name="XREFpolyval"></a><dl>
+<dt><a name="index-polyval"></a>Function File: <em><var>y</var> =</em> <strong>polyval</strong> <em>(<var>p</var>, <var>x</var>)</em></dt>
+<dt><a name="index-polyval-1"></a>Function File: <em><var>y</var> =</em> <strong>polyval</strong> <em>(<var>p</var>, <var>x</var>, [], <var>mu</var>)</em></dt>
+<dt><a name="index-polyval-2"></a>Function File: <em>[<var>y</var>, <var>dy</var>] =</em> <strong>polyval</strong> <em>(<var>p</var>, <var>x</var>, <var>s</var>)</em></dt>
+<dt><a name="index-polyval-3"></a>Function File: <em>[<var>y</var>, <var>dy</var>] =</em> <strong>polyval</strong> <em>(<var>p</var>, <var>x</var>, <var>s</var>, <var>mu</var>)</em></dt>
+<dd>
+<p>Evaluate the polynomial <var>p</var> at the specified values of <var>x</var>.
+</p>
+<p>If <var>x</var> is a vector or matrix, the polynomial is evaluated for each of
+the elements of <var>x</var>.
+</p>
+<p>When <var>mu</var> is present, evaluate the polynomial for
+(<var>x</var>-<var>mu</var>(1))/<var>mu</var>(2).
+</p>
+<p>In addition to evaluating the polynomial, the second output represents the
+prediction interval, <var>y</var> +/- <var>dy</var>, which contains at least 50% of
+the future predictions.  To calculate the prediction interval, the
+structured variable <var>s</var>, originating from <code>polyfit</code>, must be
+supplied.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFpolyvalm">polyvalm</a>, <a href="Derivatives-_002f-Integrals-_002f-Transforms.html#XREFpolyaffine">polyaffine</a>, <a href="Polynomial-Interpolation.html#XREFpolyfit">polyfit</a>, <a href="Finding-Roots.html#XREFroots">roots</a>, <a href="Miscellaneous-Functions.html#XREFpoly">poly</a>.
+</p></dd></dl>
+
+
+<a name="XREFpolyvalm"></a><dl>
+<dt><a name="index-polyvalm"></a>Function File: <em></em> <strong>polyvalm</strong> <em>(<var>c</var>, <var>x</var>)</em></dt>
+<dd><p>Evaluate a polynomial in the matrix sense.
+</p>
+<p><code>polyvalm (<var>c</var>, <var>x</var>)</code> will evaluate the polynomial in the
+matrix sense, i.e., matrix multiplication is used instead of element by
+element multiplication as used in <code>polyval</code>.
+</p>
+<p>The argument <var>x</var> must be a square matrix.
+</p>
+<p><strong>See also:</strong> <a href="#XREFpolyval">polyval</a>, <a href="Finding-Roots.html#XREFroots">roots</a>, <a href="Miscellaneous-Functions.html#XREFpoly">poly</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Finding-Roots.html#Finding-Roots" accesskey="n" rel="next">Finding Roots</a>, Up: <a href="Polynomial-Manipulations.html#Polynomial-Manipulations" accesskey="u" rel="up">Polynomial Manipulations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

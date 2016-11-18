@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Output Conversion for Matrices</title>
+
+<meta name="description" content="GNU Octave: Output Conversion for Matrices">
+<meta name="keywords" content="GNU Octave: Output Conversion for Matrices">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" rel="up" title="C-Style I/O Functions">
+<link href="Output-Conversion-Syntax.html#Output-Conversion-Syntax" rel="next" title="Output Conversion Syntax">
+<link href="Formatted-Output.html#Formatted-Output" rel="prev" title="Formatted Output">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Output-Conversion-for-Matrices"></a>
+<div class="header">
+<p>
+Next: <a href="Output-Conversion-Syntax.html#Output-Conversion-Syntax" accesskey="n" rel="next">Output Conversion Syntax</a>, Previous: <a href="Formatted-Output.html#Formatted-Output" accesskey="p" rel="prev">Formatted Output</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Output-Conversion-for-Matrices-1"></a>
+<h4 class="subsection">14.2.5 Output Conversion for Matrices</h4>
+
+<p>When given a matrix value, Octave&rsquo;s formatted output functions cycle
+through the format template until all the values in the matrix have been
+printed.  For example:
+</p>
+<div class="example">
+<pre class="example">printf (&quot;%4.2f %10.2e %8.4g\n&quot;, hilb (3));
+
+     -| 1.00   5.00e-01   0.3333
+     -| 0.50   3.33e-01     0.25
+     -| 0.33   2.50e-01      0.2
+</pre></div>
+
+<p>If more than one value is to be printed in a single call, the output
+functions do not return to the beginning of the format template when
+moving on from one value to the next.  This can lead to confusing output
+if the number of elements in the matrices are not exact multiples of the
+number of conversions in the format template.  For example:
+</p>
+<div class="example">
+<pre class="example">printf (&quot;%4.2f %10.2e %8.4g\n&quot;, [1, 2], [3, 4]);
+
+     -| 1.00   2.00e+00        3
+     -| 4.00
+</pre></div>
+
+<p>If this is not what you want, use a series of calls instead of just one.
+</p>
+
+
+
+</body>
+</html>

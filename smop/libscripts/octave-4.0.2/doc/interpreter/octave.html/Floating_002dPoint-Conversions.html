@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Floating-Point Conversions</title>
+
+<meta name="description" content="GNU Octave: Floating-Point Conversions">
+<meta name="keywords" content="GNU Octave: Floating-Point Conversions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" rel="up" title="C-Style I/O Functions">
+<link href="Other-Output-Conversions.html#Other-Output-Conversions" rel="next" title="Other Output Conversions">
+<link href="Integer-Conversions.html#Integer-Conversions" rel="prev" title="Integer Conversions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Floating_002dPoint-Conversions"></a>
+<div class="header">
+<p>
+Next: <a href="Other-Output-Conversions.html#Other-Output-Conversions" accesskey="n" rel="next">Other Output Conversions</a>, Previous: <a href="Integer-Conversions.html#Integer-Conversions" accesskey="p" rel="prev">Integer Conversions</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Floating_002dPoint-Conversions-1"></a>
+<h4 class="subsection">14.2.9 Floating-Point Conversions</h4>
+
+<p>This section discusses the conversion specifications for floating-point
+numbers: the &lsquo;<samp>%f</samp>&rsquo;, &lsquo;<samp>%e</samp>&rsquo;, &lsquo;<samp>%E</samp>&rsquo;, &lsquo;<samp>%g</samp>&rsquo;, and &lsquo;<samp>%G</samp>&rsquo;
+conversions.
+</p>
+<p>The &lsquo;<samp>%f</samp>&rsquo; conversion prints its argument in fixed-point notation,
+producing output of the form
+[<code><span class="nolinebreak">-</span></code>]<var>ddd</var><code>.</code><var>ddd</var><!-- /@w -->,
+where the number of digits following the decimal point is controlled
+by the precision you specify.
+</p>
+<p>The &lsquo;<samp>%e</samp>&rsquo; conversion prints its argument in exponential notation,
+producing output of the form
+[<code><span class="nolinebreak">-</span></code>]<var>d</var><code>.</code><var>ddd</var><code>e</code>[<code>+</code>|<code><span class="nolinebreak">-</span></code>]<var>dd</var><!-- /@w -->.
+Again, the number of digits following the decimal point is controlled by
+the precision.  The exponent always contains at least two digits.  The
+&lsquo;<samp>%E</samp>&rsquo; conversion is similar but the exponent is marked with the letter
+&lsquo;<samp>E</samp>&rsquo; instead of &lsquo;<samp>e</samp>&rsquo;.
+</p>
+<p>The &lsquo;<samp>%g</samp>&rsquo; and &lsquo;<samp>%G</samp>&rsquo; conversions print the argument in the style
+of &lsquo;<samp>%e</samp>&rsquo; or &lsquo;<samp>%E</samp>&rsquo; (respectively) if the exponent would be less
+than -4 or greater than or equal to the precision; otherwise they use the
+&lsquo;<samp>%f</samp>&rsquo; style.  Trailing zeros are removed from the fractional portion
+of the result and a decimal-point character appears only if it is
+followed by a digit.
+</p>
+<p>The following flags can be used to modify the behavior:
+</p>
+<dl compact="compact">
+<dt>&lsquo;<samp>-</samp>&rsquo;</dt>
+<dd><p>Left-justify the result in the field.  Normally the result is
+right-justified.
+</p>
+</dd>
+<dt>&lsquo;<samp>+</samp>&rsquo;</dt>
+<dd><p>Always include a plus or minus sign in the result.
+</p>
+</dd>
+<dt>&lsquo;<samp> </samp>&rsquo;</dt>
+<dd><p>If the result doesn&rsquo;t start with a plus or minus sign, prefix it with a
+space instead.  Since the &lsquo;<samp>+</samp>&rsquo; flag ensures that the result includes
+a sign, this flag is ignored if you supply both of them.
+</p>
+</dd>
+<dt>&lsquo;<samp>#</samp>&rsquo;</dt>
+<dd><p>Specifies that the result should always include a decimal point, even
+if no digits follow it.  For the &lsquo;<samp>%g</samp>&rsquo; and &lsquo;<samp>%G</samp>&rsquo; conversions,
+this also forces trailing zeros after the decimal point to be left
+in place where they would otherwise be removed.
+</p>
+</dd>
+<dt>&lsquo;<samp>0</samp>&rsquo;</dt>
+<dd><p>Pad the field with zeros instead of spaces; the zeros are placed
+after any sign.  This flag is ignored if the &lsquo;<samp>-</samp>&rsquo; flag is also
+specified.
+</p></dd>
+</dl>
+
+<p>The precision specifies how many digits follow the decimal-point
+character for the &lsquo;<samp>%f</samp>&rsquo;, &lsquo;<samp>%e</samp>&rsquo;, and &lsquo;<samp>%E</samp>&rsquo; conversions.  For
+these conversions, the default precision is <code>6</code>.  If the precision
+is explicitly <code>0</code>, this suppresses the decimal point character
+entirely.  For the &lsquo;<samp>%g</samp>&rsquo; and &lsquo;<samp>%G</samp>&rsquo; conversions, the precision
+specifies how many significant digits to print.  Significant digits are
+the first digit before the decimal point, and all the digits after it.
+If the precision is <code>0</code> or not specified for &lsquo;<samp>%g</samp>&rsquo; or
+&lsquo;<samp>%G</samp>&rsquo;, it is treated like a value of <code>1</code>.  If the value being
+printed cannot be expressed precisely in the specified number of digits,
+the value is rounded to the nearest number that fits.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Other-Output-Conversions.html#Other-Output-Conversions" accesskey="n" rel="next">Other Output Conversions</a>, Previous: <a href="Integer-Conversions.html#Integer-Conversions" accesskey="p" rel="prev">Integer Conversions</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

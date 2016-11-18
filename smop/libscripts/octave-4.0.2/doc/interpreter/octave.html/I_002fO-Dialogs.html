@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: I/O Dialogs</title>
+
+<meta name="description" content="GNU Octave: I/O Dialogs">
+<meta name="keywords" content="GNU Octave: I/O Dialogs">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="GUI-Development.html#GUI-Development" rel="up" title="GUI Development">
+<link href="Progress-Bar.html#Progress-Bar" rel="next" title="Progress Bar">
+<link href="GUI-Development.html#GUI-Development" rel="prev" title="GUI Development">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="I_002fO-Dialogs"></a>
+<div class="header">
+<p>
+Next: <a href="Progress-Bar.html#Progress-Bar" accesskey="n" rel="next">Progress Bar</a>, Up: <a href="GUI-Development.html#GUI-Development" accesskey="u" rel="up">GUI Development</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="I_002fO-Dialogs-1"></a>
+<h3 class="section">35.1 I/O Dialogs</h3>
+
+<p>Simple dialog menus are available for choosing directories or files.  They
+return a string variable which can then be used with any command requiring
+a file name.
+</p>
+<a name="XREFuigetdir"></a><dl>
+<dt><a name="index-uigetdir"></a>Function File: <em><var>dirname</var> =</em> <strong>uigetdir</strong> <em>()</em></dt>
+<dt><a name="index-uigetdir-1"></a>Function File: <em><var>dirname</var> =</em> <strong>uigetdir</strong> <em>(<var>init_path</var>)</em></dt>
+<dt><a name="index-uigetdir-2"></a>Function File: <em><var>dirname</var> =</em> <strong>uigetdir</strong> <em>(<var>init_path</var>, <var>dialog_name</var>)</em></dt>
+<dd><p>Open a GUI dialog for selecting a directory.
+</p>
+<p>If <var>init_path</var> is not given the current working directory is used.
+</p>
+<p><var>dialog_name</var> may be used to customize the dialog title.
+</p>
+<p><strong>See also:</strong> <a href="#XREFuigetfile">uigetfile</a>, <a href="#XREFuiputfile">uiputfile</a>.
+</p></dd></dl>
+
+
+<a name="XREFuigetfile"></a><dl>
+<dt><a name="index-uigetfile"></a>Function File: <em>[<var>fname</var>, <var>fpath</var>, <var>fltidx</var>] =</em> <strong>uigetfile</strong> <em>()</em></dt>
+<dt><a name="index-uigetfile-1"></a>Function File: <em>[&hellip;] =</em> <strong>uigetfile</strong> <em>(<var>flt</var>)</em></dt>
+<dt><a name="index-uigetfile-2"></a>Function File: <em>[&hellip;] =</em> <strong>uigetfile</strong> <em>(<var>flt</var>, <var>dialog_name</var>)</em></dt>
+<dt><a name="index-uigetfile-3"></a>Function File: <em>[&hellip;] =</em> <strong>uigetfile</strong> <em>(<var>flt</var>, <var>dialog_name</var>, <var>default_file</var>)</em></dt>
+<dt><a name="index-uigetfile-4"></a>Function File: <em>[&hellip;] =</em> <strong>uigetfile</strong> <em>(&hellip;, &quot;Position&quot;, [<var>px</var> <var>py</var>])</em></dt>
+<dt><a name="index-uigetfile-5"></a>Function File: <em>[&hellip;] =</em> <strong>uigetfile</strong> <em>(&hellip;, &quot;MultiSelect&quot;, <var>mode</var>)</em></dt>
+<dd>
+<p>Open a GUI dialog for selecting a file and return the filename <var>fname</var>,
+the path to this file <var>fpath</var>, and the filter index <var>fltidx</var>.
+</p>
+<p><var>flt</var> contains a (list of) file filter string(s) in one of the following
+formats:
+</p>
+<dl compact="compact">
+<dt><code>&quot;/path/to/filename.ext&quot;</code></dt>
+<dd><p>If a filename is given then the file extension is extracted and used as
+filter.  In addition, the path is selected as current path and the filename
+is selected as default file.  Example: <code>uigetfile (&quot;myfun.m&quot;)</code>
+</p>
+</dd>
+<dt>A single file extension <code>&quot;*.ext&quot;</code></dt>
+<dd><p>Example: <code>uigetfile (&quot;*.ext&quot;)</code>
+</p>
+</dd>
+<dt>A 2-column cell array</dt>
+<dd><p>containing a file extension in the first column and a brief description in
+the second column.
+Example: <code>uigetfile ({&quot;*.ext&quot;, &quot;My Description&quot;;&quot;*.xyz&quot;,
+&quot;XYZ-Format&quot;})</code>
+</p>
+<p>The filter string can also contain a semicolon separated list of filter
+extensions.
+Example: <code>uigetfile ({&quot;*.gif;*.png;*.jpg&quot;, &quot;Supported Picture
+Formats&quot;})</code>
+</p></dd>
+</dl>
+
+<p><var>dialog_name</var> can be used to customize the dialog title.
+</p>
+<p>If <var>default_file</var> is given then it will be selected in the GUI dialog.
+If, in addition, a path is given it is also used as current path.
+</p>
+<p>The screen position of the GUI dialog can be set using the
+<code>&quot;Position&quot;</code> key and a 2-element vector containing the pixel
+coordinates.  Two or more files can be selected when setting the
+<code>&quot;MultiSelect&quot;</code> key to <code>&quot;on&quot;</code>.  In that case <var>fname</var> is a
+cell array containing the files.
+</p>
+<p><strong>See also:</strong> <a href="#XREFuiputfile">uiputfile</a>, <a href="#XREFuigetdir">uigetdir</a>.
+</p></dd></dl>
+
+
+<a name="XREFuiputfile"></a><dl>
+<dt><a name="index-uiputfile"></a>Function File: <em>[<var>fname</var>, <var>fpath</var>, <var>fltidx</var>] =</em> <strong>uiputfile</strong> <em>()</em></dt>
+<dt><a name="index-uiputfile-1"></a>Function File: <em>[<var>fname</var>, <var>fpath</var>, <var>fltidx</var>] =</em> <strong>uiputfile</strong> <em>(<var>flt</var>)</em></dt>
+<dt><a name="index-uiputfile-2"></a>Function File: <em>[<var>fname</var>, <var>fpath</var>, <var>fltidx</var>] =</em> <strong>uiputfile</strong> <em>(<var>flt</var>, <var>dialog_name</var>)</em></dt>
+<dt><a name="index-uiputfile-3"></a>Function File: <em>[<var>fname</var>, <var>fpath</var>, <var>fltidx</var>] =</em> <strong>uiputfile</strong> <em>(<var>flt</var>, <var>dialog_name</var>, <var>default_file</var>)</em></dt>
+<dd><p>Open a GUI dialog for selecting a file.
+</p>
+<p><var>flt</var> contains a (list of) file filter string(s) in one of the following
+formats:
+</p>
+<dl compact="compact">
+<dt><code>&quot;/path/to/filename.ext&quot;</code></dt>
+<dd><p>If a filename is given the file extension is extracted and used as filter.
+In addition the path is selected as current path and the filename is
+selected as default file.  Example: <code>uiputfile (&quot;myfun.m&quot;)</code>
+</p>
+</dd>
+<dt><code>&quot;*.ext&quot;</code></dt>
+<dd><p>A single file extension.
+Example: <code>uiputfile (&quot;*.ext&quot;)</code>
+</p>
+</dd>
+<dt><code>{&quot;*.ext&quot;, &quot;My Description&quot;}</code></dt>
+<dd><p>A 2-column cell array containing the file extension in the 1st column and
+a brief description in the 2nd column.
+Example: <code>uiputfile ({&quot;*.ext&quot;,&quot;My Description&quot;;&quot;*.xyz&quot;,
+&quot;XYZ-Format&quot;})</code>
+</p></dd>
+</dl>
+
+<p>The filter string can also contain a semicolon separated list of filter
+extensions.
+Example: <code>uiputfile ({&quot;*.gif;*.png;*.jpg&quot;,
+&quot;Supported Picture Formats&quot;})</code>
+</p>
+<p><var>dialog_name</var> can be used to customize the dialog title.
+If <var>default_file</var> is given it is preselected in the GUI dialog.
+If, in addition, a path is given it is also used as current path.
+</p>
+<p><strong>See also:</strong> <a href="#XREFuigetfile">uigetfile</a>, <a href="#XREFuigetdir">uigetdir</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Progress-Bar.html#Progress-Bar" accesskey="n" rel="next">Progress Bar</a>, Up: <a href="GUI-Development.html#GUI-Development" accesskey="u" rel="up">GUI Development</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+  <file>images/pan.png</file>
+  <file>images/rotate.png</file>
+  <file>images/select.png</file>
+  <file>images/zoom-in.png</file>
+  <file>images/zoom-out.png</file>
+</qresource>
+</RCC>

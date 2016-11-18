@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Color Conversion</title>
+
+<meta name="description" content="GNU Octave: Color Conversion">
+<meta name="keywords" content="GNU Octave: Color Conversion">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Image-Processing.html#Image-Processing" rel="up" title="Image Processing">
+<link href="Audio-Processing.html#Audio-Processing" rel="next" title="Audio Processing">
+<link href="Plotting-on-top-of-Images.html#Plotting-on-top-of-Images" rel="prev" title="Plotting on top of Images">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Color-Conversion"></a>
+<div class="header">
+<p>
+Previous: <a href="Plotting-on-top-of-Images.html#Plotting-on-top-of-Images" accesskey="p" rel="prev">Plotting on top of Images</a>, Up: <a href="Image-Processing.html#Image-Processing" accesskey="u" rel="up">Image Processing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Color-Conversion-1"></a>
+<h3 class="section">32.5 Color Conversion</h3>
+
+<p>Octave supports conversion from the RGB color system to NTSC and HSV
+and vice versa.
+</p>
+<a name="XREFrgb2hsv"></a><dl>
+<dt><a name="index-rgb2hsv"></a>Function File: <em><var>hsv_map</var> =</em> <strong>rgb2hsv</strong> <em>(<var>rgb</var>)</em></dt>
+<dt><a name="index-rgb2hsv-1"></a>Function File: <em><var>hsv_map</var> =</em> <strong>rgb2hsv</strong> <em>(<var>rgb</var>)</em></dt>
+<dd><p>Transform a colormap or image from red-green-blue (RGB) space to
+hue-saturation-value (HSV) space.
+</p>
+<p>A color in the RGB space consists of red, green, and blue intensities.
+</p>
+<p>A color in HSV space is represented by hue, saturation, and value
+(brightness) levels.  Value gives the amount of light in the color.  Hue
+describes the dominant wavelength.  Saturation is the amount of hue mixed
+into the color.
+</p>
+<p><strong>See also:</strong> <a href="#XREFhsv2rgb">hsv2rgb</a>, <a href="Representing-Images.html#XREFrgb2ind">rgb2ind</a>, <a href="#XREFrgb2ntsc">rgb2ntsc</a>.
+</p></dd></dl>
+
+
+<a name="XREFhsv2rgb"></a><dl>
+<dt><a name="index-hsv2rgb"></a>Function File: <em><var>rgb_map</var> =</em> <strong>hsv2rgb</strong> <em>(<var>hsv_map</var>)</em></dt>
+<dt><a name="index-hsv2rgb-1"></a>Function File: <em><var>rgb_img</var> =</em> <strong>hsv2rgb</strong> <em>(<var>hsv_img</var>)</em></dt>
+<dd><p>Transform a colormap or image from hue-saturation-value (HSV) space to
+red-green-blue (RGB) space.
+</p>
+<p>A color in HSV space is represented by hue, saturation and value
+(brightness) levels.  Value gives the amount of light in the color.  Hue
+describes the dominant wavelength.  Saturation is the amount of hue mixed
+into the color.
+</p>
+<p>A color in the RGB space consists of red, green, and blue intensities.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrgb2hsv">rgb2hsv</a>, <a href="Representing-Images.html#XREFind2rgb">ind2rgb</a>, <a href="#XREFntsc2rgb">ntsc2rgb</a>.
+</p></dd></dl>
+
+
+<a name="XREFrgb2ntsc"></a><dl>
+<dt><a name="index-rgb2ntsc"></a>Function File: <em><var>yiq_map</var> =</em> <strong>rgb2ntsc</strong> <em>(<var>rgb_map</var>)</em></dt>
+<dt><a name="index-rgb2ntsc-1"></a>Function File: <em><var>yiq_img</var> =</em> <strong>rgb2ntsc</strong> <em>(<var>rgb_img</var>)</em></dt>
+<dd><p>Transform a colormap or image from red-green-blue (RGB) color space to
+luminance-chrominance (NTSC) space.  The input may be of class uint8,
+uint16, single, or double.  The output is of class double.
+</p>
+<p>Implementation Note:
+The reference matrix for the transformation is
+</p>
+<div class="example">
+<pre class="example">/Y\     0.299  0.587  0.114  /R\
+|I|  =  0.596 -0.274 -0.322  |G|
+\Q/     0.211 -0.523  0.312  \B/
+</pre></div>
+
+<p>as documented in <a href="http://en.wikipedia.org/wiki/YIQ">http://en.wikipedia.org/wiki/YIQ</a> and truncated to 3
+significant figures.  Note: The FCC version of NTSC uses only 2 significant
+digits and is slightly different.
+</p>
+<p><strong>See also:</strong> <a href="#XREFntsc2rgb">ntsc2rgb</a>, <a href="#XREFrgb2hsv">rgb2hsv</a>, <a href="Representing-Images.html#XREFrgb2ind">rgb2ind</a>.
+</p></dd></dl>
+
+
+<a name="XREFntsc2rgb"></a><dl>
+<dt><a name="index-ntsc2rgb"></a>Function File: <em><var>rgb_map</var> =</em> <strong>ntsc2rgb</strong> <em>(<var>yiq_map</var>)</em></dt>
+<dt><a name="index-ntsc2rgb-1"></a>Function File: <em><var>rgb_img</var> =</em> <strong>ntsc2rgb</strong> <em>(<var>yiq_img</var>)</em></dt>
+<dd><p>Transform a colormap or image from luminance-chrominance (NTSC) space to
+red-green-blue (RGB) color space.
+</p>
+<p>Implementation Note:
+The conversion matrix is chosen to be the inverse of the matrix used for
+rgb2ntsc such that
+</p>
+<div class="example">
+<pre class="example">x == ntsc2rgb (rgb2ntsc (x))
+</pre></div>
+
+<p><small>MATLAB</small> uses a slightly different matrix where rounding means the
+equality above does not hold.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrgb2ntsc">rgb2ntsc</a>, <a href="#XREFhsv2rgb">hsv2rgb</a>, <a href="Representing-Images.html#XREFind2rgb">ind2rgb</a>.
+</p></dd></dl>
+
+
+
+
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Plotting-on-top-of-Images.html#Plotting-on-top-of-Images" accesskey="p" rel="prev">Plotting on top of Images</a>, Up: <a href="Image-Processing.html#Image-Processing" accesskey="u" rel="up">Image Processing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

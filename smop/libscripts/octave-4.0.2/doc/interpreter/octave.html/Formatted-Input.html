@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Formatted Input</title>
+
+<meta name="description" content="GNU Octave: Formatted Input">
+<meta name="keywords" content="GNU Octave: Formatted Input">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" rel="up" title="C-Style I/O Functions">
+<link href="Input-Conversion-Syntax.html#Input-Conversion-Syntax" rel="next" title="Input Conversion Syntax">
+<link href="Other-Output-Conversions.html#Other-Output-Conversions" rel="prev" title="Other Output Conversions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Formatted-Input"></a>
+<div class="header">
+<p>
+Next: <a href="Input-Conversion-Syntax.html#Input-Conversion-Syntax" accesskey="n" rel="next">Input Conversion Syntax</a>, Previous: <a href="Other-Output-Conversions.html#Other-Output-Conversions" accesskey="p" rel="prev">Other Output Conversions</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Formatted-Input-1"></a>
+<h4 class="subsection">14.2.11 Formatted Input</h4>
+
+<p>Octave provides the <code>scanf</code>, <code>fscanf</code>, and <code>sscanf</code>
+functions to read formatted input.  There are two forms of each of these
+functions.  One can be used to extract vectors of data from a file, and
+the other is more &lsquo;C-like&rsquo;.
+</p>
+<a name="XREFfscanf"></a><dl>
+<dt><a name="index-fscanf"></a>Built-in Function: <em>[<var>val</var>, <var>count</var>, <var>errmsg</var>] =</em> <strong>fscanf</strong> <em>(<var>fid</var>, <var>template</var>, <var>size</var>)</em></dt>
+<dt><a name="index-fscanf-1"></a>Built-in Function: <em>[<var>v1</var>, <var>v2</var>, &hellip;, <var>count</var>, <var>errmsg</var>] =</em> <strong>fscanf</strong> <em>(<var>fid</var>, <var>template</var>, &quot;C&quot;)</em></dt>
+<dd><p>In the first form, read from <var>fid</var> according to <var>template</var>,
+returning the result in the matrix <var>val</var>.
+</p>
+<p>The optional argument <var>size</var> specifies the amount of data to read
+and may be one of
+</p>
+<dl compact="compact">
+<dt><code>Inf</code></dt>
+<dd><p>Read as much as possible, returning a column vector.
+</p>
+</dd>
+<dt><code><var>nr</var></code></dt>
+<dd><p>Read up to <var>nr</var> elements, returning a column vector.
+</p>
+</dd>
+<dt><code>[<var>nr</var>, Inf]</code></dt>
+<dd><p>Read as much as possible, returning a matrix with <var>nr</var> rows.  If the
+number of elements read is not an exact multiple of <var>nr</var>, the last
+column is padded with zeros.
+</p>
+</dd>
+<dt><code>[<var>nr</var>, <var>nc</var>]</code></dt>
+<dd><p>Read up to <code><var>nr</var> * <var>nc</var></code> elements, returning a matrix with
+<var>nr</var> rows.  If the number of elements read is not an exact multiple
+of <var>nr</var>, the last column is padded with zeros.
+</p></dd>
+</dl>
+
+<p>If <var>size</var> is omitted, a value of <code>Inf</code> is assumed.
+</p>
+<p>A string is returned if <var>template</var> specifies only character conversions.
+</p>
+<p>The number of items successfully read is returned in <var>count</var>.
+</p>
+<p>If an error occurs, <var>errmsg</var> contains a system-dependent error message.
+</p>
+<p>In the second form, read from <var>fid</var> according to <var>template</var>,
+with each conversion specifier in <var>template</var> corresponding to a
+single scalar return value.  This form is more &ldquo;C-like&rdquo;, and also
+compatible with previous versions of Octave.  The number of successful
+conversions is returned in <var>count</var>
+</p>
+<p>See the Formatted Input section of the GNU Octave manual for a
+complete description of the syntax of the template string.
+</p>
+<p><strong>See also:</strong> <a href="Line_002dOriented-Input.html#XREFfgets">fgets</a>, <a href="Line_002dOriented-Input.html#XREFfgetl">fgetl</a>, <a href="Binary-I_002fO.html#XREFfread">fread</a>, <a href="#XREFscanf">scanf</a>, <a href="#XREFsscanf">sscanf</a>, <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>.
+</p></dd></dl>
+
+
+<a name="XREFscanf"></a><dl>
+<dt><a name="index-scanf"></a>Built-in Function: <em>[<var>val</var>, <var>count</var>, <var>errmsg</var>] =</em> <strong>scanf</strong> <em>(<var>template</var>, <var>size</var>)</em></dt>
+<dt><a name="index-scanf-1"></a>Built-in Function: <em>[<var>v1</var>, <var>v2</var>, &hellip;, <var>count</var>, <var>errmsg</var>]] =</em> <strong>scanf</strong> <em>(<var>template</var>, &quot;C&quot;)</em></dt>
+<dd><p>This is equivalent to calling <code>fscanf</code> with <var>fid</var> = <code>stdin</code>.
+</p>
+<p>It is currently not useful to call <code>scanf</code> in interactive programs.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfscanf">fscanf</a>, <a href="#XREFsscanf">sscanf</a>, <a href="Formatted-Output.html#XREFprintf">printf</a>.
+</p></dd></dl>
+
+
+<a name="XREFsscanf"></a><dl>
+<dt><a name="index-sscanf"></a>Built-in Function: <em>[<var>val</var>, <var>count</var>, <var>errmsg</var>, <var>pos</var>] =</em> <strong>sscanf</strong> <em>(<var>string</var>, <var>template</var>, <var>size</var>)</em></dt>
+<dt><a name="index-sscanf-1"></a>Built-in Function: <em>[<var>v1</var>, <var>v2</var>, &hellip;, <var>count</var>, <var>errmsg</var>] =</em> <strong>sscanf</strong> <em>(<var>string</var>, <var>template</var>, &quot;C&quot;)</em></dt>
+<dd><p>This is like <code>fscanf</code>, except that the characters are taken from the
+string <var>string</var> instead of from a stream.
+</p>
+<p>Reaching the end of the string is treated as an end-of-file condition.  In
+addition to the values returned by <code>fscanf</code>, the index of the next
+character to be read is returned in <var>pos</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfscanf">fscanf</a>, <a href="#XREFscanf">scanf</a>, <a href="Formatted-Output.html#XREFsprintf">sprintf</a>.
+</p></dd></dl>
+
+
+<p>Calls to <code>scanf</code> are superficially similar to calls to
+<code>printf</code> in that arbitrary arguments are read under the control of
+a template string.  While the syntax of the conversion specifications in
+the template is very similar to that for <code>printf</code>, the
+interpretation of the template is oriented more towards free-format
+input and simple pattern matching, rather than fixed-field formatting.
+For example, most <code>scanf</code> conversions skip over any amount of
+&ldquo;white space&rdquo; (including spaces, tabs, and newlines) in the input
+file, and there is no concept of precision for the numeric input
+conversions as there is for the corresponding output conversions.
+Ordinarily, non-whitespace characters in the template are expected to
+match characters in the input stream exactly.
+<a name="index-conversion-specifications-_0028scanf_0029"></a>
+</p>
+<p>When a <em>matching failure</em> occurs, <code>scanf</code> returns immediately,
+leaving the first non-matching character as the next character to be
+read from the stream, and <code>scanf</code> returns all the items that were
+successfully converted.
+<a name="index-matching-failure_002c-in-scanf"></a>
+</p>
+<p>The formatted input functions are not used as frequently as the
+formatted output functions.  Partly, this is because it takes some care
+to use them properly.  Another reason is that it is difficult to recover
+from a matching error.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Input-Conversion-Syntax.html#Input-Conversion-Syntax" accesskey="n" rel="next">Input Conversion Syntax</a>, Previous: <a href="Other-Output-Conversions.html#Other-Output-Conversions" accesskey="p" rel="prev">Other Output Conversions</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

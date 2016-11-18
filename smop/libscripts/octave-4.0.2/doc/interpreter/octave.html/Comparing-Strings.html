@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Comparing Strings</title>
+
+<meta name="description" content="GNU Octave: Comparing Strings">
+<meta name="keywords" content="GNU Octave: Comparing Strings">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Strings.html#Strings" rel="up" title="Strings">
+<link href="Manipulating-Strings.html#Manipulating-Strings" rel="next" title="Manipulating Strings">
+<link href="Converting-Numerical-Data-to-Strings.html#Converting-Numerical-Data-to-Strings" rel="prev" title="Converting Numerical Data to Strings">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Comparing-Strings"></a>
+<div class="header">
+<p>
+Next: <a href="Manipulating-Strings.html#Manipulating-Strings" accesskey="n" rel="next">Manipulating Strings</a>, Previous: <a href="Creating-Strings.html#Creating-Strings" accesskey="p" rel="prev">Creating Strings</a>, Up: <a href="Strings.html#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Comparing-Strings-1"></a>
+<h3 class="section">5.4 Comparing Strings</h3>
+
+<p>Since a string is a character array, comparisons between strings work
+element by element as the following example shows:
+</p>
+<div class="example">
+<pre class="example">GNU = &quot;GNU's Not UNIX&quot;;
+spaces = (GNU == &quot; &quot;)
+     &rArr; spaces =
+       0   0   0   0   0   1   0   0   0   1   0   0   0   0
+</pre></div>
+
+<p>To determine if two strings are identical it is necessary to use the
+<code>strcmp</code> function.  It compares complete strings and is case
+sensitive.  <code>strncmp</code> compares only the first <code>N</code> characters (with
+<code>N</code> given as a parameter).  <code>strcmpi</code> and <code>strncmpi</code> are the
+corresponding functions for case-insensitive comparison.
+</p>
+<a name="XREFstrcmp"></a><dl>
+<dt><a name="index-strcmp"></a>Built-in Function: <em></em> <strong>strcmp</strong> <em>(<var>s1</var>, <var>s2</var>)</em></dt>
+<dd><p>Return 1 if the character strings <var>s1</var> and <var>s2</var> are the same,
+and 0 otherwise.
+</p>
+<p>If either <var>s1</var> or <var>s2</var> is a cell array of strings, then an array
+of the same size is returned, containing the values described above for
+every member of the cell array.  The other argument may also be a cell
+array of strings (of the same size or with only one element), char matrix
+or character string.
+</p>
+<p><strong>Caution:</strong> For compatibility with <small>MATLAB</small>, Octave&rsquo;s strcmp
+function returns 1 if the character strings are equal, and 0 otherwise.
+This is just the opposite of the corresponding C library function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstrcmpi">strcmpi</a>, <a href="#XREFstrncmp">strncmp</a>, <a href="#XREFstrncmpi">strncmpi</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrncmp"></a><dl>
+<dt><a name="index-strncmp"></a>Built-in Function: <em></em> <strong>strncmp</strong> <em>(<var>s1</var>, <var>s2</var>, <var>n</var>)</em></dt>
+<dd><p>Return 1 if the first <var>n</var> characters of strings <var>s1</var> and <var>s2</var> are
+the same, and 0 otherwise.
+</p>
+<div class="example">
+<pre class="example">strncmp (&quot;abce&quot;, &quot;abcd&quot;, 3)
+      &rArr; 1
+</pre></div>
+
+<p>If either <var>s1</var> or <var>s2</var> is a cell array of strings, then an array
+of the same size is returned, containing the values described above for
+every member of the cell array.  The other argument may also be a cell
+array of strings (of the same size or with only one element), char matrix
+or character string.
+</p>
+<div class="example">
+<pre class="example">strncmp (&quot;abce&quot;, {&quot;abcd&quot;, &quot;bca&quot;, &quot;abc&quot;}, 3)
+     &rArr; [1, 0, 1]
+</pre></div>
+
+<p><strong>Caution:</strong> For compatibility with <small>MATLAB</small>, Octave&rsquo;s strncmp
+function returns 1 if the character strings are equal, and 0 otherwise.
+This is just the opposite of the corresponding C library function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstrncmpi">strncmpi</a>, <a href="#XREFstrcmp">strcmp</a>, <a href="#XREFstrcmpi">strcmpi</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrcmpi"></a><dl>
+<dt><a name="index-strcmpi"></a>Built-in Function: <em></em> <strong>strcmpi</strong> <em>(<var>s1</var>, <var>s2</var>)</em></dt>
+<dd><p>Return 1 if the character strings <var>s1</var> and <var>s2</var> are the same,
+disregarding case of alphabetic characters, and 0 otherwise.
+</p>
+<p>If either <var>s1</var> or <var>s2</var> is a cell array of strings, then an array
+of the same size is returned, containing the values described above for
+every member of the cell array.  The other argument may also be a cell
+array of strings (of the same size or with only one element), char matrix
+or character string.
+</p>
+<p><strong>Caution:</strong> For compatibility with <small>MATLAB</small>, Octave&rsquo;s strcmp
+function returns 1 if the character strings are equal, and 0 otherwise.
+This is just the opposite of the corresponding C library function.
+</p>
+<p><strong>Caution:</strong> National alphabets are not supported.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstrcmp">strcmp</a>, <a href="#XREFstrncmp">strncmp</a>, <a href="#XREFstrncmpi">strncmpi</a>.
+</p></dd></dl>
+
+
+<a name="XREFstrncmpi"></a><dl>
+<dt><a name="index-strncmpi"></a>Built-in Function: <em></em> <strong>strncmpi</strong> <em>(<var>s1</var>, <var>s2</var>, <var>n</var>)</em></dt>
+<dd><p>Return 1 if the first <var>n</var> character of <var>s1</var> and <var>s2</var> are the
+same, disregarding case of alphabetic characters, and 0 otherwise.
+</p>
+<p>If either <var>s1</var> or <var>s2</var> is a cell array of strings, then an array
+of the same size is returned, containing the values described above for
+every member of the cell array.  The other argument may also be a cell
+array of strings (of the same size or with only one element), char matrix
+or character string.
+</p>
+<p><strong>Caution:</strong> For compatibility with <small>MATLAB</small>, Octave&rsquo;s strncmpi
+function returns 1 if the character strings are equal, and 0 otherwise.
+This is just the opposite of the corresponding C library function.
+</p>
+<p><strong>Caution:</strong> National alphabets are not supported.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstrncmp">strncmp</a>, <a href="#XREFstrcmp">strcmp</a>, <a href="#XREFstrcmpi">strcmpi</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Manipulating-Strings.html#Manipulating-Strings" accesskey="n" rel="next">Manipulating Strings</a>, Previous: <a href="Creating-Strings.html#Creating-Strings" accesskey="p" rel="prev">Creating Strings</a>, Up: <a href="Strings.html#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

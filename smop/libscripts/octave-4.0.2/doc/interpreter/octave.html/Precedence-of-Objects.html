@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Precedence of Objects</title>
+
+<meta name="description" content="GNU Octave: Precedence of Objects">
+<meta name="keywords" content="GNU Octave: Precedence of Objects">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Overloading-Objects.html#Overloading-Objects" rel="up" title="Overloading Objects">
+<link href="Inheritance-and-Aggregation.html#Inheritance-and-Aggregation" rel="next" title="Inheritance and Aggregation">
+<link href="Operator-Overloading.html#Operator-Overloading" rel="prev" title="Operator Overloading">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Precedence-of-Objects"></a>
+<div class="header">
+<p>
+Previous: <a href="Operator-Overloading.html#Operator-Overloading" accesskey="p" rel="prev">Operator Overloading</a>, Up: <a href="Overloading-Objects.html#Overloading-Objects" accesskey="u" rel="up">Overloading Objects</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Precedence-of-Objects-1"></a>
+<h4 class="subsection">34.4.3 Precedence of Objects</h4>
+
+<p>Many functions and operators take two or more arguments and so the
+case can easily arise that these functions are called with objects of
+different classes.  It is therefore necessary to determine the precedence
+of which method of which class to call when there are mixed objects given
+to a function or operator.  To do this the <code>superiorto</code> and
+<code>inferiorto</code> functions can be used
+</p>
+<a name="XREFsuperiorto"></a><dl>
+<dt><a name="index-superiorto"></a>Built-in Function: <em></em> <strong>superiorto</strong> <em>(<var>class_name</var>, &hellip;)</em></dt>
+<dd><p>When called from a class constructor, mark the object currently
+constructed as having a higher precedence than <var>class_name</var>.
+</p>
+<p>More that one such class can be specified in a single call.
+This function may only be called from a class constructor.
+</p>
+<p><strong>See also:</strong> <a href="#XREFinferiorto">inferiorto</a>.
+</p></dd></dl>
+
+
+<a name="XREFinferiorto"></a><dl>
+<dt><a name="index-inferiorto"></a>Built-in Function: <em></em> <strong>inferiorto</strong> <em>(<var>class_name</var>, &hellip;)</em></dt>
+<dd><p>When called from a class constructor, mark the object currently
+constructed as having a lower precedence than <var>class_name</var>.
+</p>
+<p>More that one such class can be specified in a single call.
+This function may only be called from a class constructor.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsuperiorto">superiorto</a>.
+</p></dd></dl>
+
+
+<p>For example with our polynomial class consider the case
+</p>
+<div class="example">
+<pre class="example">2 * polynomial ([1, 0, 1]);
+</pre></div>
+
+<p>That mixes an object of the class <code>&quot;double&quot;</code> with an object of the class
+<code>&quot;polynomial&quot;</code>.  In this case we like to ensure that the return type of
+the above is of the type <code>&quot;polynomial&quot;</code> and so we use the
+<code>superiorto</code> function in the class constructor.  In particular our
+polynomial class constructor would be modified to be
+</p>
+<div class="example">
+<pre class="verbatim">## -*- texinfo -*-
+## @deftypefn  {Function File} {} polynomial ()
+## @deftypefnx {Function File} {} polynomial (@var{a})
+## Create a polynomial object representing the polynomial
+##
+## @example
+## a0 + a1 * x + a2 * x^2 + @dots{} + an * x^n
+## @end example
+##
+## @noindent
+## from a vector of coefficients [a0 a1 a2 @dots{} an].
+## @end deftypefn
+
+function p = polynomial (a)
+  if (nargin == 0)
+    p.poly = [0];
+    p = class (p, &quot;polynomial&quot;);
+  elseif (nargin == 1)
+    if (strcmp (class (a), &quot;polynomial&quot;))
+      p = a;
+    elseif (isvector (a) &amp;&amp; isreal (a))
+      p.poly = a(:).';
+      p = class (p, &quot;polynomial&quot;);
+    else
+      error (&quot;polynomial: expecting real vector&quot;);
+    endif
+  else
+    print_usage ();
+  endif
+  superiorto (&quot;double&quot;);
+endfunction
+</pre><pre class="example">
+
+</pre></div>
+
+<p>Note that user classes always have higher precedence than built-in
+Octave types.  So in fact marking our polynomial class higher than the
+<code>&quot;double&quot;</code> class is in fact not necessary.
+</p>
+<p>When faced with two objects that have the same precedence, Octave will use the
+method of the object that appears first on the list of arguments.
+</p>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Operator-Overloading.html#Operator-Overloading" accesskey="p" rel="prev">Operator Overloading</a>, Up: <a href="Overloading-Objects.html#Overloading-Objects" accesskey="u" rel="up">Overloading Objects</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

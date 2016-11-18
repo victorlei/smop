@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: High-Level Plotting</title>
+
+<meta name="description" content="GNU Octave: High-Level Plotting">
+<meta name="keywords" content="GNU Octave: High-Level Plotting">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Plotting.html#Plotting" rel="up" title="Plotting">
+<link href="Two_002dDimensional-Plots.html#Two_002dDimensional-Plots" rel="next" title="Two-Dimensional Plots">
+<link href="Introduction-to-Plotting.html#Introduction-to-Plotting" rel="prev" title="Introduction to Plotting">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="High_002dLevel-Plotting"></a>
+<div class="header">
+<p>
+Next: <a href="Graphics-Data-Structures.html#Graphics-Data-Structures" accesskey="n" rel="next">Graphics Data Structures</a>, Previous: <a href="Introduction-to-Plotting.html#Introduction-to-Plotting" accesskey="p" rel="prev">Introduction to Plotting</a>, Up: <a href="Plotting.html#Plotting" accesskey="u" rel="up">Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="High_002dLevel-Plotting-1"></a>
+<h3 class="section">15.2 High-Level Plotting</h3>
+<a name="index-plotting_002c-high_002dlevel"></a>
+
+<p>Octave provides simple means to create many different types of two- and
+three-dimensional plots using high-level functions.
+</p>
+<p>If you need more detailed control, see <a href="Graphics-Data-Structures.html#Graphics-Data-Structures">Graphics Data Structures</a>
+and <a href="Advanced-Plotting.html#Advanced-Plotting">Advanced Plotting</a>.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Two_002dDimensional-Plots.html#Two_002dDimensional-Plots" accesskey="1">Two-Dimensional Plots</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" accesskey="2">Three-Dimensional Plots</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Plot-Annotations.html#Plot-Annotations" accesskey="3">Plot Annotations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Multiple-Plots-on-One-Page.html#Multiple-Plots-on-One-Page" accesskey="4">Multiple Plots on One Page</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Multiple-Plot-Windows.html#Multiple-Plot-Windows" accesskey="5">Multiple Plot Windows</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Manipulation-of-Plot-Objects.html#Manipulation-of-Plot-Objects" accesskey="6">Manipulation of Plot Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Manipulation-of-Plot-Windows.html#Manipulation-of-Plot-Windows" accesskey="7">Manipulation of Plot Windows</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Use-of-the-interpreter-Property.html#Use-of-the-interpreter-Property" accesskey="8">Use of the <code>interpreter</code> Property</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Printing-and-Saving-Plots.html#Printing-and-Saving-Plots" accesskey="9">Printing and Saving Plots</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Interacting-with-Plots.html#Interacting-with-Plots">Interacting with Plots</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Test-Plotting-Functions.html#Test-Plotting-Functions">Test Plotting Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+
+
+</body>
+</html>

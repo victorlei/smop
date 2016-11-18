@@ -1,0 +1,605 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Linear Programming</title>
+
+<meta name="description" content="GNU Octave: Linear Programming">
+<meta name="keywords" content="GNU Octave: Linear Programming">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Optimization.html#Optimization" rel="up" title="Optimization">
+<link href="Quadratic-Programming.html#Quadratic-Programming" rel="next" title="Quadratic Programming">
+<link href="Optimization.html#Optimization" rel="prev" title="Optimization">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Linear-Programming"></a>
+<div class="header">
+<p>
+Next: <a href="Quadratic-Programming.html#Quadratic-Programming" accesskey="n" rel="next">Quadratic Programming</a>, Up: <a href="Optimization.html#Optimization" accesskey="u" rel="up">Optimization</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Linear-Programming-1"></a>
+<h3 class="section">25.1 Linear Programming</h3>
+
+<p>Octave can solve Linear Programming problems using the <code>glpk</code>
+function.  That is, Octave can solve
+</p>
+
+<div class="example">
+<pre class="example">min C'*x
+</pre></div>
+
+<p>subject to the linear constraints
+<em>A*x = b</em> where <em>x &ge; 0</em>.
+</p>
+<p>The <code>glpk</code> function also supports variations of this problem.
+</p>
+<a name="XREFglpk"></a><dl>
+<dt><a name="index-glpk"></a>Function File: <em>[<var>xopt</var>, <var>fmin</var>, <var>errnum</var>, <var>extra</var>] =</em> <strong>glpk</strong> <em>(<var>c</var>, <var>A</var>, <var>b</var>, <var>lb</var>, <var>ub</var>, <var>ctype</var>, <var>vartype</var>, <var>sense</var>, <var>param</var>)</em></dt>
+<dd><p>Solve a linear program using the GNU <small>GLPK</small> library.
+</p>
+<p>Given three arguments, <code>glpk</code> solves the following standard LP:
+</p>
+<div class="example">
+<pre class="example">min C'*x
+</pre></div>
+
+<p>subject to
+</p>
+<div class="example">
+<pre class="example">A*x  = b
+  x &gt;= 0
+</pre></div>
+
+<p>but may also solve problems of the form
+</p>
+<div class="example">
+<pre class="example">[ min | max ] C'*x
+</pre></div>
+
+<p>subject to
+</p>
+<div class="example">
+<pre class="example">A*x [ &quot;=&quot; | &quot;&lt;=&quot; | &quot;&gt;=&quot; ] b
+  x &gt;= LB
+  x &lt;= UB
+</pre></div>
+
+
+<p>Input arguments:
+</p>
+<dl compact="compact">
+<dt><var>c</var></dt>
+<dd><p>A column array containing the objective function coefficients.
+</p>
+</dd>
+<dt><var>A</var></dt>
+<dd><p>A matrix containing the constraints coefficients.
+</p>
+</dd>
+<dt><var>b</var></dt>
+<dd><p>A column array containing the right-hand side value for each constraint in
+the constraint matrix.
+</p>
+</dd>
+<dt><var>lb</var></dt>
+<dd><p>An array containing the lower bound on each of the variables.  If <var>lb</var>
+is not supplied, the default lower bound for the variables is zero.
+</p>
+</dd>
+<dt><var>ub</var></dt>
+<dd><p>An array containing the upper bound on each of the variables.  If <var>ub</var>
+is not supplied, the default upper bound is assumed to be infinite.
+</p>
+</dd>
+<dt><var>ctype</var></dt>
+<dd><p>An array of characters containing the sense of each constraint in the
+constraint matrix.  Each element of the array may be one of the following
+values
+</p>
+<dl compact="compact">
+<dt><code>&quot;F&quot;</code></dt>
+<dd><p>A free (unbounded) constraint (the constraint is ignored).
+</p>
+</dd>
+<dt><code>&quot;U&quot;</code></dt>
+<dd><p>An inequality constraint with an upper bound (<code>A(i,:)*x &lt;= b(i)</code>).
+</p>
+</dd>
+<dt><code>&quot;S&quot;</code></dt>
+<dd><p>An equality constraint (<code>A(i,:)*x = b(i)</code>).
+</p>
+</dd>
+<dt><code>&quot;L&quot;</code></dt>
+<dd><p>An inequality with a lower bound (<code>A(i,:)*x &gt;= b(i)</code>).
+</p>
+</dd>
+<dt><code>&quot;D&quot;</code></dt>
+<dd><p>An inequality constraint with both upper and lower bounds
+(<code>A(i,:)*x &gt;= -b(i)</code>) <em>and</em> (<code>A(i,:)*x &lt;= b(i)</code>).
+</p></dd>
+</dl>
+
+</dd>
+<dt><var>vartype</var></dt>
+<dd><p>A column array containing the types of the variables.
+</p>
+<dl compact="compact">
+<dt><code>&quot;C&quot;</code></dt>
+<dd><p>A continuous variable.
+</p>
+</dd>
+<dt><code>&quot;I&quot;</code></dt>
+<dd><p>An integer variable.
+</p></dd>
+</dl>
+
+</dd>
+<dt><var>sense</var></dt>
+<dd><p>If <var>sense</var> is 1, the problem is a minimization.  If <var>sense</var> is -1,
+the problem is a maximization.  The default value is 1.
+</p>
+</dd>
+<dt><var>param</var></dt>
+<dd><p>A structure containing the following parameters used to define the
+behavior of solver.  Missing elements in the structure take on default
+values, so you only need to set the elements that you wish to change from
+the default.
+</p>
+<p>Integer parameters:
+</p>
+<dl compact="compact">
+<dt><code>msglev (default: 1)</code></dt>
+<dd><p>Level of messages output by solver routines:
+</p>
+<dl compact="compact">
+<dt>0 (<code><span class="nolinebreak">GLP_MSG_OFF</span></code><!-- /@w -->)</dt>
+<dd><p>No output.
+</p>
+</dd>
+<dt>1 (<code><span class="nolinebreak">GLP_MSG_ERR</span></code><!-- /@w -->)</dt>
+<dd><p>Error and warning messages only.
+</p>
+</dd>
+<dt>2 (<code><span class="nolinebreak">GLP_MSG_ON</span></code><!-- /@w -->)</dt>
+<dd><p>Normal output.
+</p>
+</dd>
+<dt>3 (<code><span class="nolinebreak">GLP_MSG_ALL</span></code><!-- /@w -->)</dt>
+<dd><p>Full output (includes informational messages).
+</p></dd>
+</dl>
+
+</dd>
+<dt><code>scale (default: 16)</code></dt>
+<dd><p>Scaling option.  The values can be combined with the bitwise OR operator and
+may be the following:
+</p>
+<dl compact="compact">
+<dt>1 (<code><span class="nolinebreak">GLP_SF_GM</span></code><!-- /@w -->)</dt>
+<dd><p>Geometric mean scaling.
+</p>
+</dd>
+<dt>16 (<code><span class="nolinebreak">GLP_SF_EQ</span></code><!-- /@w -->)</dt>
+<dd><p>Equilibration scaling.
+</p>
+</dd>
+<dt>32 (<code><span class="nolinebreak">GLP_SF_2N</span></code><!-- /@w -->)</dt>
+<dd><p>Round scale factors to power of two.
+</p>
+</dd>
+<dt>64 (<code><span class="nolinebreak">GLP_SF_SKIP</span></code><!-- /@w -->)</dt>
+<dd><p>Skip if problem is well scaled.
+</p></dd>
+</dl>
+
+<p>Alternatively, a value of 128 (<code><span class="nolinebreak">GLP_SF_AUTO</span></code><!-- /@w -->) may be also
+specified, in which case the routine chooses the scaling options
+automatically.
+</p>
+</dd>
+<dt><code>dual (default: 1)</code></dt>
+<dd><p>Simplex method option:
+</p>
+<dl compact="compact">
+<dt>1 (<code><span class="nolinebreak">GLP_PRIMAL</span></code><!-- /@w -->)</dt>
+<dd><p>Use two-phase primal simplex.
+</p>
+</dd>
+<dt>2 (<code><span class="nolinebreak">GLP_DUALP</span></code><!-- /@w -->)</dt>
+<dd><p>Use two-phase dual simplex, and if it fails, switch to the primal simplex.
+</p>
+</dd>
+<dt>3 (<code><span class="nolinebreak">GLP_DUAL</span></code><!-- /@w -->)</dt>
+<dd><p>Use two-phase dual simplex.
+</p></dd>
+</dl>
+
+</dd>
+<dt><code>price (default: 34)</code></dt>
+<dd><p>Pricing option (for both primal and dual simplex):
+</p>
+<dl compact="compact">
+<dt>17 (<code><span class="nolinebreak">GLP_PT_STD</span></code><!-- /@w -->)</dt>
+<dd><p>Textbook pricing.
+</p>
+</dd>
+<dt>34 (<code><span class="nolinebreak">GLP_PT_PSE</span></code><!-- /@w -->)</dt>
+<dd><p>Steepest edge pricing.
+</p></dd>
+</dl>
+
+</dd>
+<dt><code>itlim (default: intmax)</code></dt>
+<dd><p>Simplex iterations limit.  It is decreased by one each time when one simplex
+iteration has been performed, and reaching zero value signals the solver to
+stop the search.
+</p>
+</dd>
+<dt><code>outfrq (default: 200)</code></dt>
+<dd><p>Output frequency, in iterations.  This parameter specifies how frequently
+the solver sends information about the solution to the standard output.
+</p>
+</dd>
+<dt><code>branch (default: 4)</code></dt>
+<dd><p>Branching technique option (for MIP only):
+</p>
+<dl compact="compact">
+<dt>1 (<code><span class="nolinebreak">GLP_BR_FFV</span></code><!-- /@w -->)</dt>
+<dd><p>First fractional variable.
+</p>
+</dd>
+<dt>2 (<code><span class="nolinebreak">GLP_BR_LFV</span></code><!-- /@w -->)</dt>
+<dd><p>Last fractional variable.
+</p>
+</dd>
+<dt>3 (<code><span class="nolinebreak">GLP_BR_MFV</span></code><!-- /@w -->)</dt>
+<dd><p>Most fractional variable.
+</p>
+</dd>
+<dt>4 (<code><span class="nolinebreak">GLP_BR_DTH</span></code><!-- /@w -->)</dt>
+<dd><p>Heuristic by Driebeck and Tomlin.
+</p>
+</dd>
+<dt>5 (<code><span class="nolinebreak">GLP_BR_PCH</span></code><!-- /@w -->)</dt>
+<dd><p>Hybrid pseudocost heuristic.
+</p></dd>
+</dl>
+
+</dd>
+<dt><code>btrack (default: 4)</code></dt>
+<dd><p>Backtracking technique option (for MIP only):
+</p>
+<dl compact="compact">
+<dt>1 (<code><span class="nolinebreak">GLP_BT_DFS</span></code><!-- /@w -->)</dt>
+<dd><p>Depth first search.
+</p>
+</dd>
+<dt>2 (<code><span class="nolinebreak">GLP_BT_BFS</span></code><!-- /@w -->)</dt>
+<dd><p>Breadth first search.
+</p>
+</dd>
+<dt>3 (<code><span class="nolinebreak">GLP_BT_BLB</span></code><!-- /@w -->)</dt>
+<dd><p>Best local bound.
+</p>
+</dd>
+<dt>4 (<code><span class="nolinebreak">GLP_BT_BPH</span></code><!-- /@w -->)</dt>
+<dd><p>Best projection heuristic.
+</p></dd>
+</dl>
+
+</dd>
+<dt><code>presol (default: 1)</code></dt>
+<dd><p>If this flag is set, the simplex solver uses the built-in LP presolver.
+Otherwise the LP presolver is not used.
+</p>
+</dd>
+<dt><code>lpsolver (default: 1)</code></dt>
+<dd><p>Select which solver to use.  If the problem is a MIP problem this flag
+will be ignored.
+</p>
+<dl compact="compact">
+<dt>1</dt>
+<dd><p>Revised simplex method.
+</p>
+</dd>
+<dt>2</dt>
+<dd><p>Interior point method.
+</p></dd>
+</dl>
+
+</dd>
+<dt><code>rtest (default: 34)</code></dt>
+<dd><p>Ratio test technique:
+</p>
+<dl compact="compact">
+<dt>17 (<code><span class="nolinebreak">GLP_RT_STD</span></code><!-- /@w -->)</dt>
+<dd><p>Standard (&quot;textbook&quot;).
+</p>
+</dd>
+<dt>34 (<code><span class="nolinebreak">GLP_RT_HAR</span></code><!-- /@w -->)</dt>
+<dd><p>Harris&rsquo; two-pass ratio test.
+</p></dd>
+</dl>
+
+</dd>
+<dt><code>tmlim (default: intmax)</code></dt>
+<dd><p>Searching time limit, in milliseconds.
+</p>
+</dd>
+<dt><code>outdly (default: 0)</code></dt>
+<dd><p>Output delay, in seconds.  This parameter specifies how long the solver
+should delay sending information about the solution to the standard output.
+</p>
+</dd>
+<dt><code>save (default: 0)</code></dt>
+<dd><p>If this parameter is nonzero, save a copy of the problem in CPLEX LP
+format to the file <samp>&quot;outpb.lp&quot;</samp>.  There is currently no way to change
+the name of the output file.
+</p></dd>
+</dl>
+
+<p>Real parameters:
+</p>
+<dl compact="compact">
+<dt><code>tolbnd (default: 1e-7)</code></dt>
+<dd><p>Relative tolerance used to check if the current basic solution is primal
+feasible.  It is not recommended that you change this parameter unless you
+have a detailed understanding of its purpose.
+</p>
+</dd>
+<dt><code>toldj (default: 1e-7)</code></dt>
+<dd><p>Absolute tolerance used to check if the current basic solution is dual
+feasible.  It is not recommended that you change this parameter unless you
+have a detailed understanding of its purpose.
+</p>
+</dd>
+<dt><code>tolpiv (default: 1e-10)</code></dt>
+<dd><p>Relative tolerance used to choose eligible pivotal elements of the simplex
+table.  It is not recommended that you change this parameter unless you have
+a detailed understanding of its purpose.
+</p>
+</dd>
+<dt><code>objll (default: -DBL_MAX)</code></dt>
+<dd><p>Lower limit of the objective function.  If the objective function reaches
+this limit and continues decreasing, the solver stops the search.  This
+parameter is used in the dual simplex method only.
+</p>
+</dd>
+<dt><code>objul (default: +DBL_MAX)</code></dt>
+<dd><p>Upper limit of the objective function.  If the objective function reaches
+this limit and continues increasing, the solver stops the search.  This
+parameter is used in the dual simplex only.
+</p>
+</dd>
+<dt><code>tolint (default: 1e-5)</code></dt>
+<dd><p>Relative tolerance used to check if the current basic solution is integer
+feasible.  It is not recommended that you change this parameter unless you
+have a detailed understanding of its purpose.
+</p>
+</dd>
+<dt><code>tolobj (default: 1e-7)</code></dt>
+<dd><p>Relative tolerance used to check if the value of the objective function is
+not better than in the best known integer feasible solution.  It is not
+recommended that you change this parameter unless you have a detailed
+understanding of its purpose.
+</p></dd>
+</dl>
+</dd>
+</dl>
+
+<p>Output values:
+</p>
+<dl compact="compact">
+<dt><var>xopt</var></dt>
+<dd><p>The optimizer (the value of the decision variables at the optimum).
+</p>
+</dd>
+<dt><var>fopt</var></dt>
+<dd><p>The optimum value of the objective function.
+</p>
+</dd>
+<dt><var>errnum</var></dt>
+<dd><p>Error code.
+</p>
+<dl compact="compact">
+<dt>0</dt>
+<dd><p>No error.
+</p>
+</dd>
+<dt>1 (<code><span class="nolinebreak">GLP_EBADB</span></code><!-- /@w -->)</dt>
+<dd><p>Invalid basis.
+</p>
+</dd>
+<dt>2 (<code><span class="nolinebreak">GLP_ESING</span></code><!-- /@w -->)</dt>
+<dd><p>Singular matrix.
+</p>
+</dd>
+<dt>3 (<code><span class="nolinebreak">GLP_ECOND</span></code><!-- /@w -->)</dt>
+<dd><p>Ill-conditioned matrix.
+</p>
+</dd>
+<dt>4 (<code><span class="nolinebreak">GLP_EBOUND</span></code><!-- /@w -->)</dt>
+<dd><p>Invalid bounds.
+</p>
+</dd>
+<dt>5 (<code><span class="nolinebreak">GLP_EFAIL</span></code><!-- /@w -->)</dt>
+<dd><p>Solver failed.
+</p>
+</dd>
+<dt>6 (<code><span class="nolinebreak">GLP_EOBJLL</span></code><!-- /@w -->)</dt>
+<dd><p>Objective function lower limit reached.
+</p>
+</dd>
+<dt>7 (<code><span class="nolinebreak">GLP_EOBJUL</span></code><!-- /@w -->)</dt>
+<dd><p>Objective function upper limit reached.
+</p>
+</dd>
+<dt>8 (<code><span class="nolinebreak">GLP_EITLIM</span></code><!-- /@w -->)</dt>
+<dd><p>Iterations limit exhausted.
+</p>
+</dd>
+<dt>9 (<code><span class="nolinebreak">GLP_ETMLIM</span></code><!-- /@w -->)</dt>
+<dd><p>Time limit exhausted.
+</p>
+</dd>
+<dt>10 (<code><span class="nolinebreak">GLP_ENOPFS</span></code><!-- /@w -->)</dt>
+<dd><p>No primal feasible solution.
+</p>
+</dd>
+<dt>11 (<code><span class="nolinebreak">GLP_ENODFS</span></code><!-- /@w -->)</dt>
+<dd><p>No dual feasible solution.
+</p>
+</dd>
+<dt>12 (<code><span class="nolinebreak">GLP_EROOT</span></code><!-- /@w -->)</dt>
+<dd><p>Root LP optimum not provided.
+</p>
+</dd>
+<dt>13 (<code><span class="nolinebreak">GLP_ESTOP</span></code><!-- /@w -->)</dt>
+<dd><p>Search terminated by application.
+</p>
+</dd>
+<dt>14 (<code><span class="nolinebreak">GLP_EMIPGAP</span></code><!-- /@w -->)</dt>
+<dd><p>Relative MIP gap tolerance reached.
+</p>
+</dd>
+<dt>15 (<code><span class="nolinebreak">GLP_ENOFEAS</span></code><!-- /@w -->)</dt>
+<dd><p>No primal/dual feasible solution.
+</p>
+</dd>
+<dt>16 (<code><span class="nolinebreak">GLP_ENOCVG</span></code><!-- /@w -->)</dt>
+<dd><p>No convergence.
+</p>
+</dd>
+<dt>17 (<code><span class="nolinebreak">GLP_EINSTAB</span></code><!-- /@w -->)</dt>
+<dd><p>Numerical instability.
+</p>
+</dd>
+<dt>18 (<code><span class="nolinebreak">GLP_EDATA</span></code><!-- /@w -->)</dt>
+<dd><p>Invalid data.
+</p>
+</dd>
+<dt>19 (<code><span class="nolinebreak">GLP_ERANGE</span></code><!-- /@w -->)</dt>
+<dd><p>Result out of range.
+</p></dd>
+</dl>
+
+</dd>
+<dt><var>extra</var></dt>
+<dd><p>A data structure containing the following fields:
+</p>
+<dl compact="compact">
+<dt><code>lambda</code></dt>
+<dd><p>Dual variables.
+</p>
+</dd>
+<dt><code>redcosts</code></dt>
+<dd><p>Reduced Costs.
+</p>
+</dd>
+<dt><code>time</code></dt>
+<dd><p>Time (in seconds) used for solving LP/MIP problem.
+</p>
+</dd>
+<dt><code>status</code></dt>
+<dd><p>Status of the optimization.
+</p>
+<dl compact="compact">
+<dt>1 (<code><span class="nolinebreak">GLP_UNDEF</span></code><!-- /@w -->)</dt>
+<dd><p>Solution status is undefined.
+</p>
+</dd>
+<dt>2 (<code><span class="nolinebreak">GLP_FEAS</span></code><!-- /@w -->)</dt>
+<dd><p>Solution is feasible.
+</p>
+</dd>
+<dt>3 (<code><span class="nolinebreak">GLP_INFEAS</span></code><!-- /@w -->)</dt>
+<dd><p>Solution is infeasible.
+</p>
+</dd>
+<dt>4 (<code><span class="nolinebreak">GLP_NOFEAS</span></code><!-- /@w -->)</dt>
+<dd><p>Problem has no feasible solution.
+</p>
+</dd>
+<dt>5 (<code><span class="nolinebreak">GLP_OPT</span></code><!-- /@w -->)</dt>
+<dd><p>Solution is optimal.
+</p>
+</dd>
+<dt>6 (<code><span class="nolinebreak">GLP_UNBND</span></code><!-- /@w -->)</dt>
+<dd><p>Problem has no unbounded solution.
+</p></dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">c = [10, 6, 4]';
+A = [ 1, 1, 1;
+     10, 4, 5;
+      2, 2, 6];
+b = [100, 600, 300]';
+lb = [0, 0, 0]';
+ub = [];
+ctype = &quot;UUU&quot;;
+vartype = &quot;CCC&quot;;
+s = -1;
+
+param.msglev = 1;
+param.itlim = 100;
+
+[xmin, fmin, status, extra] = ...
+   glpk (c, A, b, lb, ub, ctype, vartype, s, param);
+</pre></div>
+</dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Quadratic-Programming.html#Quadratic-Programming" accesskey="n" rel="next">Quadratic Programming</a>, Up: <a href="Optimization.html#Optimization" accesskey="u" rel="up">Optimization</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

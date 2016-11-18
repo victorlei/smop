@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Function Headers</title>
+
+<meta name="description" content="GNU Octave: Function Headers">
+<meta name="keywords" content="GNU Octave: Function Headers">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Tips-and-Standards.html#Tips-and-Standards" rel="up" title="Tips and Standards">
+<link href="Documentation-Tips.html#Documentation-Tips" rel="next" title="Documentation Tips">
+<link href="Comment-Tips.html#Comment-Tips" rel="prev" title="Comment Tips">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Function-Headers"></a>
+<div class="header">
+<p>
+Next: <a href="Documentation-Tips.html#Documentation-Tips" accesskey="n" rel="next">Documentation Tips</a>, Previous: <a href="Comment-Tips.html#Comment-Tips" accesskey="p" rel="prev">Comment Tips</a>, Up: <a href="Tips-and-Standards.html#Tips-and-Standards" accesskey="u" rel="up">Tips and Standards</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Conventional-Headers-for-Octave-Functions"></a>
+<h3 class="section">C.3 Conventional Headers for Octave Functions</h3>
+<a name="index-header-comments"></a>
+
+<p>Octave has conventions for using special comments in function files
+to give information such as who wrote them.  This section explains these
+conventions.
+</p>
+<p>The top of the file should contain a copyright notice, followed by a
+block of comments that can be used as the help text for the function.
+Here is an example:
+</p>
+<div class="example">
+<pre class="example">## Copyright (C) 1996, 1997, 2007 John W. Eaton
+##
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or
+## modify it under the terms of the GNU General Public
+## License as published by the Free Software Foundation;
+## either version 3 of the License, or (at your option) any
+## later version.
+##
+## Octave is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied
+## warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+## PURPOSE.  See the GNU General Public License for more
+## details.
+##
+## You should have received a copy of the GNU General Public
+## License along with Octave; see the file COPYING.  If not,
+## see &lt;http://www.gnu.org/licenses/&gt;.
+
+## usage: [IN, OUT, PID] = popen2 (COMMAND, ARGS)
+##
+## Start a subprocess with two-way communication.  COMMAND
+## specifies the name of the command to start.  ARGS is an
+## array of strings containing options for COMMAND.  IN and
+## OUT are the file ids of the input and streams for the
+## subprocess, and PID is the process id of the subprocess,
+## or -1 if COMMAND could not be executed.
+##
+## Example:
+##
+##  [in, out, pid] = popen2 (&quot;sort&quot;, &quot;-nr&quot;);
+##  fputs (in, &quot;these\nare\nsome\nstrings\n&quot;);
+##  fclose (in);
+##  while (ischar (s = fgets (out)))
+##    fputs (stdout, s);
+##  endwhile
+##  fclose (out);
+</pre></div>
+
+<p>Octave uses the first block of comments in a function file that do not
+appear to be a copyright notice as the help text for the file.  For
+Octave to recognize the first comment block as a copyright notice, it
+must start with the word &lsquo;Copyright&rsquo; after stripping the leading
+comment characters.
+</p>
+<p>After the copyright notice and help text come several <em>header
+comment</em> lines, each beginning with &lsquo;<samp>## <var>header-name</var>:</samp>&rsquo;.  For
+example,
+</p>
+<div class="example">
+<pre class="example">## Author: jwe
+## Keywords: subprocesses input-output
+## Maintainer: jwe
+</pre></div>
+
+<p>Here is a table of the conventional possibilities for <var>header-name</var>:
+</p>
+<dl compact="compact">
+<dt>&lsquo;<samp>Author</samp>&rsquo;</dt>
+<dd><p>This line states the name and net address of at least the principal
+author of the library.
+</p>
+<div class="example">
+<pre class="example">## Author: John W. Eaton &lt;jwe@octave.org&gt;
+</pre></div>
+
+</dd>
+<dt>&lsquo;<samp>Maintainer</samp>&rsquo;</dt>
+<dd><p>This line should contain a single name/address as in the Author line, or
+an address only, or the string &lsquo;<samp>jwe</samp>&rsquo;.  If there is no maintainer
+line, the person(s) in the Author field are presumed to be the
+maintainers.  The example above is mildly bogus because the maintainer
+line is redundant.
+</p>
+<p>The idea behind the &lsquo;<samp>Author</samp>&rsquo; and &lsquo;<samp>Maintainer</samp>&rsquo; lines is to make
+possible a function to &ldquo;send mail to the maintainer&rdquo; without
+having to mine the name out by hand.
+</p>
+<p>Be sure to surround the network address with &lsquo;<samp>&lt;&hellip;&gt;</samp>&rsquo; if
+you include the person&rsquo;s full name as well as the network address.
+</p>
+</dd>
+<dt>&lsquo;<samp>Created</samp>&rsquo;</dt>
+<dd><p>This optional line gives the original creation date of the
+file.  For historical interest only.
+</p>
+</dd>
+<dt>&lsquo;<samp>Version</samp>&rsquo;</dt>
+<dd><p>If you wish to record version numbers for the individual Octave program,
+put them in this line.
+</p>
+</dd>
+<dt>&lsquo;<samp>Adapted-By</samp>&rsquo;</dt>
+<dd><p>In this header line, place the name of the person who adapted the
+library for installation (to make it fit the style conventions, for
+example).
+</p>
+</dd>
+<dt>&lsquo;<samp>Keywords</samp>&rsquo;</dt>
+<dd><p>This line lists keywords.  Eventually, it will be used by an apropos
+command to allow people will find your package when they&rsquo;re looking for
+things by topic area.  To separate the keywords, you can use spaces,
+commas, or both.
+</p></dd>
+</dl>
+
+<p>Just about every Octave function ought to have the &lsquo;<samp>Author</samp>&rsquo; and
+&lsquo;<samp>Keywords</samp>&rsquo; header comment lines.  Use the others if they are
+appropriate.  You can also put in header lines with other header
+names&mdash;they have no standard meanings, so they can&rsquo;t do any harm.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Documentation-Tips.html#Documentation-Tips" accesskey="n" rel="next">Documentation Tips</a>, Previous: <a href="Comment-Tips.html#Comment-Tips" accesskey="p" rel="prev">Comment Tips</a>, Up: <a href="Tips-and-Standards.html#Tips-and-Standards" accesskey="u" rel="up">Tips and Standards</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

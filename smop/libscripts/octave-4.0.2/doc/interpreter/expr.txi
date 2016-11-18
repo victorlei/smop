@@ -1,0 +1,1411 @@
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Expressions
+@chapter Expressions
+@cindex expressions
+
+Expressions are the basic building block of statements in Octave.  An
+expression evaluates to a value, which you can print, test, store in a
+variable, pass to a function, or assign a new value to a variable with
+an assignment operator.
+
+An expression can serve as a statement on its own.  Most other kinds of
+statements contain one or more expressions which specify data to be
+operated on.  As in other languages, expressions in Octave include
+variables, array references, constants, and function calls, as well as
+combinations of these with various operators.
+
+@menu
+* Index Expressions::
+* Calling Functions::
+* Arithmetic Ops::
+* Comparison Ops::
+* Boolean Expressions::
+* Assignment Ops::
+* Increment Ops::
+* Operator Precedence::
+@end menu
+
+@node Index Expressions
+@section Index Expressions
+
+@opindex (
+@opindex )
+@opindex :
+
+An @dfn{index expression} allows you to reference or extract selected
+elements of a matrix or vector.
+
+Indices may be scalars, vectors, ranges, or the special operator
+@samp{:}, which may be used to select entire rows or columns.
+
+Vectors are indexed using a single index expression.  Matrices (2-D)
+and higher multi-dimensional arrays are indexed using either one index
+or @math{N} indices where @math{N} is the dimension of the array.
+When using a single index expression to index 2-D or higher data the
+elements of the array are taken in column-first order (like Fortran).
+
+The output from indexing assumes the dimensions of the index
+expression.  For example:
+
+@example
+@group
+a(2)       # result is a scalar
+a(1:2)     # result is a row vector
+a([1; 2])  # result is a column vector
+@end group
+@end example
+
+As a special case, when a colon is used as a single index, the output
+is a column vector containing all the elements of the vector or
+matrix.  For example:
+
+@example
+@group
+a(:)       # result is a column vector
+a(:)'      # result is a row vector
+@end group
+@end example
+
+The above two code idioms are often used in place of @code{reshape}
+when a simple vector, rather than an arbitrarily sized array, is
+needed.
+
+Given the matrix
+
+@example
+a = [1, 2; 3, 4]
+@end example
+
+@noindent
+all of the following expressions are equivalent and select the first
+row of the matrix.
+
+@example
+@group
+a(1, [1, 2])  # row 1, columns 1 and 2
+a(1, 1:2)     # row 1, columns in range 1-2
+a(1, :)       # row 1, all columns
+@end group
+@end example
+
+@cindex @code{end}, indexing
+@cindex :end
+
+In index expressions the keyword @code{end} automatically refers to
+the last entry for a particular dimension.  This magic index can also
+be used in ranges and typically eliminates the needs to call
+@code{size} or @code{length} to gather array bounds before indexing.
+For example:
+
+@example
+@group
+a = [1, 2, 3, 4];
+
+a(1:end/2)        # first half of a => [1, 2]
+a(end + 1) = 5;   # append element
+a(end) = [];      # delete element
+a(1:2:end)        # odd elements of a => [1, 3]
+a(2:2:end)        # even elements of a => [2, 4]
+a(end:-1:1)       # reversal of a => [4, 3, 2 , 1]
+@end group
+@end example
+
+@menu
+* Advanced Indexing::
+@end menu
+
+@node Advanced Indexing
+@subsection Advanced Indexing
+
+An array with @samp{n} dimensions can be indexed using @samp{m}
+indices.  More generally, the set of index tuples determining the
+result is formed by the Cartesian product of the index vectors (or
+ranges or scalars).
+
+For the ordinary and most common case, @w{@code{m == n}}, and each
+index corresponds to its respective dimension.  If @w{@code{m < n}}
+and every index is less than the size of the array in the
+@math{i^{th}} dimension, @code{m(i) < n(i)}, then the index expression
+is padded with trailing singleton dimensions (@code{[ones (m-n, 1)]}).
+If @w{@code{m < n}} but one of the indices @code{m(i)} is outside the
+size of the current array, then the last @w{@code{n-m+1}} dimensions
+are folded into a single dimension with an extent equal to the product
+of extents of the original dimensions.  This is easiest to understand
+with an example.
+
+@example
+a = reshape (1:8, 2, 2, 2)  # Create 3-D array
+a =
+
+ans(:,:,1) =
+
+   1   3
+   2   4
+
+ans(:,:,2) =
+
+   5   7
+   6   8
+
+a(2,1,2);   # Case (m == n): ans = 6
+a(2,1);     # Case (m < n), idx within array:
+            # equivalent to a(2,1,1), ans = 2
+a(2,4);     # Case (m < n), idx outside array:
+            # Dimension 2 & 3 folded into new dimension of size 2x2 = 4
+            # Select 2nd row, 4th element of [2, 4, 6, 8], ans = 8
+@end example
+
+One advanced use of indexing is to create arrays filled with a single
+value.  This can be done by using an index of ones on a scalar value.
+The result is an object with the dimensions of the index expression
+and every element equal to the original scalar.  For example, the
+following statements
+
+@example
+@group
+a = 13;
+a(ones (1, 4))
+@end group
+@end example
+
+@noindent
+produce a vector whose four elements are all equal to 13.
+
+Similarly, by indexing a scalar with two vectors of ones it is
+possible to create a matrix.  The following statements
+
+@example
+@group
+a = 13;
+a(ones (1, 2), ones (1, 3))
+@end group
+@end example
+
+@noindent
+create a 2x3 matrix with all elements equal to 13.
+
+The last example could also be written as
+
+@example
+@group
+13(ones (2, 3))
+@end group
+@end example
+
+It is more efficient to use indexing rather than the code construction
+@code{scalar * ones (N, M, @dots{})} because it avoids the unnecessary
+multiplication operation.  Moreover, multiplication may not be
+defined for the object to be replicated whereas indexing an array is
+always defined.  The following code shows how to create a 2x3 cell
+array from a base unit which is not itself a scalar.
+
+@example
+@group
+@{"Hello"@}(ones (2, 3))
+@end group
+@end example
+
+It should be, noted that @code{ones (1, n)} (a row vector of ones)
+results in a range (with zero increment).  A range is stored
+internally as a starting value, increment, end value, and total number
+of values; hence, it is more efficient for storage than a vector or
+matrix of ones whenever the number of elements is greater than 4.  In
+particular, when @samp{r} is a row vector, the expressions
+
+@example
+  r(ones (1, n), :)
+@end example
+
+@example
+  r(ones (n, 1), :)
+@end example
+
+@noindent
+will produce identical results, but the first one will be
+significantly faster, at least for @samp{r} and @samp{n} large enough.
+In the first case the index is held in compressed form as a range
+which allows Octave to choose a more efficient algorithm to handle the
+expression.
+
+A general recommendation, for a user unaware of these subtleties, is
+to use the function @code{repmat} for replicating smaller arrays into
+bigger ones.
+
+A second use of indexing is to speed up code.  Indexing is a fast
+operation and judicious use of it can reduce the requirement for
+looping over individual array elements which is a slow operation.
+
+Consider the following example which creates a 10-element row vector
+@math{a} containing the values
+@tex
+$a_i = \sqrt{i}$.
+@end tex
+@ifnottex
+a(i) = sqrt (i).
+@end ifnottex
+
+@example
+@group
+for i = 1:10
+  a(i) = sqrt (i);
+endfor
+@end group
+@end example
+
+@noindent
+It is quite inefficient to create a vector using a loop like this.  In
+this case, it would have been much more efficient to use the
+expression
+
+@example
+a = sqrt (1:10);
+@end example
+
+@noindent
+which avoids the loop entirely.
+
+In cases where a loop cannot be avoided, or a number of values must be
+combined to form a larger matrix, it is generally faster to set the
+size of the matrix first (pre-allocate storage), and then insert
+elements using indexing commands.  For example, given a matrix
+@code{a},
+
+@example
+@group
+[nr, nc] = size (a);
+x = zeros (nr, n * nc);
+for i = 1:n
+  x(:,(i-1)*nc+1:i*nc) = a;
+endfor
+@end group
+@end example
+
+@noindent
+is considerably faster than
+
+@example
+@group
+x = a;
+for i = 1:n-1
+  x = [x, a];
+endfor
+@end group
+@end example
+
+@noindent
+because Octave does not have to repeatedly resize the intermediate
+result.
+
+@DOCSTRING(sub2ind)
+
+@DOCSTRING(ind2sub)
+
+@DOCSTRING(isindex)
+
+@DOCSTRING(allow_noninteger_range_as_index)
+
+@node Calling Functions
+@section Calling Functions
+
+A @dfn{function} is a name for a particular calculation.  Because it has
+a name, you can ask for it by name at any point in the program.  For
+example, the function @code{sqrt} computes the square root of a number.
+
+A fixed set of functions are @dfn{built-in}, which means they are
+available in every Octave program.  The @code{sqrt} function is one of
+these.  In addition, you can define your own functions.
+@xref{Functions and Scripts}, for information about how to do this.
+
+@cindex arguments in function call
+The way to use a function is with a @dfn{function call} expression,
+which consists of the function name followed by a list of
+@dfn{arguments} in parentheses.  The arguments are expressions which give
+the raw materials for the calculation that the function will do.  When
+there is more than one argument, they are separated by commas.  If there
+are no arguments, you can omit the parentheses, but it is a good idea to
+include them anyway, to clearly indicate that a function call was
+intended.  Here are some examples:
+
+@example
+@group
+sqrt (x^2 + y^2)      # @r{One argument}
+ones (n, m)           # @r{Two arguments}
+rand ()               # @r{No arguments}
+@end group
+@end example
+
+Each function expects a particular number of arguments.  For example, the
+@code{sqrt} function must be called with a single argument, the number
+to take the square root of:
+
+@example
+sqrt (@var{argument})
+@end example
+
+Some of the built-in functions take a variable number of arguments,
+depending on the particular usage, and their behavior is different
+depending on the number of arguments supplied.
+
+Like every other expression, the function call has a value, which is
+computed by the function based on the arguments you give it.  In this
+example, the value of @code{sqrt (@var{argument})} is the square root of
+the argument.  A function can also have side effects, such as assigning
+the values of certain variables or doing input or output operations.
+
+Unlike most languages, functions in Octave may return multiple values.
+For example, the following statement
+
+@example
+[u, s, v] = svd (a)
+@end example
+
+@noindent
+computes the singular value decomposition of the matrix @code{a} and
+assigns the three result matrices to @code{u}, @code{s}, and @code{v}.
+
+The left side of a multiple assignment expression is itself a list of
+expressions, and is allowed to be a list of variable names or index
+expressions.  See also @ref{Index Expressions}, and @ref{Assignment Ops}.
+
+@menu
+* Call by Value::
+* Recursion::
+@end menu
+
+@node Call by Value
+@subsection Call by Value
+
+In Octave, unlike Fortran, function arguments are passed by value, which
+means that each argument in a function call is evaluated and assigned to
+a temporary location in memory before being passed to the function.
+There is currently no way to specify that a function parameter should be
+passed by reference instead of by value.  This means that it is
+impossible to directly alter the value of a function parameter in the
+calling function.  It can only change the local copy within the function
+body.  For example, the function
+
+@example
+@group
+function f (x, n)
+  while (n-- > 0)
+    disp (x);
+  endwhile
+endfunction
+@end group
+@end example
+
+@noindent
+displays the value of the first argument @var{n} times.  In this
+function, the variable @var{n} is used as a temporary variable without
+having to worry that its value might also change in the calling
+function.  Call by value is also useful because it is always possible to
+pass constants for any function parameter without first having to
+determine that the function will not attempt to modify the parameter.
+
+The caller may use a variable as the expression for the argument, but
+the called function does not know this: it only knows what value the
+argument had.  For example, given a function called as
+
+@example
+@group
+foo = "bar";
+fcn (foo)
+@end group
+@end example
+
+@noindent
+you should not think of the argument as being ``the variable
+@code{foo}.''  Instead, think of the argument as the string value,
+@qcode{"bar"}.
+
+Even though Octave uses pass-by-value semantics for function arguments,
+values are not copied unnecessarily.  For example,
+
+@example
+@group
+x = rand (1000);
+f (x);
+@end group
+@end example
+
+@noindent
+does not actually force two 1000 by 1000 element matrices to exist
+@emph{unless} the function @code{f} modifies the value of its
+argument.  Then Octave must create a copy to avoid changing the
+value outside the scope of the function @code{f}, or attempting (and
+probably failing!) to modify the value of a constant or the value of a
+temporary result.
+
+@node Recursion
+@subsection Recursion
+@cindex factorial function
+
+With some restrictions@footnote{Some of Octave's functions are
+implemented in terms of functions that cannot be called recursively.
+For example, the ODE solver @code{lsode} is ultimately implemented in a
+Fortran subroutine that cannot be called recursively, so @code{lsode}
+should not be called either directly or indirectly from within the
+user-supplied function that @code{lsode} requires.  Doing so will result
+in an error.}, recursive function calls are allowed.  A
+@dfn{recursive function} is one which calls itself, either directly or
+indirectly.  For example, here is an inefficient@footnote{It would be
+much better to use @code{prod (1:n)}, or @code{gamma (n+1)} instead,
+after first checking to ensure that the value @code{n} is actually a
+positive integer.} way to compute the factorial of a given integer:
+
+@example
+@group
+function retval = fact (n)
+  if (n > 0)
+    retval = n * fact (n-1);
+  else
+    retval = 1;
+  endif
+endfunction
+@end group
+@end example
+
+This function is recursive because it calls itself directly.  It
+eventually terminates because each time it calls itself, it uses an
+argument that is one less than was used for the previous call.  Once the
+argument is no longer greater than zero, it does not call itself, and
+the recursion ends.
+
+The built-in variable @code{max_recursion_depth} specifies a limit to
+the recursion depth and prevents Octave from recursing infinitely.
+
+@DOCSTRING(max_recursion_depth)
+
+@node Arithmetic Ops
+@section Arithmetic Operators
+@cindex arithmetic operators
+@cindex operators, arithmetic
+@cindex addition
+@cindex subtraction
+@cindex multiplication
+@cindex matrix multiplication
+@cindex division
+@cindex quotient
+@cindex negation
+@cindex unary minus
+@cindex exponentiation
+@cindex transpose
+@cindex Hermitian operator
+@cindex transpose, complex-conjugate
+@cindex complex-conjugate transpose
+
+The following arithmetic operators are available, and work on scalars
+and matrices.  The element-by-element operators and functions broadcast
+(@pxref{Broadcasting}).
+
+@table @asis
+@item @var{x} + @var{y}
+@opindex +
+Addition.  If both operands are matrices, the number of rows and columns
+must both agree, or they must be broadcastable to the same shape.
+
+@item @var{x} .+ @var{y}
+@opindex .+
+Element-by-element addition.  This operator is equivalent to @code{+}.
+
+@item @var{x} - @var{y}
+@opindex -
+Subtraction.  If both operands are matrices, the number of rows and
+columns of both must agree, or they must be broadcastable to the same
+shape.
+
+@item @var{x} .- @var{y}
+Element-by-element subtraction.  This operator is equivalent to @code{-}.
+
+@item @var{x} * @var{y}
+@opindex *
+Matrix multiplication.  The number of columns of @var{x} must agree with
+the number of rows of @var{y}, or they must be broadcastable to the same
+shape.
+
+@item @var{x} .* @var{y}
+@opindex .*
+Element-by-element multiplication.  If both operands are matrices, the
+number of rows and columns must both agree, or they must be
+broadcastable to the same shape.
+
+@item @var{x} / @var{y}
+@opindex /
+Right division.  This is conceptually equivalent to the expression
+
+@example
+(inverse (y') * x')'
+@end example
+
+@noindent
+but it is computed without forming the inverse of @var{y'}.
+
+If the system is not square, or if the coefficient matrix is singular,
+a minimum norm solution is computed.
+
+@item @var{x} ./ @var{y}
+@opindex ./
+Element-by-element right division.
+
+@item @var{x} \ @var{y}
+@opindex \
+Left division.  This is conceptually equivalent to the expression
+
+@example
+inverse (x) * y
+@end example
+
+@noindent
+but it is computed without forming the inverse of @var{x}.
+
+If the system is not square, or if the coefficient matrix is singular,
+a minimum norm solution is computed.
+
+@item @var{x} .\ @var{y}
+@opindex .\
+Element-by-element left division.  Each element of @var{y} is divided
+by each corresponding element of @var{x}.
+
+@item  @var{x} ^ @var{y}
+@itemx @var{x} ** @var{y}
+@opindex **
+@opindex ^
+Power operator.  If @var{x} and @var{y} are both scalars, this operator
+returns @var{x} raised to the power @var{y}.  If @var{x} is a scalar and
+@var{y} is a square matrix, the result is computed using an eigenvalue
+expansion.  If @var{x} is a square matrix, the result is computed by
+repeated multiplication if @var{y} is an integer, and by an eigenvalue
+expansion if @var{y} is not an integer.  An error results if both
+@var{x} and @var{y} are matrices.
+
+The implementation of this operator needs to be improved.
+
+@item  @var{x} .^ @var{y}
+@itemx @var{x} .** @var{y}
+@opindex .**
+@opindex .^
+Element-by-element power operator.  If both operands are matrices, the
+number of rows and columns must both agree, or they must be
+broadcastable to the same shape.  If several complex results are
+possible, the one with smallest non-negative argument (angle) is taken.
+This rule may return a complex root even when a real root is also possible.
+Use @code{realpow}, @code{realsqrt}, @code{cbrt}, or @code{nthroot} if a
+real result is preferred.
+
+@item -@var{x}
+@opindex -
+Negation.
+
+@item +@var{x}
+@opindex +
+Unary plus.  This operator has no effect on the operand.
+
+@item @var{x}'
+@opindex '
+Complex conjugate transpose.  For real arguments, this operator is the
+same as the transpose operator.  For complex arguments, this operator is
+equivalent to the expression
+
+@example
+conj (x.')
+@end example
+
+@item @var{x}.'
+@opindex .'
+Transpose.
+@end table
+
+Note that because Octave's element-by-element operators begin with a
+@samp{.}, there is a possible ambiguity for statements like
+
+@example
+1./m
+@end example
+
+@noindent
+because the period could be interpreted either as part of the constant
+or as part of the operator.  To resolve this conflict, Octave treats the
+expression as if you had typed
+
+@example
+(1) ./ m
+@end example
+
+@noindent
+and not
+
+@example
+(1.) / m
+@end example
+
+@noindent
+Although this is inconsistent with the normal behavior of Octave's
+lexer, which usually prefers to break the input into tokens by
+preferring the longest possible match at any given point, it is more
+useful in this case.
+
+@opindex '
+@DOCSTRING(ctranspose)
+
+@opindex .\
+@DOCSTRING(ldivide)
+
+@opindex -
+@DOCSTRING(minus)
+
+@opindex \
+@DOCSTRING(mldivide)
+
+@opindex **
+@opindex ^
+@DOCSTRING(mpower)
+
+@opindex /
+@DOCSTRING(mrdivide)
+
+@opindex *
+@DOCSTRING(mtimes)
+
+@opindex +
+@DOCSTRING(plus)
+
+@opindex .**
+@opindex .^
+@DOCSTRING(power)
+
+@opindex ./
+@DOCSTRING(rdivide)
+
+@opindex .*
+@DOCSTRING(times)
+
+@opindex .'
+@DOCSTRING(transpose)
+
+@opindex -
+@DOCSTRING(uminus)
+
+@opindex +
+@DOCSTRING(uplus)
+
+@node Comparison Ops
+@section Comparison Operators
+@cindex comparison expressions
+@cindex expressions, comparison
+@cindex relational operators
+@cindex operators, relational
+@cindex less than operator
+@cindex greater than operator
+@cindex equality operator
+@cindex tests for equality
+@cindex equality, tests for
+
+@dfn{Comparison operators} compare numeric values for relationships
+such as equality.  They are written using
+@emph{relational operators}.
+
+All of Octave's comparison operators return a value of 1 if the
+comparison is true, or 0 if it is false.  For matrix values, they all
+work on an element-by-element basis.  Broadcasting rules apply.
+@xref{Broadcasting}.  For example:
+
+@example
+@group
+[1, 2; 3, 4] == [1, 3; 2, 4]
+     @result{}  1  0
+         0  1
+@end group
+@end example
+
+According to broadcasting rules, if one operand is a scalar and the
+other is a matrix, the scalar is compared to each element of the matrix
+in turn, and the result is the same size as the matrix.
+
+@table @code
+@item @var{x} < @var{y}
+@opindex <
+True if @var{x} is less than @var{y}.
+
+@item @var{x} <= @var{y}
+@opindex <=
+True if @var{x} is less than or equal to @var{y}.
+
+@item @var{x} == @var{y}
+@opindex ==
+True if @var{x} is equal to @var{y}.
+
+@item @var{x} >= @var{y}
+@opindex >=
+True if @var{x} is greater than or equal to @var{y}.
+
+@item @var{x} > @var{y}
+@opindex >
+True if @var{x} is greater than @var{y}.
+
+@item  @var{x} != @var{y}
+@itemx @var{x} ~= @var{y}
+@opindex !=
+@opindex ~=
+True if @var{x} is not equal to @var{y}.
+@end table
+
+For complex numbers, the following ordering is defined:
+@var{z1} < @var{z2}
+if and only if
+
+@example
+@group
+  abs (@var{z1}) < abs (@var{z2})
+  || (abs (@var{z1}) == abs (@var{z2}) && arg (@var{z1}) < arg (@var{z2}))
+@end group
+@end example
+
+This is consistent with the ordering used by @dfn{max}, @dfn{min} and
+@dfn{sort}, but is not consistent with @sc{matlab}, which only compares the real
+parts.
+
+String comparisons may also be performed with the @code{strcmp}
+function, not with the comparison operators listed above.
+@xref{Strings}.
+
+@opindex ==
+@DOCSTRING(eq)
+
+@opindex >=
+@DOCSTRING(ge)
+
+@opindex >
+@DOCSTRING(gt)
+
+@DOCSTRING(isequal)
+
+@DOCSTRING(isequaln)
+
+@opindex <=
+@DOCSTRING(le)
+
+@opindex <
+@DOCSTRING(lt)
+
+@opindex !=
+@opindex ~=
+@DOCSTRING(ne)
+
+@node Boolean Expressions
+@section Boolean Expressions
+@cindex expressions, boolean
+@cindex boolean expressions
+@cindex expressions, logical
+@cindex logical expressions
+@cindex operators, boolean
+@cindex boolean operators
+@cindex logical operators
+@cindex operators, logical
+@cindex and operator
+@cindex or operator
+@cindex not operator
+
+@menu
+* Element-by-element Boolean Operators::
+* Short-circuit Boolean Operators::
+@end menu
+
+@node Element-by-element Boolean Operators
+@subsection Element-by-element Boolean Operators
+@cindex element-by-element evaluation
+
+An @dfn{element-by-element boolean expression} is a combination of
+comparison expressions using the boolean
+operators ``or'' (@samp{|}), ``and'' (@samp{&}), and ``not'' (@samp{!}),
+along with parentheses to control nesting.  The truth of the boolean
+expression is computed by combining the truth values of the
+corresponding elements of the component expressions.  A value is
+considered to be false if it is zero, and true otherwise.
+
+Element-by-element boolean expressions can be used wherever comparison
+expressions can be used.  They can be used in @code{if} and @code{while}
+statements.  However, a matrix value used as the condition in an
+@code{if} or @code{while} statement is only true if @emph{all} of its
+elements are nonzero.
+
+Like comparison operations, each element of an element-by-element
+boolean expression also has a numeric value (1 if true, 0 if false) that
+comes into play if the result of the boolean expression is stored in a
+variable, or used in arithmetic.
+
+Here are descriptions of the three element-by-element boolean operators.
+
+@table @code
+@item @var{boolean1} & @var{boolean2}
+@opindex &
+Elements of the result are true if both corresponding elements of
+@var{boolean1} and @var{boolean2} are true.
+
+@item @var{boolean1} | @var{boolean2}
+@opindex |
+Elements of the result are true if either of the corresponding elements
+of @var{boolean1} or @var{boolean2} is true.
+
+@item  ! @var{boolean}
+@itemx ~ @var{boolean}
+@opindex ~
+@opindex !
+Each element of the result is true if the corresponding element of
+@var{boolean} is false.
+@end table
+
+These operators work on an element-by-element basis.  For example, the
+expression
+
+@example
+[1, 0; 0, 1] & [1, 0; 2, 3]
+@end example
+
+@noindent
+returns a two by two identity matrix.
+
+For the binary operators, broadcasting rules apply.  @xref{Broadcasting}.
+In particular, if one of the operands is a scalar and the other a
+matrix, the operator is applied to the scalar and each element of the
+matrix.
+
+For the binary element-by-element boolean operators, both subexpressions
+@var{boolean1} and @var{boolean2} are evaluated before computing the
+result.  This can make a difference when the expressions have side
+effects.  For example, in the expression
+
+@example
+a & b++
+@end example
+
+@noindent
+the value of the variable @var{b} is incremented even if the variable
+@var{a} is zero.
+
+This behavior is necessary for the boolean operators to work as
+described for matrix-valued operands.
+
+@opindex &
+@DOCSTRING(and)
+
+@opindex ~
+@opindex !
+@DOCSTRING(not)
+
+@opindex |
+@DOCSTRING(or)
+
+@node Short-circuit Boolean Operators
+@subsection Short-circuit Boolean Operators
+@cindex short-circuit evaluation
+
+Combined with the implicit conversion to scalar values in @code{if} and
+@code{while} conditions, Octave's element-by-element boolean operators
+are often sufficient for performing most logical operations.  However,
+it is sometimes desirable to stop evaluating a boolean expression as
+soon as the overall truth value can be determined.  Octave's
+@dfn{short-circuit} boolean operators work this way.
+
+@table @code
+@item @var{boolean1} && @var{boolean2}
+@opindex &&
+The expression @var{boolean1} is evaluated and converted to a scalar
+using the equivalent of the operation @code{all (@var{boolean1}(:))}.
+If it is false, the result of the overall expression is 0.  If it is
+true, the expression @var{boolean2} is evaluated and converted to a
+scalar using the equivalent of the operation @code{all
+(@var{boolean2}(:))}.  If it is true, the result of the overall expression
+is 1.  Otherwise, the result of the overall expression is 0.
+
+@strong{Warning:} there is one exception to the rule of evaluating
+@code{all (@var{boolean1}(:))}, which is when @code{boolean1} is the
+empty matrix.  The truth value of an empty matrix is always @code{false}
+so @code{[] && true} evaluates to @code{false} even though
+@code{all ([])} is @code{true}.
+
+@item @var{boolean1} || @var{boolean2}
+@opindex ||
+The expression @var{boolean1} is evaluated and converted to a scalar
+using the equivalent of the operation @code{all (@var{boolean1}(:))}.
+If it is true, the result of the overall expression is 1.  If it is
+false, the expression @var{boolean2} is evaluated and converted to a
+scalar using the equivalent of the operation @code{all
+(@var{boolean2}(:))}.  If it is true, the result of the overall expression
+is 1.  Otherwise, the result of the overall expression is 0.
+
+@strong{Warning:} the truth value of an empty matrix is always @code{false},
+see the previous list item for details.
+@end table
+
+The fact that both operands may not be evaluated before determining the
+overall truth value of the expression can be important.  For example, in
+the expression
+
+@example
+a && b++
+@end example
+
+@noindent
+the value of the variable @var{b} is only incremented if the variable
+@var{a} is nonzero.
+
+This can be used to write somewhat more concise code.  For example, it
+is possible write
+
+@example
+@group
+function f (a, b, c)
+  if (nargin > 2 && ischar (c))
+    @dots{}
+@end group
+@end example
+
+@noindent
+instead of having to use two @code{if} statements to avoid attempting to
+evaluate an argument that doesn't exist.  For example, without the
+short-circuit feature, it would be necessary to write
+
+@example
+@group
+function f (a, b, c)
+  if (nargin > 2)
+    if (ischar (c))
+      @dots{}
+@end group
+@end example
+
+@noindent
+Writing
+
+@example
+@group
+function f (a, b, c)
+  if (nargin > 2 & ischar (c))
+    @dots{}
+@end group
+@end example
+
+@noindent
+would result in an error if @code{f} were called with one or two
+arguments because Octave would be forced to try to evaluate both of the
+operands for the operator @samp{&}.
+
+@sc{matlab} has special behavior that allows the operators @samp{&} and
+@samp{|} to short-circuit when used in the truth expression for @code{if} and
+@code{while} statements.  Octave also behaves the same way by default,
+though the use of the @samp{&} and @samp{|} operators in this way is
+strongly discouraged.  Instead, you should use the @samp{&&} and @samp{||}
+operators that always have short-circuit behavior.
+
+Finally, the ternary operator (?:) is not supported in Octave.  If
+short-circuiting is not important, it can be replaced by the @code{ifelse}
+function.
+
+@DOCSTRING(merge)
+
+@node Assignment Ops
+@section Assignment Expressions
+@cindex assignment expressions
+@cindex assignment operators
+@cindex operators, assignment
+@cindex expressions, assignment
+
+@opindex =
+
+An @dfn{assignment} is an expression that stores a new value into a
+variable.  For example, the following expression assigns the value 1 to
+the variable @code{z}:
+
+@example
+z = 1
+@end example
+
+@noindent
+After this expression is executed, the variable @code{z} has the value 1.
+Whatever old value @code{z} had before the assignment is forgotten.
+The @samp{=} sign is called an @dfn{assignment operator}.
+
+Assignments can store string values also.  For example, the following
+expression would store the value @qcode{"this food is good"} in the
+variable @code{message}:
+
+@example
+@group
+thing = "food"
+predicate = "good"
+message = [ "this " , thing , " is " , predicate ]
+@end group
+@end example
+
+@noindent
+(This also illustrates concatenation of strings.)
+
+@cindex side effect
+Most operators (addition, concatenation, and so on) have no effect
+except to compute a value.  If you ignore the value, you might as well
+not use the operator.  An assignment operator is different.  It does
+produce a value, but even if you ignore the value, the assignment still
+makes itself felt through the alteration of the variable.  We call this
+a @dfn{side effect}.
+
+@cindex lvalue
+The left-hand operand of an assignment need not be a variable
+(@pxref{Variables}).  It can also be an element of a matrix
+(@pxref{Index Expressions}) or a list of return values
+(@pxref{Calling Functions}).  These are all called @dfn{lvalues}, which
+means they can appear on the left-hand side of an assignment operator.
+The right-hand operand may be any expression.  It produces the new value
+which the assignment stores in the specified variable, matrix element,
+or list of return values.
+
+It is important to note that variables do @emph{not} have permanent types.
+The type of a variable is simply the type of whatever value it happens
+to hold at the moment.  In the following program fragment, the variable
+@code{foo} has a numeric value at first, and a string value later on:
+
+@example
+@group
+octave:13> foo = 1
+foo = 1
+octave:13> foo = "bar"
+foo = bar
+@end group
+@end example
+
+@noindent
+When the second assignment gives @code{foo} a string value, the fact that
+it previously had a numeric value is forgotten.
+
+Assignment of a scalar to an indexed matrix sets all of the elements
+that are referenced by the indices to the scalar value.  For example, if
+@code{a} is a matrix with at least two columns,
+
+@example
+@group
+a(:, 2) = 5
+@end group
+@end example
+
+@noindent
+sets all the elements in the second column of @code{a} to 5.
+
+Assigning an empty matrix @samp{[]} works in most cases to allow you to
+delete rows or columns of matrices and vectors.  @xref{Empty Matrices}.
+For example, given a 4 by 5 matrix @var{A}, the assignment
+
+@example
+A (3, :) = []
+@end example
+
+@noindent
+deletes the third row of @var{A}, and the assignment
+
+@example
+A (:, 1:2:5) = []
+@end example
+
+@noindent
+deletes the first, third, and fifth columns.
+
+An assignment is an expression, so it has a value.  Thus, @code{z = 1}
+as an expression has the value 1.  One consequence of this is that you
+can write multiple assignments together:
+
+@example
+x = y = z = 0
+@end example
+
+@noindent
+stores the value 0 in all three variables.  It does this because the
+value of @code{z = 0}, which is 0, is stored into @code{y}, and then
+the value of @code{y = z = 0}, which is 0, is stored into @code{x}.
+
+This is also true of assignments to lists of values, so the following is
+a valid expression
+
+@example
+[a, b, c] = [u, s, v] = svd (a)
+@end example
+
+@noindent
+that is exactly equivalent to
+
+@example
+@group
+[u, s, v] = svd (a)
+a = u
+b = s
+c = v
+@end group
+@end example
+
+In expressions like this, the number of values in each part of the
+expression need not match.  For example, the expression
+
+@example
+[a, b] = [u, s, v] = svd (a)
+@end example
+
+@noindent
+is equivalent to
+
+@example
+@group
+[u, s, v] = svd (a)
+a = u
+b = s
+@end group
+@end example
+
+@noindent
+The number of values on the left side of the expression can, however,
+not exceed the number of values on the right side.  For example, the
+following will produce an error.
+
+@example
+@group
+[a, b, c, d] = [u, s, v] = svd (a);
+@print{} error: element number 4 undefined in return list
+@end group
+@end example
+
+The symbol @code{~} may be used as a placeholder in the list of lvalues,
+indicating that the corresponding return value should be ignored and not stored
+anywhere:
+
+@example
+@group
+[~, s, v] = svd (a);
+@end group
+@end example
+
+This is cleaner and more memory efficient than using a dummy variable.
+The @code{nargout} value for the right-hand side expression is not affected.
+If the assignment is used as an expression, the return value is a
+comma-separated list with the ignored values dropped.
+
+@opindex +=
+A very common programming pattern is to increment an existing variable
+with a given value, like this
+
+@example
+a = a + 2;
+@end example
+
+@noindent
+This can be written in a clearer and more condensed form using the
+@code{+=} operator
+
+@example
+a += 2;
+@end example
+
+@noindent
+@opindex -=
+@opindex *=
+@opindex /=
+Similar operators also exist for subtraction (@code{-=}),
+multiplication (@code{*=}), and division (@code{/=}).  An expression
+of the form
+
+@example
+@var{expr1} @var{op}= @var{expr2}
+@end example
+
+@noindent
+is evaluated as
+
+@example
+@var{expr1} = (@var{expr1}) @var{op} (@var{expr2})
+@end example
+
+@noindent
+where @var{op} can be either @code{+}, @code{-}, @code{*}, or @code{/},
+as long as @var{expr2} is a simple expression with no side effects.  If
+@var{expr2} also contains an assignment operator, then this expression
+is evaluated as
+
+@example
+@group
+@var{temp} = @var{expr2}
+@var{expr1} = (@var{expr1}) @var{op} @var{temp}
+@end group
+@end example
+
+@noindent
+where @var{temp} is a placeholder temporary value storing the computed
+result of evaluating @var{expr2}.  So, the expression
+
+@example
+a *= b+1
+@end example
+
+@noindent
+is evaluated as
+
+@example
+a = a * (b+1)
+@end example
+
+@noindent
+and @emph{not}
+
+@example
+a = a * b + 1
+@end example
+
+You can use an assignment anywhere an expression is called for.  For
+example, it is valid to write @code{x != (y = 1)} to set @code{y} to 1
+and then test whether @code{x} equals 1.  But this style tends to make
+programs hard to read.  Except in a one-shot program, you should rewrite
+it to get rid of such nesting of assignments.  This is never very hard.
+
+@cindex increment operator
+@cindex decrement operator
+@cindex operators, increment
+@cindex operators, decrement
+
+@node Increment Ops
+@section Increment Operators
+
+@emph{Increment operators} increase or decrease the value of a variable
+by 1.  The operator to increment a variable is written as @samp{++}.  It
+may be used to increment a variable either before or after taking its
+value.
+
+For example, to pre-increment the variable @var{x}, you would write
+@code{++@var{x}}.  This would add one to @var{x} and then return the new
+value of @var{x} as the result of the expression.  It is exactly the
+same as the expression @code{@var{x} = @var{x} + 1}.
+
+To post-increment a variable @var{x}, you would write @code{@var{x}++}.
+This adds one to the variable @var{x}, but returns the value that
+@var{x} had prior to incrementing it.  For example, if @var{x} is equal
+to 2, the result of the expression @code{@var{x}++} is 2, and the new
+value of @var{x} is 3.
+
+For matrix and vector arguments, the increment and decrement operators
+work on each element of the operand.
+
+Here is a list of all the increment and decrement expressions.
+
+@table @code
+@item ++@var{x}
+@opindex ++
+This expression increments the variable @var{x}.  The value of the
+expression is the @emph{new} value of @var{x}.  It is equivalent to the
+expression @code{@var{x} = @var{x} + 1}.
+
+@item --@var{x}
+@opindex @code{--}
+This expression decrements the variable @var{x}.  The value of the
+expression is the @emph{new} value of @var{x}.  It is equivalent to the
+expression @code{@var{x} = @var{x} - 1}.
+
+@item @var{x}++
+@opindex ++
+This expression causes the variable @var{x} to be incremented.  The
+value of the expression is the @emph{old} value of @var{x}.
+
+@item @var{x}--
+@opindex @code{--}
+This expression causes the variable @var{x} to be decremented.  The
+value of the expression is the @emph{old} value of @var{x}.
+@end table
+
+@node Operator Precedence
+@section Operator Precedence
+@cindex operator precedence
+
+@dfn{Operator precedence} determines how operators are grouped, when
+different operators appear close by in one expression.  For example,
+@samp{*} has higher precedence than @samp{+}.  Thus, the expression
+@code{a + b * c} means to multiply @code{b} and @code{c}, and then add
+@code{a} to the product (i.e., @code{a + (b * c)}).
+
+You can overrule the precedence of the operators by using parentheses.
+You can think of the precedence rules as saying where the parentheses
+are assumed if you do not write parentheses yourself.  In fact, it is
+wise to use parentheses whenever you have an unusual combination of
+operators, because other people who read the program may not remember
+what the precedence is in this case.  You might forget as well, and then
+you too could make a mistake.  Explicit parentheses will help prevent
+any such mistake.
+
+When operators of equal precedence are used together, the leftmost
+operator groups first, except for the assignment operators, which group
+in the opposite order.  Thus, the expression @code{a - b + c} groups as
+@code{(a - b) + c}, but the expression @code{a = b = c} groups as
+@code{a = (b = c)}.
+
+The precedence of prefix unary operators is important when another
+operator follows the operand.  For example, @code{-x^2} means
+@code{-(x^2)}, because @samp{-} has lower precedence than @samp{^}.
+
+Here is a table of the operators in Octave, in order of decreasing
+precedence.  Unless noted, all operators group left to right.
+
+@table @code
+@item function call and array indexing, cell array indexing, and structure element indexing
+@samp{()}  @samp{@{@}} @samp{.}
+
+@item postfix increment, and postfix decrement
+@samp{++}  @samp{--}
+
+These operators group right to left.
+
+@item transpose and exponentiation
+@samp{'} @samp{.'} @samp{^} @samp{**} @samp{.^} @samp{.**}
+
+@item unary plus, unary minus, prefix increment, prefix decrement, and logical "not"
+@samp{+} @samp{-} @samp{++}  @samp{--} @samp{~} @samp{!}
+
+@item multiply and divide
+@samp{*} @samp{/} @samp{\} @samp{.\} @samp{.*} @samp{./}
+
+@item add, subtract
+@samp{+} @samp{-}
+
+@item colon
+@samp{:}
+
+@item relational
+@samp{<} @samp{<=} @samp{==} @samp{>=} @samp{>} @samp{!=}
+@samp{~=}
+
+@item element-wise "and"
+@samp{&}
+
+@item element-wise "or"
+@samp{|}
+
+@item logical "and"
+@samp{&&}
+
+@item logical "or"
+@samp{||}
+
+@item assignment
+@samp{=} @samp{+=} @samp{-=} @samp{*=} @samp{/=} @samp{\=}
+@samp{^=} @samp{.*=} @samp{./=} @samp{.\=} @samp{.^=} @samp{|=}
+@samp{&=}
+
+These operators group right to left.
+@end table

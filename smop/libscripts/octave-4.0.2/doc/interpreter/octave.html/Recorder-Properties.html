@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Recorder Properties</title>
+
+<meta name="description" content="GNU Octave: Recorder Properties">
+<meta name="keywords" content="GNU Octave: Recorder Properties">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Audio-Recorder.html#Audio-Recorder" rel="up" title="Audio Recorder">
+<link href="Audio-Data-Processing.html#Audio-Data-Processing" rel="next" title="Audio Data Processing">
+<link href="Data-Retrieval.html#Data-Retrieval" rel="prev" title="Data Retrieval">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Recorder-Properties"></a>
+<div class="header">
+<p>
+Previous: <a href="Data-Retrieval.html#Data-Retrieval" accesskey="p" rel="prev">Data Retrieval</a>, Up: <a href="Audio-Recorder.html#Audio-Recorder" accesskey="u" rel="up">Audio Recorder</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Properties-1"></a>
+<h4 class="subsection">33.4.3 Properties</h4>
+
+<p>The remaining two methods allow you to read or alter the properties of
+audiorecorder objects.
+</p>
+<a name="XREF_0040audiorecorder_002fget"></a><dl>
+<dt><a name="index-get-4"></a>Function File: <em><var>value</var> =</em> <strong>get</strong> <em>(<var>recorder</var>, <var>name</var>)</em></dt>
+<dt><a name="index-get-5"></a>Function File: <em><var>values</var> =</em> <strong>get</strong> <em>(<var>recorder</var>)</em></dt>
+<dd><p>Return the <var>value</var> of the property identified by <var>name</var>.
+</p>
+<p>If <var>name</var> is a cell array, return the values of the properties
+corresponding to the elements of the cell array.  Given only the recorder
+object, return a scalar structure with values of all properties of
+<var>recorder</var>.  The field names of the structure correspond to property
+names.
+</p></dd></dl>
+
+
+<a name="XREF_0040audiorecorder_002fset"></a><dl>
+<dt><a name="index-set-8"></a>Function File: <em></em> <strong>set</strong> <em>(<var>recorder</var>, <var>name</var>, <var>value</var>)</em></dt>
+<dt><a name="index-set-9"></a>Function File: <em></em> <strong>set</strong> <em>(<var>recorder</var>, <var>properties</var>)</em></dt>
+<dt><a name="index-set-10"></a>Function File: <em><var>properties</var> =</em> <strong>set</strong> <em>(<var>recorder</var>)</em></dt>
+<dd><p>Set the value of property specified by <var>name</var> to a given <var>value</var>.
+</p>
+<p>If <var>name</var> and <var>value</var> are cell arrays of the same size, set each
+property to a corresponding value.  Given a structure with fields
+corresponding to property names, set the value of those properties to the
+corresponding field values.  Given only the recorder object, return a
+structure of settable properties.
+</p></dd></dl>
+
+
+
+
+
+</body>
+</html>

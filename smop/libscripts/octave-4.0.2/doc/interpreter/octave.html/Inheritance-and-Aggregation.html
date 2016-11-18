@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Inheritance and Aggregation</title>
+
+<meta name="description" content="GNU Octave: Inheritance and Aggregation">
+<meta name="keywords" content="GNU Octave: Inheritance and Aggregation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Object-Oriented-Programming.html#Object-Oriented-Programming" rel="up" title="Object Oriented Programming">
+<link href="GUI-Development.html#GUI-Development" rel="next" title="GUI Development">
+<link href="Precedence-of-Objects.html#Precedence-of-Objects" rel="prev" title="Precedence of Objects">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Inheritance-and-Aggregation"></a>
+<div class="header">
+<p>
+Previous: <a href="Overloading-Objects.html#Overloading-Objects" accesskey="p" rel="prev">Overloading Objects</a>, Up: <a href="Object-Oriented-Programming.html#Object-Oriented-Programming" accesskey="u" rel="up">Object Oriented Programming</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Inheritance-and-Aggregation-1"></a>
+<h3 class="section">34.5 Inheritance and Aggregation</h3>
+
+<p>Using classes to build new classes is supported by octave through the
+use of both inheritance and aggregation.
+</p>
+<p>Class inheritance is provided by octave using the <code>class</code>
+function in the class constructor.  As in the case of the polynomial
+class, the octave programmer will create a struct that contains the
+data fields required by the class, and then call the class function to
+indicate that an object is to be created from the struct.  Creating a
+child of an existing object is done by creating an object of the
+parent class and providing that object as the third argument of the
+class function.
+</p>
+<p>This is easily demonstrated by example.  Suppose the programmer needs
+an FIR filter, i.e., a filter with a numerator polynomial but a unity
+denominator polynomial.  In traditional octave programming, this would
+be performed as follows.
+</p>
+<div class="example">
+<pre class="example">octave:1&gt; x = [some data vector];
+octave:2&gt; n = [some coefficient vector];
+octave:3&gt; y = filter (n, 1, x);
+</pre></div>
+
+<p>The equivalent class could be implemented in a class directory
+@FIRfilter that is on the octave path.  The constructor is a file
+FIRfilter.m in the class directory.
+</p>
+<div class="example">
+<pre class="verbatim">## -*- texinfo -*-
+## @deftypefn  {Function File} {} FIRfilter ()
+## @deftypefnx {Function File} {} FIRfilter (@var{p})
+## Create a FIR filter with polynomial @var{p} as coefficient vector.
+## @end deftypefn
+
+function f = FIRfilter (p)
+
+  f.polynomial = [];
+  if (nargin == 0)
+    p = @polynomial ([1]);
+  elseif (nargin == 1)
+    if (!isa (p, &quot;polynomial&quot;))
+      error (&quot;FIRfilter: expecting polynomial as input argument&quot;);
+    endif
+  else
+    print_usage ();
+  endif
+  f = class (f, &quot;FIRfilter&quot;, p);
+endfunction
+</pre><pre class="example">
+
+</pre></div>
+
+<p>As before, the leading comments provide command-line documentation for
+the class constructor.  This constructor is very similar to the
+polynomial class constructor, except that we pass a polynomial object
+as the third argument to the class function, telling octave that the
+FIRfilter class will be derived from the polynomial class.  Our FIR
+filter does not have any data fields, but we must provide a struct to
+the <code>class</code> function.  The <code>class</code> function will add an
+element named polynomial to the object struct, so we simply add a
+dummy element named polynomial as the first line of the constructor.
+This dummy element will be overwritten by the class function.
+</p>
+<p>Note further that all our examples provide for the case in which no
+arguments are supplied.  This is important since octave will call the
+constructor with no arguments when loading objects from save files to
+determine the inheritance structure.
+</p>
+<p>A class may be a child of more than one class (see the documentation
+for the <code>class</code> function), and inheritance may be nested.  There
+is no limitation to the number of parents or the level of nesting
+other than memory or other physical issues.
+</p>
+<p>As before, we need a <code>display</code> method.  A simple example might be
+</p>
+<div class="example">
+<pre class="verbatim">function display (f)
+
+  display (f.polynomial);
+
+endfunction
+
+</pre><pre class="example">
+
+</pre></div>
+
+<p>Note that we have used the polynomial field of the struct to display
+the filter coefficients.
+</p>
+<p>Once we have the class constructor and display method, we may create
+an object by calling the class constructor.  We may also check the
+class type and examine the underlying structure.
+</p>
+<div class="example">
+<pre class="example">octave:1&gt; f = FIRfilter (polynomial ([1 1 1]/3))
+f.polynomial = 0.333333 + 0.333333 * X + 0.333333 * X ^ 2
+octave:2&gt; class (f)
+ans = FIRfilter
+octave:3&gt; isa (f,&quot;FIRfilter&quot;)
+ans =  1
+octave:4&gt; isa (f,&quot;polynomial&quot;)
+ans =  1
+octave:5&gt; struct (f)
+ans =
+{
+polynomial = 0.333333 + 0.333333 * X + 0.333333 * X ^ 2
+}
+</pre></div>
+
+<p>We only need to define a method to actually process data with our
+filter and our class is usable.  It is also useful to provide a means
+of changing the data stored in the class.  Since the fields in the
+underlying struct are private by default, we could provide a mechanism
+to access the fields.  The <code>subsref</code> method may be used for both.
+</p>
+<div class="example">
+<pre class="verbatim">function out = subsref (f, x)
+  switch (x.type)
+    case &quot;()&quot;
+      n = f.polynomial;
+      out = filter (n.poly, 1, x.subs{1});
+    case &quot;.&quot;
+      fld = x.subs;
+      if (strcmp (fld, &quot;polynomial&quot;))
+        out = f.polynomial;
+      else
+        error (&quot;@FIRfilter/subsref: invalid property \&quot;%s\&quot;&quot;, fld);
+      endif
+    otherwise
+      error (&quot;@FIRfilter/subsref: invalid subscript type for FIR filter&quot;);
+  endswitch
+endfunction
+</pre><pre class="example">
+
+</pre></div>
+
+<p>The <code>&quot;()&quot;</code> case allows us to filter data using the polynomial provided
+to the constructor.
+</p>
+<div class="example">
+<pre class="example">octave:2&gt; f = FIRfilter (polynomial ([1 1 1]/3));
+octave:3&gt; x = ones (5,1);
+octave:4&gt; y = f(x)
+y =
+
+   0.33333
+   0.66667
+   1.00000
+   1.00000
+   1.00000
+</pre></div>
+
+<p>The <code>&quot;.&quot;</code> case allows us to view the contents of the polynomial field.
+</p>
+<div class="example">
+<pre class="example">octave:1&gt; f = FIRfilter (polynomial ([1 1 1]/3));
+octave:2&gt; f.polynomial
+ans = 0.333333 + 0.333333 * X + 0.333333 * X ^ 2
+</pre></div>
+
+<p>In order to change the contents of the object, we need to define a
+<code>subsasgn</code> method.  For example, we may make the polynomial field
+publicly writable.
+</p>
+<div class="example">
+<pre class="verbatim">function out = subsasgn (f, index, val)
+  switch (index.type)
+    case &quot;.&quot;
+      fld = index.subs;
+      if (strcmp (fld, &quot;polynomial&quot;))
+        out = f;
+        out.polynomial = val;
+      else
+        error (&quot;@FIRfilter/subsref: invalid property \&quot;%s\&quot;&quot;, fld);
+      endif
+    otherwise
+      error (&quot;FIRfilter/subsagn: Invalid index type&quot;)
+  endswitch
+endfunction
+</pre><pre class="example">
+
+</pre></div>
+
+<p>So that
+</p>
+<div class="example">
+<pre class="example">octave:6&gt; f = FIRfilter ();
+octave:7&gt; f.polynomial = polynomial ([1 2 3]);
+f.polynomial = 1 + 2 * X + 3 * X ^ 2
+</pre></div>
+
+<p>Defining the FIRfilter class as a child of the polynomial class
+implies that and FIRfilter object may be used any place that a
+polynomial may be used.  This is not a normal use of a filter, so that
+aggregation may be a more sensible design approach.  In this case, the
+polynomial is simply a field in the class structure.  A class
+constructor for this case might be
+</p>
+<div class="example">
+<pre class="verbatim">## -*- texinfo -*-
+## @deftypefn  {Function File} {} FIRfilter ()
+## @deftypefnx {Function File} {} FIRfilter (@var{p})
+## Create a FIR filter with polynomial @var{p} as coefficient vector.
+## @end deftypefn
+
+function f = FIRfilter (p)
+
+  if (nargin == 0)
+    f.polynomial = @polynomial ([1]);
+  elseif (nargin == 1)
+    if (isa (p, &quot;polynomial&quot;))
+      f.polynomial = p;
+    else
+      error (&quot;FIRfilter: expecting polynomial as input argument&quot;);
+    endif
+  else
+    print_usage ();
+  endif
+  f = class (f, &quot;FIRfilter&quot;);
+endfunction
+</pre><pre class="example">
+
+</pre></div>
+
+<p>For our example, the remaining class methods remain unchanged.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Overloading-Objects.html#Overloading-Objects" accesskey="p" rel="prev">Overloading Objects</a>, Up: <a href="Object-Oriented-Programming.html#Object-Oriented-Programming" accesskey="u" rel="up">Object Oriented Programming</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

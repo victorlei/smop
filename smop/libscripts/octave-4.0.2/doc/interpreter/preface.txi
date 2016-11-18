@@ -1,0 +1,220 @@
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@ifclear AUTHORSONLY
+@node Preface
+@unnumbered Preface
+@cindex contributors
+@cindex history
+
+Octave was originally intended to be companion software for an
+undergraduate-level textbook on chemical reactor design being written by
+@nospell{James B. Rawlings} of the University of Wisconsin-Madison and
+@nospell{John G. Ekerdt} of the University of Texas.
+
+Clearly, Octave is now much more than just another `courseware' package
+with limited utility beyond the classroom.  Although our initial goals
+were somewhat vague, we knew that we wanted to create something that
+would enable students to solve realistic problems, and that they could
+use for many things other than chemical reactor design problems.
+We find that most students pick up the basics of Octave quickly, and are
+using it confidently in just a few hours.
+
+Although it was originally intended to be used to teach reactor design,
+it has been used in several other undergraduate and graduate
+courses in the Chemical Engineering Department at the University of
+Texas, and the math department at the University of Texas has been using
+it for teaching differential equations and linear algebra as well.
+More recently, Octave has been used as the primary computational tool
+for teaching Stanford's online Machine Learning class
+(@url{ml-class.org}) taught by Andrew Ng.  Tens of thousands of students
+participated in the course.
+
+If you find Octave useful, please let us know.  We are always interested
+to find out how Octave is being used.
+
+Virtually everyone thinks that the name Octave has something to do with
+music, but it is actually the name of one of John W. Eaton's former
+professors who wrote a famous textbook on chemical reaction engineering,
+and who was also well known for his ability to do quick `back of the
+envelope' calculations.  We hope that this software will make it
+possible for many people to do more ambitious computations just as
+easily.
+
+Everyone is encouraged to share this software with others under the
+terms of the GNU General Public License (@pxref{Copying}).  You are
+also encouraged to help make Octave more useful by writing and
+contributing additional functions for it, and by reporting any problems
+you may have.
+
+@menu
+* Acknowledgements::
+* Citing Octave in Publications::
+* How You Can Contribute to Octave::
+* Distribution::
+@end menu
+
+@node Acknowledgements
+@unnumberedsec Acknowledgements
+@cindex acknowledgements
+@end ifclear
+
+Many people have contributed to Octave's development.  The
+following people have helped code parts of Octave or aided in
+various other ways (listed alphabetically).
+
+@include contributors.texi
+
+@ifclear AUTHORSONLY
+Special thanks to the following people and organizations for
+supporting the development of Octave:
+
+@itemize @bullet
+@item
+The United States Department of Energy, through grant number
+@nospell{DE-FG02-04ER25635}.
+
+@item
+@nospell{Ashok Krishnamurthy, David Hudak, Juan Carlos Chaves}, and
+@nospell{Stanley C. Ahalt} of the Ohio Supercomputer Center.
+
+@item
+The National Science Foundation, through grant numbers CTS-0105360,
+CTS-9708497, CTS-9311420, CTS-8957123, and CNS-0540147.
+
+@item
+The industrial members of the Texas-Wisconsin Modeling and Control
+Consortium (@url{http://www.che.utexas.edu/twmcc, TWMCC}).
+
+@item
+The @nospell{Paul A. Elfers} Endowed Chair in Chemical Engineering at the
+University of Wisconsin-Madison.
+
+@item
+Digital Equipment Corporation, for an equipment grant as part of their
+External Research Program.
+
+@item
+Sun Microsystems, Inc., for an Academic Equipment grant.
+
+@item
+International Business Machines, Inc., for providing equipment as part
+of a grant to the University of Texas College of Engineering.
+
+@item
+Texaco Chemical Company, for providing funding to continue the
+development of this software.
+
+@item
+The University of Texas College of Engineering, for providing a
+Challenge for Excellence Research Supplement, and for providing an
+Academic Development Funds grant.
+
+@item
+The State of Texas, for providing funding through the Texas
+Advanced Technology Program under Grant No. 003658-078.
+
+@item
+Noel Bell, Senior Engineer, Texaco Chemical Company, Austin Texas.
+
+@item
+John A. Turner, Group Leader, Continuum Dynamics @nospell{(CCS-2)},
+@nospell{Los Alamos} National Laboratory, for registering the
+@url{octave.org} domain name.
+
+@item
+@nospell{James B. Rawlings}, Professor, University of Wisconsin-Madison,
+Department of Chemical and Biological Engineering.
+
+@item
+@nospell{Richard Stallman}, for writing GNU.
+@end itemize
+
+This project would not have been possible without the GNU software used
+in and to produce Octave.
+
+@node Citing Octave in Publications
+@unnumberedsec Citing Octave in Publications
+@cindex Citing Octave
+@cindex Citations
+
+In view of the many contributions made by numerous developers over many years
+it is common courtesy to cite Octave in publications when it has been used
+during the course of research or the preparation of figures.  The
+@code{citation} function can automatically generate a recommended citation
+text for Octave or any of its packages.  See the help text below on how to
+use @code{citation}.
+
+@DOCSTRING(citation)
+
+@node How You Can Contribute to Octave
+@unnumberedsec How You Can Contribute to Octave
+@cindex contributing to Octave
+@cindex funding Octave development
+
+There are a number of ways that you can contribute to help make Octave a
+better system.  Perhaps the most important way to contribute is to write
+high-quality code for solving new problems, and to make your code freely
+available for others to use.  @xref{Contributing Guidelines}, for detailed
+information on contributing new code.
+
+If you find Octave useful, consider providing additional funding to
+continue its development.  Even a modest amount of additional funding
+could make a significant difference in the amount of time that is
+available for development and support.
+
+Donations supporting Octave development may be made on the web at
+@url{https://my.fsf.org/donate/working-together/octave}.  These
+donations also help to support the Free Software Foundation
+
+If you'd prefer to pay by check or money order, you can do so by sending
+a check to the FSF at the following address:
+
+@quotation
+Free Software Foundation@*
+51 Franklin Street, Suite 500@*
+Boston, MA 02110-1335@*
+USA
+@end quotation
+
+@noindent
+If you pay by check, please be sure to write ``GNU Octave'' in the memo
+field of your check.
+
+If you cannot provide funding or contribute code, you can still help
+make Octave better and more reliable by reporting any bugs you find and
+by offering suggestions for ways to improve Octave.  @xref{Trouble}, for
+tips on how to write useful bug reports.
+
+@node Distribution
+@unnumberedsec Distribution
+@cindex distribution of Octave
+
+Octave is @dfn{free} software.  This means that everyone is free to
+use it and free to redistribute it on certain conditions.  Octave
+is not, however, in the public domain.  It is copyrighted and there are
+restrictions on its distribution, but the restrictions are designed to
+ensure that others will have the same freedom to use and redistribute
+Octave that you have.  The precise conditions can be found in the
+GNU General Public License that comes with Octave and that also appears
+in @ref{Copying}.
+
+To download a copy of Octave, please visit
+@url{http://www.octave.org/download.html}.
+
+@end ifclear

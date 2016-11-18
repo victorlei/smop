@@ -1,0 +1,187 @@
+@c Copyright (C) 1996-2015 Kurt Hornik
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@c Written by Kurt Hornik <Kurt.Hornik@wu-wien.ac.at> on 1996/05/14
+
+@node Audio Processing
+@chapter Audio Processing
+
+@menu
+* Audio File Utilities::
+* Audio Device Information::
+* Audio Player::
+* Audio Recorder::
+* Audio Data Processing::
+@end menu
+
+@node Audio File Utilities
+@section Audio File Utilities
+
+The following functions allow you to read, write and retrieve
+information about audio files.  Various formats are supported including
+wav, flac and ogg vorbis.
+
+@DOCSTRING(audioinfo)
+
+@DOCSTRING(audioread)
+
+@DOCSTRING(audiowrite)
+
+@node Audio Device Information
+@section Audio Device Information
+
+@DOCSTRING(audiodevinfo)
+
+@node Audio Player
+@section Audio Player
+
+The following methods are used to create and use audioplayer
+objects.  These objects can be used to play back audio data stored in
+Octave matrices and arrays.  The audioplayer object supports playback
+from various devices available to the system, blocking and non-blocking
+playback, convenient pausing and resuming and much more.
+
+@DOCSTRING(@audioplayer/audioplayer)
+
+@menu
+* Playback::
+* Player Properties::
+@end menu
+
+@node Playback
+@subsection Playback
+
+The following methods are used to control player playback.
+
+@DOCSTRING(@audioplayer/play)
+
+@DOCSTRING(@audioplayer/playblocking)
+
+@DOCSTRING(@audioplayer/pause)
+
+@DOCSTRING(@audioplayer/resume)
+
+@DOCSTRING(@audioplayer/stop)
+
+@DOCSTRING(@audioplayer/isplaying)
+
+@node Player Properties
+@subsection Properties
+
+The remaining couple of methods are used to get and set various
+properties of the audioplayer object.
+
+@DOCSTRING(@audioplayer/get)
+
+@DOCSTRING(@audioplayer/set)
+
+@node Audio Recorder
+@section Audio Recorder
+
+The following methods are used to create and use audiorecorder
+objects.  These objects can be used to record audio data from various
+devices available to the system.  You can use convenient methods to
+retrieve that data or audioplayer objects created from that
+data.  Methods for blocking and non-blocking recording, pausing and
+resuming recording and much more is available.
+
+@DOCSTRING(@audiorecorder/audiorecorder)
+
+@menu
+* Recording::
+* Data Retrieval::
+* Recorder Properties::
+@end menu
+
+@node Recording
+@subsection Recording
+
+The following methods control the recording process.
+
+@DOCSTRING(@audiorecorder/record)
+
+@DOCSTRING(@audiorecorder/recordblocking)
+
+@DOCSTRING(@audiorecorder/pause)
+
+@DOCSTRING(@audiorecorder/resume)
+
+@DOCSTRING(@audiorecorder/stop)
+
+@DOCSTRING(@audiorecorder/isrecording)
+
+@node Data Retrieval
+@subsection Data Retrieval
+
+The following methods allow you to retrieve recorded audio data in
+various ways.
+
+@DOCSTRING(@audiorecorder/getaudiodata)
+
+@DOCSTRING(@audiorecorder/getplayer)
+
+@DOCSTRING(@audiorecorder/play)
+
+@node Recorder Properties
+@subsection Properties
+
+The remaining two methods allow you to read or alter the properties of
+audiorecorder objects.
+
+@DOCSTRING(@audiorecorder/get)
+
+@DOCSTRING(@audiorecorder/set)
+
+@node Audio Data Processing
+@section Audio Data Processing
+
+Octave provides a few functions for dealing with audio data.  An audio
+`sample' is a single output value from an A/D converter, i.e., a small
+integer number (usually 8 or 16 bits), and audio data is just a series
+of such samples.  It can be characterized by three parameters: the
+sampling rate (measured in samples per second or Hz, e.g., 8000 or
+44100), the number of bits per sample (e.g., 8 or 16), and the number of
+channels (1 for mono, 2 for stereo, etc.).
+
+There are many different formats for representing such data.  Currently,
+only the two most popular, @emph{linear encoding} and @emph{mu-law
+encoding}, are supported by Octave.  There is an excellent FAQ on audio
+formats by @nospell{Guido van Rossum} @email{guido@@cwi.nl} which can be
+found at any FAQ ftp site, in particular in the directory
+@file{/pub/usenet/news.answers/audio-fmts} of the archive site
+@code{rtfm.mit.edu}.
+
+Octave simply treats audio data as vectors of samples (non-mono data are
+not supported yet).  It is assumed that audio files using linear
+encoding have one of the extensions @file{lin} or @file{raw}, and that
+files holding data in mu-law encoding end in @file{au}, @file{mu}, or
+@file{snd}.
+
+@DOCSTRING(lin2mu)
+
+@DOCSTRING(mu2lin)
+
+@DOCSTRING(record)
+
+@DOCSTRING(sound)
+
+@DOCSTRING(soundsc)
+
+@DOCSTRING(wavread)
+
+@DOCSTRING(wavwrite)

@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Escape Sequences in String Constants</title>
+
+<meta name="description" content="GNU Octave: Escape Sequences in String Constants">
+<meta name="keywords" content="GNU Octave: Escape Sequences in String Constants">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Strings.html#Strings" rel="up" title="Strings">
+<link href="Character-Arrays.html#Character-Arrays" rel="next" title="Character Arrays">
+<link href="Strings.html#Strings" rel="prev" title="Strings">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Escape-Sequences-in-String-Constants"></a>
+<div class="header">
+<p>
+Next: <a href="Character-Arrays.html#Character-Arrays" accesskey="n" rel="next">Character Arrays</a>, Up: <a href="Strings.html#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Escape-Sequences-in-String-Constants-1"></a>
+<h3 class="section">5.1 Escape Sequences in String Constants</h3>
+<a name="index-escape-sequence-notation"></a>
+<p>In double-quoted strings, the backslash character is used to introduce
+<em>escape sequences</em> that represent other characters.  For example,
+&lsquo;<samp>\n</samp>&rsquo; embeds a newline character in a double-quoted string and
+&lsquo;<samp>\&quot;</samp>&rsquo; embeds a double quote character.  In single-quoted strings, backslash
+is not a special character.  Here is an example showing the difference:
+</p>
+<div class="example">
+<pre class="example">toascii (&quot;\n&quot;)
+    &rArr; 10
+toascii ('\n')
+    &rArr; [ 92 110 ]
+</pre></div>
+
+<p>Here is a table of all the escape sequences used in Octave (within
+double quoted strings).  They are the same as those used in the C
+programming language.
+</p>
+<dl compact="compact">
+<dt><code>\\</code></dt>
+<dd><p>Represents a literal backslash, &lsquo;<samp>\</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\&quot;</code></dt>
+<dd><p>Represents a literal double-quote character, &lsquo;<samp>&quot;</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\'</code></dt>
+<dd><p>Represents a literal single-quote character, &lsquo;<samp>'</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\0</code></dt>
+<dd><p>Represents the null character, control-@, ASCII code 0.
+</p>
+</dd>
+<dt><code>\a</code></dt>
+<dd><p>Represents the &ldquo;alert&rdquo; character, control-g, ASCII code 7.
+</p>
+</dd>
+<dt><code>\b</code></dt>
+<dd><p>Represents a backspace, control-h, ASCII code 8.
+</p>
+</dd>
+<dt><code>\f</code></dt>
+<dd><p>Represents a formfeed, control-l, ASCII code 12.
+</p>
+</dd>
+<dt><code>\n</code></dt>
+<dd><p>Represents a newline, control-j, ASCII code 10.
+</p>
+</dd>
+<dt><code>\r</code></dt>
+<dd><p>Represents a carriage return, control-m, ASCII code 13.
+</p>
+</dd>
+<dt><code>\t</code></dt>
+<dd><p>Represents a horizontal tab, control-i, ASCII code 9.
+</p>
+</dd>
+<dt><code>\v</code></dt>
+<dd><p>Represents a vertical tab, control-k, ASCII code 11.
+</p>
+</dd>
+<dt><code>\<var>nnn</var></code></dt>
+<dd><p>Represents the octal value <var>nnn</var>, where <var>nnn</var> are one to three
+digits between 0 and 7.  For example, the code for the ASCII ESC
+(escape) character is &lsquo;<samp>\033</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\x<var>hh</var>&hellip;</code></dt>
+<dd><p>Represents the hexadecimal value <var>hh</var>, where <var>hh</var> are hexadecimal
+digits (&lsquo;<samp>0</samp>&rsquo; through &lsquo;<samp>9</samp>&rsquo; and either &lsquo;<samp>A</samp>&rsquo; through &lsquo;<samp>F</samp>&rsquo; or
+&lsquo;<samp>a</samp>&rsquo; through &lsquo;<samp>f</samp>&rsquo;).  Like the same construct in <small>ANSI</small> C,
+the escape sequence continues until the first non-hexadecimal digit is seen.
+However, using more than two hexadecimal digits produces undefined results.
+</p></dd>
+</dl>
+
+<p>In a single-quoted string there is only one escape sequence: you may insert a
+single quote character using two single quote characters in succession.  For
+example,
+</p>
+<div class="example">
+<pre class="example">'I can''t escape'
+    &rArr; I can't escape
+</pre></div>
+
+<p>In scripts the two different string types can be distinguished if necessary
+by using <code>is_dq_string</code> and <code>is_sq_string</code>.
+</p>
+<a name="XREFis_005fdq_005fstring"></a><dl>
+<dt><a name="index-is_005fdq_005fstring"></a>Built-in Function: <em></em> <strong>is_dq_string</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return true if <var>x</var> is a double-quoted character string.
+</p>
+<p><strong>See also:</strong> <a href="#XREFis_005fsq_005fstring">is_sq_string</a>, <a href="Character-Arrays.html#XREFischar">ischar</a>.
+</p></dd></dl>
+
+
+<a name="XREFis_005fsq_005fstring"></a><dl>
+<dt><a name="index-is_005fsq_005fstring"></a>Built-in Function: <em></em> <strong>is_sq_string</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return true if <var>x</var> is a single-quoted character string.
+</p>
+<p><strong>See also:</strong> <a href="#XREFis_005fdq_005fstring">is_dq_string</a>, <a href="Character-Arrays.html#XREFischar">ischar</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Character-Arrays.html#Character-Arrays" accesskey="n" rel="next">Character Arrays</a>, Up: <a href="Strings.html#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

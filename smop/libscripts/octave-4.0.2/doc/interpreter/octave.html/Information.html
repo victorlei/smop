@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Information</title>
+
+<meta name="description" content="GNU Octave: Information">
+<meta name="keywords" content="GNU Octave: Information">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Basics.html#Basics" rel="up" title="Basics">
+<link href="Operators-and-Functions.html#Operators-and-Functions" rel="next" title="Operators and Functions">
+<link href="Creating-Sparse-Matrices.html#Creating-Sparse-Matrices" rel="prev" title="Creating Sparse Matrices">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Information"></a>
+<div class="header">
+<p>
+Next: <a href="Operators-and-Functions.html#Operators-and-Functions" accesskey="n" rel="next">Operators and Functions</a>, Previous: <a href="Creating-Sparse-Matrices.html#Creating-Sparse-Matrices" accesskey="p" rel="prev">Creating Sparse Matrices</a>, Up: <a href="Basics.html#Basics" accesskey="u" rel="up">Basics</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Finding-Information-about-Sparse-Matrices"></a>
+<h4 class="subsection">22.1.3 Finding Information about Sparse Matrices</h4>
+
+<p>There are a number of functions that allow information concerning
+sparse matrices to be obtained.  The most basic of these is
+<em>issparse</em> that identifies whether a particular Octave object is
+in fact a sparse matrix.
+</p>
+<p>Another very basic function is <em>nnz</em> that returns the number of
+nonzero entries there are in a sparse matrix, while the function
+<em>nzmax</em> returns the amount of storage allocated to the sparse
+matrix.  Note that Octave tends to crop unused memory at the first
+opportunity for sparse objects.  There are some cases of user created
+sparse objects where the value returned by <em>nzmax</em> will not be
+the same as <em>nnz</em>, but in general they will give the same
+result.  The function <em>spstats</em> returns some basic statistics on
+the columns of a sparse matrix including the number of elements, the
+mean and the variance of each column.
+</p>
+<a name="XREFissparse"></a><dl>
+<dt><a name="index-issparse"></a>Built-in Function: <em></em> <strong>issparse</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return true if <var>x</var> is a sparse matrix.
+</p>
+<p><strong>See also:</strong> <a href="Predicates-for-Numeric-Objects.html#XREFismatrix">ismatrix</a>.
+</p></dd></dl>
+
+
+<a name="XREFnnz"></a><dl>
+<dt><a name="index-nnz"></a>Built-in Function: <em><var>n</var> =</em> <strong>nnz</strong> <em>(<var>a</var>)</em></dt>
+<dd><p>Return the number of nonzero elements in <var>a</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFnzmax">nzmax</a>, <a href="#XREFnonzeros">nonzeros</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFfind">find</a>.
+</p></dd></dl>
+
+
+<a name="XREFnonzeros"></a><dl>
+<dt><a name="index-nonzeros"></a>Function File: <em></em> <strong>nonzeros</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a vector of the nonzero values of the sparse matrix <var>s</var>.
+</p>
+<p><strong>See also:</strong> <a href="Finding-Elements-and-Checking-Conditions.html#XREFfind">find</a>, <a href="#XREFnnz">nnz</a>.
+</p></dd></dl>
+
+
+<a name="XREFnzmax"></a><dl>
+<dt><a name="index-nzmax"></a>Built-in Function: <em><var>n</var> =</em> <strong>nzmax</strong> <em>(<var>SM</var>)</em></dt>
+<dd><p>Return the amount of storage allocated to the sparse matrix <var>SM</var>.
+</p>
+<p>Note that Octave tends to crop unused memory at the first opportunity
+for sparse objects.  Thus, in general the value of <code>nzmax</code> will be the
+same as <code>nnz</code> except for some cases of user-created sparse objects.
+</p>
+<p><strong>See also:</strong> <a href="#XREFnnz">nnz</a>, <a href="Creating-Sparse-Matrices.html#XREFspalloc">spalloc</a>, <a href="Creating-Sparse-Matrices.html#XREFsparse">sparse</a>.
+</p></dd></dl>
+
+
+<a name="XREFspstats"></a><dl>
+<dt><a name="index-spstats"></a>Function File: <em>[<var>count</var>, <var>mean</var>, <var>var</var>] =</em> <strong>spstats</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-spstats-1"></a>Function File: <em>[<var>count</var>, <var>mean</var>, <var>var</var>] =</em> <strong>spstats</strong> <em>(<var>S</var>, <var>j</var>)</em></dt>
+<dd><p>Return the stats for the nonzero elements of the sparse matrix <var>S</var>.
+</p>
+<p><var>count</var> is the number of nonzeros in each column, <var>mean</var> is the mean
+of the nonzeros in each column, and <var>var</var> is the variance of the
+nonzeros in each column.
+</p>
+<p>Called with two input arguments, if <var>S</var> is the data and <var>j</var> is the
+bin number for the data, compute the stats for each bin.  In this case,
+bins can contain data values of zero, whereas with
+<code>spstats (<var>S</var>)</code> the zeros may disappear.
+</p></dd></dl>
+
+
+<p>When solving linear equations involving sparse matrices Octave
+determines the means to solve the equation based on the type of the
+matrix (see <a href="Sparse-Linear-Algebra.html#Sparse-Linear-Algebra">Sparse Linear Algebra</a>).  Octave probes the
+matrix type when the div (/) or ldiv (\) operator is first used with
+the matrix and then caches the type.  However the <em>matrix_type</em>
+function can be used to determine the type of the sparse matrix prior
+to use of the div or ldiv operators.  For example,
+</p>
+<div class="example">
+<pre class="example">a = tril (sprandn (1024, 1024, 0.02), -1) ...
+    + speye (1024);
+matrix_type (a);
+ans = Lower
+</pre></div>
+
+<p>shows that Octave correctly determines the matrix type for lower
+triangular matrices.  <em>matrix_type</em> can also be used to force
+the type of a matrix to be a particular type.  For example:
+</p>
+<div class="example">
+<pre class="example">a = matrix_type (tril (sprandn (1024, ...
+   1024, 0.02), -1) + speye (1024), &quot;Lower&quot;);
+</pre></div>
+
+<p>This allows the cost of determining the matrix type to be
+avoided.  However, incorrectly defining the matrix type will result in
+incorrect results from solutions of linear equations, and so it is
+entirely the responsibility of the user to correctly identify the
+matrix type
+</p>
+<p>There are several graphical means of finding out information about
+sparse matrices.  The first is the <em>spy</em> command, which displays
+the structure of the nonzero elements of the
+matrix.  See <a href="#fig_003aspmatrix">Figure 22.1</a>, for an example of the use of
+<em>spy</em>.  More advanced graphical information can be obtained with the
+<em>treeplot</em>, <em>etreeplot</em> and <em>gplot</em> commands.
+</p>
+<div class="float"><a name="fig_003aspmatrix"></a>
+<div align="center"><img src="spmatrix.png" alt="spmatrix">
+</div>
+<div class="float-caption"><p><strong>Figure 22.1: </strong>Structure of simple sparse matrix.</p></div></div>
+<p>One use of sparse matrices is in graph theory, where the
+interconnections between nodes are represented as an adjacency
+matrix.  That is, if the i-th node in a graph is connected to the j-th
+node.  Then the ij-th node (and in the case of undirected graphs the
+ji-th node) of the sparse adjacency matrix is nonzero.  If each node
+is then associated with a set of coordinates, then the <em>gplot</em>
+command can be used to graphically display the interconnections
+between nodes.
+</p>
+<p>As a trivial example of the use of <em>gplot</em> consider the example,
+</p>
+<div class="example">
+<pre class="example">A = sparse ([2,6,1,3,2,4,3,5,4,6,1,5],
+    [1,1,2,2,3,3,4,4,5,5,6,6],1,6,6);
+xy = [0,4,8,6,4,2;5,0,5,7,5,7]';
+gplot (A,xy)
+</pre></div>
+
+<p>which creates an adjacency matrix <code>A</code> where node 1 is connected
+to nodes 2 and 6, node 2 with nodes 1 and 3, etc.  The coordinates of
+the nodes are given in the n-by-2 matrix <code>xy</code>.
+See <a href="#fig_003agplot">Figure 22.2</a>.
+</p>
+<div class="float"><a name="fig_003agplot"></a>
+<div align="center"><img src="gplot.png" alt="gplot">
+</div>
+<div class="float-caption"><p><strong>Figure 22.2: </strong>Simple use of the <em>gplot</em> command.</p></div></div>
+<p>The dependencies between the nodes of a Cholesky&nbsp;factorization can be
+calculated in linear time without explicitly needing to calculate the
+Cholesky&nbsp;factorization by the <code>etree</code> command.  This command
+returns the elimination tree of the matrix and can be displayed
+graphically by the command <code>treeplot (etree (A))</code> if <code>A</code> is
+symmetric or <code>treeplot (etree (A+A'))</code> otherwise.
+</p>
+<a name="XREFspy"></a><dl>
+<dt><a name="index-spy"></a>Function File: <em></em> <strong>spy</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-spy-1"></a>Function File: <em></em> <strong>spy</strong> <em>(&hellip;, <var>markersize</var>)</em></dt>
+<dt><a name="index-spy-2"></a>Function File: <em></em> <strong>spy</strong> <em>(&hellip;, <var>line_spec</var>)</em></dt>
+<dd><p>Plot the sparsity pattern of the sparse matrix <var>x</var>.
+</p>
+<p>If the argument <var>markersize</var> is given as a scalar value, it is used to
+determine the point size in the plot.
+</p>
+<p>If the string <var>line_spec</var> is given it is passed to <code>plot</code> and
+determines the appearance of the plot.
+</p>
+<p><strong>See also:</strong> <a href="Two_002dDimensional-Plots.html#XREFplot">plot</a>, <a href="#XREFgplot">gplot</a>.
+</p></dd></dl>
+
+
+<a name="XREFetree"></a><dl>
+<dt><a name="index-etree"></a>Loadable Function: <em><var>p</var> =</em> <strong>etree</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-etree-1"></a>Loadable Function: <em><var>p</var> =</em> <strong>etree</strong> <em>(<var>S</var>, <var>typ</var>)</em></dt>
+<dt><a name="index-etree-2"></a>Loadable Function: <em>[<var>p</var>, <var>q</var>] =</em> <strong>etree</strong> <em>(<var>S</var>, <var>typ</var>)</em></dt>
+<dd>
+<p>Return the elimination tree for the matrix <var>S</var>.
+</p>
+<p>By default <var>S</var> is assumed to be symmetric and the symmetric elimination
+tree is returned.  The argument <var>typ</var> controls whether a symmetric or
+column elimination tree is returned.  Valid values of <var>typ</var> are
+<code>&quot;sym&quot;</code> or <code>&quot;col&quot;</code>, for symmetric or column elimination tree
+respectively.
+</p>
+<p>Called with a second argument, <code>etree</code> also returns the postorder
+permutations on the tree.
+</p></dd></dl>
+
+
+<a name="XREFetreeplot"></a><dl>
+<dt><a name="index-etreeplot"></a>Function File: <em></em> <strong>etreeplot</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-etreeplot-1"></a>Function File: <em></em> <strong>etreeplot</strong> <em>(<var>A</var>, <var>node_style</var>, <var>edge_style</var>)</em></dt>
+<dd><p>Plot the elimination tree of the matrix <var>A</var> or
+<code><var>A</var>+<var>A</var>'</code> if <var>A</var> in not symmetric.
+</p>
+<p>The optional parameters <var>node_style</var> and <var>edge_style</var> define the
+output style.
+</p>
+<p><strong>See also:</strong> <a href="#XREFtreeplot">treeplot</a>, <a href="#XREFgplot">gplot</a>.
+</p></dd></dl>
+
+
+<a name="XREFgplot"></a><dl>
+<dt><a name="index-gplot"></a>Function File: <em></em> <strong>gplot</strong> <em>(<var>A</var>, <var>xy</var>)</em></dt>
+<dt><a name="index-gplot-1"></a>Function File: <em></em> <strong>gplot</strong> <em>(<var>A</var>, <var>xy</var>, <var>line_style</var>)</em></dt>
+<dt><a name="index-gplot-2"></a>Function File: <em>[<var>x</var>, <var>y</var>] =</em> <strong>gplot</strong> <em>(<var>A</var>, <var>xy</var>)</em></dt>
+<dd><p>Plot a graph defined by <var>A</var> and <var>xy</var> in the graph theory sense.
+</p>
+<p><var>A</var> is the adjacency matrix of the array to be plotted and <var>xy</var> is
+an <var>n</var>-by-2 matrix containing the coordinates of the nodes of the graph.
+</p>
+<p>The optional parameter <var>line_style</var> defines the output style for the
+plot.  Called with no output arguments the graph is plotted directly.
+Otherwise, return the coordinates of the plot in <var>x</var> and <var>y</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFtreeplot">treeplot</a>, <a href="#XREFetreeplot">etreeplot</a>, <a href="#XREFspy">spy</a>.
+</p></dd></dl>
+
+
+<a name="XREFtreeplot"></a><dl>
+<dt><a name="index-treeplot"></a>Function File: <em></em> <strong>treeplot</strong> <em>(<var>tree</var>)</em></dt>
+<dt><a name="index-treeplot-1"></a>Function File: <em></em> <strong>treeplot</strong> <em>(<var>tree</var>, <var>node_style</var>, <var>edge_style</var>)</em></dt>
+<dd><p>Produce a graph of tree or forest.
+</p>
+<p>The first argument is vector of predecessors.
+</p>
+<p>The optional parameters <var>node_style</var> and <var>edge_style</var> define the
+output plot style.
+</p>
+<p>The complexity of the algorithm is O(n) in terms of is time and memory
+requirements.
+</p>
+<p><strong>See also:</strong> <a href="#XREFetreeplot">etreeplot</a>, <a href="#XREFgplot">gplot</a>.
+</p></dd></dl>
+
+
+<a name="XREFtreelayout"></a><dl>
+<dt><a name="index-treelayout"></a>Function File: <em></em> <strong>treelayout</strong> <em>(<var>tree</var>)</em></dt>
+<dt><a name="index-treelayout-1"></a>Function File: <em></em> <strong>treelayout</strong> <em>(<var>tree</var>, <var>permutation</var>)</em></dt>
+<dd><p>treelayout lays out a tree or a forest.
+</p>
+<p>The first argument <var>tree</var> is a vector of predecessors.
+</p>
+<p>The parameter <var>permutation</var> is an optional postorder permutation.
+</p>
+<p>The complexity of the algorithm is O(n) in terms of time and memory
+requirements.
+</p>
+<p><strong>See also:</strong> <a href="#XREFetreeplot">etreeplot</a>, <a href="#XREFgplot">gplot</a>, <a href="#XREFtreeplot">treeplot</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Operators-and-Functions.html#Operators-and-Functions" accesskey="n" rel="next">Operators and Functions</a>, Previous: <a href="Creating-Sparse-Matrices.html#Creating-Sparse-Matrices" accesskey="p" rel="prev">Creating Sparse Matrices</a>, Up: <a href="Basics.html#Basics" accesskey="u" rel="up">Basics</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

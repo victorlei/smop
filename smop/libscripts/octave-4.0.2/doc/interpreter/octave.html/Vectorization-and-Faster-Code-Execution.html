@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Vectorization and Faster Code Execution</title>
+
+<meta name="description" content="GNU Octave: Vectorization and Faster Code Execution">
+<meta name="keywords" content="GNU Octave: Vectorization and Faster Code Execution">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Basic-Vectorization.html#Basic-Vectorization" rel="next" title="Basic Vectorization">
+<link href="Specialized-Solvers.html#Specialized-Solvers" rel="prev" title="Specialized Solvers">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Vectorization-and-Faster-Code-Execution"></a>
+<div class="header">
+<p>
+Next: <a href="Nonlinear-Equations.html#Nonlinear-Equations" accesskey="n" rel="next">Nonlinear Equations</a>, Previous: <a href="Linear-Algebra.html#Linear-Algebra" accesskey="p" rel="prev">Linear Algebra</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Vectorization-and-Faster-Code-Execution-1"></a>
+<h2 class="chapter">19 Vectorization and Faster Code Execution</h2>
+<a name="index-vectorization"></a>
+<a name="index-vectorize"></a>
+
+<p>Vectorization is a programming technique that uses vector operations
+instead of element-by-element loop-based operations.  Besides frequently
+producing more succinct Octave code, vectorization also allows for better
+optimization in the subsequent implementation.  The optimizations may occur
+either in Octave&rsquo;s own Fortran, C, or C++ internal implementation, or even at a
+lower level depending on the compiler and external numerical libraries used to
+build Octave.  The ultimate goal is to make use of your hardware&rsquo;s vector
+instructions if possible or to perform other optimizations in software.
+</p>
+<p>Vectorization is not a concept unique to Octave, but it is particularly
+important because Octave is a matrix-oriented language.  Vectorized
+Octave code will see a dramatic speed up (10X&ndash;100X) in most cases.
+</p>
+<p>This chapter discusses vectorization and other techniques for writing faster
+code.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Basic-Vectorization.html#Basic-Vectorization" accesskey="1">Basic Vectorization</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Basic techniques for code optimization
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Broadcasting.html#Broadcasting" accesskey="2">Broadcasting</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Broadcasting operations
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Function-Application.html#Function-Application" accesskey="3">Function Application</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Applying functions to arrays, cells, and structs
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Accumulation.html#Accumulation" accesskey="4">Accumulation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Accumulation functions
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="JIT-Compiler.html#JIT-Compiler" accesskey="5">JIT Compiler</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Just-In-Time Compiler for loops
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Miscellaneous-Techniques.html#Miscellaneous-Techniques" accesskey="6">Miscellaneous Techniques</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Other techniques for speeding up code
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Examples.html#Examples" accesskey="7">Examples</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,258 @@
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Matrix Manipulation
+@chapter Matrix Manipulation
+
+There are a number of functions available for checking to see if the
+elements of a matrix meet some condition, and for rearranging the
+elements of a matrix.  For example, Octave can easily tell you if all
+the elements of a matrix are finite, or are less than some specified
+value.  Octave can also rotate the elements, extract the upper- or
+lower-triangular parts, or sort the columns of a matrix.
+
+@menu
+* Finding Elements and Checking Conditions::
+* Rearranging Matrices::
+* Special Utility Matrices::
+* Famous Matrices::
+@end menu
+
+@node Finding Elements and Checking Conditions
+@section Finding Elements and Checking Conditions
+
+The functions @code{any} and @code{all} are useful for determining
+whether any or all of the elements of a matrix satisfy some condition.
+The @code{find} function is also useful in determining which elements of
+a matrix meet a specified condition.
+
+@DOCSTRING(any)
+
+@DOCSTRING(all)
+
+Since the comparison operators (@pxref{Comparison Ops}) return matrices
+of ones and zeros, it is easy to test a matrix for many things, not just
+whether the elements are nonzero.  For example,
+
+@example
+@group
+all (all (rand (5) < 0.9))
+     @result{} 0
+@end group
+@end example
+
+@noindent
+tests a random 5 by 5 matrix to see if all of its elements are less
+than 0.9.
+
+Note that in conditional contexts (like the test clause of @code{if} and
+@code{while} statements) Octave treats the test as if you had typed
+@code{all (all (condition))}.
+
+@DOCSTRING(xor)
+
+@DOCSTRING(diff)
+
+@DOCSTRING(isinf)
+
+@DOCSTRING(isnan)
+
+@DOCSTRING(isfinite)
+
+@DOCSTRING(common_size)
+
+@DOCSTRING(find)
+
+@DOCSTRING(lookup)
+
+If you wish to check if a variable exists at all, instead of properties
+its elements may have, consult @ref{Status of Variables}.
+
+@node Rearranging Matrices
+@section Rearranging Matrices
+
+@DOCSTRING(fliplr)
+
+@DOCSTRING(flipud)
+
+@DOCSTRING(flip)
+
+@DOCSTRING(rot90)
+
+@DOCSTRING(rotdim)
+
+@DOCSTRING(cat)
+
+@DOCSTRING(horzcat)
+
+@DOCSTRING(vertcat)
+
+@DOCSTRING(permute)
+
+@DOCSTRING(ipermute)
+
+@DOCSTRING(reshape)
+
+@DOCSTRING(resize)
+
+@DOCSTRING(circshift)
+
+@DOCSTRING(shift)
+
+@DOCSTRING(shiftdim)
+
+@DOCSTRING(sort)
+
+@DOCSTRING(sortrows)
+
+@DOCSTRING(issorted)
+
+@DOCSTRING(nth_element)
+
+@anchor{XREFtriu}
+@DOCSTRING(tril)
+
+@DOCSTRING(vec)
+
+@DOCSTRING(vech)
+
+@DOCSTRING(prepad)
+
+@DOCSTRING(postpad)
+
+@DOCSTRING(diag)
+
+@DOCSTRING(blkdiag)
+
+@node Special Utility Matrices
+@section Special Utility Matrices
+
+@DOCSTRING(eye)
+
+@DOCSTRING(ones)
+
+@DOCSTRING(zeros)
+
+@DOCSTRING(repmat)
+
+@DOCSTRING(repelems)
+
+The functions @code{linspace} and @code{logspace} make it very easy to
+create vectors with evenly or logarithmically spaced elements.
+@xref{Ranges}.
+
+@DOCSTRING(linspace)
+
+@DOCSTRING(logspace)
+
+@DOCSTRING(rand)
+
+@DOCSTRING(randi)
+
+@DOCSTRING(randn)
+
+@DOCSTRING(rande)
+
+@DOCSTRING(randp)
+
+@DOCSTRING(randg)
+
+The generators operate in the new or old style together, it is not
+possible to mix the two.  Initializing any generator with
+@qcode{"state"} or @qcode{"seed"} causes the others to switch to the
+same style for future calls.
+
+The state of each generator is independent and calls to different
+generators can be interleaved without affecting the final result.  For
+example,
+
+@example
+@group
+rand ("state", [11, 22, 33]);
+randn ("state", [44, 55, 66]);
+u = rand (100, 1);
+n = randn (100, 1);
+@end group
+@end example
+
+@noindent
+and
+
+@example
+@group
+rand ("state", [11, 22, 33]);
+randn ("state", [44, 55, 66]);
+u = zeros (100, 1);
+n = zeros (100, 1);
+for i = 1:100
+  u(i) = rand ();
+  n(i) = randn ();
+end
+@end group
+@end example
+
+@noindent
+produce equivalent results.  When the generators are initialized in
+the old style with @qcode{"seed"} only @code{rand} and @code{randn} are
+independent, because the old @code{rande}, @code{randg} and
+@code{randp} generators make calls to @code{rand} and @code{randn}.
+
+The generators are initialized with random states at start-up, so
+that the sequences of random numbers are not the same each time you run
+Octave.@footnote{The old versions of @code{rand} and @code{randn}
+obtain their initial seeds from the system clock.} If you really do
+need to reproduce a sequence of numbers exactly, you can set the state
+or seed to a specific value.
+
+If invoked without arguments, @code{rand} and @code{randn} return a
+single element of a random sequence.
+
+The original @code{rand} and @code{randn} functions use Fortran code from
+@sc{ranlib}, a library of Fortran routines for random number generation,
+compiled by Barry W. Brown and James Lovato of the Department of
+Biomathematics at The University of Texas, M.D. Anderson Cancer Center,
+Houston, TX 77030.
+
+@DOCSTRING(randperm)
+
+@node Famous Matrices
+@section Famous Matrices
+
+The following functions return famous matrix forms.
+
+@DOCSTRING(gallery)
+
+@DOCSTRING(hadamard)
+
+@DOCSTRING(hankel)
+
+@DOCSTRING(hilb)
+
+@DOCSTRING(invhilb)
+
+@DOCSTRING(magic)
+
+@DOCSTRING(pascal)
+
+@DOCSTRING(rosser)
+
+@DOCSTRING(toeplitz)
+
+@DOCSTRING(vander)
+
+@DOCSTRING(wilkinson)

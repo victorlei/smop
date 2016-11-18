@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Continuation Lines</title>
+
+<meta name="description" content="GNU Octave: Continuation Lines">
+<meta name="keywords" content="GNU Octave: Continuation Lines">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Statements.html#Statements" rel="up" title="Statements">
+<link href="Functions-and-Scripts.html#Functions-and-Scripts" rel="next" title="Functions and Scripts">
+<link href="The-try-Statement.html#The-try-Statement" rel="prev" title="The try Statement">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Continuation-Lines"></a>
+<div class="header">
+<p>
+Previous: <a href="The-try-Statement.html#The-try-Statement" accesskey="p" rel="prev">The try Statement</a>, Up: <a href="Statements.html#Statements" accesskey="u" rel="up">Statements</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Continuation-Lines-1"></a>
+<h3 class="section">10.10 Continuation Lines</h3>
+<a name="index-continuation-lines"></a>
+<a name="index-_002e_002e_002e-continuation-marker"></a>
+<a name="index-_005c-continuation-marker"></a>
+
+<p>In the Octave language, most statements end with a newline character and
+you must tell Octave to ignore the newline character in order to
+continue a statement from one line to the next.  Lines that end with the
+characters <code>...</code> are joined with the following line before they are
+divided into tokens by Octave&rsquo;s parser.  For example, the lines
+</p>
+<div class="example">
+<pre class="example">x = long_variable_name ...
+    + longer_variable_name ...
+    - 42
+</pre></div>
+
+<p>form a single statement.
+</p>
+<p>Any text between the continuation marker and the newline character is
+ignored.  For example, the statement
+</p>
+<div class="example">
+<pre class="example">x = long_variable_name ...    # comment one
+    + longer_variable_name ...comment two
+    - 42                      # last comment
+</pre></div>
+
+<p>is equivalent to the one shown above.
+</p>
+<p>Inside double-quoted string constants, the character <code>\</code> has to be
+used as continuation marker.  The <code>\</code> must appear at the end of the
+line just before the newline character:
+</p>
+<div class="example">
+<pre class="example">s = &quot;This text starts in the first line \
+and is continued in the second line.&quot;
+</pre></div>
+
+<p>Input that occurs inside parentheses can be continued to the next line
+without having to use a continuation marker.  For example, it is
+possible to write statements like
+</p>
+<div class="example">
+<pre class="example">if (fine_dining_destination == on_a_boat
+    || fine_dining_destination == on_a_train)
+  seuss (i, will, not, eat, them, sam, i, am, i,
+         will, not, eat, green, eggs, and, ham);
+endif
+</pre></div>
+
+<p>without having to add to the clutter with continuation markers.
+</p>
+
+
+
+
+</body>
+</html>

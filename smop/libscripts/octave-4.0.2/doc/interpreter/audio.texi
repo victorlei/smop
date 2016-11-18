@@ -1,0 +1,620 @@
+@c DO NOT EDIT!  Generated automatically by munge-texi.pl.
+
+@c Copyright (C) 1996-2015 Kurt Hornik
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@c Written by Kurt Hornik <Kurt.Hornik@wu-wien.ac.at> on 1996/05/14
+
+@node Audio Processing
+@chapter Audio Processing
+
+@menu
+* Audio File Utilities::
+* Audio Device Information::
+* Audio Player::
+* Audio Recorder::
+* Audio Data Processing::
+@end menu
+
+@node Audio File Utilities
+@section Audio File Utilities
+
+The following functions allow you to read, write and retrieve
+information about audio files.  Various formats are supported including
+wav, flac and ogg vorbis.
+
+@c audioinfo libinterp/dldfcn/audioread.cc
+@anchor{XREFaudioinfo}
+@deftypefn {Loadable Function} {@var{info} =} audioinfo (@var{filename})
+Return information about an audio file specified by @var{filename}.
+@end deftypefn
+
+
+@c audioread libinterp/dldfcn/audioread.cc
+@anchor{XREFaudioread}
+@deftypefn  {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename})
+@deftypefnx {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename}, @var{samples})
+
+@deftypefnx {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename}, @var{datatype})
+@deftypefnx {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename}, @var{samples}, @var{datatype})
+Read the audio file @var{filename} and return the audio data @var{y} and
+sampling rate @var{fs}.
+
+The audio data is stored as matrix with rows corresponding to audio frames
+and columns corresponding to channels.
+
+The optional two-element vector argument @var{samples} specifies starting
+and ending frames.
+
+The optional argument @var{datatype} specifies the datatype to return.
+If it is @qcode{"native"}, then the type of data depends on how the data
+is stored in the audio file.
+@end deftypefn
+
+
+@c audiowrite libinterp/dldfcn/audioread.cc
+@anchor{XREFaudiowrite}
+@deftypefn  {Loadable Function} {} audiowrite (@var{filename}, @var{y}, @var{fs})
+@deftypefnx {Loadable Function} {} audiowrite (@var{filename}, @var{y}, @var{fs}, @var{name}, @var{value}, @dots{})
+
+Write audio data from the matrix @var{y} to @var{filename} at sampling rate
+@var{fs} with the file format determined by the file extension.
+
+Additional name/value argument pairs may be used to specify the
+following options:
+
+@table @samp
+@item BitsPerSample
+Number of bits per sample, valid values are 8, 16, 24 and 32.  Default is 16.
+
+@item BitRate
+Valid argument name, but ignored.  Left for compatibility with @sc{matlab}.
+
+@item Quality
+Quality setting for the Ogg Vorbis compressor.  Values can range between 0
+and 100 with 100 being the highest quality setting.  Default is 75.
+
+@item Title
+Title for the audio file.
+
+@item Artist
+Artist name.
+
+@item Comment
+Comment.
+@end table
+@end deftypefn
+
+
+@node Audio Device Information
+@section Audio Device Information
+
+@c audiodevinfo libinterp/dldfcn/audiodevinfo.cc
+@anchor{XREFaudiodevinfo}
+@deftypefn {Loadable Function} {@var{devinfo} =} audiodevinfo ()
+
+@deftypefnx {Loadable Function} {@var{devs} =} audiodevinfo (@var{io})
+@deftypefnx {Loadable Function} {@var{name} =} audiodevinfo (@var{io}, @var{id})
+@deftypefnx {Loadable Function} {@var{id} =} audiodevinfo (@var{io}, @var{name})
+@deftypefnx {Loadable Function} {@var{id} =} audiodevinfo (@var{io}, @var{rate}, @var{bits}, @var{chans})
+
+@deftypefnx {Loadable Function} {@var{supports} =} audiodevinfo (@var{io}, @var{id}, @var{rate}, @var{bits}, @var{chans})
+
+Return a structure describing the available audio input and output devices.
+
+The @var{devinfo} structure has two fields @qcode{"input"} and
+@qcode{"output"}.  The value of each field is a structure array with fields
+@qcode{"Name"}, @nospell{"DriverVersion"} and @qcode{"ID"} describing
+an audio device.
+
+If the optional argument @var{io} is 1, return information about input
+devices only.  If it is 0, return information about output devices only.
+
+If the optional argument @var{id} is provided, return information about
+the corresponding device.
+
+If the optional argument @var{name} is provided, return the id of the
+named device.
+
+Given a sampling rate, bits per sample, and number of channels for an input
+or output device, return the ID of the first device that supports playback
+or recording using the specified parameters.
+
+If also given a device ID, return true if the device supports playback or
+recording using those parameters.
+@end deftypefn
+
+
+@node Audio Player
+@section Audio Player
+
+The following methods are used to create and use audioplayer
+objects.  These objects can be used to play back audio data stored in
+Octave matrices and arrays.  The audioplayer object supports playback
+from various devices available to the system, blocking and non-blocking
+playback, convenient pausing and resuming and much more.
+
+@c @audioplayer/audioplayer scripts/audio/@audioplayer/audioplayer.m
+@anchor{XREF@@audioplayer/audioplayer}
+@deftypefn  {Function File} {@var{player} =} audioplayer (@var{y}, @var{fs})
+@deftypefnx {Function File} {@var{player} =} audioplayer (@var{y}, @var{fs}, @var{nbits})
+@deftypefnx {Function File} {@var{player} =} audioplayer (@var{y}, @var{fs}, @var{nbits}, @var{id})
+@deftypefnx {Function File} {@var{player} =} audioplayer (@var{recorder})
+@deftypefnx {Function File} {@var{player} =} audioplayer (@var{recorder}, @var{id})
+Create an audioplayer object that will play back data @var{y} at sample
+rate @var{fs}.
+
+The optional arguments @var{nbits}, and @var{id} specify the bit depth and
+player device id, respectively.  Device IDs may be found using the
+audiodevinfo function.  Given an audioplayer object, use the data from the
+object to initialize the player.
+
+The signal @var{y} can be a vector or a two-dimensional array.
+
+The following example will create an audioplayer object that will play
+back one second of white noise at 44100 sample rate using 8 bits per
+sample.
+
+@example
+@group
+y = randn (2, 44100) - 0.5;
+player = audioplayer (y, 44100, 8);
+play (player);
+@end group
+@end example
+@end deftypefn
+
+
+@menu
+* Playback::
+* Player Properties::
+@end menu
+
+@node Playback
+@subsection Playback
+
+The following methods are used to control player playback.
+
+@c @audioplayer/play scripts/audio/@audioplayer/play.m
+@anchor{XREF@@audioplayer/play}
+@deftypefn  {Function File} {} play (@var{player})
+@deftypefnx {Function File} {} play (@var{player}, @var{start})
+@deftypefnx {Function File} {} play (@var{player}, @var{limits})
+Play audio stored in the audioplayer object @var{player} without blocking.
+
+Given optional argument start, begin playing at @var{start} seconds in the
+recording.  Given a two-element vector @var{limits}, begin and end playing
+at the number of seconds specified by the elements of the vector.
+@end deftypefn
+
+
+@c @audioplayer/playblocking scripts/audio/@audioplayer/playblocking.m
+@anchor{XREF@@audioplayer/playblocking}
+@deftypefn  {Function File} {} playblocking (@var{player})
+@deftypefnx {Function File} {} playblocking (@var{player}, @var{start})
+@deftypefnx {Function File} {} playblocking (@var{player}, @var{limits})
+Play audio stored in the audioplayer object @var{player} with blocking.
+
+Given optional argument start, begin playing at @var{start} seconds in the
+recording.  Given a two-element vector @var{limits}, begin and end playing
+at the number of seconds specified by the elements of the vector.
+@end deftypefn
+
+
+@c @audioplayer/pause scripts/audio/@audioplayer/pause.m
+@anchor{XREF@@audioplayer/pause}
+@deftypefn {Function File} {} pause (@var{player})
+Pause the audioplayer @var{player}.
+@end deftypefn
+
+
+@c @audioplayer/resume scripts/audio/@audioplayer/resume.m
+@anchor{XREF@@audioplayer/resume}
+@deftypefn {Function File} {} resume (@var{player})
+Resume playback for the paused audioplayer object @var{player}.
+@end deftypefn
+
+
+@c @audioplayer/stop scripts/audio/@audioplayer/stop.m
+@anchor{XREF@@audioplayer/stop}
+@deftypefn {Function File} {} stop (@var{player})
+Stop the playback for the audioplayer @var{player} and reset the
+relevant variables to their starting values.
+@end deftypefn
+
+
+@c @audioplayer/isplaying scripts/audio/@audioplayer/isplaying.m
+@anchor{XREF@@audioplayer/isplaying}
+@deftypefn {Function File} {} isplaying (@var{player})
+Return true if the audioplayer object @var{player} is currently playing back
+audio and false otherwise.
+@end deftypefn
+
+
+@node Player Properties
+@subsection Properties
+
+The remaining couple of methods are used to get and set various
+properties of the audioplayer object.
+
+@c @audioplayer/get scripts/audio/@audioplayer/get.m
+@anchor{XREF@@audioplayer/get}
+@deftypefn  {Function File} {@var{value} =} get (@var{player}, @var{name})
+@deftypefnx {Function File} {@var{values} =} get (@var{player})
+Return the @var{value} of the property identified by @var{name}.
+
+If @var{name} is a cell array return the values of the properties
+identified by the elements of the cell array.  Given only the player
+object, return a scalar structure with values of all properties of
+@var{player}.  The field names of the structure correspond to property
+names.
+@end deftypefn
+
+
+@c @audioplayer/set scripts/audio/@audioplayer/set.m
+@anchor{XREF@@audioplayer/set}
+@deftypefn  {Function File} {} set (@var{player}, @var{name}, @var{value})
+@deftypefnx {Function File} {} set (@var{player}, @var{properties})
+@deftypefnx {Function File} {@var{properties} =} set (@var{player})
+Set the value of property specified by @var{name} to a given @var{value}.
+
+If @var{name} and @var{value} are cell arrays, set each property to the
+corresponding value.  Given a structure of @var{properties} with fields
+corresponding to property names, set the value of those properties to the
+field values.  Given only the audioplayer object, return a structure of
+settable properties.
+@end deftypefn
+
+
+@node Audio Recorder
+@section Audio Recorder
+
+The following methods are used to create and use audiorecorder
+objects.  These objects can be used to record audio data from various
+devices available to the system.  You can use convenient methods to
+retrieve that data or audioplayer objects created from that
+data.  Methods for blocking and non-blocking recording, pausing and
+resuming recording and much more is available.
+
+@c @audiorecorder/audiorecorder scripts/audio/@audiorecorder/audiorecorder.m
+@anchor{XREF@@audiorecorder/audiorecorder}
+@deftypefn  {Function File} {@var{recorder} =} audiorecorder ()
+@deftypefnx {Function File} {@var{recorder} =} audiorecorder (@var{fs}, @var{nbits}, @var{channels})
+@deftypefnx {Function File} {@var{recorder} =} audiorecorder (@var{fs}, @var{nbits}, @var{channels}, @var{id})
+Create an audiorecorder object recording 8 bit mono audio at 8000 Hz
+sample rate.
+
+The optional arguments @var{fs}, @var{nbits}, @var{channels}, and @var{id}
+specify the sample rate, bit depth, number of channels and recording
+device id, respectively.  Device IDs may be found using the audiodevinfo
+function.
+@end deftypefn
+
+
+@menu
+* Recording::
+* Data Retrieval::
+* Recorder Properties::
+@end menu
+
+@node Recording
+@subsection Recording
+
+The following methods control the recording process.
+
+@c @audiorecorder/record scripts/audio/@audiorecorder/record.m
+@anchor{XREF@@audiorecorder/record}
+@deftypefn  {Function File} {} record (@var{recorder})
+@deftypefnx {Function File} {} record (@var{recorder}, @var{length})
+Record audio without blocking using the audiorecorder object
+@var{recorder} until stopped or paused by the @var{stop} or @var{pause}
+method.
+
+Given the optional argument @var{length}, record for @var{length} seconds.
+@end deftypefn
+
+
+@c @audiorecorder/recordblocking scripts/audio/@audiorecorder/recordblocking.m
+@anchor{XREF@@audiorecorder/recordblocking}
+@deftypefn {Function File} {} recordblocking (@var{recorder}, @var{length})
+Record audio with blocking (synchronous I/O).
+
+The length of the recording in seconds (@var{length}) must be specified.
+@end deftypefn
+
+
+@c @audiorecorder/pause scripts/audio/@audiorecorder/pause.m
+@anchor{XREF@@audiorecorder/pause}
+@deftypefn {Function File} {} pause (@var{recorder})
+Pause recording with audiorecorder object @var{recorder}.
+@end deftypefn
+
+
+@c @audiorecorder/resume scripts/audio/@audiorecorder/resume.m
+@anchor{XREF@@audiorecorder/resume}
+@deftypefn {Function File} {} resume (@var{recorder})
+Resume recording with the paused audiorecorder object @var{recorder}.
+@end deftypefn
+
+
+@c @audiorecorder/stop scripts/audio/@audiorecorder/stop.m
+@anchor{XREF@@audiorecorder/stop}
+@deftypefn {Function File} {} stop (@var{recorder})
+Stop the audiorecorder object @var{recorder} and clean up any audio streams.
+@end deftypefn
+
+
+@c @audiorecorder/isrecording scripts/audio/@audiorecorder/isrecording.m
+@anchor{XREF@@audiorecorder/isrecording}
+@deftypefn {Function File} {} isrecording (@var{recorder})
+Return true if the audiorecorder object @var{recorder} is currently recording
+audio and false otherwise.
+@end deftypefn
+
+
+@node Data Retrieval
+@subsection Data Retrieval
+
+The following methods allow you to retrieve recorded audio data in
+various ways.
+
+@c @audiorecorder/getaudiodata scripts/audio/@audiorecorder/getaudiodata.m
+@anchor{XREF@@audiorecorder/getaudiodata}
+@deftypefn  {Function File} {@var{data} =} getaudiodata (@var{recorder})
+@deftypefnx {Function File} {@var{data} =} getaudiodata (@var{recorder}, @var{datatype})
+Return recorder audio data as a matrix with values between -1.0 and 1.0
+and with as many columns as there are channels in the recorder.
+
+Given the optional argument @var{datatype}, convert the recorded data
+to the specified type, which may be one of @qcode{"double"},
+@qcode{"single"}, @qcode{"int16"}, @qcode{"int8"} or @qcode{"uint8"}.
+@end deftypefn
+
+
+@c @audiorecorder/getplayer scripts/audio/@audiorecorder/getplayer.m
+@anchor{XREF@@audiorecorder/getplayer}
+@deftypefn {Function File} {@var{player} =} getplayer (@var{recorder})
+Return an audioplayer object with data recorded by the audiorecorder object
+@var{recorder}.
+@end deftypefn
+
+
+@c @audiorecorder/play scripts/audio/@audiorecorder/play.m
+@anchor{XREF@@audiorecorder/play}
+@deftypefn  {Function File} {@var{player} =} play (@var{recorder})
+@deftypefnx {Function File} {@var{player} =} play (@var{recorder}, @var{start})
+@deftypefnx {Function File} {@var{player} =} play (@var{recorder}, [@var{start}, @var{end}])
+Play the audio recorded in @var{recorder} and return a corresponding
+audioplayer object.
+
+If the optional argument @var{start} is provided, begin playing
+@var{start} seconds in to the recording.
+
+If the optional argument @var{end} is provided, stop playing at
+@var{end} seconds in the recording.
+@end deftypefn
+
+
+@node Recorder Properties
+@subsection Properties
+
+The remaining two methods allow you to read or alter the properties of
+audiorecorder objects.
+
+@c @audiorecorder/get scripts/audio/@audiorecorder/get.m
+@anchor{XREF@@audiorecorder/get}
+@deftypefn  {Function File} {@var{value} =} get (@var{recorder}, @var{name})
+@deftypefnx {Function File} {@var{values} =} get (@var{recorder})
+Return the @var{value} of the property identified by @var{name}.
+
+If @var{name} is a cell array, return the values of the properties
+corresponding to the elements of the cell array.  Given only the recorder
+object, return a scalar structure with values of all properties of
+@var{recorder}.  The field names of the structure correspond to property
+names.
+@end deftypefn
+
+
+@c @audiorecorder/set scripts/audio/@audiorecorder/set.m
+@anchor{XREF@@audiorecorder/set}
+@deftypefn  {Function File} {} set (@var{recorder}, @var{name}, @var{value})
+@deftypefnx {Function File} {} set (@var{recorder}, @var{properties})
+@deftypefnx {Function File} {@var{properties} =} set (@var{recorder})
+Set the value of property specified by @var{name} to a given @var{value}.
+
+If @var{name} and @var{value} are cell arrays of the same size, set each
+property to a corresponding value.  Given a structure with fields
+corresponding to property names, set the value of those properties to the
+corresponding field values.  Given only the recorder object, return a
+structure of settable properties.
+@end deftypefn
+
+
+@node Audio Data Processing
+@section Audio Data Processing
+
+Octave provides a few functions for dealing with audio data.  An audio
+`sample' is a single output value from an A/D converter, i.e., a small
+integer number (usually 8 or 16 bits), and audio data is just a series
+of such samples.  It can be characterized by three parameters: the
+sampling rate (measured in samples per second or Hz, e.g., 8000 or
+44100), the number of bits per sample (e.g., 8 or 16), and the number of
+channels (1 for mono, 2 for stereo, etc.).
+
+There are many different formats for representing such data.  Currently,
+only the two most popular, @emph{linear encoding} and @emph{mu-law
+encoding}, are supported by Octave.  There is an excellent FAQ on audio
+formats by @nospell{Guido van Rossum} @email{guido@@cwi.nl} which can be
+found at any FAQ ftp site, in particular in the directory
+@file{/pub/usenet/news.answers/audio-fmts} of the archive site
+@code{rtfm.mit.edu}.
+
+Octave simply treats audio data as vectors of samples (non-mono data are
+not supported yet).  It is assumed that audio files using linear
+encoding have one of the extensions @file{lin} or @file{raw}, and that
+files holding data in mu-law encoding end in @file{au}, @file{mu}, or
+@file{snd}.
+
+@c lin2mu scripts/audio/lin2mu.m
+@anchor{XREFlin2mu}
+@deftypefn {Function File} {} lin2mu (@var{x}, @var{n})
+Convert audio data from linear to mu-law.
+
+Mu-law values use 8-bit unsigned integers.  Linear values use @var{n}-bit
+signed integers or floating point values in the range -1 @leq{} @var{x}
+@leq{} 1 if @var{n} is 0.
+
+If @var{n} is not specified it defaults to 0, 8, or 16 depending on
+the range of values in @var{x}.
+@seealso{@ref{XREFmu2lin,,mu2lin}}
+@end deftypefn
+
+
+@c mu2lin scripts/audio/mu2lin.m
+@anchor{XREFmu2lin}
+@deftypefn {Function File} {} mu2lin (@var{x}, @var{n})
+Convert audio data from mu-law to linear.
+
+Mu-law values are 8-bit unsigned integers.  Linear values use @var{n}-bit
+signed integers or floating point values in the range -1@leq{}y@leq{}1 if
+@var{n} is 0.
+
+If @var{n} is not specified it defaults to 0.
+@seealso{@ref{XREFlin2mu,,lin2mu}}
+@end deftypefn
+
+
+@c record scripts/audio/record.m
+@anchor{XREFrecord}
+@deftypefn  {Function File} {} record (@var{sec})
+@deftypefnx {Function File} {} record (@var{sec}, @var{fs})
+Record @var{sec} seconds of audio from the system's default audio input at
+a sampling rate of 8000 samples per second.
+
+If the optional argument @var{fs} is given, it specifies the sampling rate
+for recording.
+
+For more control over audio recording, use the @code{audiorecorder} class.
+@seealso{@ref{XREFsound,,sound}, @ref{XREFsoundsc,,soundsc}}
+@end deftypefn
+
+
+@c sound scripts/audio/sound.m
+@anchor{XREFsound}
+@deftypefn  {Function File} {} sound (@var{y})
+@deftypefnx {Function File} {} sound (@var{y}, @var{fs})
+@deftypefnx {Function File} {} sound (@var{y}, @var{fs}, @var{nbits})
+Play audio data @var{y} at sample rate @var{fs} to the default audio
+device.
+
+The audio signal @var{y} can be a vector or a two-column array, representing
+mono or stereo audio, respectively.
+
+If @var{fs} is not given, a default sample rate of 8000 samples per second
+is used.
+
+The optional argument @var{nbits} specifies the bit depth to play to the
+audio device and defaults to 8 bits.
+
+For more control over audio playback, use the @code{audioplayer} class.
+@seealso{@ref{XREFsoundsc,,soundsc}, @ref{XREFrecord,,record}}
+@end deftypefn
+
+
+@c soundsc scripts/audio/soundsc.m
+@anchor{XREFsoundsc}
+@deftypefn  {Function File} {} soundsc (@var{y})
+@deftypefnx {Function File} {} soundsc (@var{y}, @var{fs})
+@deftypefnx {Function File} {} soundsc (@var{y}, @var{fs}, @var{nbits})
+@deftypefnx {Function File} {} soundsc (@dots{}, [@var{ymin}, @var{ymax}])
+Scale the audio data @var{y} and play it at sample rate @var{fs} to the
+default audio device.
+
+The audio signal @var{y} can be a vector or a two-column array, representing
+mono or stereo audio, respectively.
+
+If @var{fs} is not given, a default sample rate of 8000 samples per second
+is used.
+
+The optional argument @var{nbits} specifies the bit depth to play to the
+audio device and defaults to 8 bits.
+
+By default, @var{y} is automatically normalized to the range [-1, 1].  If the
+range [@var{ymin}, @var{ymax}] is given, then elements of @var{y} that fall
+within the range @var{ymin} @leq{} @var{y} @leq{} @var{ymax} are scaled to
+the range [-1, 1] instead.
+
+For more control over audio playback, use the @code{audioplayer} class.
+@seealso{@ref{XREFsound,,sound}, @ref{XREFrecord,,record}}
+@end deftypefn
+
+
+@c wavread scripts/audio/wavread.m
+@anchor{XREFwavread}
+@deftypefn  {Function File} {@var{y} =} wavread (@var{filename})
+@deftypefnx {Function File} {[@var{y}, @var{fs}, @var{nbits}] =} wavread (@var{filename})
+@deftypefnx {Function File} {[@dots{}] =} wavread (@var{filename}, @var{n})
+@deftypefnx {Function File} {[@dots{}] =} wavread (@var{filename}, [@var{n1} @var{n2}])
+@deftypefnx {Function File} {[@dots{}] =} wavread (@dots{}, @var{datatype})
+@deftypefnx {Function File} {@var{sz} =} wavread (@var{filename}, "size")
+@deftypefnx {Function File} {[@var{n_samp}, @var{n_chan}] =} wavread (@var{filename}, "size")
+Read the audio signal @var{y} from the RIFF/WAVE sound file @var{filename}.
+
+If the file contains multichannel data, then @var{y} is a matrix with the
+channels represented as columns.
+
+If @var{n} is specified, only the first @var{n} samples of the file are
+returned.  If [@var{n1} @var{n2}] is specified, only the range of samples
+from @var{n1} to @var{n2} is returned.  A value of @code{Inf} can be used
+to represent the total number of samples in the file.
+
+If the option @qcode{"size"} is given, then the size of the audio signal
+is returned instead of the data.  The size is returned in a row vector of
+the form [@var{samples} @var{channels}].  If there are two output arguments,
+the number of samples is assigned to the first and the number of channels
+is assigned to the second.
+
+The optional return value @var{fs} is the sample rate of the audio file in
+Hz.  The optional return value @var{nbits} is the number of bits per sample
+as encoded in the file.
+
+@seealso{@ref{XREFaudioread,,audioread}, @ref{XREFaudiowrite,,audiowrite}, @ref{XREFwavwrite,,wavwrite}}
+@end deftypefn
+
+
+@c wavwrite scripts/audio/wavwrite.m
+@anchor{XREFwavwrite}
+@deftypefn  {Function File} {} wavwrite (@var{y}, @var{filename})
+@deftypefnx {Function File} {} wavwrite (@var{y}, @var{fs}, @var{filename})
+@deftypefnx {Function File} {} wavwrite (@var{y}, @var{fs}, @var{nbits}, @var{filename})
+Write the audio signal @var{y} to the RIFF/WAVE sound file @var{filename}.
+
+If @var{y} is a matrix, the columns represent multiple audio channels.
+
+The optional argument @var{fs} specifies the sample rate of the audio signal
+in Hz.
+
+The optional argument @var{nbits} specifies the number of bits per sample
+to write to @var{filename}.
+
+The default sample rate is 8000 Hz and the default bit depth is 16 bits
+per sample.
+
+@seealso{@ref{XREFaudiowrite,,audiowrite}, @ref{XREFaudioread,,audioread}, @ref{XREFwavread,,wavread}}
+@end deftypefn
+

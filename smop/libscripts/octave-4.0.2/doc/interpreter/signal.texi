@@ -1,0 +1,1094 @@
+@c DO NOT EDIT!  Generated automatically by munge-texi.pl.
+
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Signal Processing
+@chapter Signal Processing
+
+This chapter describes the signal processing and fast Fourier
+transform functions available in Octave.  Fast Fourier transforms are
+computed with the @sc{fftw} or @sc{fftpack} libraries depending on how
+Octave is built.
+
+@c fft libinterp/corefcn/fft.cc
+@anchor{XREFfft}
+@deftypefn  {Built-in Function} {} fft (@var{x})
+@deftypefnx {Built-in Function} {} fft (@var{x}, @var{n})
+@deftypefnx {Built-in Function} {} fft (@var{x}, @var{n}, @var{dim})
+Compute the discrete Fourier transform of @var{A} using
+a Fast Fourier Transform (FFT) algorithm.
+
+The FFT is calculated along the first non-singleton dimension of the
+array.  Thus if @var{x} is a matrix, @code{fft (@var{x})} computes the
+FFT for each column of @var{x}.
+
+If called with two arguments, @var{n} is expected to be an integer
+specifying the number of elements of @var{x} to use, or an empty
+matrix to specify that its value should be ignored.  If @var{n} is
+larger than the dimension along which the FFT is calculated, then
+@var{x} is resized and padded with zeros.  Otherwise, if @var{n} is
+smaller than the dimension along which the FFT is calculated, then
+@var{x} is truncated.
+
+If called with three arguments, @var{dim} is an integer specifying the
+dimension of the matrix along which the FFT is performed
+@seealso{@ref{XREFifft,,ifft}, @ref{XREFfft2,,fft2}, @ref{XREFfftn,,fftn}, @ref{XREFfftw,,fftw}}
+@end deftypefn
+
+
+@c ifft libinterp/corefcn/fft.cc
+@anchor{XREFifft}
+@deftypefn  {Built-in Function} {} ifft (@var{x})
+@deftypefnx {Built-in Function} {} ifft (@var{x}, @var{n})
+@deftypefnx {Built-in Function} {} ifft (@var{x}, @var{n}, @var{dim})
+Compute the inverse discrete Fourier transform of @var{A}
+using a Fast Fourier Transform (FFT) algorithm.
+
+The inverse FFT is calculated along the first non-singleton dimension
+of the array.  Thus if @var{x} is a matrix, @code{fft (@var{x})} computes
+the inverse FFT for each column of @var{x}.
+
+If called with two arguments, @var{n} is expected to be an integer
+specifying the number of elements of @var{x} to use, or an empty
+matrix to specify that its value should be ignored.  If @var{n} is
+larger than the dimension along which the inverse FFT is calculated, then
+@var{x} is resized and padded with zeros.  Otherwise, if @var{n} is
+smaller than the dimension along which the inverse FFT is calculated,
+then @var{x} is truncated.
+
+If called with three arguments, @var{dim} is an integer specifying the
+dimension of the matrix along which the inverse FFT is performed
+@seealso{@ref{XREFfft,,fft}, @ref{XREFifft2,,ifft2}, @ref{XREFifftn,,ifftn}, @ref{XREFfftw,,fftw}}
+@end deftypefn
+
+
+@c fft2 libinterp/corefcn/fft2.cc
+@anchor{XREFfft2}
+@deftypefn  {Built-in Function} {} fft2 (@var{A})
+@deftypefnx {Built-in Function} {} fft2 (@var{A}, @var{m}, @var{n})
+Compute the two-dimensional discrete Fourier transform of @var{A} using
+a Fast Fourier Transform (FFT) algorithm.
+
+The optional arguments @var{m} and @var{n} may be used specify the number of
+rows and columns of @var{A} to use.  If either of these is larger than the
+size of @var{A}, @var{A} is resized and padded with zeros.
+
+If @var{A} is a multi-dimensional matrix, each two-dimensional sub-matrix
+of @var{A} is treated separately.
+@seealso{@ref{XREFifft2,,ifft2}, @ref{XREFfft,,fft}, @ref{XREFfftn,,fftn}, @ref{XREFfftw,,fftw}}
+@end deftypefn
+
+
+@c ifft2 libinterp/corefcn/fft2.cc
+@anchor{XREFifft2}
+@deftypefn  {Built-in Function} {} ifft2 (@var{A})
+@deftypefnx {Built-in Function} {} ifft2 (@var{A}, @var{m}, @var{n})
+Compute the inverse two-dimensional discrete Fourier transform of @var{A}
+using a Fast Fourier Transform (FFT) algorithm.
+
+The optional arguments @var{m} and @var{n} may be used specify the number of
+rows and columns of @var{A} to use.  If either of these is larger than the
+size of @var{A}, @var{A} is resized and padded with zeros.
+
+If @var{A} is a multi-dimensional matrix, each two-dimensional sub-matrix
+of @var{A} is treated separately
+@seealso{@ref{XREFfft2,,fft2}, @ref{XREFifft,,ifft}, @ref{XREFifftn,,ifftn}, @ref{XREFfftw,,fftw}}
+@end deftypefn
+
+
+@c fftn libinterp/corefcn/fftn.cc
+@anchor{XREFfftn}
+@deftypefn  {Built-in Function} {} fftn (@var{A})
+@deftypefnx {Built-in Function} {} fftn (@var{A}, @var{size})
+Compute the N-dimensional discrete Fourier transform of @var{A} using
+a Fast Fourier Transform (FFT) algorithm.
+
+The optional vector argument @var{size} may be used specify the dimensions
+of the array to be used.  If an element of @var{size} is smaller than the
+corresponding dimension of @var{A}, then the dimension of @var{A} is
+truncated prior to performing the FFT@.  Otherwise, if an element of
+@var{size} is larger than the corresponding dimension then @var{A} is
+resized and padded with zeros.
+@seealso{@ref{XREFifftn,,ifftn}, @ref{XREFfft,,fft}, @ref{XREFfft2,,fft2}, @ref{XREFfftw,,fftw}}
+@end deftypefn
+
+
+@c ifftn libinterp/corefcn/fftn.cc
+@anchor{XREFifftn}
+@deftypefn  {Built-in Function} {} ifftn (@var{A})
+@deftypefnx {Built-in Function} {} ifftn (@var{A}, @var{size})
+Compute the inverse N-dimensional discrete Fourier transform of @var{A}
+using a Fast Fourier Transform (FFT) algorithm.
+
+The optional vector argument @var{size} may be used specify the dimensions
+of the array to be used.  If an element of @var{size} is smaller than the
+corresponding dimension of @var{A}, then the dimension of @var{A} is
+truncated prior to performing the inverse FFT@.  Otherwise, if an element of
+@var{size} is larger than the corresponding dimension then @var{A} is
+resized and padded with zeros.
+@seealso{@ref{XREFfftn,,fftn}, @ref{XREFifft,,ifft}, @ref{XREFifft2,,ifft2}, @ref{XREFfftw,,fftw}}
+@end deftypefn
+
+
+Octave uses the @sc{fftw} libraries to perform FFT computations.  When Octave
+starts up and initializes the @sc{fftw} libraries, they read a system wide
+file (on a Unix system, it is typically @file{/etc/fftw/wisdom}) that
+contains information useful to speed up FFT computations.  This
+information is called the @emph{wisdom}.  The system-wide file allows
+wisdom to be shared between all applications using the @sc{fftw} libraries.
+
+Use the @code{fftw} function to generate and save wisdom.  Using the
+utilities provided together with the @sc{fftw} libraries
+(@command{fftw-wisdom} on Unix systems), you can even add wisdom
+generated by Octave to the system-wide wisdom file.
+
+@c fftw libinterp/dldfcn/fftw.cc
+@anchor{XREFfftw}
+@deftypefn  {Loadable Function} {@var{method} =} fftw ("planner")
+@deftypefnx {Loadable Function} {} fftw ("planner", @var{method})
+@deftypefnx {Loadable Function} {@var{wisdom} =} fftw ("dwisdom")
+@deftypefnx {Loadable Function} {} fftw ("dwisdom", @var{wisdom})
+@deftypefnx {Loadable Function} {} fftw ("threads", @var{nthreads})
+@deftypefnx {Loadable Function} {@var{nthreads} =} fftw ("threads")
+
+Manage @sc{fftw} wisdom data.
+
+Wisdom data can be used to significantly accelerate the calculation of the
+FFTs, but implies an initial cost in its calculation.  When the @sc{fftw}
+libraries are initialized, they read a system wide wisdom file (typically in
+@file{/etc/fftw/wisdom}), allowing wisdom to be shared between applications
+other than Octave.  Alternatively, the @code{fftw} function can be used to
+import wisdom.  For example,
+
+@example
+@var{wisdom} = fftw ("dwisdom")
+@end example
+
+@noindent
+will save the existing wisdom used by Octave to the string @var{wisdom}.
+This string can then be saved to a file and restored using the @code{save}
+and @code{load} commands respectively.  This existing wisdom can be
+re-imported as follows
+
+@example
+fftw ("dwisdom", @var{wisdom})
+@end example
+
+If @var{wisdom} is an empty string, then the wisdom used is cleared.
+
+During the calculation of Fourier transforms further wisdom is generated.
+The fashion in which this wisdom is generated is also controlled by
+the @code{fftw} function.  There are five different manners in which the
+wisdom can be treated:
+
+@table @asis
+@item @qcode{"estimate"}
+Specifies that no run-time measurement of the optimal means of
+calculating a particular is performed, and a simple heuristic is used
+to pick a (probably sub-optimal) plan.  The advantage of this method is
+that there is little or no overhead in the generation of the plan, which
+is appropriate for a Fourier transform that will be calculated once.
+
+@item @qcode{"measure"}
+In this case a range of algorithms to perform the transform is considered
+and the best is selected based on their execution time.
+
+@item @qcode{"patient"}
+Similar to @qcode{"measure"}, but a wider range of algorithms is
+considered.
+
+@item @qcode{"exhaustive"}
+Like @qcode{"measure"}, but all possible algorithms that may be used to
+treat the transform are considered.
+
+@item @qcode{"hybrid"}
+As run-time measurement of the algorithm can be expensive, this is a
+compromise where @qcode{"measure"} is used for transforms up to the size
+of 8192 and beyond that the @qcode{"estimate"} method is used.
+@end table
+
+The default method is @qcode{"estimate"}.  The current method can
+be queried with
+
+@example
+@var{method} = fftw ("planner")
+@end example
+
+@noindent
+or set by using
+
+@example
+fftw ("planner", @var{method})
+@end example
+
+Note that calculated wisdom will be lost when restarting Octave.  However,
+the wisdom data can be reloaded if it is saved to a file as described
+above.  Saved wisdom files should not be used on different platforms since
+they will not be efficient and the point of calculating the wisdom is lost.
+
+The number of threads used for computing the plans and executing the
+transforms can be set with
+
+@example
+fftw ("threads", @var{NTHREADS})
+@end example
+
+Note that octave must be compiled with multi-threaded @sc{fftw} support for
+this feature.  The number of processors available to the current process is
+used per default.
+
+@seealso{@ref{XREFfft,,fft}, @ref{XREFifft,,ifft}, @ref{XREFfft2,,fft2}, @ref{XREFifft2,,ifft2}, @ref{XREFfftn,,fftn}, @ref{XREFifftn,,ifftn}}
+@end deftypefn
+
+
+@c fftconv scripts/signal/fftconv.m
+@anchor{XREFfftconv}
+@deftypefn  {Function File} {} fftconv (@var{x}, @var{y})
+@deftypefnx {Function File} {} fftconv (@var{x}, @var{y}, @var{n})
+Convolve two vectors using the FFT for computation.
+
+@code{c = fftconv (@var{x}, @var{y})} returns a vector of length equal to
+@code{length (@var{x}) + length (@var{y}) - 1}.  If @var{x} and @var{y}
+are the coefficient vectors of two polynomials, the returned value is the
+coefficient vector of the product polynomial.
+
+The computation uses the FFT by calling the function @code{fftfilt}.  If
+the optional argument @var{n} is specified, an N-point FFT is used.
+@seealso{@ref{XREFdeconv,,deconv}, @ref{XREFconv,,conv}, @ref{XREFconv2,,conv2}}
+@end deftypefn
+
+
+@c fftfilt scripts/signal/fftfilt.m
+@anchor{XREFfftfilt}
+@deftypefn  {Function File} {} fftfilt (@var{b}, @var{x})
+@deftypefnx {Function File} {} fftfilt (@var{b}, @var{x}, @var{n})
+Filter @var{x} with the FIR filter @var{b} using the FFT.
+
+If @var{x} is a matrix, filter each column of the matrix.
+
+Given the optional third argument, @var{n}, @code{fftfilt} uses the
+overlap-add method to filter @var{x} with @var{b} using an N-point FFT@.
+The FFT size must be an even power of 2 and must be greater than or equal to
+the length of @var{b}.  If the specified @var{n} does not meet these
+criteria, it is automatically adjusted to the nearest value that does.
+
+@seealso{@ref{XREFfilter,,filter}, @ref{XREFfilter2,,filter2}}
+@end deftypefn
+
+
+@c filter libinterp/corefcn/filter.cc
+@anchor{XREFfilter}
+@deftypefn  {Built-in Function} {@var{y} =} filter (@var{b}, @var{a}, @var{x})
+@deftypefnx {Built-in Function} {[@var{y}, @var{sf}] =} filter (@var{b}, @var{a}, @var{x}, @var{si})
+@deftypefnx {Built-in Function} {[@var{y}, @var{sf}] =} filter (@var{b}, @var{a}, @var{x}, [], @var{dim})
+@deftypefnx {Built-in Function} {[@var{y}, @var{sf}] =} filter (@var{b}, @var{a}, @var{x}, @var{si}, @var{dim})
+Apply a 1-D digital filter to the data @var{x}.
+
+@code{filter} returns the solution to the following linear, time-invariant
+difference equation:
+@tex
+$$
+\sum_{k=0}^N a_{k+1} y_{n-k} = \sum_{k=0}^M b_{k+1} x_{n-k}, \qquad
+ 1 \le n \le P
+$$
+@end tex
+@ifnottex
+@c Set example in small font to prevent overfull line
+
+@smallexample
+@group
+ N                   M
+SUM a(k+1) y(n-k) = SUM b(k+1) x(n-k)    for 1<=n<=length(x)
+k=0                 k=0
+@end group
+@end smallexample
+
+@end ifnottex
+
+@noindent
+where
+@ifnottex
+N=length(a)-1 and M=length(b)-1.
+@end ifnottex
+@tex
+$a \in \Re^{N-1}$, $b \in \Re^{M-1}$, and $x \in \Re^P$.
+@end tex
+The result is calculated over the first non-singleton dimension of @var{x}
+or over @var{dim} if supplied.
+
+An equivalent form of the equation is:
+@tex
+$$
+y_n = -\sum_{k=1}^N c_{k+1} y_{n-k} + \sum_{k=0}^M d_{k+1} x_{n-k}, \qquad
+ 1 \le n \le P
+$$
+@end tex
+@ifnottex
+@c Set example in small font to prevent overfull line
+
+@smallexample
+@group
+          N                   M
+y(n) = - SUM c(k+1) y(n-k) + SUM d(k+1) x(n-k)  for 1<=n<=length(x)
+         k=1                 k=0
+@end group
+@end smallexample
+
+@end ifnottex
+
+@noindent
+where
+@ifnottex
+ c = a/a(1) and d = b/a(1).
+@end ifnottex
+@tex
+$c = a/a_1$ and $d = b/a_1$.
+@end tex
+
+If the fourth argument @var{si} is provided, it is taken as the
+initial state of the system and the final state is returned as
+@var{sf}.  The state vector is a column vector whose length is
+equal to the length of the longest coefficient vector minus one.
+If @var{si} is not supplied, the initial state vector is set to all
+zeros.
+
+In terms of the Z Transform, @var{y} is the result of passing the
+discrete-time signal @var{x} through a system characterized by the following
+rational system function:
+@tex
+$$
+H(z) = {\displaystyle\sum_{k=0}^M d_{k+1} z^{-k}
+        \over 1 + \displaystyle\sum_{k+1}^N c_{k+1} z^{-k}}
+$$
+@end tex
+@ifnottex
+
+@example
+@group
+          M
+         SUM d(k+1) z^(-k)
+         k=0
+H(z) = ---------------------
+            N
+       1 + SUM c(k+1) z^(-k)
+           k=1
+@end group
+@end example
+
+@end ifnottex
+@seealso{@ref{XREFfilter2,,filter2}, @ref{XREFfftfilt,,fftfilt}, @ref{XREFfreqz,,freqz}}
+@end deftypefn
+
+
+@c filter2 scripts/signal/filter2.m
+@anchor{XREFfilter2}
+@deftypefn  {Function File} {@var{y} =} filter2 (@var{b}, @var{x})
+@deftypefnx {Function File} {@var{y} =} filter2 (@var{b}, @var{x}, @var{shape})
+Apply the 2-D FIR filter @var{b} to @var{x}.
+
+If the argument @var{shape} is specified, return an array of the desired
+shape.  Possible values are:
+
+@table @asis
+@item @qcode{"full"}
+pad @var{x} with zeros on all sides before filtering.
+
+@item @qcode{"same"}
+unpadded @var{x} (default)
+
+@item @qcode{"valid"}
+trim @var{x} after filtering so edge effects are no included.
+@end table
+
+Note this is just a variation on convolution, with the parameters reversed
+and @var{b} rotated 180 degrees.
+@seealso{@ref{XREFconv2,,conv2}}
+@end deftypefn
+
+
+@c freqz scripts/signal/freqz.m
+@anchor{XREFfreqz}
+@deftypefn  {Function File} {[@var{h}, @var{w}] =} freqz (@var{b}, @var{a}, @var{n}, "whole")
+@deftypefnx {Function File} {[@var{h}, @var{w}] =} freqz (@var{b})
+@deftypefnx {Function File} {[@var{h}, @var{w}] =} freqz (@var{b}, @var{a})
+@deftypefnx {Function File} {[@var{h}, @var{w}] =} freqz (@var{b}, @var{a}, @var{n})
+@deftypefnx {Function File} {@var{h} =} freqz (@var{b}, @var{a}, @var{w})
+@deftypefnx {Function File} {[@var{h}, @var{w}] =} freqz (@dots{}, @var{Fs})
+@deftypefnx {Function File} {} freqz (@dots{})
+
+Return the complex frequency response @var{h} of the rational IIR filter
+whose numerator and denominator coefficients are @var{b} and @var{a},
+respectively.
+
+The response is evaluated at @var{n} angular frequencies between 0 and
+@ifnottex
+2*pi.
+@end ifnottex
+@tex
+$2\pi$.
+@end tex
+
+@noindent
+The output value @var{w} is a vector of the frequencies.
+
+If @var{a} is omitted, the denominator is assumed to be 1 (this
+corresponds to a simple FIR filter).
+
+If @var{n} is omitted, a value of 512 is assumed.  For fastest computation,
+@var{n} should factor into a small number of small primes.
+
+If the fourth argument, @qcode{"whole"}, is omitted the response is
+evaluated at frequencies between 0 and
+@ifnottex
+pi.
+@end ifnottex
+@tex
+$\pi$.
+@end tex
+
+@code{freqz (@var{b}, @var{a}, @var{w})}
+
+Evaluate the response at the specific frequencies in the vector @var{w}.
+The values for @var{w} are measured in radians.
+
+@code{[@dots{}] = freqz (@dots{}, @var{Fs})}
+
+Return frequencies in Hz instead of radians assuming a sampling rate
+@var{Fs}.  If you are evaluating the response at specific frequencies
+@var{w}, those frequencies should be requested in Hz rather than radians.
+
+@code{freqz (@dots{})}
+
+Plot the magnitude and phase response of @var{h} rather than returning them.
+
+@seealso{@ref{XREFfreqz_plot,,freqz_plot}}
+@end deftypefn
+
+
+@c freqz_plot scripts/signal/freqz_plot.m
+@anchor{XREFfreqz_plot}
+@deftypefn  {Function File} {} freqz_plot (@var{w}, @var{h})
+@deftypefnx {Function File} {} freqz_plot (@var{w}, @var{h}, @var{freq_norm})
+Plot the magnitude and phase response of @var{h}.
+
+If the optional @var{freq_norm} argument is true, the frequency vector
+@var{w} is in units of normalized radians.  If @var{freq_norm} is false, or
+not given, then @var{w} is measured in Hertz.
+@seealso{@ref{XREFfreqz,,freqz}}
+@end deftypefn
+
+
+@c sinc scripts/signal/sinc.m
+@anchor{XREFsinc}
+@deftypefn {Function File} {} sinc (@var{x})
+Compute the sinc function.
+
+Return
+@tex
+$ \sin (\pi x)/(\pi x)$.
+@end tex
+@ifnottex
+sin (pi*x) / (pi*x).
+@end ifnottex
+@end deftypefn
+
+
+@c unwrap scripts/signal/unwrap.m
+@anchor{XREFunwrap}
+@deftypefn  {Function File} {@var{b} =} unwrap (@var{x})
+@deftypefnx {Function File} {@var{b} =} unwrap (@var{x}, @var{tol})
+@deftypefnx {Function File} {@var{b} =} unwrap (@var{x}, @var{tol}, @var{dim})
+
+Unwrap radian phases by adding multiples of 2*pi as appropriate to remove
+jumps greater than @var{tol}.
+
+@var{tol} defaults to pi.
+
+Unwrap will work along the dimension @var{dim}.  If @var{dim}
+is unspecified it defaults to the first non-singleton dimension.
+@end deftypefn
+
+
+@c FIXME: someone needs to organize these ...
+
+@c arch_fit scripts/signal/arch_fit.m
+@anchor{XREFarch_fit}
+@deftypefn {Function File} {[@var{a}, @var{b}] =} arch_fit (@var{y}, @var{x}, @var{p}, @var{iter}, @var{gamma}, @var{a0}, @var{b0})
+Fit an ARCH regression model to the time series @var{y} using the scoring
+algorithm in @nospell{Engle's} original ARCH paper.
+
+The model is
+
+@example
+@group
+y(t) = b(1) * x(t,1) + @dots{} + b(k) * x(t,k) + e(t),
+h(t) = a(1) + a(2) * e(t-1)^2 + @dots{} + a(p+1) * e(t-p)^2
+@end group
+@end example
+
+@noindent
+in which @math{e(t)} is @math{N(0, h(t))}, given a time-series vector
+@var{y} up to time @math{t-1} and a matrix of (ordinary) regressors @var{x}
+up to @math{t}.  The order of the regression of the residual variance is
+specified by @var{p}.
+
+If invoked as @code{arch_fit (@var{y}, @var{k}, @var{p})} with a positive
+integer @var{k}, fit an ARCH(@var{k}, @var{p}) process, i.e., do the above
+with the @math{t}-th row of @var{x} given by
+
+@example
+[1, y(t-1), @dots{}, y(t-k)]
+@end example
+
+Optionally, one can specify the number of iterations @var{iter}, the
+updating factor @var{gamma}, and initial values @math{a0} and @math{b0}
+for the scoring algorithm.
+@end deftypefn
+
+
+@c arch_rnd scripts/signal/arch_rnd.m
+@anchor{XREFarch_rnd}
+@deftypefn {Function File} {} arch_rnd (@var{a}, @var{b}, @var{t})
+Simulate an ARCH sequence of length @var{t} with AR coefficients @var{b} and
+CH coefficients @var{a}.
+
+The result @math{y(t)} follows the model
+@c Set example in small font to prevent overfull line
+
+@smallexample
+y(t) = b(1) + b(2) * y(t-1) + @dots{} + b(lb) * y(t-lb+1) + e(t),
+@end smallexample
+
+@noindent
+where @math{e(t)}, given @var{y} up to time @math{t-1}, is
+@math{N(0, h(t))}, with
+@c Set example in small font to prevent overfull line
+
+@smallexample
+h(t) = a(1) + a(2) * e(t-1)^2 + @dots{} + a(la) * e(t-la+1)^2
+@end smallexample
+@end deftypefn
+
+
+@c arch_test scripts/signal/arch_test.m
+@anchor{XREFarch_test}
+@deftypefn {Function File} {[@var{pval}, @var{lm}] =} arch_test (@var{y}, @var{x}, @var{p})
+For a linear regression model
+
+@example
+y = x * b + e
+@end example
+
+@noindent
+perform a Lagrange Multiplier (LM) test of the null hypothesis of no
+conditional heteroscedascity against the alternative of CH(@var{p}).
+
+I.e., the model is
+
+@example
+y(t) = b(1) * x(t,1) + @dots{} + b(k) * x(t,k) + e(t),
+@end example
+
+@noindent
+given @var{y} up to @math{t-1} and @var{x} up to @math{t},
+@math{e}(t) is @math{N(0, h(t))} with
+
+@example
+h(t) = v + a(1) * e(t-1)^2 + @dots{} + a(p) * e(t-p)^2,
+@end example
+
+@noindent
+and the null is @math{a(1)} == @dots{} == @math{a(p)} == 0.
+
+If the second argument is a scalar integer, @math{k}, perform the same
+test in a linear autoregression model of order @math{k}, i.e., with
+
+@example
+[1, y(t-1), @dots{}, y(t-@var{k})]
+@end example
+
+@noindent
+as the @math{t}-th row of @var{x}.
+
+Under the null, LM approximately has a chisquare distribution with
+@var{p} degrees of freedom and @var{pval} is the @math{p}-value (1
+minus the CDF of this distribution at LM) of the test.
+
+If no output argument is given, the @math{p}-value is displayed.
+@end deftypefn
+
+
+@c arma_rnd scripts/signal/arma_rnd.m
+@anchor{XREFarma_rnd}
+@deftypefn {Function File} {} arma_rnd (@var{a}, @var{b}, @var{v}, @var{t}, @var{n})
+Return a simulation of the ARMA model.
+
+The ARMA model is defined by
+
+@example
+@group
+x(n) = a(1) * x(n-1) + @dots{} + a(k) * x(n-k)
+     + e(n) + b(1) * e(n-1) + @dots{} + b(l) * e(n-l)
+@end group
+@end example
+
+@noindent
+in which @var{k} is the length of vector @var{a}, @var{l} is the length of
+vector @var{b} and @var{e} is Gaussian white noise with variance @var{v}.
+The function returns a vector of length @var{t}.
+
+The optional parameter @var{n} gives the number of dummy @var{x}(@var{i})
+used for initialization, i.e., a sequence of length @var{t}+@var{n} is
+generated and @var{x}(@var{n}+1:@var{t}+@var{n}) is returned.  If @var{n}
+is omitted, @var{n} = 100 is used.
+@end deftypefn
+
+
+@c autoreg_matrix scripts/signal/autoreg_matrix.m
+@anchor{XREFautoreg_matrix}
+@deftypefn {Function File} {} autoreg_matrix (@var{y}, @var{k})
+Given a time series (vector) @var{y}, return a matrix with ones in the first
+column and the first @var{k} lagged values of @var{y} in the other columns.
+
+In other words, for @var{t} > @var{k},
+@code{[1, @var{y}(@var{t}-1), @dots{}, @var{y}(@var{t}-@var{k})]} is the
+t-th row of the result.
+
+The resulting matrix may be used as a regressor matrix in autoregressions.
+@end deftypefn
+
+
+@c bartlett scripts/signal/bartlett.m
+@anchor{XREFbartlett}
+@deftypefn {Function File} {} bartlett (@var{m})
+Return the filter coefficients of a Bartlett (triangular) window of length
+@var{m}.
+
+For a definition of the Bartlett window see, e.g.,
+@nospell{A.V. Oppenheim & R. W. Schafer},
+@cite{Discrete-Time Signal Processing}.
+@end deftypefn
+
+
+@c blackman scripts/signal/blackman.m
+@anchor{XREFblackman}
+@deftypefn  {Function File} {} blackman (@var{m})
+@deftypefnx {Function File} {} blackman (@var{m}, "periodic")
+@deftypefnx {Function File} {} blackman (@var{m}, "symmetric")
+Return the filter coefficients of a Blackman window of length @var{m}.
+
+If the optional argument @qcode{"periodic"} is given, the periodic form
+of the window is returned.  This is equivalent to the window of length
+@var{m}+1 with the last coefficient removed.  The optional argument
+@qcode{"symmetric"} is equivalent to not specifying a second argument.
+
+For a definition of the Blackman window, see, e.g.,
+@nospell{A.V. Oppenheim & R. W. Schafer},
+@cite{Discrete-Time Signal Processing}.
+@end deftypefn
+
+
+@c detrend scripts/signal/detrend.m
+@anchor{XREFdetrend}
+@deftypefn {Function File} {} detrend (@var{x}, @var{p})
+If @var{x} is a vector, @code{detrend (@var{x}, @var{p})} removes the
+best fit of a polynomial of order @var{p} from the data @var{x}.
+
+If @var{x} is a matrix, @code{detrend (@var{x}, @var{p})} does the same
+for each column in @var{x}.
+
+The second argument @var{p} is optional.  If it is not specified, a value of
+1 is assumed.  This corresponds to removing a linear trend.
+
+The order of the polynomial can also be given as a string, in which case
+@var{p} must be either @qcode{"constant"} (corresponds to @code{@var{p}=0})
+or @qcode{"linear"} (corresponds to @code{@var{p}=1}).
+@seealso{@ref{XREFpolyfit,,polyfit}}
+@end deftypefn
+
+
+@c diffpara scripts/signal/diffpara.m
+@anchor{XREFdiffpara}
+@deftypefn {Function File} {[@var{d}, @var{dd}] =} diffpara (@var{x}, @var{a}, @var{b})
+Return the estimator @var{d} for the differencing parameter of an
+integrated time series.
+
+The frequencies from @math{[2*pi*a/t, 2*pi*b/T]} are used for the
+estimation.  If @var{b} is omitted, the interval
+@math{[2*pi/T, 2*pi*a/T]} is used.  If both @var{b} and @var{a} are omitted
+then @math{a = 0.5 * sqrt (T)} and @math{b = 1.5 * sqrt (T)} is used, where
+@math{T} is the sample size.  If @var{x} is a matrix, the differencing
+parameter of each column is estimated.
+
+The estimators for all frequencies in the intervals described above is
+returned in @var{dd}.
+
+The value of @var{d} is simply the mean of @var{dd}.
+
+Reference: @nospell{P.J. Brockwell & R.A. Davis}. @cite{Time Series:
+Theory and Methods}. Springer 1987.
+@end deftypefn
+
+
+@c durbinlevinson scripts/signal/durbinlevinson.m
+@anchor{XREFdurbinlevinson}
+@deftypefn {Function File} {} durbinlevinson (@var{c}, @var{oldphi}, @var{oldv})
+Perform one step of the @nospell{Durbin-Levinson} algorithm.
+
+The vector @var{c} specifies the autocovariances
+@code{[gamma_0, @dots{}, gamma_t]} from lag 0 to @var{t}, @var{oldphi}
+specifies the coefficients based on @var{c}(@var{t}-1) and @var{oldv}
+specifies the corresponding error.
+
+If @var{oldphi} and @var{oldv} are omitted, all steps from 1 to @var{t} of
+the algorithm are performed.
+@end deftypefn
+
+
+@c fftshift scripts/signal/fftshift.m
+@anchor{XREFfftshift}
+@deftypefn  {Function File} {} fftshift (@var{x})
+@deftypefnx {Function File} {} fftshift (@var{x}, @var{dim})
+Perform a shift of the vector @var{x}, for use with the @code{fft} and
+@code{ifft} functions, in order the move the frequency 0 to the center of
+the vector or matrix.
+
+If @var{x} is a vector of @math{N} elements corresponding to @math{N} time
+samples spaced by @nospell{@math{dt}}, then
+@code{fftshift (fft (@var{x}))} corresponds to frequencies
+
+@example
+f = [ -(ceil((N-1)/2):-1:1)*df 0 (1:floor((N-1)/2))*df ]
+@end example
+
+@noindent
+where @nospell{@math{df} = 1 / @math{dt}}.
+
+If @var{x} is a matrix, the same holds for rows and columns.  If @var{x}
+is an array, then the same holds along each dimension.
+
+The optional @var{dim} argument can be used to limit the dimension along
+which the permutation occurs.
+@seealso{@ref{XREFifftshift,,ifftshift}}
+@end deftypefn
+
+
+@c ifftshift scripts/signal/ifftshift.m
+@anchor{XREFifftshift}
+@deftypefn  {Function File} {} ifftshift (@var{x})
+@deftypefnx {Function File} {} ifftshift (@var{x}, @var{dim})
+Undo the action of the @code{fftshift} function.
+
+For even length @var{x}, @code{fftshift} is its own inverse, but odd lengths
+differ slightly.
+@seealso{@ref{XREFfftshift,,fftshift}}
+@end deftypefn
+
+
+@c fractdiff scripts/signal/fractdiff.m
+@anchor{XREFfractdiff}
+@deftypefn {Function File} {} fractdiff (@var{x}, @var{d})
+Compute the fractional differences @math{(1-L)^d x} where @math{L}
+denotes the lag-operator and @math{d} is greater than -1.
+@end deftypefn
+
+
+@c hamming scripts/signal/hamming.m
+@anchor{XREFhamming}
+@deftypefn  {Function File} {} hamming (@var{m})
+@deftypefnx {Function File} {} hamming (@var{m}, "periodic")
+@deftypefnx {Function File} {} hamming (@var{m}, "symmetric")
+Return the filter coefficients of a Hamming window of length @var{m}.
+
+If the optional argument @qcode{"periodic"} is given, the periodic form
+of the window is returned.  This is equivalent to the window of length
+@var{m}+1 with the last coefficient removed.  The optional argument
+@qcode{"symmetric"} is equivalent to not specifying a second argument.
+
+For a definition of the Hamming window see, e.g.,
+@nospell{A.V. Oppenheim & R. W. Schafer},
+@cite{Discrete-Time Signal Processing}.
+@end deftypefn
+
+
+@c hanning scripts/signal/hanning.m
+@anchor{XREFhanning}
+@deftypefn  {Function File} {} hanning (@var{m})
+@deftypefnx {Function File} {} hanning (@var{m}, "periodic")
+@deftypefnx {Function File} {} hanning (@var{m}, "symmetric")
+Return the filter coefficients of a Hanning window of length @var{m}.
+
+If the optional argument @qcode{"periodic"} is given, the periodic form
+of the window is returned.  This is equivalent to the window of length
+@var{m}+1 with the last coefficient removed.  The optional argument
+@qcode{"symmetric"} is equivalent to not specifying a second argument.
+
+For a definition of the Hanning window see, e.g.,
+@nospell{A.V. Oppenheim & R. W. Schafer},
+@cite{Discrete-Time Signal Processing}.
+@end deftypefn
+
+
+@c hurst scripts/signal/hurst.m
+@anchor{XREFhurst}
+@deftypefn {Function File} {} hurst (@var{x})
+Estimate the Hurst parameter of sample @var{x} via the rescaled range
+statistic.
+
+If @var{x} is a matrix, the parameter is estimated for every column.
+@end deftypefn
+
+
+@c pchip scripts/polynomial/pchip.m
+@anchor{XREFpchip}
+@deftypefn  {Function File} {@var{pp} =} pchip (@var{x}, @var{y})
+@deftypefnx {Function File} {@var{yi} =} pchip (@var{x}, @var{y}, @var{xi})
+Return the Piecewise Cubic Hermite Interpolating Polynomial (pchip) of
+points @var{x} and @var{y}.
+
+If called with two arguments, return the piecewise polynomial @var{pp}
+that may be used with @code{ppval} to evaluate the polynomial at specific
+points.
+
+When called with a third input argument, @code{pchip} evaluates the pchip
+polynomial at the points @var{xi}.  The third calling form is equivalent to
+@code{ppval (pchip (@var{x}, @var{y}), @var{xi})}.
+
+The variable @var{x} must be a strictly monotonic vector (either increasing
+or decreasing) of length @var{n}.
+
+@var{y} can be either a vector or array.  If @var{y} is a vector then it
+must be the same length @var{n} as @var{x}.  If @var{y} is an array then
+the size of @var{y} must have the form
+@tex
+$$[s_1, s_2, \cdots, s_k, n]$$
+@end tex
+@ifnottex
+@code{[@var{s1}, @var{s2}, @dots{}, @var{sk}, @var{n}]}
+@end ifnottex
+The array is reshaped internally to a matrix where the leading dimension is
+given by
+@tex
+$$s_1 s_2 \cdots s_k$$
+@end tex
+@ifnottex
+@code{@var{s1} * @var{s2} * @dots{} * @var{sk}}
+@end ifnottex
+and each row of this matrix is then treated separately.  Note that this is
+exactly opposite to @code{interp1} but is done for @sc{matlab} compatibility.
+
+@seealso{@ref{XREFspline,,spline}, @ref{XREFppval,,ppval}, @ref{XREFmkpp,,mkpp}, @ref{XREFunmkpp,,unmkpp}}
+@end deftypefn
+
+
+@c periodogram scripts/signal/periodogram.m
+@anchor{XREFperiodogram}
+@deftypefn  {Function File} {[@var{Pxx}, @var{w}] =} periodogram (@var{x})
+@deftypefnx {Function File} {[@var{Pxx}, @var{w}] =} periodogram (@var{x}, @var{win})
+@deftypefnx {Function File} {[@var{Pxx}, @var{w}] =} periodogram (@var{x}, @var{win}, @var{nfft})
+@deftypefnx {Function File} {[@var{Pxx}, @var{f}] =} periodogram (@var{x}, @var{win}, @var{nfft}, @var{Fs})
+@deftypefnx {Function File} {[@var{Pxx}, @var{f}] =} periodogram (@dots{}, "@var{range}")
+@deftypefnx {Function File} {} periodogram (@dots{})
+Return the periodogram (Power Spectral Density) of @var{x}.
+
+The possible inputs are:
+
+@table @var
+@item x
+
+data vector.  If @var{x} is real-valued a one-sided spectrum is estimated.
+If @var{x} is complex-valued, or @qcode{"@var{range}"} specifies
+@qcode{"@nospell{twosided}"}, the full spectrum is estimated.
+
+@item win
+window weight data.  If window is empty or unspecified a default rectangular
+window is used.  Otherwise, the window is applied to the signal
+(@code{@var{x} .* @var{win}}) before computing the periodogram.  The window
+data must be a vector of the same length as @var{x}.
+
+@item nfft
+number of frequency bins.  The default is 256 or the next higher power of
+2 greater than the length of @var{x}
+(@code{max (256, 2.^nextpow2 (length (x)))}).  If @var{nfft} is greater
+than the length of the input then @var{x} will be zero-padded to the length
+of @var{nfft}.
+
+@item Fs
+sampling rate.  The default is 1.
+
+@item range
+range of spectrum.  @qcode{"@nospell{onesided}"} computes spectrum from
+[0..nfft/2+1].  @qcode{"@nospell{twosided}"} computes spectrum from
+[0..nfft-1].
+@end table
+
+The optional second output @var{w} are the normalized angular frequencies.
+For a one-sided calculation @var{w} is in the range [0, pi] if @var{nfft}
+is even and [0, pi) if @var{nfft} is odd.  Similarly, for a two-sided
+calculation @var{w} is in the range [0, 2*pi] or [0, 2*pi) depending on
+@var{nfft}.
+
+If a sampling frequency is specified, @var{Fs}, then the output frequencies
+@var{f} will be in the range [0, @var{Fs}/2] or [0, @var{Fs}/2) for
+one-sided calculations.  For two-sided calculations the range will be
+[0, @var{Fs}).
+
+When called with no outputs the periodogram is immediately plotted in the
+current figure window.
+@seealso{@ref{XREFfft,,fft}}
+@end deftypefn
+
+
+@c sinetone scripts/signal/sinetone.m
+@anchor{XREFsinetone}
+@deftypefn {Function File} {} sinetone (@var{freq}, @var{rate}, @var{sec}, @var{ampl})
+Return a sinetone of frequency @var{freq} with a length of @var{sec}
+seconds at sampling rate @var{rate} and with amplitude @var{ampl}.
+
+The arguments @var{freq} and @var{ampl} may be vectors of common size.
+
+The defaults are @var{rate} = 8000, @var{sec} = 1, and @var{ampl} = 64.
+@seealso{@ref{XREFsinewave,,sinewave}}
+@end deftypefn
+
+
+@c sinewave scripts/signal/sinewave.m
+@anchor{XREFsinewave}
+@deftypefn {Function File} {} sinewave (@var{m}, @var{n}, @var{d})
+Return an @var{m}-element vector with @var{i}-th element given by
+@code{sin (2 * pi * (@var{i}+@var{d}-1) / @var{n})}.
+
+The default value for @var{d} is 0 and the default value for @var{n} is
+@var{m}.
+@seealso{@ref{XREFsinetone,,sinetone}}
+@end deftypefn
+
+
+@c spectral_adf scripts/signal/spectral_adf.m
+@anchor{XREFspectral_adf}
+@deftypefn  {Function File} {} spectral_adf (@var{c})
+@deftypefnx {Function File} {} spectral_adf (@var{c}, @var{win})
+@deftypefnx {Function File} {} spectral_adf (@var{c}, @var{win}, @var{b})
+Return the spectral density estimator given a vector of autocovariances
+@var{c}, window name @var{win}, and bandwidth, @var{b}.
+
+The window name, e.g., @qcode{"triangle"} or @qcode{"rectangle"} is
+used to search for a function called @code{@var{win}_lw}.
+
+If @var{win} is omitted, the triangle window is used.
+
+If @var{b} is omitted, @code{1 / sqrt (length (@var{x}))} is used.
+@seealso{@ref{XREFspectral_xdf,,spectral_xdf}}
+@end deftypefn
+
+
+@c spectral_xdf scripts/signal/spectral_xdf.m
+@anchor{XREFspectral_xdf}
+@deftypefn  {Function File} {} spectral_xdf (@var{x})
+@deftypefnx {Function File} {} spectral_xdf (@var{x}, @var{win})
+@deftypefnx {Function File} {} spectral_xdf (@var{x}, @var{win}, @var{b})
+Return the spectral density estimator given a data vector @var{x}, window
+name @var{win}, and bandwidth, @var{b}.
+
+The window name, e.g., @qcode{"triangle"} or @qcode{"rectangle"} is used to
+search for a function called @code{@var{win}_sw}.
+
+If @var{win} is omitted, the triangle window is used.
+
+If @var{b} is omitted, @code{1 / sqrt (length (@var{x}))} is used.
+@seealso{@ref{XREFspectral_adf,,spectral_adf}}
+@end deftypefn
+
+
+@c spencer scripts/signal/spencer.m
+@anchor{XREFspencer}
+@deftypefn {Function File} {} spencer (@var{x})
+Return Spencer's 15 point moving average of each column of @var{x}.
+@end deftypefn
+
+
+@c stft scripts/signal/stft.m
+@anchor{XREFstft}
+@deftypefn  {Function File} {@var{y} =} stft (@var{x})
+@deftypefnx {Function File} {@var{y} =} stft (@var{x}, @var{win_size})
+@deftypefnx {Function File} {@var{y} =} stft (@var{x}, @var{win_size}, @var{inc})
+@deftypefnx {Function File} {@var{y} =} stft (@var{x}, @var{win_size}, @var{inc}, @var{num_coef})
+@deftypefnx {Function File} {@var{y} =} stft (@var{x}, @var{win_size}, @var{inc}, @var{num_coef}, @var{win_type})
+@deftypefnx {Function File} {[@var{y}, @var{c}] =} stft (@dots{})
+Compute the short-time Fourier transform of the vector @var{x} with
+@var{num_coef} coefficients by applying a window of @var{win_size} data
+points and an increment of @var{inc} points.
+
+Before computing the Fourier transform, one of the following windows
+is applied:
+
+@table @asis
+@item @qcode{"hanning"}
+win_type = 1
+
+@item @qcode{"hamming"}
+win_type = 2
+
+@item @qcode{"rectangle"}
+win_type = 3
+@end table
+
+The window names can be passed as strings or by the @var{win_type} number.
+
+The following defaults are used for unspecified arguments:
+@var{win_size} = 80, @var{inc} = 24, @var{num_coef} = 64, and
+@var{win_type} = 1.
+
+@code{@var{y} = stft (@var{x}, @dots{})} returns the absolute values of the
+Fourier coefficients according to the @var{num_coef} positive frequencies.
+
+@code{[@var{y}, @var{c}] = stft (@code{x}, @dots{})} returns the entire
+STFT-matrix @var{y} and a 3-element vector @var{c} containing the window
+size, increment, and window type, which is needed by the @code{synthesis}
+function.
+@seealso{@ref{XREFsynthesis,,synthesis}}
+@end deftypefn
+
+
+@c synthesis scripts/signal/synthesis.m
+@anchor{XREFsynthesis}
+@deftypefn {Function File} {@var{x} =} synthesis (@var{y}, @var{c})
+Compute a signal from its short-time Fourier transform @var{y} and a
+3-element vector @var{c} specifying window size, increment, and window type.
+
+The values @var{y} and @var{c} can be derived by
+
+@example
+[@var{y}, @var{c}] = stft (@var{x} , @dots{})
+@end example
+@seealso{@ref{XREFstft,,stft}}
+@end deftypefn
+
+
+@c yulewalker scripts/signal/yulewalker.m
+@anchor{XREFyulewalker}
+@deftypefn {Function File} {[@var{a}, @var{v}] =} yulewalker (@var{c})
+Fit an AR (p)-model with Yule-Walker estimates given a vector @var{c} of
+autocovariances @code{[gamma_0, @dots{}, gamma_p]}.
+
+Returns the AR coefficients, @var{a}, and the variance of white noise,
+@var{v}.
+@end deftypefn
+
+

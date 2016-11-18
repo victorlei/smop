@@ -1,0 +1,86 @@
+.\" Copyright (C) 1996-2014 John W. Eaton
+.\"
+.\" This file is part of Octave.
+.\"
+.\" Octave is free software; you can redistribute it and/or modify it
+.\" under the terms of the GNU General Public License as published by the
+.\" Free Software Foundation; either version 3 of the License, or (at
+.\" your option) any later version.
+.\"
+.\" Octave is distributed in the hope that it will be useful, but WITHOUT
+.\" ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+.\" FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+.\" for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with Octave; see the file COPYING.  If not, see
+.\" <http://www.gnu.org/licenses/>.
+.\" --------------------------------------------------------------------
+.de Vb \" (V)erbatim (b)egin.  Use fixed width font and no justification
+.ft CW
+.nf
+..
+.de Ve \" (V)erbatim (e)nd.  Return to regular font and justification
+.ft R
+.fi
+..
+.\" --------------------------------------------------------------------
+.TH OCTAVE-CLI 1 "03 January 2014" "GNU Octave"
+.SH NAME
+octave-cli \- A high-level interactive language for numerical computations.
+.SH SYNOPSIS
+\fBoctave-cli\fP [\fIoptions\fP]... [\fIfile\fP]
+.SH DESCRIPTION
+Octave is a high-level language, primarily intended for numerical
+computations.  It provides a convenient command line interface for
+solving linear and nonlinear problems numerically.  \fBoctave-cli\fP
+has been compiled without any GUI support (Qt) which makes it smaller
+than the default \fBoctave\fP executable, but also limits it to
+providing just the command line interface (CLI).
+.SH OPTIONS
+The complete set of command-line options for \fBoctave-cli\fP is available
+by running the following command from the shell.
+.Vb
+
+    octave-cli \-\-help
+.Ve
+.SH DOCUMENTATION
+The primary documentation for Octave is written using Texinfo, the GNU
+documentation system, which allows the same source files to be used to
+produce online and printed versions of the manual.
+.PP
+You can read the online copy of the Octave documentation by issuing
+the following command from within Octave.
+.Vb
+
+    octave:1> doc
+
+.Ve
+The Info files may also be read with a stand-alone program such as
+\fBinfo\fP or \fBxinfo\fP.  HTML, Postscript, or PDF versions of the
+documentation are installed on many systems as well.
+.SH BUGS
+The Octave project maintains a bug tracker at http://bugs.octave.org.
+Before submitting a new item please read the instructions at
+http://www.octave.org/bugs.html on how to submit a useful report.
+.SH FILES
+Upon startup Octave looks for four initialization files.  Each file
+may contain any number of valid Octave commands.
+.TP
+\fIoctave-home\fP/share/octave/site/m/startup/octaverc
+Site-wide initialization file which changes options for all users.
+\fIoctave-home\fP is the directory where Octave was installed such as
+\fB/usr/local\fP.
+.TP
+\fIoctave-home\fP/share/octave/\fIversion\fP/m/startup/octaverc
+Site-wide initialization file for Octave version \fIversion\fP.
+.TP
+~/.octaverc
+User's personal initialization file.
+.TP
+\&\.octaverc
+Project-specific initialization file located in the current directory.
+.SH AUTHOR
+John W. Eaton <jwe@octave.org>
+.SH SEE ALSO
+octave (1)

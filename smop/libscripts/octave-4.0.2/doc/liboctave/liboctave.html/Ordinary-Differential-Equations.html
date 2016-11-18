@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>Octave C++ Classes: Ordinary Differential Equations</title>
+
+<meta name="description" content="Octave C++ Classes: Ordinary Differential Equations">
+<meta name="keywords" content="Octave C++ Classes: Ordinary Differential Equations">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Differential-Algebraic-Equations.html#Differential-Algebraic-Equations" rel="next" title="Differential Algebraic Equations">
+<link href="Collocation-Weights.html#Collocation-Weights" rel="prev" title="Collocation Weights">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Ordinary-Differential-Equations"></a>
+<div class="header">
+<p>
+Next: <a href="Differential-Algebraic-Equations.html#Differential-Algebraic-Equations" accesskey="n" rel="next">Differential Algebraic Equations</a>, Previous: <a href="Quadrature.html#Quadrature" accesskey="p" rel="prev">Quadrature</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Ordinary-Differential-Equations-1"></a>
+<h2 class="chapter">11 Ordinary Differential Equations</h2>
+<a name="index-ODE"></a>
+
+<dl>
+<dt><a name="index-ODE_005foptions"></a>: <em></em> <strong>ODE_options</strong> <em>(void)</em></dt>
+<dt><a name="index-ODE_005foptions-1"></a>: <em></em> <strong>ODE_options</strong> <em>(const ODE_options &amp;<var>opt</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d-36"></a>: <em>ODE_options&amp;</em> <strong>operator =</strong> <em>(const ODE_options &amp;<var>opt</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-init-2"></a>: <em>void</em> <strong>init</strong> <em>(void)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-copy-2"></a>: <em>void</em> <strong>copy</strong> <em>(const ODE_options &amp;<var>opt</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-set_005fdefault_005foptions-2"></a>: <em>void</em> <strong>set_default_options</strong> <em>(void)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-set_005fabsolute_005ftolerance-1"></a>: <em>void</em> <strong>set_absolute_tolerance</strong> <em>(double <var>val</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-set_005finitial_005fstep_005fsize"></a>: <em>void</em> <strong>set_initial_step_size</strong> <em>(double <var>val</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-set_005fmaximum_005fstep_005fsize"></a>: <em>void</em> <strong>set_maximum_step_size</strong> <em>(double <var>val</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-set_005fminimum_005fstep_005fsize"></a>: <em>void</em> <strong>set_minimum_step_size</strong> <em>(double <var>val</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-set_005frelative_005ftolerance-1"></a>: <em>void</em> <strong>set_relative_tolerance</strong> <em>(double <var>val</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-absolute_005ftolerance-1"></a>: <em>double</em> <strong>absolute_tolerance</strong> <em>(void)</em></dt>
+<dt><a name="index-initial_005fstep_005fsize"></a>: <em>double</em> <strong>initial_step_size</strong> <em>(void)</em></dt>
+<dt><a name="index-maximum_005fstep_005fsize"></a>: <em>double</em> <strong>maximum_step_size</strong> <em>(void)</em></dt>
+<dt><a name="index-minimum_005fstep_005fsize"></a>: <em>double</em> <strong>minimum_step_size</strong> <em>(void)</em></dt>
+<dt><a name="index-relative_005ftolerance-1"></a>: <em>double</em> <strong>relative_tolerance</strong> <em>(void)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ODE-1"></a>: <em></em> <strong>ODE</strong> <em>(void)</em></dt>
+<dt><a name="index-ODE-2"></a>: <em></em> <strong>ODE</strong> <em>(int <var>n</var>)</em></dt>
+<dt><a name="index-ODE-3"></a>: <em></em> <strong>ODE</strong> <em>(const ColumnVector &amp;<var>state</var>, double <var>time</var>, const ODEFunc &amp;<var>f</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-size-3"></a>: <em>virtual int</em> <strong>size</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-state"></a>: <em>virtual ColumnVector</em> <strong>state</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-time"></a>: <em>virtual double</em> <strong>time</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-force_005frestart"></a>: <em>virtual void</em> <strong>force_restart</strong> <em>(void)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-initialize"></a>: <em>virtual void</em> <strong>initialize</strong> <em>(const ColumnVector &amp;<var>x</var>, double <var>t</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-set_005fstop_005ftime"></a>: <em>virtual void</em> <strong>set_stop_time</strong> <em>(double <var>t</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-clear_005fstop_005ftime"></a>: <em>virtual void</em> <strong>clear_stop_time</strong> <em>(void)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-integrate-4"></a>: <em>virtual ColumnVector</em> <strong>integrate</strong> <em>(double <var>t</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-integrate-5"></a>: <em>void</em> <strong>integrate</strong> <em>(int <var>nsteps</var>, double <var>tstep</var>, ostream &amp;<var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-integrate-6"></a>: <em>Matrix</em> <strong>integrate</strong> <em>(const ColumnVector &amp;<var>tout</var>)</em></dt>
+<dt><a name="index-integrate-7"></a>: <em>Matrix</em> <strong>integrate</strong> <em>(const ColumnVector &amp;<var>tout</var>, const ColumnVector &amp;<var>tcrit</var>)</em></dt>
+</dl>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,232 @@
+@c DO NOT EDIT!  Generated automatically by genpropdoc.m.
+
+@c Copyright (C) 2014-2015 Pantxo Diribarne
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@table @asis
+
+@anchor{XREFline__modified__}
+@cindex line __modified__
+@item @code{__modified__}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFlinebeingdeleted}
+@cindex line beingdeleted
+@item @code{beingdeleted}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFlinebusyaction}
+@cindex line busyaction
+@item @code{busyaction}: @qcode{"cancel"} | @{@qcode{"queue"}@}
+
+
+
+@anchor{XREFlinebuttondownfcn}
+@cindex line buttondownfcn
+@item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
+
+
+
+@anchor{XREFlinechildren}
+@cindex line children
+@item @code{children} (read-only): vector of graphics handles, def. @code{[](0x1)}
+@code{children} is unused.
+
+
+@anchor{XREFlineclipping}
+@cindex line clipping
+@item @code{clipping}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{clipping} is @qcode{"on"}, the line is clipped in its parent axes limits.
+
+
+@anchor{XREFlinecolor}
+@cindex line color
+@item @code{color}: colorspec, def. @code{[0   0   0]}
+Color of the line object.  @xref{Colors, , colorspec}.
+
+
+@anchor{XREFlinecreatefcn}
+@cindex line createfcn
+@item @code{createfcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately after line has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultlinecreatefcn", 'disp ("line created!")')}.
+
+
+@anchor{XREFlinedeletefcn}
+@cindex line deletefcn
+@item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately before line is deleted.
+
+
+@anchor{XREFlinedisplayname}
+@cindex line displayname
+@item @code{displayname}: string | cell array of strings, def. @qcode{""}
+Text for the legend entry corresponding to this line.
+
+
+@anchor{XREFlineerasemode}
+@cindex line erasemode
+@item @code{erasemode}: @qcode{"background"} | @qcode{"none"} | @{@qcode{"normal"}@} | @qcode{"xor"}
+@code{erasemode} is unused.
+
+
+@anchor{XREFlinehandlevisibility}
+@cindex line handlevisibility
+@item @code{handlevisibility}: @qcode{"callback"} | @qcode{"off"} | @{@qcode{"on"}@}
+If @code{handlevisibility} is @qcode{"off"}, the line's handle is not visible in its parent's "children" property.
+
+
+@anchor{XREFlinehittest}
+@cindex line hittest
+@item @code{hittest}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFlineinterpreter}
+@cindex line interpreter
+@item @code{interpreter}: @qcode{"latex"} | @qcode{"none"} | @{@qcode{"tex"}@}
+
+
+
+@anchor{XREFlineinterruptible}
+@cindex line interruptible
+@item @code{interruptible}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFlinelinestyle}
+@cindex line linestyle
+@item @code{linestyle}: @{@qcode{"-"}@} | @qcode{"--"} | @qcode{"-."} | @qcode{":"} | @qcode{"none"}
+@xref{Line Styles}.
+
+
+@anchor{XREFlinelinewidth}
+@cindex line linewidth
+@item @code{linewidth}: def. @code{0.50000}
+Width of the line object measured in points.
+
+
+@anchor{XREFlinemarker}
+@cindex line marker
+@item @code{marker}: @qcode{"*"} | @qcode{"+"} | @qcode{"."} | @qcode{"<"} | @qcode{">"} | @qcode{"^"} | @qcode{"d"} | @qcode{"diamond"} | @qcode{"h"} | @qcode{"hexagram"} | @{@qcode{"none"}@} | @qcode{"o"} | @qcode{"p"} | @qcode{"pentagram"} | @qcode{"s"} | @qcode{"square"} | @qcode{"v"} | @qcode{"x"}
+Shape of the marker for each data point.  @xref{Marker Styles}.
+
+
+@anchor{XREFlinemarkeredgecolor}
+@cindex line markeredgecolor
+@item @code{markeredgecolor}: @{@qcode{"auto"}@} | @qcode{"none"}
+Color of the edge of the markers.  When set to @qcode{"auto"}, the marker edges have the same color as the line.  If set to @qcode{"none"}, no marker edges are displayed.  This property can also be set to any color.  @xref{Colors, , colorspec}.
+
+
+@anchor{XREFlinemarkerfacecolor}
+@cindex line markerfacecolor
+@item @code{markerfacecolor}: @qcode{"auto"} | @{@qcode{"none"}@}
+Color of the face of the markers.  When set to @qcode{"auto"}, the marker faces have the same color as the line.  If set to @qcode{"none"}, the marker faces are not displayed.  This property can also be set to any color.  @xref{Colors, , colorspec}.
+
+
+@anchor{XREFlinemarkersize}
+@cindex line markersize
+@item @code{markersize}: scalar, def. @code{6}
+Size of the markers measured in points.
+
+
+@anchor{XREFlineparent}
+@cindex line parent
+@item @code{parent}: graphics handle
+Handle of the parent graphics object.
+
+
+@anchor{XREFlineselected}
+@cindex line selected
+@item @code{selected}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFlineselectionhighlight}
+@cindex line selectionhighlight
+@item @code{selectionhighlight}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFlinetag}
+@cindex line tag
+@item @code{tag}: string, def. @qcode{""}
+A user-defined string to label the graphics object.
+
+
+@anchor{XREFlinetype}
+@cindex line type
+@item @code{type} (read-only): string
+Class name of the graphics object.  @code{type} is always @qcode{"line"}
+
+
+@anchor{XREFlineuicontextmenu}
+@cindex line uicontextmenu
+@item @code{uicontextmenu}: graphics handle, def. @code{[](0x0)}
+Graphics handle of the uicontextmenu object that is currently associated to this line object.
+
+
+@anchor{XREFlineuserdata}
+@cindex line userdata
+@item @code{userdata}: Any Octave data, def. @code{[](0x0)}
+User-defined data to associate with the graphics object.
+
+
+@anchor{XREFlinevisible}
+@cindex line visible
+@item @code{visible}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{visible} is @qcode{"off"}, the line is not rendered on screen.
+
+
+@anchor{XREFlinexdata}
+@cindex line xdata
+@item @code{xdata}: vector, def. @code{[0   1]}
+Vector of x data to be plotted.
+
+
+@anchor{XREFlinexdatasource}
+@cindex line xdatasource
+@item @code{xdatasource}: string, def. @qcode{""}
+Name of a vector in the current base workspace to use as x data.
+
+
+@anchor{XREFlineydata}
+@cindex line ydata
+@item @code{ydata}: vector, def. @code{[0   1]}
+Vector of y data to be plotted.
+
+
+@anchor{XREFlineydatasource}
+@cindex line ydatasource
+@item @code{ydatasource}: string, def. @qcode{""}
+Name of a vector in the current base workspace to use as y data.
+
+
+@anchor{XREFlinezdata}
+@cindex line zdata
+@item @code{zdata}: vector, def. @code{[](0x0)}
+Vector of z data to be plotted.
+
+
+@anchor{XREFlinezdatasource}
+@cindex line zdatasource
+@item @code{zdatasource}: string, def. @qcode{""}
+Name of a vector in the current base workspace to use as z data.
+
+@end table

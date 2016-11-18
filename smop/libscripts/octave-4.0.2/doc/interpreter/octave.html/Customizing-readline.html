@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Customizing readline</title>
+
+<meta name="description" content="GNU Octave: Customizing readline">
+<meta name="keywords" content="GNU Octave: Customizing readline">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Command-Line-Editing.html#Command-Line-Editing" rel="up" title="Command Line Editing">
+<link href="Customizing-the-Prompt.html#Customizing-the-Prompt" rel="next" title="Customizing the Prompt">
+<link href="Commands-For-History.html#Commands-For-History" rel="prev" title="Commands For History">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Customizing-readline"></a>
+<div class="header">
+<p>
+Next: <a href="Customizing-the-Prompt.html#Customizing-the-Prompt" accesskey="n" rel="next">Customizing the Prompt</a>, Previous: <a href="Commands-For-History.html#Commands-For-History" accesskey="p" rel="prev">Commands For History</a>, Up: <a href="Command-Line-Editing.html#Command-Line-Editing" accesskey="u" rel="up">Command Line Editing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Customizing-readline-1"></a>
+<h4 class="subsection">2.4.6 Customizing <code>readline</code></h4>
+<a name="index-_007e_002f_002einputrc"></a>
+<a name="index-customizing-readline"></a>
+<a name="index-readline-customization"></a>
+
+<p>Octave uses the GNU Readline library for command-line editing and
+history features.  Readline is very flexible and can be modified through
+a configuration file of commands (See the GNU Readline library for the
+exact command syntax).  The default configuration file is normally
+<samp>~/.inputrc</samp>.
+</p>
+<p>Octave provides two commands for initializing Readline and thereby changing
+the command line behavior.
+</p>
+<a name="XREFreadline_005fread_005finit_005ffile"></a><dl>
+<dt><a name="index-readline_005fread_005finit_005ffile"></a>Built-in Function: <em></em> <strong>readline_read_init_file</strong> <em>(<var>file</var>)</em></dt>
+<dd><p>Read the readline library initialization file <var>file</var>.
+</p>
+<p>If <var>file</var> is omitted, read the default initialization file
+(normally <samp>~/.inputrc</samp>).
+</p>
+<p>See <a href="http://cnswww.cns.cwru.edu/php/chet/readline/readline.html#Readline-Init-File">Readline Init File</a> in <cite>GNU Readline Library</cite>,
+for details.
+</p>
+<p><strong>See also:</strong> <a href="#XREFreadline_005fre_005fread_005finit_005ffile">readline_re_read_init_file</a>.
+</p></dd></dl>
+
+
+<a name="XREFreadline_005fre_005fread_005finit_005ffile"></a><dl>
+<dt><a name="index-readline_005fre_005fread_005finit_005ffile"></a>Built-in Function: <em></em> <strong>readline_re_read_init_file</strong> <em>()</em></dt>
+<dd><p>Re-read the last readline library initialization file that was read.
+</p>
+<p>See <a href="http://cnswww.cns.cwru.edu/php/chet/readline/readline.html#Readline-Init-File">Readline Init File</a> in <cite>GNU Readline Library</cite>,
+for details.
+</p>
+<p><strong>See also:</strong> <a href="#XREFreadline_005fread_005finit_005ffile">readline_read_init_file</a>.
+</p></dd></dl>
+
+
+
+
+
+</body>
+</html>

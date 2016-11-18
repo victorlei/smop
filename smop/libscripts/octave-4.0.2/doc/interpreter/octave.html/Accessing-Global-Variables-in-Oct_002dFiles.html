@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Accessing Global Variables in Oct-Files</title>
+
+<meta name="description" content="GNU Octave: Accessing Global Variables in Oct-Files">
+<meta name="keywords" content="GNU Octave: Accessing Global Variables in Oct-Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Oct_002dFiles.html#Oct_002dFiles" rel="up" title="Oct-Files">
+<link href="Calling-Octave-Functions-from-Oct_002dFiles.html#Calling-Octave-Functions-from-Oct_002dFiles" rel="next" title="Calling Octave Functions from Oct-Files">
+<link href="Using-Sparse-Matrices-in-Oct_002dFiles.html#Using-Sparse-Matrices-in-Oct_002dFiles" rel="prev" title="Using Sparse Matrices in Oct-Files">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Accessing-Global-Variables-in-Oct_002dFiles"></a>
+<div class="header">
+<p>
+Next: <a href="Calling-Octave-Functions-from-Oct_002dFiles.html#Calling-Octave-Functions-from-Oct_002dFiles" accesskey="n" rel="next">Calling Octave Functions from Oct-Files</a>, Previous: <a href="Sparse-Matrices-in-Oct_002dFiles.html#Sparse-Matrices-in-Oct_002dFiles" accesskey="p" rel="prev">Sparse Matrices in Oct-Files</a>, Up: <a href="Oct_002dFiles.html#Oct_002dFiles" accesskey="u" rel="up">Oct-Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Accessing-Global-Variables-in-Oct_002dFiles-1"></a>
+<h4 class="subsection">A.1.7 Accessing Global Variables in Oct-Files</h4>
+
+<p>Global variables allow variables in the global scope to be
+accessed.  Global variables can be accessed within oct-files by using
+the support functions <code>get_global_value</code> and <code>set_global_value</code>.
+<code>get_global_value</code> takes two arguments, the first is a string representing
+the variable name to obtain.  The second argument is a boolean argument
+specifying what to do if no global variable of the desired name is found.
+An example of the use of these two functions is
+</p>
+<div class="example">
+<pre class="verbatim">#include &lt;octave/oct.h&gt;
+
+DEFUN_DLD (globaldemo, args, , &quot;Global Demo&quot;)
+{
+  octave_value retval;
+  int nargin = args.length ();
+
+  if (nargin != 1)
+    print_usage ();
+  else
+    {
+      std::string s = args(0).string_value ();
+      if (! error_state)
+        {
+          octave_value tmp = get_global_value (s, true);
+          if (tmp.is_defined ())
+            retval = tmp;
+          else
+            retval = &quot;Global variable not found&quot;;
+
+          set_global_value (&quot;a&quot;, 42.0);
+        }
+    }
+  return retval;
+}
+</pre><pre class="example">
+
+</pre></div>
+
+<p>An example of its use is
+</p>
+<div class="example">
+<pre class="example">global a b
+b = 10;
+globaldemo (&quot;b&quot;)
+&rArr; 10
+globaldemo (&quot;c&quot;)
+&rArr; &quot;Global variable not found&quot;
+num2str (a)
+&rArr; 42
+</pre></div>
+
+
+
+
+</body>
+</html>

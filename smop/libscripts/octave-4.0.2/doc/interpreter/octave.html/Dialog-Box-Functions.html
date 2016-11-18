@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Dialog Box Functions</title>
+
+<meta name="description" content="GNU Octave: Dialog Box Functions">
+<meta name="keywords" content="GNU Octave: Dialog Box Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Java-Interface.html#Java-Interface" rel="up" title="Java Interface">
+<link href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions" rel="next" title="FAQ - Frequently asked Questions">
+<link href="Java-Interface-Functions.html#Java-Interface-Functions" rel="prev" title="Java Interface Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Dialog-Box-Functions"></a>
+<div class="header">
+<p>
+Next: <a href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions" accesskey="n" rel="next">FAQ - Frequently asked Questions</a>, Previous: <a href="Java-Interface-Functions.html#Java-Interface-Functions" accesskey="p" rel="prev">Java Interface Functions</a>, Up: <a href="Java-Interface.html#Java-Interface" accesskey="u" rel="up">Java Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Dialog-Box-Functions-1"></a>
+<h3 class="section">37.2 Dialog Box Functions</h3>
+
+<p>The following functions all use the Java Interface to provide some form
+of dialog box.
+</p>
+<a name="index-dialog_002c-displaying-a-warning-dialog"></a>
+<a name="XREFmsgbox"></a><dl>
+<dt><a name="index-msgbox"></a>Function File: <em><var>h</var> =</em> <strong>msgbox</strong> <em>(<var>msg</var>)</em></dt>
+<dt><a name="index-msgbox-1"></a>Function File: <em><var>h</var> =</em> <strong>msgbox</strong> <em>(<var>msg</var>, <var>title</var>)</em></dt>
+<dt><a name="index-msgbox-2"></a>Function File: <em><var>h</var> =</em> <strong>msgbox</strong> <em>(<var>msg</var>, <var>title</var>, <var>icon</var>)</em></dt>
+<dt><a name="index-msgbox-3"></a>Function File: <em><var>h</var> =</em> <strong>msgbox</strong> <em>(&hellip;, <var>createmode</var>)</em></dt>
+<dd><p>Display <var>msg</var> using a message dialog box.
+</p>
+<p>The message may have multiple lines separated by newline characters (&quot;\n&quot;),
+or it may be a cellstr array with one element for each line.
+</p>
+<p>The optional input <var>title</var> (character string) can be used to decorate
+the dialog caption.
+</p>
+<p>The optional argument <var>icon</var> selects a dialog icon.
+It can be one of <code>&quot;none&quot;</code> (default), <code>&quot;error&quot;</code>, <code>&quot;help&quot;</code>,
+or <code>&quot;warn&quot;</code>.
+</p>
+<p>The return value is always 1.
+</p>
+<p>Compatibility Note: The optional argument <var>createmode</var> is accepted for
+<small>MATLAB</small> compatibility, but is not implemented.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFerrordlg">errordlg</a>, <a href="#XREFhelpdlg">helpdlg</a>, <a href="#XREFinputdlg">inputdlg</a>, <a href="#XREFlistdlg">listdlg</a>, <a href="#XREFquestdlg">questdlg</a>, <a href="#XREFwarndlg">warndlg</a>.
+</p></dd></dl>
+
+
+<a name="index-dialog_002c-displaying-an-error-dialog"></a>
+<a name="XREFerrordlg"></a><dl>
+<dt><a name="index-errordlg"></a>Function File: <em><var>h</var> =</em> <strong>errordlg</strong> <em>(<var>msg</var>)</em></dt>
+<dt><a name="index-errordlg-1"></a>Function File: <em><var>h</var> =</em> <strong>errordlg</strong> <em>(<var>msg</var>, <var>title</var>)</em></dt>
+<dt><a name="index-errordlg-2"></a>Function File: <em><var>h</var> =</em> <strong>errordlg</strong> <em>(<var>msg</var>, <var>title</var>, <var>createmode</var>)</em></dt>
+<dd><p>Display <var>msg</var> using an error dialog box.
+</p>
+<p>The message may have multiple lines separated by newline characters (&quot;\n&quot;),
+or it may be a cellstr array with one element for each line.
+</p>
+<p>The optional input <var>title</var> (character string) can be used to set the
+dialog caption.  The default title is <code>&quot;Error Dialog&quot;</code>.
+</p>
+<p>The return value is always 1.
+</p>
+<p>Compatibility Note: The optional argument <var>createmode</var> is accepted for
+<small>MATLAB</small> compatibility, but is not implemented.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFhelpdlg">helpdlg</a>, <a href="#XREFinputdlg">inputdlg</a>, <a href="#XREFlistdlg">listdlg</a>, <a href="#XREFmsgbox">msgbox</a>, <a href="#XREFquestdlg">questdlg</a>, <a href="#XREFwarndlg">warndlg</a>.
+</p></dd></dl>
+
+
+<a name="index-dialog_002c-displaying-a-help-dialog"></a>
+<a name="XREFhelpdlg"></a><dl>
+<dt><a name="index-helpdlg"></a>Function File: <em><var>h</var> =</em> <strong>helpdlg</strong> <em>(<var>msg</var>)</em></dt>
+<dt><a name="index-helpdlg-1"></a>Function File: <em><var>h</var> =</em> <strong>helpdlg</strong> <em>(<var>msg</var>, <var>title</var>)</em></dt>
+<dd><p>Display <var>msg</var> in a help dialog box.
+</p>
+<p>The message may have multiple lines separated by newline characters
+(&quot;\n&quot;), or it may be a cellstr array with one element for each
+line.
+</p>
+<p>The optional input <var>title</var> (character string) can be used to
+set the dialog caption.  The default title is <code>&quot;Help Dialog&quot;</code>.
+</p>
+<p>The return value is always 1.
+</p>
+<p><strong>See also:</strong> <a href="#XREFerrordlg">errordlg</a>, <a href="#XREFinputdlg">inputdlg</a>, <a href="#XREFlistdlg">listdlg</a>, <a href="#XREFmsgbox">msgbox</a>, <a href="#XREFquestdlg">questdlg</a>, <a href="#XREFwarndlg">warndlg</a>.
+</p></dd></dl>
+
+
+<a name="index-dialog_002c-displaying-an-input-dialog"></a>
+<a name="XREFinputdlg"></a><dl>
+<dt><a name="index-inputdlg"></a>Function File: <em><var>cstr</var> =</em> <strong>inputdlg</strong> <em>(<var>prompt</var>)</em></dt>
+<dt><a name="index-inputdlg-1"></a>Function File: <em><var>cstr</var> =</em> <strong>inputdlg</strong> <em>(<var>prompt</var>, <var>title</var>)</em></dt>
+<dt><a name="index-inputdlg-2"></a>Function File: <em><var>cstr</var> =</em> <strong>inputdlg</strong> <em>(<var>prompt</var>, <var>title</var>, <var>rowscols</var>)</em></dt>
+<dt><a name="index-inputdlg-3"></a>Function File: <em><var>cstr</var> =</em> <strong>inputdlg</strong> <em>(<var>prompt</var>, <var>title</var>, <var>rowscols</var>, <var>defaults</var>)</em></dt>
+<dd><p>Return user input from a multi-textfield dialog box in a cell array of
+strings, or an empty cell array if the dialog is closed by the Cancel
+button.
+</p>
+<p>Inputs:
+</p>
+<dl compact="compact">
+<dt><var>prompt</var></dt>
+<dd><p>A cell array with strings labeling each text field.  This input is required.
+</p>
+</dd>
+<dt><var>title</var></dt>
+<dd><p>String to use for the caption of the dialog.  The default is
+<code>&quot;Input Dialog&quot;</code>.
+</p>
+</dd>
+<dt><var>rowscols</var></dt>
+<dd><p>Specifies the size of the text fields and can take three forms:
+</p>
+<ol>
+<li> a scalar value which defines the number of rows used for each text field.
+
+</li><li> a vector which defines the individual number of rows used for each text field.
+
+</li><li> a matrix which defines the individual number of rows and columns used for each text field.  In the matrix each row describes a single text field.  The first column specifies the number of input rows to use and the second column specifies the text field width.
+</li></ol>
+
+</dd>
+<dt><var>defaults</var></dt>
+<dd><p>A list of default values to place in each text fields.  It must be a cell
+array of strings with the same size as <var>prompt</var>.
+</p></dd>
+</dl>
+
+<p><strong>See also:</strong> <a href="#XREFerrordlg">errordlg</a>, <a href="#XREFhelpdlg">helpdlg</a>, <a href="#XREFlistdlg">listdlg</a>, <a href="#XREFmsgbox">msgbox</a>, <a href="#XREFquestdlg">questdlg</a>, <a href="#XREFwarndlg">warndlg</a>.
+</p></dd></dl>
+
+
+<a name="index-dialog_002c-displaying-a-list-dialog"></a>
+<a name="XREFlistdlg"></a><dl>
+<dt><a name="index-listdlg"></a>Function File: <em>[<var>sel</var>, <var>ok</var>] =</em> <strong>listdlg</strong> <em>(<var>key</var>, <var>value</var>, &hellip;)</em></dt>
+<dd><p>Return user inputs from a list dialog box in a vector of selection indices
+<var>sel</var> and a flag <var>ok</var> indicating how the user closed the dialog
+box.
+</p>
+<p>The value of <var>ok</var> is 1 if the user closed the box with the OK button,
+otherwise it is 0 and <var>sel</var> is empty.
+</p>
+<p>The indices in <var>sel</var> are 1-based.
+</p>
+<p>The arguments are specified in form of <var>key</var>, <var>value</var> pairs.
+The <code>&quot;ListString&quot;</code> argument pair must be specified.
+</p>
+<p>Valid <var>key</var> and <var>value</var> pairs are:
+</p>
+<dl compact="compact">
+<dt><code>&quot;ListString&quot;</code></dt>
+<dd><p>a cell array of strings comprising the content of the list.
+</p>
+</dd>
+<dt><code>&quot;SelectionMode&quot;</code></dt>
+<dd><p>can be either <code>&quot;Single&quot;</code> or <code>&quot;Multiple&quot;</code> (default).
+</p>
+</dd>
+<dt><code>&quot;ListSize&quot;</code></dt>
+<dd><p>a vector with two elements <var>width</var> and <var>height</var> defining the size
+of the list field in pixels.  Default is [160 300].
+</p>
+</dd>
+<dt><code>&quot;InitialValue&quot;</code></dt>
+<dd><p>a vector containing 1-based indices of preselected elements.
+Default is 1 (first item).
+</p>
+</dd>
+<dt><code>&quot;Name&quot;</code></dt>
+<dd><p>a string to be used as the dialog caption.  Default is &quot;&quot;.
+</p>
+</dd>
+<dt><code>&quot;PromptString&quot;</code></dt>
+<dd><p>a cell array of strings to be displayed above the list field.
+Default is {}.
+</p>
+</dd>
+<dt><code>&quot;OKString&quot;</code></dt>
+<dd><p>a string used to label the OK button.  Default is <code>&quot;OK&quot;</code>.
+</p>
+</dd>
+<dt><code>&quot;CancelString&quot;</code></dt>
+<dd><p>a string used to label the Cancel button.  Default is <code>&quot;Cancel&quot;</code>.
+</p></dd>
+</dl>
+
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">[sel, ok] = listdlg (&quot;ListString&quot;, {&quot;An item&quot;, &quot;another&quot;, &quot;yet another&quot;},
+                     &quot;SelectionMode&quot;, &quot;Multiple&quot;);
+if (ok == 1)
+  for i = 1:numel (sel)
+    disp (sel(i));
+  endfor
+endif
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Terminal-Input.html#XREFmenu">menu</a>, <a href="#XREFerrordlg">errordlg</a>, <a href="#XREFhelpdlg">helpdlg</a>, <a href="#XREFinputdlg">inputdlg</a>, <a href="#XREFmsgbox">msgbox</a>, <a href="#XREFquestdlg">questdlg</a>, <a href="#XREFwarndlg">warndlg</a>.
+</p></dd></dl>
+
+
+<a name="index-dialog_002c-displaying-a-question-dialog"></a>
+<a name="XREFquestdlg"></a><dl>
+<dt><a name="index-questdlg"></a>Function File: <em><var>btn</var> =</em> <strong>questdlg</strong> <em>(<var>msg</var>)</em></dt>
+<dt><a name="index-questdlg-1"></a>Function File: <em><var>btn</var> =</em> <strong>questdlg</strong> <em>(<var>msg</var>, <var>title</var>)</em></dt>
+<dt><a name="index-questdlg-2"></a>Function File: <em><var>btn</var> =</em> <strong>questdlg</strong> <em>(<var>msg</var>, <var>title</var>, <var>default</var>)</em></dt>
+<dt><a name="index-questdlg-3"></a>Function File: <em><var>btn</var> =</em> <strong>questdlg</strong> <em>(<var>msg</var>, <var>title</var>, <var>btn1</var>, <var>btn2</var>, <var>default</var>)</em></dt>
+<dt><a name="index-questdlg-4"></a>Function File: <em><var>btn</var> =</em> <strong>questdlg</strong> <em>(<var>msg</var>, <var>title</var>, <var>btn1</var>, <var>btn2</var>, <var>btn3</var>, <var>default</var>)</em></dt>
+<dd><p>Display <var>msg</var> using a question dialog box and return the caption of
+the activated button.
+</p>
+<p>The dialog may contain two or three buttons which will all close the dialog.
+</p>
+<p>The message may have multiple lines separated by newline characters (&quot;\n&quot;),
+or it may be a cellstr array with one element for each line.
+</p>
+<p>The optional <var>title</var> (character string) can be used to decorate the
+dialog caption.
+</p>
+<p>The string <var>default</var> identifies the default button, which is activated
+by pressing the <tt class="key">ENTER</tt> key.  It must match one of the strings given
+in <var>btn1</var>, <var>btn2</var>, or <var>btn3</var>.
+</p>
+<p>If only <var>msg</var> and <var>title</var> are specified, three buttons with the
+default captions <code>&quot;Yes&quot;</code>, <code>&quot;No&quot;</code>, and <code>&quot;Cancel&quot;</code> are used.
+</p>
+<p>If only two button captions, <var>btn1</var> and <var>btn2</var>, are specified the
+dialog will have only these two buttons.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFerrordlg">errordlg</a>, <a href="#XREFhelpdlg">helpdlg</a>, <a href="#XREFinputdlg">inputdlg</a>, <a href="#XREFlistdlg">listdlg</a>, <a href="#XREFwarndlg">warndlg</a>.
+</p></dd></dl>
+
+
+<a name="index-dialog_002c-displaying-a-warning-dialog-1"></a>
+<a name="XREFwarndlg"></a><dl>
+<dt><a name="index-warndlg"></a>Function File: <em><var>h</var> =</em> <strong>warndlg</strong> <em>(<var>msg</var>)</em></dt>
+<dt><a name="index-warndlg-1"></a>Function File: <em><var>h</var> =</em> <strong>warndlg</strong> <em>(<var>msg</var>, <var>title</var>)</em></dt>
+<dt><a name="index-warndlg-2"></a>Function File: <em><var>h</var> =</em> <strong>warndlg</strong> <em>(<var>msg</var>, <var>title</var>, <var>createmode</var>)</em></dt>
+<dd><p>Display <var>msg</var> using a warning dialog box.
+</p>
+<p>The message may have multiple lines separated by newline characters (&quot;\n&quot;),
+or it may be a cellstr array with one element for each line.
+</p>
+<p>The optional input <var>title</var> (character string) can be used to set the
+dialog caption.  The default title is <code>&quot;Warning Dialog&quot;</code>.
+</p>
+<p>The return value is always 1.
+</p>
+<p>Compatibility Note: The optional argument <var>createmode</var> is accepted for
+<small>MATLAB</small> compatibility, but is not implemented.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFhelpdlg">helpdlg</a>, <a href="#XREFinputdlg">inputdlg</a>, <a href="#XREFlistdlg">listdlg</a>, <a href="#XREFquestdlg">questdlg</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions" accesskey="n" rel="next">FAQ - Frequently asked Questions</a>, Previous: <a href="Java-Interface-Functions.html#Java-Interface-Functions" accesskey="p" rel="prev">Java Interface Functions</a>, Up: <a href="Java-Interface.html#Java-Interface" accesskey="u" rel="up">Java Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

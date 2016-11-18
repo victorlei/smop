@@ -1,6 +1,31 @@
 =============
 Release notes
 =============
+November 18, 2016
+    Version 0.31 is out
+
+    Changed naming of output files.
+        If -o not specified, compiling foo.m
+	now results in foo.py
+
+    Using octave script library for testing
+        $ wget ftp://ftp.gnu.org/ftp/octave/octave-4.0.2.tar.gz
+	$ smop -a octave-4.0.2.tar.gz -g '*/scripts/*.m'
+	$ ls -1 *.py | wc
+	$ python -m py_compile *.py
+	$ ls -1 *.pyc | wc
+
+    New option -a --archive allows to get data from
+        tar file, without extracting the contents
+	to a temporary place.
+
+    New option -g --glob-pattern allows to limit
+        the amount of input data
+
+    Removed option --ignore-errors.
+        All errors are ignored now.
+
+    
 August 27, 2016
     Version 0.29 is out
 
@@ -8,8 +33,7 @@ August 27, 2016
         with about 1000 m-scripts.  Scripts are translated
         to python, then the resulting py-files are loaded,
         but not yet run.
-        
-
+    
 August 11, 2016
     Version 0.28 is out. 
 

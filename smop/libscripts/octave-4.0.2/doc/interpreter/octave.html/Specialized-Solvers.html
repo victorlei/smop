@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Specialized Solvers</title>
+
+<meta name="description" content="GNU Octave: Specialized Solvers">
+<meta name="keywords" content="GNU Octave: Specialized Solvers">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Linear-Algebra.html#Linear-Algebra" rel="up" title="Linear Algebra">
+<link href="Vectorization-and-Faster-Code-Execution.html#Vectorization-and-Faster-Code-Execution" rel="next" title="Vectorization and Faster Code Execution">
+<link href="Functions-of-a-Matrix.html#Functions-of-a-Matrix" rel="prev" title="Functions of a Matrix">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Specialized-Solvers"></a>
+<div class="header">
+<p>
+Previous: <a href="Functions-of-a-Matrix.html#Functions-of-a-Matrix" accesskey="p" rel="prev">Functions of a Matrix</a>, Up: <a href="Linear-Algebra.html#Linear-Algebra" accesskey="u" rel="up">Linear Algebra</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Specialized-Solvers-1"></a>
+<h3 class="section">18.5 Specialized Solvers</h3>
+<a name="index-matrix_002c-specialized-solvers"></a>
+
+<a name="XREFbicg"></a><dl>
+<dt><a name="index-bicg"></a>Function File: <em><var>x</var> =</em> <strong>bicg</strong> <em>(<var>A</var>, <var>b</var>, <var>rtol</var>, <var>maxit</var>, <var>M1</var>, <var>M2</var>, <var>x0</var>)</em></dt>
+<dt><a name="index-bicg-1"></a>Function File: <em><var>x</var> =</em> <strong>bicg</strong> <em>(<var>A</var>, <var>b</var>, <var>rtol</var>, <var>maxit</var>, <var>P</var>)</em></dt>
+<dt><a name="index-bicg-2"></a>Function File: <em>[<var>x</var>, <var>flag</var>, <var>relres</var>, <var>iter</var>, <var>resvec</var>] =</em> <strong>bicg</strong> <em>(<var>A</var>, <var>b</var>, &hellip;)</em></dt>
+<dd><p>Solve <code>A x = b</code> using the Bi-conjugate gradient iterative method.
+</p>
+<ul class="no-bullet">
+<li>- <var>rtol</var> is the relative tolerance, if not given or set to [] the
+default value 1e-6 is used.
+
+</li><li>- <var>maxit</var> the maximum number of outer iterations, if not given or
+set to [] the default value <code>min (20, numel (b))</code> is used.
+
+</li><li>- <var>x0</var> the initial guess, if not given or set to [] the default
+value <code>zeros (size (b))</code> is used.
+</li></ul>
+
+<p><var>A</var> can be passed as a matrix or as a function handle or inline function
+<code>f</code> such that <code>f(x, &quot;notransp&quot;) = A*x</code> and
+<code>f(x, &quot;transp&quot;) = A'*x</code>.
+</p>
+<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.  Both <var>M1</var>
+and <var>M2</var> can be passed as a matrix or as a function handle or inline
+function <code>g</code> such that <code>g(x, &quot;notransp&quot;) = M1 \ x</code> or
+<code>g(x, &quot;notransp&quot;) = M2 \ x</code> and <code>g(x, &quot;transp&quot;) = M1' \ x</code> or
+<code>g(x, &quot;transp&quot;) = M2' \ x</code>.
+</p>
+<p>If called with more than one output parameter
+</p>
+<ul class="no-bullet">
+<li>- <var>flag</var> indicates the exit status:
+
+<ul class="no-bullet">
+<li>- 0: iteration converged to the within the chosen tolerance
+
+</li><li>- 1: the maximum number of iterations was reached before convergence
+
+</li><li>- 3: the algorithm reached stagnation
+</li></ul>
+
+<p>(the value 2 is unused but skipped for compatibility).
+</p>
+</li><li>- <var>relres</var> is the final value of the relative residual.
+
+</li><li>- <var>iter</var> is the number of iterations performed.
+
+</li><li>- <var>resvec</var> is a vector containing the relative residual at each
+iteration.
+</li></ul>
+
+
+<p><strong>See also:</strong> <a href="#XREFbicgstab">bicgstab</a>, <a href="#XREFcgs">cgs</a>, <a href="#XREFgmres">gmres</a>, <a href="Iterative-Techniques.html#XREFpcg">pcg</a>, <a href="#XREFqmr">qmr</a>.
+</p>
+</dd></dl>
+
+
+<a name="XREFbicgstab"></a><dl>
+<dt><a name="index-bicgstab"></a>Function File: <em><var>x</var> =</em> <strong>bicgstab</strong> <em>(<var>A</var>, <var>b</var>, <var>rtol</var>, <var>maxit</var>, <var>M1</var>, <var>M2</var>, <var>x0</var>)</em></dt>
+<dt><a name="index-bicgstab-1"></a>Function File: <em><var>x</var> =</em> <strong>bicgstab</strong> <em>(<var>A</var>, <var>b</var>, <var>rtol</var>, <var>maxit</var>, <var>P</var>)</em></dt>
+<dt><a name="index-bicgstab-2"></a>Function File: <em>[<var>x</var>, <var>flag</var>, <var>relres</var>, <var>iter</var>, <var>resvec</var>] =</em> <strong>bicgstab</strong> <em>(<var>A</var>, <var>b</var>, &hellip;)</em></dt>
+<dd><p>Solve <code>A x = b</code> using the stabilizied Bi-conjugate gradient iterative
+method.
+</p>
+<ul class="no-bullet">
+<li>- <var>rtol</var> is the relative tolerance, if not given or set to [] the
+default value 1e-6 is used.
+
+</li><li>- <var>maxit</var> the maximum number of outer iterations, if not given or
+set to [] the default value <code>min (20, numel (b))</code> is used.
+
+</li><li>- <var>x0</var> the initial guess, if not given or set to [] the default
+value <code>zeros (size (b))</code> is used.
+</li></ul>
+
+<p><var>A</var> can be passed as a matrix or as a function handle or inline
+function <code>f</code> such that <code>f(x) = A*x</code>.
+</p>
+<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.  Both <var>M1</var>
+and <var>M2</var> can be passed as a matrix or as a function handle or inline
+function <code>g</code> such that <code>g(x) = M1 \ x</code> or <code>g(x) = M2 \ x</code>.
+</p>
+<p>If called with more than one output parameter
+</p>
+<ul class="no-bullet">
+<li>- <var>flag</var> indicates the exit status:
+
+<ul class="no-bullet">
+<li>- 0: iteration converged to the within the chosen tolerance
+
+</li><li>- 1: the maximum number of iterations was reached before convergence
+
+</li><li>- 3: the algorithm reached stagnation
+</li></ul>
+
+<p>(the value 2 is unused but skipped for compatibility).
+</p>
+</li><li>- <var>relres</var> is the final value of the relative residual.
+
+</li><li>- <var>iter</var> is the number of iterations performed.
+
+</li><li>- <var>resvec</var> is a vector containing the relative residual at each
+iteration.
+</li></ul>
+
+
+<p><strong>See also:</strong> <a href="#XREFbicg">bicg</a>, <a href="#XREFcgs">cgs</a>, <a href="#XREFgmres">gmres</a>, <a href="Iterative-Techniques.html#XREFpcg">pcg</a>, <a href="#XREFqmr">qmr</a>.
+</p>
+</dd></dl>
+
+
+<a name="XREFcgs"></a><dl>
+<dt><a name="index-cgs"></a>Function File: <em><var>x</var> =</em> <strong>cgs</strong> <em>(<var>A</var>, <var>b</var>, <var>rtol</var>, <var>maxit</var>, <var>M1</var>, <var>M2</var>, <var>x0</var>)</em></dt>
+<dt><a name="index-cgs-1"></a>Function File: <em><var>x</var> =</em> <strong>cgs</strong> <em>(<var>A</var>, <var>b</var>, <var>rtol</var>, <var>maxit</var>, <var>P</var>)</em></dt>
+<dt><a name="index-cgs-2"></a>Function File: <em>[<var>x</var>, <var>flag</var>, <var>relres</var>, <var>iter</var>, <var>resvec</var>] =</em> <strong>cgs</strong> <em>(<var>A</var>, <var>b</var>, &hellip;)</em></dt>
+<dd><p>Solve <code>A x = b</code>, where <var>A</var> is a square matrix, using the
+Conjugate Gradients Squared method.
+</p>
+<ul class="no-bullet">
+<li>- <var>rtol</var> is the relative tolerance, if not given or set to [] the
+default value 1e-6 is used.
+
+</li><li>- <var>maxit</var> the maximum number of outer iterations, if not given or
+set to [] the default value <code>min (20, numel (b))</code> is used.
+
+</li><li>- <var>x0</var> the initial guess, if not given or set to [] the default
+value <code>zeros (size (b))</code> is used.
+</li></ul>
+
+<p><var>A</var> can be passed as a matrix or as a function handle or inline
+function <code>f</code> such that <code>f(x) = A*x</code>.
+</p>
+<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.  Both <var>M1</var>
+and <var>M2</var> can be passed as a matrix or as a function handle or inline
+function <code>g</code> such that <code>g(x) = M1 \ x</code> or <code>g(x) = M2 \ x</code>.
+</p>
+<p>If called with more than one output parameter
+</p>
+<ul class="no-bullet">
+<li>- <var>flag</var> indicates the exit status:
+
+<ul class="no-bullet">
+<li>- 0: iteration converged to the within the chosen tolerance
+
+</li><li>- 1: the maximum number of iterations was reached before convergence
+
+</li><li>- 3: the algorithm reached stagnation
+</li></ul>
+
+<p>(the value 2 is unused but skipped for compatibility).
+</p>
+</li><li>- <var>relres</var> is the final value of the relative residual.
+
+</li><li>- <var>iter</var> is the number of iterations performed.
+
+</li><li>- <var>resvec</var> is a vector containing the relative residual at
+each iteration.
+</li></ul>
+
+
+<p><strong>See also:</strong> <a href="Iterative-Techniques.html#XREFpcg">pcg</a>, <a href="#XREFbicgstab">bicgstab</a>, <a href="#XREFbicg">bicg</a>, <a href="#XREFgmres">gmres</a>, <a href="#XREFqmr">qmr</a>.
+</p></dd></dl>
+
+
+<a name="XREFgmres"></a><dl>
+<dt><a name="index-gmres"></a>Function File: <em><var>x</var> =</em> <strong>gmres</strong> <em>(<var>A</var>, <var>b</var>, <var>m</var>, <var>rtol</var>, <var>maxit</var>, <var>M1</var>, <var>M2</var>, <var>x0</var>)</em></dt>
+<dt><a name="index-gmres-1"></a>Function File: <em><var>x</var> =</em> <strong>gmres</strong> <em>(<var>A</var>, <var>b</var>, <var>m</var>, <var>rtol</var>, <var>maxit</var>, <var>P</var>)</em></dt>
+<dt><a name="index-gmres-2"></a>Function File: <em>[<var>x</var>, <var>flag</var>, <var>relres</var>, <var>iter</var>, <var>resvec</var>] =</em> <strong>gmres</strong> <em>(&hellip;)</em></dt>
+<dd><p>Solve <code>A x = b</code> using the Preconditioned GMRES iterative method with
+restart, a.k.a. PGMRES(m).
+</p>
+<ul class="no-bullet">
+<li>- <var>rtol</var> is the relative tolerance,
+if not given or set to [] the default value 1e-6 is used.
+
+</li><li>- <var>maxit</var> is the maximum number of outer iterations, if not given or
+set to [] the default value <code>min (10, numel (b) / restart)</code> is used.
+
+</li><li>- <var>x0</var> is the initial guess,
+if not given or set to [] the default value <code>zeros (size (b))</code> is used.
+
+</li><li>- <var>m</var> is the restart parameter,
+if not given or set to [] the default value <code>numel (b)</code> is used.
+</li></ul>
+
+<p>Argument <var>A</var> can be passed as a matrix, function handle, or inline
+function <code>f</code> such that <code>f(x) = A*x</code>.
+</p>
+<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.  Both <var>M1</var>
+and <var>M2</var> can be passed as a matrix, function handle, or inline function
+<code>g</code> such that <code>g(x) = M1\x</code> or <code>g(x) = M2\x</code>.
+</p>
+<p>Besides the vector <var>x</var>, additional outputs are:
+</p>
+<ul class="no-bullet">
+<li>- <var>flag</var> indicates the exit status:
+
+<dl compact="compact">
+<dt>0 : iteration converged to within the specified tolerance</dt>
+<dt>1 : maximum number of iterations exceeded</dt>
+<dt>2 : unused, but skipped for compatibility</dt>
+<dt>3 : algorithm reached stagnation (no change between iterations)</dt>
+</dl>
+
+</li><li>- <var>relres</var> is the final value of the relative residual.
+
+</li><li>- <var>iter</var> is a vector containing the number of outer iterations and
+total iterations performed.
+
+</li><li>- <var>resvec</var> is a vector containing the relative residual at each
+iteration.
+</li></ul>
+
+
+<p><strong>See also:</strong> <a href="#XREFbicg">bicg</a>, <a href="#XREFbicgstab">bicgstab</a>, <a href="#XREFcgs">cgs</a>, <a href="Iterative-Techniques.html#XREFpcg">pcg</a>, <a href="Iterative-Techniques.html#XREFpcr">pcr</a>, <a href="#XREFqmr">qmr</a>.
+</p></dd></dl>
+
+
+<a name="XREFqmr"></a><dl>
+<dt><a name="index-qmr"></a>Function File: <em><var>x</var> =</em> <strong>qmr</strong> <em>(<var>A</var>, <var>b</var>, <var>rtol</var>, <var>maxit</var>, <var>M1</var>, <var>M2</var>, <var>x0</var>)</em></dt>
+<dt><a name="index-qmr-1"></a>Function File: <em><var>x</var> =</em> <strong>qmr</strong> <em>(<var>A</var>, <var>b</var>, <var>rtol</var>, <var>maxit</var>, <var>P</var>)</em></dt>
+<dt><a name="index-qmr-2"></a>Function File: <em>[<var>x</var>, <var>flag</var>, <var>relres</var>, <var>iter</var>, <var>resvec</var>] =</em> <strong>qmr</strong> <em>(<var>A</var>, <var>b</var>, &hellip;)</em></dt>
+<dd><p>Solve <code>A x = b</code> using the Quasi-Minimal Residual iterative method
+(without look-ahead).
+</p>
+<ul class="no-bullet">
+<li>- <var>rtol</var> is the relative tolerance, if not given or set to [] the
+default value 1e-6 is used.
+
+</li><li>- <var>maxit</var> the maximum number of outer iterations, if not given or
+set to [] the default value <code>min (20, numel (b))</code> is used.
+
+</li><li>- <var>x0</var> the initial guess, if not given or set to [] the default
+value <code>zeros (size (b))</code> is used.
+</li></ul>
+
+<p><var>A</var> can be passed as a matrix or as a function handle or inline
+function <code>f</code> such that <code>f(x, &quot;notransp&quot;) = A*x</code> and
+<code>f(x, &quot;transp&quot;) = A'*x</code>.
+</p>
+<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.  Both <var>M1</var>
+and <var>M2</var> can be passed as a matrix or as a function handle or inline
+function <code>g</code> such that <code>g(x, &quot;notransp&quot;) = M1 \ x</code> or
+<code>g(x, &quot;notransp&quot;) = M2 \ x</code> and <code>g(x, &quot;transp&quot;) = M1' \ x</code> or
+<code>g(x, &quot;transp&quot;) = M2' \ x</code>.
+</p>
+<p>If called with more than one output parameter
+</p>
+<ul class="no-bullet">
+<li>- <var>flag</var> indicates the exit status:
+
+<ul class="no-bullet">
+<li>- 0: iteration converged to the within the chosen tolerance
+
+</li><li>- 1: the maximum number of iterations was reached before convergence
+
+</li><li>- 3: the algorithm reached stagnation
+</li></ul>
+
+<p>(the value 2 is unused but skipped for compatibility).
+</p>
+</li><li>- <var>relres</var> is the final value of the relative residual.
+
+</li><li>- <var>iter</var> is the number of iterations performed.
+
+</li><li>- <var>resvec</var> is a vector containing the residual norms at each
+      iteration.
+</li></ul>
+
+<p>References:
+</p>
+<ol>
+<li> R. Freund and N. Nachtigal, <cite>QMR: a quasi-minimal residual
+method for non-Hermitian linear systems</cite>, Numerische Mathematik,
+1991, 60, pp. 315-339.
+
+</li><li> R. Barrett, M. Berry, T. Chan, J. Demmel, J. Donato, J. Dongarra,
+V. Eijkhour, R. Pozo, C. Romine, and H. van der Vorst,
+<cite>Templates for the solution of linear systems: Building blocks
+for iterative methods</cite>, SIAM, 2nd ed., 1994.
+</li></ol>
+
+
+<p><strong>See also:</strong> <a href="#XREFbicg">bicg</a>, <a href="#XREFbicgstab">bicgstab</a>, <a href="#XREFcgs">cgs</a>, <a href="#XREFgmres">gmres</a>, <a href="Iterative-Techniques.html#XREFpcg">pcg</a>.
+</p></dd></dl>
+
+
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Functions-of-a-Matrix.html#Functions-of-a-Matrix" accesskey="p" rel="prev">Functions of a Matrix</a>, Up: <a href="Linear-Algebra.html#Linear-Algebra" accesskey="u" rel="up">Linear Algebra</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

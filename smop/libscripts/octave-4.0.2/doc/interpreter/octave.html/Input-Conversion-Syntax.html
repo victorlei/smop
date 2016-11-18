@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Input Conversion Syntax</title>
+
+<meta name="description" content="GNU Octave: Input Conversion Syntax">
+<meta name="keywords" content="GNU Octave: Input Conversion Syntax">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" rel="up" title="C-Style I/O Functions">
+<link href="Table-of-Input-Conversions.html#Table-of-Input-Conversions" rel="next" title="Table of Input Conversions">
+<link href="Formatted-Input.html#Formatted-Input" rel="prev" title="Formatted Input">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Input-Conversion-Syntax"></a>
+<div class="header">
+<p>
+Next: <a href="Table-of-Input-Conversions.html#Table-of-Input-Conversions" accesskey="n" rel="next">Table of Input Conversions</a>, Previous: <a href="Formatted-Input.html#Formatted-Input" accesskey="p" rel="prev">Formatted Input</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Input-Conversion-Syntax-1"></a>
+<h4 class="subsection">14.2.12 Input Conversion Syntax</h4>
+
+<p>A <code>scanf</code> template string is a string that contains ordinary
+multibyte characters interspersed with conversion specifications that
+start with &lsquo;<samp>%</samp>&rsquo;.
+</p>
+<p>Any whitespace character in the template causes any number of whitespace
+characters in the input stream to be read and discarded.  The whitespace
+characters that are matched need not be exactly the same whitespace
+characters that appear in the template string.  For example, write
+&lsquo;<samp> , </samp>&rsquo; in the template to recognize a comma with optional whitespace
+before and after.
+</p>
+<p>Other characters in the template string that are not part of conversion
+specifications must match characters in the input stream exactly; if
+this is not the case, a matching failure occurs.
+</p>
+<p>The conversion specifications in a <code>scanf</code> template string
+have the general form:
+</p>
+<div class="example">
+<pre class="example">% <var>flags</var> <var>width</var> <var>type</var> <var>conversion</var>
+</pre></div>
+
+<p>In more detail, an input conversion specification consists of an initial
+&lsquo;<samp>%</samp>&rsquo; character followed in sequence by:
+</p>
+<ul>
+<li> An optional <em>flag character</em> &lsquo;<samp>*</samp>&rsquo;, which says to ignore the text
+read for this specification.  When <code>scanf</code> finds a conversion
+specification that uses this flag, it reads input as directed by the
+rest of the conversion specification, but it discards this input, does
+not return any value, and does not increment the count of
+successful assignments.
+<a name="index-flag-character-_0028scanf_0029"></a>
+
+</li><li> An optional decimal integer that specifies the <em>maximum field
+width</em>.  Reading of characters from the input stream stops either when
+this maximum is reached or when a non-matching character is found,
+whichever happens first.  Most conversions discard initial whitespace
+characters, and these discarded characters don&rsquo;t count towards the
+maximum field width.  Conversions that do not discard initial whitespace
+are explicitly documented.
+<a name="index-maximum-field-width-_0028scanf_0029"></a>
+
+</li><li> An optional type modifier character.  This character is ignored by
+Octave&rsquo;s <code>scanf</code> function, but is recognized to provide
+compatibility with the C language <code>scanf</code>.
+
+</li><li> A character that specifies the conversion to be applied.
+</li></ul>
+
+<p>The exact options that are permitted and how they are interpreted vary
+between the different conversion specifiers.  See the descriptions of the
+individual conversions for information about the particular options that
+they allow.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Table-of-Input-Conversions.html#Table-of-Input-Conversions" accesskey="n" rel="next">Table of Input Conversions</a>, Previous: <a href="Formatted-Input.html#Formatted-Input" accesskey="p" rel="prev">Formatted Input</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

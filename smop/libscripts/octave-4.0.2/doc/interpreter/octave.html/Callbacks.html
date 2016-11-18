@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Callbacks</title>
+
+<meta name="description" content="GNU Octave: Callbacks">
+<meta name="keywords" content="GNU Octave: Callbacks">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Advanced-Plotting.html#Advanced-Plotting" rel="up" title="Advanced Plotting">
+<link href="Application_002ddefined-Data.html#Application_002ddefined-Data" rel="next" title="Application-defined Data">
+<link href="Marker-Styles.html#Marker-Styles" rel="prev" title="Marker Styles">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Callbacks"></a>
+<div class="header">
+<p>
+Next: <a href="Application_002ddefined-Data.html#Application_002ddefined-Data" accesskey="n" rel="next">Application-defined Data</a>, Previous: <a href="Marker-Styles.html#Marker-Styles" accesskey="p" rel="prev">Marker Styles</a>, Up: <a href="Advanced-Plotting.html#Advanced-Plotting" accesskey="u" rel="up">Advanced Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Callbacks-1"></a>
+<h4 class="subsection">15.4.4 Callbacks</h4>
+<a name="index-callbacks"></a>
+
+<p>Callback functions can be associated with graphics objects and triggered
+after certain events occur.  The basic structure of all callback function
+is
+</p>
+<div class="example">
+<pre class="example">function mycallback (src, data)
+&hellip;
+endfunction
+</pre></div>
+
+<p>where <code>src</code> gives a handle to the source of the callback, and
+<code>code</code> gives some event specific data.  This can then be associated
+with an object either at the objects creation or later with the
+<code>set</code> function.  For example,
+</p>
+<div class="example">
+<pre class="example">plot (x, &quot;DeleteFcn&quot;, @(s, e) disp (&quot;Window Deleted&quot;))
+</pre></div>
+
+<p>where at the moment that the plot is deleted, the message &quot;Window
+Deleted&quot; will be displayed.
+</p>
+<p>Additional user arguments can be passed to callback functions, and will
+be passed after the 2 default arguments.  For example:
+</p>
+<div class="example">
+<pre class="example">plot (x, &quot;DeleteFcn&quot;, {@mycallback, &quot;1&quot;})
+&hellip;
+function mycallback (src, data, a1)
+  fprintf (&quot;Closing plot %d\n&quot;, a1);
+endfunction
+</pre></div>
+
+<p>The basic callback functions that are available for all graphics objects
+are
+</p>
+<ul>
+<li> CreateFcn
+This is the callback that is called at the moment of the objects
+creation.  It is not called if the object is altered in any way, and so
+it only makes sense to define this callback in the function call that
+defines the object.  Callbacks that are added to <code>CreateFcn</code> later with
+the <code>set</code> function will never be executed.
+
+</li><li> DeleteFcn
+This is the callback that is called at the moment an object is deleted.
+
+</li><li> ButtonDownFcn
+This is the callback that is called if a mouse button is pressed while
+the pointer is over this object.  Note, that the gnuplot interface does
+not respect this callback.
+</li></ul>
+
+<p>The object and figure that the event occurred in that resulted in the
+callback being called can be found with the <code>gcbo</code> and <code>gcbf</code>
+functions.
+</p>
+<a name="XREFgcbo"></a><dl>
+<dt><a name="index-gcbo"></a>Function File: <em><var>h</var> =</em> <strong>gcbo</strong> <em>()</em></dt>
+<dt><a name="index-gcbo-1"></a>Function File: <em>[<var>h</var>, <var>fig</var>] =</em> <strong>gcbo</strong> <em>()</em></dt>
+<dd><p>Return a handle to the object whose callback is currently executing.
+</p>
+<p>If no callback is executing, this function returns the empty matrix.  This
+handle is obtained from the root object property <code>&quot;CallbackObject&quot;</code>.
+</p>
+<p>When called with a second output argument, return the handle of the figure
+containing the object whose callback is currently executing.  If no callback
+is executing the second output is also set to the empty matrix.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFgcbf">gcbf</a>, <a href="Graphics-Objects.html#XREFgco">gco</a>, <a href="Graphics-Objects.html#XREFgca">gca</a>, <a href="Graphics-Objects.html#XREFgcf">gcf</a>, <a href="Graphics-Objects.html#XREFget">get</a>, <a href="Graphics-Objects.html#XREFset">set</a>.
+</p></dd></dl>
+
+
+<a name="XREFgcbf"></a><dl>
+<dt><a name="index-gcbf"></a>Function File: <em><var>fig</var> =</em> <strong>gcbf</strong> <em>()</em></dt>
+<dd><p>Return a handle to the figure containing the object whose callback is
+currently executing.
+</p>
+<p>If no callback is executing, this function returns the empty matrix.  The
+handle returned by this function is the same as the second output argument
+of <code>gcbo</code>.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFgcbo">gcbo</a>, <a href="Graphics-Objects.html#XREFgcf">gcf</a>, <a href="Graphics-Objects.html#XREFgco">gco</a>, <a href="Graphics-Objects.html#XREFgca">gca</a>, <a href="Graphics-Objects.html#XREFget">get</a>, <a href="Graphics-Objects.html#XREFset">set</a>.
+</p></dd></dl>
+
+
+<p>Callbacks can equally be added to properties with the <code>addlistener</code>
+function described below.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Application_002ddefined-Data.html#Application_002ddefined-Data" accesskey="n" rel="next">Application-defined Data</a>, Previous: <a href="Marker-Styles.html#Marker-Styles" accesskey="p" rel="prev">Marker Styles</a>, Up: <a href="Advanced-Plotting.html#Advanced-Plotting" accesskey="u" rel="up">Advanced Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

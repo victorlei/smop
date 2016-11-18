@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Character Class Functions</title>
+
+<meta name="description" content="GNU Octave: Character Class Functions">
+<meta name="keywords" content="GNU Octave: Character Class Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Strings.html#Strings" rel="up" title="Strings">
+<link href="Data-Containers.html#Data-Containers" rel="next" title="Data Containers">
+<link href="String-Conversions.html#String-Conversions" rel="prev" title="String Conversions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Character-Class-Functions"></a>
+<div class="header">
+<p>
+Previous: <a href="String-Conversions.html#String-Conversions" accesskey="p" rel="prev">String Conversions</a>, Up: <a href="Strings.html#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Character-Class-Functions-1"></a>
+<h3 class="section">5.7 Character Class Functions</h3>
+
+<p>Octave also provides the following character class test functions
+patterned after the functions in the standard C library.  They all
+operate on string arrays and return matrices of zeros and ones.
+Elements that are nonzero indicate that the condition was true for the
+corresponding character in the string array.  For example:
+</p>
+<div class="example">
+<pre class="example">isalpha (&quot;!Q@WERT^Y&amp;&quot;)
+     &rArr; [ 0, 1, 0, 1, 1, 1, 1, 0, 1, 0 ]
+</pre></div>
+
+<a name="XREFisalnum"></a><dl>
+<dt><a name="index-isalnum"></a>Mapping Function: <em></em> <strong>isalnum</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var> are
+letters or digits and false where they are not.
+</p>
+<p>This is equivalent to (<code>isalpha (<var>s</var>) | isdigit (<var>s</var>)</code>).
+</p>
+<p><strong>See also:</strong> <a href="#XREFisalpha">isalpha</a>, <a href="#XREFisdigit">isdigit</a>, <a href="#XREFispunct">ispunct</a>, <a href="#XREFisspace">isspace</a>, <a href="#XREFiscntrl">iscntrl</a>.
+</p></dd></dl>
+
+
+<a name="XREFisalpha"></a><dl>
+<dt><a name="index-isalpha"></a>Mapping Function: <em></em> <strong>isalpha</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var> are
+letters and false where they are not.
+</p>
+<p>This is equivalent to (<code>islower (<var>s</var>) | isupper (<var>s</var>)</code>).
+</p>
+<p><strong>See also:</strong> <a href="#XREFisdigit">isdigit</a>, <a href="#XREFispunct">ispunct</a>, <a href="#XREFisspace">isspace</a>, <a href="#XREFiscntrl">iscntrl</a>, <a href="#XREFisalnum">isalnum</a>, <a href="#XREFislower">islower</a>, <a href="#XREFisupper">isupper</a>.
+</p></dd></dl>
+
+
+<a name="XREFisletter"></a><dl>
+<dt><a name="index-isletter"></a>Function File: <em></em> <strong>isletter</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var>
+are letters and false where they are not.
+</p>
+<p>This is an alias for the <code>isalpha</code> function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFisalpha">isalpha</a>, <a href="#XREFisdigit">isdigit</a>, <a href="#XREFispunct">ispunct</a>, <a href="#XREFisspace">isspace</a>, <a href="#XREFiscntrl">iscntrl</a>, <a href="#XREFisalnum">isalnum</a>.
+</p></dd></dl>
+
+
+<a name="XREFislower"></a><dl>
+<dt><a name="index-islower"></a>Mapping Function: <em></em> <strong>islower</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var> are
+lowercase letters and false where they are not.
+</p>
+<p><strong>See also:</strong> <a href="#XREFisupper">isupper</a>, <a href="#XREFisalpha">isalpha</a>, <a href="#XREFisletter">isletter</a>, <a href="#XREFisalnum">isalnum</a>.
+</p></dd></dl>
+
+
+<a name="XREFisupper"></a><dl>
+<dt><a name="index-isupper"></a>Mapping Function: <em></em> <strong>isupper</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var> are
+uppercase letters and false where they are not.
+</p>
+<p><strong>See also:</strong> <a href="#XREFislower">islower</a>, <a href="#XREFisalpha">isalpha</a>, <a href="#XREFisletter">isletter</a>, <a href="#XREFisalnum">isalnum</a>.
+</p></dd></dl>
+
+
+<a name="XREFisdigit"></a><dl>
+<dt><a name="index-isdigit"></a>Mapping Function: <em></em> <strong>isdigit</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var> are
+decimal digits (0-9) and false where they are not.
+</p>
+<p><strong>See also:</strong> <a href="#XREFisxdigit">isxdigit</a>, <a href="#XREFisalpha">isalpha</a>, <a href="#XREFisletter">isletter</a>, <a href="#XREFispunct">ispunct</a>, <a href="#XREFisspace">isspace</a>, <a href="#XREFiscntrl">iscntrl</a>.
+</p></dd></dl>
+
+
+<a name="XREFisxdigit"></a><dl>
+<dt><a name="index-isxdigit"></a>Mapping Function: <em></em> <strong>isxdigit</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var> are
+hexadecimal digits (0-9 and a-fA-F).
+</p>
+<p><strong>See also:</strong> <a href="#XREFisdigit">isdigit</a>.
+</p></dd></dl>
+
+
+<a name="XREFispunct"></a><dl>
+<dt><a name="index-ispunct"></a>Mapping Function: <em></em> <strong>ispunct</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var> are
+punctuation characters and false where they are not.
+</p>
+<p><strong>See also:</strong> <a href="#XREFisalpha">isalpha</a>, <a href="#XREFisdigit">isdigit</a>, <a href="#XREFisspace">isspace</a>, <a href="#XREFiscntrl">iscntrl</a>.
+</p></dd></dl>
+
+
+<a name="XREFisspace"></a><dl>
+<dt><a name="index-isspace"></a>Mapping Function: <em></em> <strong>isspace</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var> are
+whitespace characters (space, formfeed, newline, carriage return, tab, and
+vertical tab) and false where they are not.
+</p>
+<p><strong>See also:</strong> <a href="#XREFiscntrl">iscntrl</a>, <a href="#XREFispunct">ispunct</a>, <a href="#XREFisalpha">isalpha</a>, <a href="#XREFisdigit">isdigit</a>.
+</p></dd></dl>
+
+
+<a name="XREFiscntrl"></a><dl>
+<dt><a name="index-iscntrl"></a>Mapping Function: <em></em> <strong>iscntrl</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var> are
+control characters and false where they are not.
+</p>
+<p><strong>See also:</strong> <a href="#XREFispunct">ispunct</a>, <a href="#XREFisspace">isspace</a>, <a href="#XREFisalpha">isalpha</a>, <a href="#XREFisdigit">isdigit</a>.
+</p></dd></dl>
+
+
+<a name="XREFisgraph"></a><dl>
+<dt><a name="index-isgraph"></a>Mapping Function: <em></em> <strong>isgraph</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var> are
+printable characters (but not the space character) and false where they are
+not.
+</p>
+<p><strong>See also:</strong> <a href="#XREFisprint">isprint</a>.
+</p></dd></dl>
+
+
+<a name="XREFisprint"></a><dl>
+<dt><a name="index-isprint"></a>Mapping Function: <em></em> <strong>isprint</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var> are
+printable characters (including the space character) and false where they
+are not.
+</p>
+<p><strong>See also:</strong> <a href="#XREFisgraph">isgraph</a>.
+</p></dd></dl>
+
+
+<a name="XREFisascii"></a><dl>
+<dt><a name="index-isascii"></a>Mapping Function: <em></em> <strong>isascii</strong> <em>(<var>s</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>s</var> are
+ASCII characters (in the range 0 to 127 decimal) and false where they are
+not.
+</p></dd></dl>
+
+
+<a name="XREFisstrprop"></a><dl>
+<dt><a name="index-isstrprop"></a>Function File: <em></em> <strong>isstrprop</strong> <em>(<var>str</var>, <var>prop</var>)</em></dt>
+<dd><p>Test character string properties.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">isstrprop (&quot;abc123&quot;, &quot;alpha&quot;)
+&rArr; [1, 1, 1, 0, 0, 0]
+</pre></div>
+
+<p>If <var>str</var> is a cell array, <code>isstrpop</code> is applied recursively to
+each element of the cell array.
+</p>
+<p>Numeric arrays are converted to character strings.
+</p>
+<p>The second argument <var>prop</var> must be one of
+</p>
+<dl compact="compact">
+<dt><code>&quot;alpha&quot;</code></dt>
+<dd><p>True for characters that are alphabetic (letters).
+</p>
+</dd>
+<dt><code>&quot;alnum&quot;</code></dt>
+<dt><code>&quot;alphanum&quot;</code></dt>
+<dd><p>True for characters that are alphabetic or digits.
+</p>
+</dd>
+<dt><code>&quot;lower&quot;</code></dt>
+<dd><p>True for lowercase letters.
+</p>
+</dd>
+<dt><code>&quot;upper&quot;</code></dt>
+<dd><p>True for uppercase letters.
+</p>
+</dd>
+<dt><code>&quot;digit&quot;</code></dt>
+<dd><p>True for decimal digits (0-9).
+</p>
+</dd>
+<dt><code>&quot;xdigit&quot;</code></dt>
+<dd><p>True for hexadecimal digits (a-fA-F0-9).
+</p>
+</dd>
+<dt><code>&quot;space&quot;</code></dt>
+<dt><code>&quot;wspace&quot;</code></dt>
+<dd><p>True for whitespace characters (space, formfeed, newline, carriage return,
+tab, vertical tab).
+</p>
+</dd>
+<dt><code>&quot;punct&quot;</code></dt>
+<dd><p>True for punctuation characters (printing characters except space or
+letter or digit).
+</p>
+</dd>
+<dt><code>&quot;cntrl&quot;</code></dt>
+<dd><p>True for control characters.
+</p>
+</dd>
+<dt><code>&quot;graph&quot;</code></dt>
+<dt><code>&quot;graphic&quot;</code></dt>
+<dd><p>True for printing characters except space.
+</p>
+</dd>
+<dt><code>&quot;print&quot;</code></dt>
+<dd><p>True for printing characters including space.
+</p>
+</dd>
+<dt><code>&quot;ascii&quot;</code></dt>
+<dd><p>True for characters that are in the range of ASCII encoding.
+</p>
+</dd>
+</dl>
+
+
+<p><strong>See also:</strong> <a href="#XREFisalpha">isalpha</a>, <a href="#XREFisalnum">isalnum</a>, <a href="#XREFislower">islower</a>, <a href="#XREFisupper">isupper</a>, <a href="#XREFisdigit">isdigit</a>, <a href="#XREFisxdigit">isxdigit</a>, <a href="#XREFisspace">isspace</a>, <a href="#XREFispunct">ispunct</a>, <a href="#XREFiscntrl">iscntrl</a>, <a href="#XREFisgraph">isgraph</a>, <a href="#XREFisprint">isprint</a>, <a href="#XREFisascii">isascii</a>.
+</p></dd></dl>
+
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="String-Conversions.html#String-Conversions" accesskey="p" rel="prev">String Conversions</a>, Up: <a href="Strings.html#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

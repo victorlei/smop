@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Graphics Toolkits</title>
+
+<meta name="description" content="GNU Octave: Graphics Toolkits">
+<meta name="keywords" content="GNU Octave: Graphics Toolkits">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Advanced-Plotting.html#Advanced-Plotting" rel="up" title="Advanced Plotting">
+<link href="Customizing-Toolkit-Behavior.html#Customizing-Toolkit-Behavior" rel="next" title="Customizing Toolkit Behavior">
+<link href="Surface-Group.html#Surface-Group" rel="prev" title="Surface Group">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Graphics-Toolkits"></a>
+<div class="header">
+<p>
+Previous: <a href="Object-Groups.html#Object-Groups" accesskey="p" rel="prev">Object Groups</a>, Up: <a href="Advanced-Plotting.html#Advanced-Plotting" accesskey="u" rel="up">Advanced Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Graphics-Toolkits-1"></a>
+<h4 class="subsection">15.4.7 Graphics Toolkits</h4>
+<a name="index-graphics-toolkits"></a>
+<a name="index-toolkits_002c-graphics"></a>
+
+<a name="XREFgraphics_005ftoolkit"></a><dl>
+<dt><a name="index-graphics_005ftoolkit"></a>Function File: <em><var>name</var> =</em> <strong>graphics_toolkit</strong> <em>()</em></dt>
+<dt><a name="index-graphics_005ftoolkit-1"></a>Function File: <em><var>name</var> =</em> <strong>graphics_toolkit</strong> <em>(<var>hlist</var>)</em></dt>
+<dt><a name="index-graphics_005ftoolkit-2"></a>Function File: <em></em> <strong>graphics_toolkit</strong> <em>(<var>name</var>)</em></dt>
+<dt><a name="index-graphics_005ftoolkit-3"></a>Function File: <em></em> <strong>graphics_toolkit</strong> <em>(<var>hlist</var>, <var>name</var>)</em></dt>
+<dd><p>Query or set the default graphics toolkit which is assigned to new figures.
+</p>
+<p>With no inputs, return the current default graphics toolkit.  If the input
+is a list of figure graphic handles, <var>hlist</var>, then return the name
+of the graphics toolkit in use for each figure.
+</p>
+<p>When called with a single input <var>name</var> set the default graphics toolkit
+to <var>name</var>.  If the toolkit is not already loaded, it is initialized by
+calling the function <code>__init_<var>name</var>__</code>.  If the first input
+is a list of figure handles, <var>hlist</var>, then the graphics toolkit is set
+to <var>name</var> for these figures only.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFavailable_005fgraphics_005ftoolkits">available_graphics_toolkits</a>.
+</p></dd></dl>
+
+
+<a name="XREFavailable_005fgraphics_005ftoolkits"></a><dl>
+<dt><a name="index-available_005fgraphics_005ftoolkits"></a>Built-in Function: <em></em> <strong>available_graphics_toolkits</strong> <em>()</em></dt>
+<dd><p>Return a cell array of registered graphics toolkits.
+</p>
+<p><strong>See also:</strong> <a href="#XREFgraphics_005ftoolkit">graphics_toolkit</a>, <a href="#XREFregister_005fgraphics_005ftoolkit">register_graphics_toolkit</a>.
+</p></dd></dl>
+
+
+<a name="XREFloaded_005fgraphics_005ftoolkits"></a><dl>
+<dt><a name="index-loaded_005fgraphics_005ftoolkits"></a>Built-in Function: <em></em> <strong>loaded_graphics_toolkits</strong> <em>()</em></dt>
+<dd><p>Return a cell array of the currently loaded graphics toolkits.
+</p>
+<p><strong>See also:</strong> <a href="#XREFavailable_005fgraphics_005ftoolkits">available_graphics_toolkits</a>.
+</p></dd></dl>
+
+
+<a name="XREFregister_005fgraphics_005ftoolkit"></a><dl>
+<dt><a name="index-register_005fgraphics_005ftoolkit"></a>Built-in Function: <em></em> <strong>register_graphics_toolkit</strong> <em>(<var>toolkit</var>)</em></dt>
+<dd><p>List <var>toolkit</var> as an available graphics toolkit.
+</p>
+<p><strong>See also:</strong> <a href="#XREFavailable_005fgraphics_005ftoolkits">available_graphics_toolkits</a>.
+</p></dd></dl>
+
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Customizing-Toolkit-Behavior.html#Customizing-Toolkit-Behavior" accesskey="1">Customizing Toolkit Behavior</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+
+
+</body>
+</html>

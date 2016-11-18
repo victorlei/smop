@@ -8,12 +8,20 @@ CYTHON = cython
 PYTHON = python
 CAT    = cat
 XFILES = -x white.m,summer.m,spring.m,rainbow.m,prism.m,pink.m,ocean.m,lines.m,jet.m,__gnuplot_open_stream__.m
-FLAGS  = 
+FLAGS  = -v -E-1
 SMOP   = $(PYTHON) ../main.py
 
 V = 2.7
 
-all: $(PYFILES)
+all: pyfiles
+	$(PYTHON) -m py_compile *.py
+
+.PHONY: all pyfiles clean
+
+pyfiles: 
+	$(SMOP) $(FLAGS) $(MFILES)
+
+wall: $(PYFILES)
 	$(CAT) *.py > libscripts.py
 
 clean:
@@ -21,7 +29,9 @@ clean:
 
 %.py: %.m
 	$(SMOP) $^ $(FLAGS) $(XFILES)
-	$(PYTHON) $@
+
+%.pyc: %.py
+	$(PYTHON) -m py_compile $@
 
 .DELETE_ON_ERROR:
 

@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Opening and Closing Files</title>
+
+<meta name="description" content="GNU Octave: Opening and Closing Files">
+<meta name="keywords" content="GNU Octave: Opening and Closing Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" rel="up" title="C-Style I/O Functions">
+<link href="Simple-Output.html#Simple-Output" rel="next" title="Simple Output">
+<link href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" rel="prev" title="C-Style I/O Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Opening-and-Closing-Files"></a>
+<div class="header">
+<p>
+Next: <a href="Simple-Output.html#Simple-Output" accesskey="n" rel="next">Simple Output</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Opening-and-Closing-Files-1"></a>
+<h4 class="subsection">14.2.1 Opening and Closing Files</h4>
+
+<p>When reading data from a file it must be opened for reading first, and
+likewise when writing to a file.  The <code>fopen</code> function returns a
+pointer to an open file that is ready to be read or written.  Once all
+data has been read from or written to the opened file it should be closed.
+The <code>fclose</code> function does this.  The following code illustrates
+the basic pattern for writing to a file, but a very similar pattern is
+used when reading a file.
+</p>
+<div class="example">
+<pre class="example">filename = &quot;myfile.txt&quot;;
+fid = fopen (filename, &quot;w&quot;);
+# Do the actual I/O here&hellip;
+fclose (fid);
+</pre></div>
+
+<a name="XREFfopen"></a><dl>
+<dt><a name="index-fopen"></a>Built-in Function: <em><var>fid</var> =</em> <strong>fopen</strong> <em>(<var>name</var>)</em></dt>
+<dt><a name="index-fopen-1"></a>Built-in Function: <em><var>fid</var> =</em> <strong>fopen</strong> <em>(<var>name</var>, <var>mode</var>)</em></dt>
+<dt><a name="index-fopen-2"></a>Built-in Function: <em><var>fid</var> =</em> <strong>fopen</strong> <em>(<var>name</var>, <var>mode</var>, <var>arch</var>)</em></dt>
+<dt><a name="index-fopen-3"></a>Built-in Function: <em>[<var>fid</var>, <var>msg</var>] =</em> <strong>fopen</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-fopen-4"></a>Built-in Function: <em><var>fid_list</var> =</em> <strong>fopen</strong> <em>(&quot;all&quot;)</em></dt>
+<dt><a name="index-fopen-5"></a>Built-in Function: <em>[<var>file</var>, <var>mode</var>, <var>arch</var>] =</em> <strong>fopen</strong> <em>(<var>fid</var>)</em></dt>
+<dd><p>Open a file for low-level I/O or query open files and file descriptors.
+</p>
+<p>The first form of the <code>fopen</code> function opens the named file with
+the specified mode (read-write, read-only, etc.) and architecture
+interpretation (IEEE big endian, IEEE little endian, etc.), and returns
+an integer value that may be used to refer to the file later.  If an
+error occurs, <var>fid</var> is set to -1 and <var>msg</var> contains the
+corresponding system error message.  The <var>mode</var> is a one or two
+character string that specifies whether the file is to be opened for
+reading, writing, or both.
+</p>
+<p>The second form of the <code>fopen</code> function returns a vector of file ids
+corresponding to all the currently open files, excluding the
+<code>stdin</code>, <code>stdout</code>, and <code>stderr</code> streams.
+</p>
+<p>The third form of the <code>fopen</code> function returns information about the
+open file given its file id.
+</p>
+<p>For example,
+</p>
+<div class="example">
+<pre class="example">myfile = fopen (&quot;splat.dat&quot;, &quot;r&quot;, &quot;ieee-le&quot;);
+</pre></div>
+
+<p>opens the file <samp>splat.dat</samp> for reading.  If necessary, binary
+numeric values will be read assuming they are stored in IEEE format with
+the least significant bit first, and then converted to the native
+representation.
+</p>
+<p>Opening a file that is already open simply opens it again and returns a
+separate file id.  It is not an error to open a file several times,
+though writing to the same file through several different file ids may
+produce unexpected results.
+</p>
+<p>The possible values &lsquo;<samp>mode</samp>&rsquo; may have are
+</p>
+<dl compact="compact">
+<dt>&lsquo;<samp>r</samp>&rsquo; (default)</dt>
+<dd><p>Open a file for reading.
+</p>
+</dd>
+<dt>&lsquo;<samp>w</samp>&rsquo;</dt>
+<dd><p>Open a file for writing.  The previous contents are discarded.
+</p>
+</dd>
+<dt>&lsquo;<samp>a</samp>&rsquo;</dt>
+<dd><p>Open or create a file for writing at the end of the file.
+</p>
+</dd>
+<dt>&lsquo;<samp>r+</samp>&rsquo;</dt>
+<dd><p>Open an existing file for reading and writing.
+</p>
+</dd>
+<dt>&lsquo;<samp>w+</samp>&rsquo;</dt>
+<dd><p>Open a file for reading or writing.  The previous contents are
+discarded.
+</p>
+</dd>
+<dt>&lsquo;<samp>a+</samp>&rsquo;</dt>
+<dd><p>Open or create a file for reading or writing at the end of the
+file.
+</p></dd>
+</dl>
+
+<p>Append a <code>&quot;t&quot;</code> to the mode string to open the file in text mode or a
+<code>&quot;b&quot;</code> to open in binary mode.  On Windows and Macintosh systems, text
+mode reading and writing automatically converts linefeeds to the
+appropriate line end character for the system (carriage-return linefeed
+on Windows, carriage-return on Macintosh).  The default when no mode is
+specified is binary mode.
+</p>
+<p>Additionally, you may append a <code>&quot;z&quot;</code> to the mode string to open a
+gzipped file for reading or writing.  For this to be successful, you
+must also open the file in binary mode.
+</p>
+<p>The parameter <var>arch</var> is a string specifying the default data format
+for the file.  Valid values for <var>arch</var> are:
+</p>
+<dl compact="compact">
+<dt><code>&quot;native&quot;</code> or <code>&quot;n&quot;</code> (default)</dt>
+<dd><p>The format of the current machine.
+</p>
+</dd>
+<dt><code>&quot;ieee-be&quot;</code> or <code>&quot;b&quot;</code></dt>
+<dd><p>IEEE big endian format.
+</p>
+</dd>
+<dt><code>&quot;ieee-le&quot;</code> or <code>&quot;l&quot;</code></dt>
+<dd><p>IEEE little endian format.
+</p></dd>
+</dl>
+
+<p>However, conversions are currently only supported for &lsquo;<samp>native</samp>&rsquo;,
+&lsquo;<samp>ieee-be</samp>&rsquo;, and &lsquo;<samp>ieee-le</samp>&rsquo; formats.
+</p>
+<p>When opening a new file that does not yet exist, permissions will be set to
+<code>0666 - <var>umask</var></code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfclose">fclose</a>, <a href="Line_002dOriented-Input.html#XREFfgets">fgets</a>, <a href="Line_002dOriented-Input.html#XREFfgetl">fgetl</a>, <a href="Formatted-Input.html#XREFfscanf">fscanf</a>, <a href="Binary-I_002fO.html#XREFfread">fread</a>, <a href="Simple-Output.html#XREFfputs">fputs</a>, <a href="Simple-File-I_002fO.html#XREFfdisp">fdisp</a>, <a href="Formatted-Output.html#XREFfprintf">fprintf</a>, <a href="Binary-I_002fO.html#XREFfwrite">fwrite</a>, <a href="Line_002dOriented-Input.html#XREFfskipl">fskipl</a>, <a href="File-Positioning.html#XREFfseek">fseek</a>, <a href="File-Positioning.html#XREFfrewind">frewind</a>, <a href="File-Positioning.html#XREFftell">ftell</a>, <a href="EOF-and-Errors.html#XREFfeof">feof</a>, <a href="EOF-and-Errors.html#XREFferror">ferror</a>, <a href="EOF-and-Errors.html#XREFfclear">fclear</a>, <a href="Paging-Screen-Output.html#XREFfflush">fflush</a>, <a href="EOF-and-Errors.html#XREFfreport">freport</a>, <a href="Filesystem-Utilities.html#XREFumask">umask</a>.
+</p></dd></dl>
+
+
+<a name="XREFfclose"></a><dl>
+<dt><a name="index-fclose"></a>Built-in Function: <em></em> <strong>fclose</strong> <em>(<var>fid</var>)</em></dt>
+<dt><a name="index-fclose-1"></a>Built-in Function: <em></em> <strong>fclose</strong> <em>(&quot;all&quot;)</em></dt>
+<dt><a name="index-fclose-2"></a>Built-in Function: <em><var>status</var> =</em> <strong>fclose</strong> <em>(&quot;all&quot;)</em></dt>
+<dd><p>Close the file specified by the file descriptor <var>fid</var>.
+</p>
+<p>If successful, <code>fclose</code> returns 0, otherwise, it returns -1.  The
+second form of the <code>fclose</code> call closes all open files except
+<code>stdout</code>, <code>stderr</code>, and <code>stdin</code>.
+</p>
+<p>Programming Note: When using <code>&quot;all&quot;</code> the file descriptors associated
+with gnuplot will also be closed.  This will prevent further plotting with
+gnuplot until Octave is closed and restarted.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfopen">fopen</a>, <a href="Paging-Screen-Output.html#XREFfflush">fflush</a>, <a href="EOF-and-Errors.html#XREFfreport">freport</a>.
+</p></dd></dl>
+
+
+<a name="XREFis_005fvalid_005ffile_005fid"></a><dl>
+<dt><a name="index-is_005fvalid_005ffile_005fid"></a>Function File: <em></em> <strong>is_valid_file_id</strong> <em>(<var>fid</var>)</em></dt>
+<dd><p>Return true if <var>fid</var> refers to an open file.
+</p>
+<p><strong>See also:</strong> <a href="EOF-and-Errors.html#XREFfreport">freport</a>, <a href="#XREFfopen">fopen</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Simple-Output.html#Simple-Output" accesskey="n" rel="next">Simple Output</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Octave Sources (m-files)</title>
+
+<meta name="description" content="GNU Octave: Octave Sources (m-files)">
+<meta name="keywords" content="GNU Octave: Octave Sources (m-files)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Contributing-Guidelines.html#Contributing-Guidelines" rel="up" title="Contributing Guidelines">
+<link href="C_002b_002b-Sources.html#C_002b_002b-Sources" rel="next" title="C++ Sources">
+<link href="General-Guidelines.html#General-Guidelines" rel="prev" title="General Guidelines">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Octave-Sources-_0028m_002dfiles_0029"></a>
+<div class="header">
+<p>
+Next: <a href="C_002b_002b-Sources.html#C_002b_002b-Sources" accesskey="n" rel="next">C++ Sources</a>, Previous: <a href="General-Guidelines.html#General-Guidelines" accesskey="p" rel="prev">General Guidelines</a>, Up: <a href="Contributing-Guidelines.html#Contributing-Guidelines" accesskey="u" rel="up">Contributing Guidelines</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Octave-Sources-_0028m_002dfiles_0029-1"></a>
+<h3 class="section">D.5 Octave Sources (m-files)</h3>
+
+<p>Don&rsquo;t use tabs.  Tabs cause trouble.  If you are used to them, set up
+your editor so that it converts tabs to spaces.  Indent the bodies of
+statement blocks.  The recommended indent is 2 spaces.  When calling
+functions, put spaces after commas and before the calling parentheses,
+like this:
+</p>
+<div class="example">
+<pre class="example">  x = max (sin (y+3), 2);
+</pre></div>
+
+<p>An exception are matrix or cell constructors:
+</p>
+<div class="example">
+<pre class="example">  [sin(x), cos(x)]
+  {sin(x), cos(x)}
+</pre></div>
+
+<p>Here, putting spaces after <code>sin</code>, <code>cos</code> would result in a
+parse error.  For an indexing expression, do not put a space after the
+identifier (this differentiates indexing and function calls nicely).
+The space after a comma is not necessary if index expressions are simple,
+i.e., you may write
+</p>
+<div class="example">
+<pre class="example">  A(:,i,j)
+</pre></div>
+
+<p>but
+</p>
+<div class="example">
+<pre class="example">  A([1:i-1;i+1:n], XI(:,2:n-1))
+</pre></div>
+
+<p>Use lowercase names if possible.  Uppercase is acceptable for variable
+names consisting of 1-2 letters.  Do not use mixed case names.  Function
+names must be lowercase.  Function names are global, so choose them
+wisely.
+</p>
+<p>Always use a specific end-of-block statement (like <code>endif</code>,
+<code>endswitch</code>) rather than the generic <code>end</code>.
+</p>
+<p>Enclose the <code>if</code>, <code>while</code>, <code>until</code>, and <code>switch</code>
+conditions in parentheses, as in C:
+</p>
+<div class="example">
+<pre class="example">if (isvector (a))
+  s = sum (a);
+endif
+</pre></div>
+
+<p>Do not do this, however, with the iteration counter portion of a
+<code>for</code> statement.  Write:
+</p>
+<div class="example">
+<pre class="example">for i = 1:n
+  b(i) = sum (a(:,i));
+endfor
+</pre></div>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1984 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Two-Dimensional Plots</title>
+
+<meta name="description" content="GNU Octave: Two-Dimensional Plots">
+<meta name="keywords" content="GNU Octave: Two-Dimensional Plots">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" rel="up" title="High-Level Plotting">
+<link href="Axis-Configuration.html#Axis-Configuration" rel="next" title="Axis Configuration">
+<link href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" rel="prev" title="High-Level Plotting">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Two_002dDimensional-Plots"></a>
+<div class="header">
+<p>
+Next: <a href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" accesskey="n" rel="next">Three-Dimensional Plots</a>, Up: <a href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" accesskey="u" rel="up">High-Level Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Two_002dDimensional-Plots-1"></a>
+<h4 class="subsection">15.2.1 Two-Dimensional Plots</h4>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Axis-Configuration.html#Axis-Configuration" accesskey="1">Axis Configuration</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Two_002ddimensional-Function-Plotting.html#Two_002ddimensional-Function-Plotting" accesskey="2">Two-dimensional Function Plotting</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Two_002ddimensional-Geometric-Shapes.html#Two_002ddimensional-Geometric-Shapes" accesskey="3">Two-dimensional Geometric Shapes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<p>The <code>plot</code> function allows you to create simple x-y plots with
+linear axes.  For example,
+</p>
+<div class="example">
+<pre class="example">x = -10:0.1:10;
+plot (x, sin (x));
+</pre></div>
+
+<p>displays a sine wave shown in <a href="#fig_003aplot">Figure 15.1</a>.  On most systems, this
+command will open a separate plot window to display the graph.
+</p>
+<div class="float"><a name="fig_003aplot"></a>
+<div align="center"><img src="plot.png" alt="plot">
+</div>
+<div class="float-caption"><p><strong>Figure 15.1: </strong>Simple Two-Dimensional Plot.</p></div></div>
+<a name="XREFplot"></a><dl>
+<dt><a name="index-plot"></a>Function File: <em></em> <strong>plot</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-plot-1"></a>Function File: <em></em> <strong>plot</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-plot-2"></a>Function File: <em></em> <strong>plot</strong> <em>(<var>x</var>, <var>y</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-plot-3"></a>Function File: <em></em> <strong>plot</strong> <em>(&hellip;, <var>property</var>, <var>value</var>, &hellip;)</em></dt>
+<dt><a name="index-plot-4"></a>Function File: <em></em> <strong>plot</strong> <em>(<var>x1</var>, <var>y1</var>, &hellip;, <var>xn</var>, <var>yn</var>)</em></dt>
+<dt><a name="index-plot-5"></a>Function File: <em></em> <strong>plot</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-plot-6"></a>Function File: <em><var>h</var> =</em> <strong>plot</strong> <em>(&hellip;)</em></dt>
+<dd><p>Produce 2-D plots.
+</p>
+<p>Many different combinations of arguments are possible.  The simplest
+form is
+</p>
+<div class="example">
+<pre class="example">plot (<var>y</var>)
+</pre></div>
+
+<p>where the argument is taken as the set of <var>y</var> coordinates and the
+<var>x</var> coordinates are taken to be the range <code>1:numel (<var>y</var>)</code>.
+</p>
+<p>If more than one argument is given, they are interpreted as
+</p>
+<div class="example">
+<pre class="example">plot (<var>y</var>, <var>property</var>, <var>value</var>, &hellip;)
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">plot (<var>x</var>, <var>y</var>, <var>property</var>, <var>value</var>, &hellip;)
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">plot (<var>x</var>, <var>y</var>, <var>fmt</var>, &hellip;)
+</pre></div>
+
+<p>and so on.  Any number of argument sets may appear.  The <var>x</var> and
+<var>y</var> values are interpreted as follows:
+</p>
+<ul>
+<li> If a single data argument is supplied, it is taken as the set of <var>y</var>
+coordinates and the <var>x</var> coordinates are taken to be the indices of
+the elements, starting with 1.
+
+</li><li> If <var>x</var> and <var>y</var> are scalars, a single point is plotted.
+
+</li><li> <code>squeeze()</code> is applied to arguments with more than two dimensions,
+but no more than two singleton dimensions.
+
+</li><li> If both arguments are vectors, the elements of <var>y</var> are plotted versus
+the elements of <var>x</var>.
+
+</li><li> If <var>x</var> is a vector and <var>y</var> is a matrix, then
+the columns (or rows) of <var>y</var> are plotted versus <var>x</var>.
+(using whichever combination matches, with columns tried first.)
+
+</li><li> If the <var>x</var> is a matrix and <var>y</var> is a vector,
+<var>y</var> is plotted versus the columns (or rows) of <var>x</var>.
+(using whichever combination matches, with columns tried first.)
+
+</li><li> If both arguments are matrices, the columns of <var>y</var> are plotted
+versus the columns of <var>x</var>.  In this case, both matrices must have
+the same number of rows and columns and no attempt is made to transpose
+the arguments to make the number of rows match.
+</li></ul>
+
+<p>Multiple property-value pairs may be specified, but they must appear
+in pairs.  These arguments are applied to the line objects drawn by
+<code>plot</code>.  Useful properties to modify are <code>&quot;linestyle&quot;</code>,
+<code>&quot;linewidth&quot;</code>, <code>&quot;color&quot;</code>, <code>&quot;marker&quot;</code>,
+<code>&quot;markersize&quot;</code>, <code>&quot;markeredgecolor&quot;</code>, <code>&quot;markerfacecolor&quot;</code>.  
+See <a href="Line-Properties.html#Line-Properties">Line Properties</a>.  
+</p>
+<p>The <var>fmt</var> format argument can also be used to control the plot style.
+It is a string composed of four optional parts:
+&quot;&lt;linestyle&gt;&lt;marker&gt;&lt;color&gt;&lt;;displayname;&gt;&quot;.
+When a marker is specified, but no linestyle, only the markers are
+plotted.  Similarly, if a linestyle is specified, but no marker, then
+only lines are drawn.  If both are specified then lines and markers will
+be plotted.  If no <var>fmt</var> and no <var>property</var>/<var>value</var> pairs are
+given, then the default plot style is solid lines with no markers and the
+color determined by the <code>&quot;colororder&quot;</code> property of the current axes.
+</p>
+<p>Format arguments:
+</p>
+<dl compact="compact">
+<dt>linestyle</dt>
+<dd>
+<table>
+<tr><td width="6%">&lsquo;<samp>-</samp>&rsquo;</td><td width="94%">Use solid lines (default).</td></tr>
+<tr><td width="6%">&lsquo;<samp>--</samp>&rsquo;</td><td width="94%">Use dashed lines.</td></tr>
+<tr><td width="6%">&lsquo;<samp>:</samp>&rsquo;</td><td width="94%">Use dotted lines.</td></tr>
+<tr><td width="6%">&lsquo;<samp>-.</samp>&rsquo;</td><td width="94%">Use dash-dotted lines.</td></tr>
+</table>
+
+</dd>
+<dt>marker</dt>
+<dd>
+<table>
+<tr><td width="6%">&lsquo;<samp>+</samp>&rsquo;</td><td width="94%">crosshair</td></tr>
+<tr><td width="6%">&lsquo;<samp>o</samp>&rsquo;</td><td width="94%">circle</td></tr>
+<tr><td width="6%">&lsquo;<samp>*</samp>&rsquo;</td><td width="94%">star</td></tr>
+<tr><td width="6%">&lsquo;<samp>.</samp>&rsquo;</td><td width="94%">point</td></tr>
+<tr><td width="6%">&lsquo;<samp>x</samp>&rsquo;</td><td width="94%">cross</td></tr>
+<tr><td width="6%">&lsquo;<samp>s</samp>&rsquo;</td><td width="94%">square</td></tr>
+<tr><td width="6%">&lsquo;<samp>d</samp>&rsquo;</td><td width="94%">diamond</td></tr>
+<tr><td width="6%">&lsquo;<samp>^</samp>&rsquo;</td><td width="94%">upward-facing triangle</td></tr>
+<tr><td width="6%">&lsquo;<samp>v</samp>&rsquo;</td><td width="94%">downward-facing triangle</td></tr>
+<tr><td width="6%">&lsquo;<samp>&gt;</samp>&rsquo;</td><td width="94%">right-facing triangle</td></tr>
+<tr><td width="6%">&lsquo;<samp>&lt;</samp>&rsquo;</td><td width="94%">left-facing triangle</td></tr>
+<tr><td width="6%">&lsquo;<samp>p</samp>&rsquo;</td><td width="94%">pentagram</td></tr>
+<tr><td width="6%">&lsquo;<samp>h</samp>&rsquo;</td><td width="94%">hexagram</td></tr>
+</table>
+
+</dd>
+<dt>color</dt>
+<dd>
+<table>
+<tr><td width="6%">&lsquo;<samp>k</samp>&rsquo;</td><td width="94%">blacK</td></tr>
+<tr><td width="6%">&lsquo;<samp>r</samp>&rsquo;</td><td width="94%">Red</td></tr>
+<tr><td width="6%">&lsquo;<samp>g</samp>&rsquo;</td><td width="94%">Green</td></tr>
+<tr><td width="6%">&lsquo;<samp>b</samp>&rsquo;</td><td width="94%">Blue</td></tr>
+<tr><td width="6%">&lsquo;<samp>m</samp>&rsquo;</td><td width="94%">Magenta</td></tr>
+<tr><td width="6%">&lsquo;<samp>c</samp>&rsquo;</td><td width="94%">Cyan</td></tr>
+<tr><td width="6%">&lsquo;<samp>w</samp>&rsquo;</td><td width="94%">White</td></tr>
+</table>
+
+</dd>
+<dt><code>&quot;;displayname;&quot;</code></dt>
+<dd><p>Here <code>&quot;displayname&quot;</code> is the label to use for the plot legend.
+</p></dd>
+</dl>
+
+<p>The <var>fmt</var> argument may also be used to assign legend labels.
+To do so, include the desired label between semicolons after the
+formatting sequence described above, e.g., <code>&quot;+b;Key Title;&quot;</code>.
+Note that the last semicolon is required and Octave will generate
+an error if it is left out.
+</p>
+<p>Here are some plot examples:
+</p>
+<div class="example">
+<pre class="example">plot (x, y, &quot;or&quot;, x, y2, x, y3, &quot;m&quot;, x, y4, &quot;+&quot;)
+</pre></div>
+
+<p>This command will plot <code>y</code> with red circles, <code>y2</code> with solid
+lines, <code>y3</code> with solid magenta lines, and <code>y4</code> with points
+displayed as &lsquo;<samp>+</samp>&rsquo;.
+</p>
+<div class="example">
+<pre class="example">plot (b, &quot;*&quot;, &quot;markersize&quot;, 10)
+</pre></div>
+
+<p>This command will plot the data in the variable <code>b</code>,
+with points displayed as &lsquo;<samp>*</samp>&rsquo; and a marker size of 10.
+</p>
+<div class="example">
+<pre class="example">t = 0:0.1:6.3;
+plot (t, cos(t), &quot;-;cos(t);&quot;, t, sin(t), &quot;-b;sin(t);&quot;);
+</pre></div>
+
+<p>This will plot the cosine and sine functions and label them accordingly
+in the legend.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a vector of graphics handles to
+the created line objects.
+</p>
+<p>To save a plot, in one of several image formats such as PostScript
+or PNG, use the <code>print</code> command.
+</p>
+
+<p><strong>See also:</strong> <a href="Axis-Configuration.html#XREFaxis">axis</a>, <a href="Plot-Annotations.html#XREFbox">box</a>, <a href="Plot-Annotations.html#XREFgrid">grid</a>, <a href="Manipulation-of-Plot-Windows.html#XREFhold">hold</a>, <a href="Plot-Annotations.html#XREFlegend">legend</a>, <a href="Plot-Annotations.html#XREFtitle">title</a>, <a href="Plot-Annotations.html#XREFxlabel">xlabel</a>, <a href="Plot-Annotations.html#XREFylabel">ylabel</a>, <a href="Axis-Configuration.html#XREFxlim">xlim</a>, <a href="Axis-Configuration.html#XREFylim">ylim</a>, <a href="Two_002ddimensional-Function-Plotting.html#XREFezplot">ezplot</a>, <a href="#XREFerrorbar">errorbar</a>, <a href="Two_002ddimensional-Function-Plotting.html#XREFfplot">fplot</a>, <a href="Graphics-Objects.html#XREFline">line</a>, <a href="Three_002dDimensional-Plots.html#XREFplot3">plot3</a>, <a href="#XREFpolar">polar</a>, <a href="#XREFloglog">loglog</a>, <a href="#XREFsemilogx">semilogx</a>, <a href="#XREFsemilogy">semilogy</a>, <a href="Multiple-Plots-on-One-Page.html#XREFsubplot">subplot</a>.
+</p></dd></dl>
+
+
+<p>The <code>plotyy</code> function may be used to create a plot with two
+independent y axes.
+</p>
+<a name="XREFplotyy"></a><dl>
+<dt><a name="index-plotyy"></a>Function File: <em></em> <strong>plotyy</strong> <em>(<var>x1</var>, <var>y1</var>, <var>x2</var>, <var>y2</var>)</em></dt>
+<dt><a name="index-plotyy-1"></a>Function File: <em></em> <strong>plotyy</strong> <em>(&hellip;, <var>fun</var>)</em></dt>
+<dt><a name="index-plotyy-2"></a>Function File: <em></em> <strong>plotyy</strong> <em>(&hellip;, <var>fun1</var>, <var>fun2</var>)</em></dt>
+<dt><a name="index-plotyy-3"></a>Function File: <em></em> <strong>plotyy</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-plotyy-4"></a>Function File: <em>[<var>ax</var>, <var>h1</var>, <var>h2</var>] =</em> <strong>plotyy</strong> <em>(&hellip;)</em></dt>
+<dd><p>Plot two sets of data with independent y-axes and a common x-axis.
+</p>
+<p>The arguments <var>x1</var> and <var>y1</var> define the arguments for the first plot
+and <var>x1</var> and <var>y2</var> for the second.
+</p>
+<p>By default the arguments are evaluated with
+<code>feval (@plot, <var>x</var>, <var>y</var>)</code>.  However the type of plot can be
+modified with the <var>fun</var> argument, in which case the plots are
+generated by <code>feval (<var>fun</var>, <var>x</var>, <var>y</var>)</code>.  <var>fun</var> can be
+a function handle, an inline function, or a string of a function name.
+</p>
+<p>The function to use for each of the plots can be independently defined
+with <var>fun1</var> and <var>fun2</var>.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then it defines
+the principal axis in which to plot the <var>x1</var> and <var>y1</var> data.
+</p>
+<p>The return value <var>ax</var> is a vector with the axis handles of the two
+y-axes.  <var>h1</var> and <var>h2</var> are handles to the objects generated by the
+plot commands.
+</p>
+<div class="example">
+<pre class="example">x = 0:0.1:2*pi;
+y1 = sin (x);
+y2 = exp (x - 1);
+ax = plotyy (x, y1, x - 1, y2, @plot, @semilogy);
+xlabel (&quot;X&quot;);
+ylabel (ax(1), &quot;Axis 1&quot;);
+ylabel (ax(2), &quot;Axis 2&quot;);
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFplot">plot</a>.
+</p></dd></dl>
+
+
+<p>The functions <code>semilogx</code>, <code>semilogy</code>, and <code>loglog</code> are
+similar to the <code>plot</code> function, but produce plots in which one or
+both of the axes use log scales.
+</p>
+<a name="XREFsemilogx"></a><dl>
+<dt><a name="index-semilogx"></a>Function File: <em></em> <strong>semilogx</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-semilogx-1"></a>Function File: <em></em> <strong>semilogx</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-semilogx-2"></a>Function File: <em></em> <strong>semilogx</strong> <em>(<var>x</var>, <var>y</var>, <var>property</var>, <var>value</var>, &hellip;)</em></dt>
+<dt><a name="index-semilogx-3"></a>Function File: <em></em> <strong>semilogx</strong> <em>(<var>x</var>, <var>y</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogx-4"></a>Function File: <em></em> <strong>semilogx</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-semilogx-5"></a>Function File: <em><var>h</var> =</em> <strong>semilogx</strong> <em>(&hellip;)</em></dt>
+<dd><p>Produce a 2-D plot using a logarithmic scale for the x-axis.
+</p>
+<p>See the documentation of <code>plot</code> for a description of the
+arguments that <code>semilogx</code> will accept.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created plot.
+</p>
+<p><strong>See also:</strong> <a href="#XREFplot">plot</a>, <a href="#XREFsemilogy">semilogy</a>, <a href="#XREFloglog">loglog</a>.
+</p></dd></dl>
+
+
+<a name="XREFsemilogy"></a><dl>
+<dt><a name="index-semilogy"></a>Function File: <em></em> <strong>semilogy</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-semilogy-1"></a>Function File: <em></em> <strong>semilogy</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-semilogy-2"></a>Function File: <em></em> <strong>semilogy</strong> <em>(<var>x</var>, <var>y</var>, <var>property</var>, <var>value</var>, &hellip;)</em></dt>
+<dt><a name="index-semilogy-3"></a>Function File: <em></em> <strong>semilogy</strong> <em>(<var>x</var>, <var>y</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogy-4"></a>Function File: <em></em> <strong>semilogy</strong> <em>(<var>h</var>, &hellip;)</em></dt>
+<dt><a name="index-semilogy-5"></a>Function File: <em><var>h</var> =</em> <strong>semilogy</strong> <em>(&hellip;)</em></dt>
+<dd><p>Produce a 2-D plot using a logarithmic scale for the y-axis.
+</p>
+<p>See the documentation of <code>plot</code> for a description of the
+arguments that <code>semilogy</code> will accept.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created plot.
+</p>
+<p><strong>See also:</strong> <a href="#XREFplot">plot</a>, <a href="#XREFsemilogx">semilogx</a>, <a href="#XREFloglog">loglog</a>.
+</p></dd></dl>
+
+
+<a name="XREFloglog"></a><dl>
+<dt><a name="index-loglog"></a>Function File: <em></em> <strong>loglog</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-loglog-1"></a>Function File: <em></em> <strong>loglog</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-loglog-2"></a>Function File: <em></em> <strong>loglog</strong> <em>(<var>x</var>, <var>y</var>, <var>prop</var>, <var>value</var>, &hellip;)</em></dt>
+<dt><a name="index-loglog-3"></a>Function File: <em></em> <strong>loglog</strong> <em>(<var>x</var>, <var>y</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-loglog-4"></a>Function File: <em></em> <strong>loglog</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-loglog-5"></a>Function File: <em><var>h</var> =</em> <strong>loglog</strong> <em>(&hellip;)</em></dt>
+<dd><p>Produce a 2-D plot using logarithmic scales for both axes.
+</p>
+<p>See the documentation of <code>plot</code> for a description of the arguments
+that <code>loglog</code> will accept.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created plot.
+</p>
+<p><strong>See also:</strong> <a href="#XREFplot">plot</a>, <a href="#XREFsemilogx">semilogx</a>, <a href="#XREFsemilogy">semilogy</a>.
+</p></dd></dl>
+
+
+<p>The functions <code>bar</code>, <code>barh</code>, <code>stairs</code>, and <code>stem</code>
+are useful for displaying discrete data.  For example,
+</p>
+<div class="example">
+<pre class="example">hist (randn (10000, 1), 30);
+</pre></div>
+
+<p>produces the histogram of 10,000 normally distributed random numbers
+shown in <a href="#fig_003ahist">Figure 15.2</a>.
+</p>
+<div class="float"><a name="fig_003ahist"></a>
+<div align="center"><img src="hist.png" alt="hist">
+</div>
+<div class="float-caption"><p><strong>Figure 15.2: </strong>Histogram.</p></div></div>
+<a name="XREFbar"></a><dl>
+<dt><a name="index-bar"></a>Function File: <em></em> <strong>bar</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-bar-1"></a>Function File: <em></em> <strong>bar</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-bar-2"></a>Function File: <em></em> <strong>bar</strong> <em>(&hellip;, <var>w</var>)</em></dt>
+<dt><a name="index-bar-3"></a>Function File: <em></em> <strong>bar</strong> <em>(&hellip;, <var>style</var>)</em></dt>
+<dt><a name="index-bar-4"></a>Function File: <em></em> <strong>bar</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-bar-5"></a>Function File: <em></em> <strong>bar</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-bar-6"></a>Function File: <em><var>h</var> =</em> <strong>bar</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dd><p>Produce a bar graph from two vectors of X-Y data.
+</p>
+<p>If only one argument is given, <var>y</var>, it is taken as a vector of Y values
+and the X coordinates are the range <code>1:numel (<var>y</var>)</code>.
+</p>
+<p>The optional input <var>w</var> controls the width of the bars.  A value of
+1.0 will cause each bar to exactly touch any adjacent bars.
+The default width is 0.8.
+</p>
+<p>If <var>y</var> is a matrix, then each column of <var>y</var> is taken to be a
+separate bar graph plotted on the same graph.  By default the columns
+are plotted side-by-side.  This behavior can be changed by the <var>style</var>
+argument which can take the following values:
+</p>
+<dl compact="compact">
+<dt><code>&quot;grouped&quot;</code> (default)</dt>
+<dd><p>Side-by-side bars with a gap between bars and centered over the X-coordinate.
+</p>
+</dd>
+<dt><code>&quot;stacked&quot;</code></dt>
+<dd><p>Bars are stacked so that each X value has a single bar composed of
+multiple segments.
+</p>
+</dd>
+<dt><code>&quot;hist&quot;</code></dt>
+<dd><p>Side-by-side bars with no gap between bars and centered over the
+X-coordinate.
+</p>
+</dd>
+<dt><code>&quot;histc&quot;</code></dt>
+<dd><p>Side-by-side bars with no gap between bars and left-aligned to the
+X-coordinate.
+</p></dd>
+</dl>
+
+<p>Optional property/value pairs are passed directly to the underlying patch
+objects.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a vector of handles to the created
+&quot;bar series&quot; hggroups with one handle per column of the variable <var>y</var>.
+This series makes it possible to change a common element in one bar series
+object and have the change reflected in the other &quot;bar series&quot;.
+For example,
+</p>
+<div class="example">
+<pre class="example">h = bar (rand (5, 10));
+set (h(1), &quot;basevalue&quot;, 0.5);
+</pre></div>
+
+<p>changes the position on the base of all of the bar series.
+</p>
+<p>The following example modifies the face and edge colors using
+property/value pairs.
+</p>
+<div class="example">
+<pre class="example">bar (randn (1, 100), &quot;facecolor&quot;, &quot;r&quot;, &quot;edgecolor&quot;, &quot;b&quot;);
+</pre></div>
+
+<p>The color of the bars is taken from the figure&rsquo;s colormap, such that
+</p>
+<div class="example">
+<pre class="example">bar (rand (10, 3));
+colormap (summer (64));
+</pre></div>
+
+<p>will change the colors used for the bars.  The color of bars can also be set
+manually using the <code>&quot;facecolor&quot;</code> property as shown below.
+</p>
+<div class="example">
+<pre class="example">h = bar (rand (10, 3));
+set (h(1), &quot;facecolor&quot;, &quot;r&quot;)
+set (h(2), &quot;facecolor&quot;, &quot;g&quot;)
+set (h(3), &quot;facecolor&quot;, &quot;b&quot;)
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFbarh">barh</a>, <a href="#XREFhist">hist</a>, <a href="#XREFpie">pie</a>, <a href="#XREFplot">plot</a>, <a href="Graphics-Objects.html#XREFpatch">patch</a>.
+</p></dd></dl>
+
+
+<a name="XREFbarh"></a><dl>
+<dt><a name="index-barh"></a>Function File: <em></em> <strong>barh</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-barh-1"></a>Function File: <em></em> <strong>barh</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-barh-2"></a>Function File: <em></em> <strong>barh</strong> <em>(&hellip;, <var>w</var>)</em></dt>
+<dt><a name="index-barh-3"></a>Function File: <em></em> <strong>barh</strong> <em>(&hellip;, <var>style</var>)</em></dt>
+<dt><a name="index-barh-4"></a>Function File: <em></em> <strong>barh</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-barh-5"></a>Function File: <em></em> <strong>barh</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-barh-6"></a>Function File: <em><var>h</var> =</em> <strong>barh</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dd><p>Produce a horizontal bar graph from two vectors of X-Y data.
+</p>
+<p>If only one argument is given, it is taken as a vector of Y values
+and the X coordinates are the range <code>1:numel (<var>y</var>)</code>.
+</p>
+<p>The optional input <var>w</var> controls the width of the bars.  A value of
+1.0 will cause each bar to exactly touch any adjacent bars.
+The default width is 0.8.
+</p>
+<p>If <var>y</var> is a matrix, then each column of <var>y</var> is taken to be a
+separate bar graph plotted on the same graph.  By default the columns
+are plotted side-by-side.  This behavior can be changed by the <var>style</var>
+argument which can take the following values:
+</p>
+<dl compact="compact">
+<dt><code>&quot;grouped&quot;</code> (default)</dt>
+<dd><p>Side-by-side bars with a gap between bars and centered over the Y-coordinate.
+</p>
+</dd>
+<dt><code>&quot;stacked&quot;</code></dt>
+<dd><p>Bars are stacked so that each Y value has a single bar composed of
+multiple segments.
+</p>
+</dd>
+<dt><code>&quot;hist&quot;</code></dt>
+<dd><p>Side-by-side bars with no gap between bars and centered over the
+Y-coordinate.
+</p>
+</dd>
+<dt><code>&quot;histc&quot;</code></dt>
+<dd><p>Side-by-side bars with no gap between bars and left-aligned to the
+Y-coordinate.
+</p></dd>
+</dl>
+
+<p>Optional property/value pairs are passed directly to the underlying patch
+objects.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created
+bar series hggroup.  For a description of the use of the
+bar series, see <a href="#XREFbar">bar</a>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFbar">bar</a>, <a href="#XREFhist">hist</a>, <a href="#XREFpie">pie</a>, <a href="#XREFplot">plot</a>, <a href="Graphics-Objects.html#XREFpatch">patch</a>.
+</p></dd></dl>
+
+
+<a name="XREFhist"></a><dl>
+<dt><a name="index-hist"></a>Function File: <em></em> <strong>hist</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-hist-1"></a>Function File: <em></em> <strong>hist</strong> <em>(<var>y</var>, <var>x</var>)</em></dt>
+<dt><a name="index-hist-2"></a>Function File: <em></em> <strong>hist</strong> <em>(<var>y</var>, <var>nbins</var>)</em></dt>
+<dt><a name="index-hist-3"></a>Function File: <em></em> <strong>hist</strong> <em>(<var>y</var>, <var>x</var>, <var>norm</var>)</em></dt>
+<dt><a name="index-hist-4"></a>Function File: <em></em> <strong>hist</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-hist-5"></a>Function File: <em></em> <strong>hist</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-hist-6"></a>Function File: <em>[<var>nn</var>, <var>xx</var>] =</em> <strong>hist</strong> <em>(&hellip;)</em></dt>
+<dd><p>Produce histogram counts or plots.
+</p>
+<p>With one vector input argument, <var>y</var>, plot a histogram of the values
+with 10 bins.  The range of the histogram bins is determined by the
+range of the data.  With one matrix input argument, <var>y</var>, plot a
+histogram where each bin contains a bar per input column.
+</p>
+<p>Given a second vector argument, <var>x</var>, use that as the centers of
+the bins, with the width of the bins determined from the adjacent
+values in the vector.
+</p>
+<p>If scalar, the second argument, <var>nbins</var>, defines the number of bins.
+</p>
+<p>If a third argument is provided, the histogram is normalized such that
+the sum of the bars is equal to <var>norm</var>.
+</p>
+<p>Extreme values are lumped into the first and last bins.
+</p>
+<p>The histogram&rsquo;s appearance may be modified by specifying property/value
+pairs.  For example the face and edge color may be modified.
+</p>
+<div class="example">
+<pre class="example">hist (randn (1, 100), 25, &quot;facecolor&quot;, &quot;r&quot;, &quot;edgecolor&quot;, &quot;b&quot;);
+</pre></div>
+
+<p>The histogram&rsquo;s colors also depend upon the current colormap.
+</p>
+<div class="example">
+<pre class="example">hist (rand (10, 3));
+colormap (summer ());
+</pre></div>
+
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>With two output arguments, produce the values <var>nn</var> (numbers of elements)
+and <var>xx</var> (bin centers) such that <code>bar (<var>xx</var>, <var>nn</var>)</code> will
+plot the histogram.
+</p>
+
+<p><strong>See also:</strong> <a href="Basic-Statistical-Functions.html#XREFhistc">histc</a>, <a href="#XREFbar">bar</a>, <a href="#XREFpie">pie</a>, <a href="#XREFrose">rose</a>.
+</p></dd></dl>
+
+
+<a name="XREFstemleaf"></a><dl>
+<dt><a name="index-stemleaf"></a>Function File: <em></em> <strong>stemleaf</strong> <em>(<var>x</var>, <var>caption</var>)</em></dt>
+<dt><a name="index-stemleaf-1"></a>Function File: <em></em> <strong>stemleaf</strong> <em>(<var>x</var>, <var>caption</var>, <var>stem_sz</var>)</em></dt>
+<dt><a name="index-stemleaf-2"></a>Function File: <em><var>plotstr</var> =</em> <strong>stemleaf</strong> <em>(&hellip;)</em></dt>
+<dd><p>Compute and display a stem and leaf plot of the vector <var>x</var>.
+</p>
+<p>The input <var>x</var> should be a vector of integers.  Any non-integer values
+will be converted to integer by <code><var>x</var> = fix (<var>x</var>)</code>.  By default
+each element of <var>x</var> will be plotted with the last digit of the element
+as a leaf value and the remaining digits as the stem.  For example, 123
+will be plotted with the stem &lsquo;<samp>12</samp>&rsquo; and the leaf &lsquo;<samp>3</samp>&rsquo;.  The second
+argument, <var>caption</var>, should be a character array which provides a
+description of the data.  It is included as a heading for the output.
+</p>
+<p>The optional input <var>stem_sz</var> sets the width of each stem.
+The stem width is determined by <code>10^(<var>stem_sz</var> + 1)</code>.
+The default stem width is 10.
+</p>
+<p>The output of <code>stemleaf</code> is composed of two parts: a
+&quot;Fenced Letter Display,&quot; followed by the stem-and-leaf plot itself.
+The Fenced Letter Display is described in <cite>Exploratory Data Analysis</cite>.
+Briefly, the entries are as shown:
+</p>
+<div class="example">
+<pre class="example">
+
+        Fenced Letter Display
+#% nx|___________________     nx = numel (x)
+M% mi|       md         |     mi median index, md median
+H% hi|hl              hu| hs  hi lower hinge index, hl,hu hinges,
+1    |x(1)         x(nx)|     hs h_spreadx(1), x(nx) first
+           _______            and last data value.
+     ______|step |_______     step 1.5*h_spread
+    f|ifl            ifh|     inner fence, lower and higher
+     |nfl            nfh|     no.\ of data points within fences
+    F|ofl            ofh|     outer fence, lower and higher
+     |nFl            nFh|     no.\ of data points outside outer
+                              fences
+</pre></div>
+
+<p>The stem-and-leaf plot shows on each line the stem value followed by the
+string made up of the leaf digits.  If the <var>stem_sz</var> is not 1 the
+successive leaf values are separated by &quot;,&quot;.
+</p>
+<p>With no return argument, the plot is immediately displayed.  If an output
+argument is provided, the plot is returned as an array of strings.
+</p>
+<p>The leaf digits are not sorted.  If sorted leaf values are desired, use
+<code><var>xs</var> = sort (<var>x</var>)</code> before calling <code>stemleaf (<var>xs</var>)</code>.
+</p>
+<p>The stem and leaf plot and associated displays are described in:
+Ch. 3, <cite>Exploratory Data Analysis</cite> by J. W. Tukey, Addison-Wesley, 1977.
+</p>
+<p><strong>See also:</strong> <a href="#XREFhist">hist</a>, <a href="#XREFprintd">printd</a>.
+</p></dd></dl>
+
+
+<a name="XREFprintd"></a><dl>
+<dt><a name="index-printd"></a>Function File: <em></em> <strong>printd</strong> <em>(<var>obj</var>, <var>filename</var>)</em></dt>
+<dt><a name="index-printd-1"></a>Function File: <em><var>out_file</var> =</em> <strong>printd</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Convert any object acceptable to <code>disp</code> into the format selected by
+the suffix of <var>filename</var>.
+</p>
+<p>If the return argument <var>out_file</var> is given, the name of the created
+file is returned.
+</p>
+<p>This function is intended to facilitate manipulation of the output of
+functions such as <code>stemleaf</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstemleaf">stemleaf</a>.
+</p></dd></dl>
+
+
+<a name="XREFstairs"></a><dl>
+<dt><a name="index-stairs"></a>Function File: <em></em> <strong>stairs</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-stairs-1"></a>Function File: <em></em> <strong>stairs</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-stairs-2"></a>Function File: <em></em> <strong>stairs</strong> <em>(&hellip;, <var>style</var>)</em></dt>
+<dt><a name="index-stairs-3"></a>Function File: <em></em> <strong>stairs</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-stairs-4"></a>Function File: <em></em> <strong>stairs</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-stairs-5"></a>Function File: <em><var>h</var> =</em> <strong>stairs</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-stairs-6"></a>Function File: <em>[<var>xstep</var>, <var>ystep</var>] =</em> <strong>stairs</strong> <em>(&hellip;)</em></dt>
+<dd><p>Produce a stairstep plot.
+</p>
+<p>The arguments <var>x</var> and <var>y</var> may be vectors or matrices.
+If only one argument is given, it is taken as a vector of Y values
+and the X coordinates are taken to be the indices of the elements.
+</p>
+<p>The style to use for the plot can be defined with a line style <var>style</var>
+of the same format as the <code>plot</code> command.
+</p>
+<p>Multiple property/value pairs may be specified, but they must appear in
+pairs.
+</p>
+<p>If the first argument <var>hax</var> is an axis handle, then plot into this axis,
+rather than the current axis handle returned by <code>gca</code>.
+</p>
+<p>If one output argument is requested, return a graphics handle to the
+created plot.  If two output arguments are specified, the data are generated
+but not plotted.  For example,
+</p>
+<div class="example">
+<pre class="example">stairs (x, y);
+</pre></div>
+
+<p>and
+</p>
+<div class="example">
+<pre class="example">[xs, ys] = stairs (x, y);
+plot (xs, ys);
+</pre></div>
+
+<p>are equivalent.
+</p>
+<p><strong>See also:</strong> <a href="#XREFbar">bar</a>, <a href="#XREFhist">hist</a>, <a href="#XREFplot">plot</a>, <a href="#XREFstem">stem</a>.
+</p></dd></dl>
+
+
+<a name="XREFstem"></a><dl>
+<dt><a name="index-stem"></a>Function File: <em></em> <strong>stem</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-stem-1"></a>Function File: <em></em> <strong>stem</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-stem-2"></a>Function File: <em></em> <strong>stem</strong> <em>(&hellip;, <var>linespec</var>)</em></dt>
+<dt><a name="index-stem-3"></a>Function File: <em></em> <strong>stem</strong> <em>(&hellip;, &quot;filled&quot;)</em></dt>
+<dt><a name="index-stem-4"></a>Function File: <em></em> <strong>stem</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-stem-5"></a>Function File: <em></em> <strong>stem</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-stem-6"></a>Function File: <em><var>h</var> =</em> <strong>stem</strong> <em>(&hellip;)</em></dt>
+<dd><p>Plot a 2-D stem graph.
+</p>
+<p>If only one argument is given, it is taken as the y-values and the
+x-coordinates are taken from the indices of the elements.
+</p>
+<p>If <var>y</var> is a matrix, then each column of the matrix is plotted as
+a separate stem graph.  In this case <var>x</var> can either be a vector,
+the same length as the number of rows in <var>y</var>, or it can be a
+matrix of the same size as <var>y</var>.
+</p>
+<p>The default color is <code>&quot;b&quot;</code> (blue), the default line style is
+<code>&quot;-&quot;</code>, and the default marker is <code>&quot;o&quot;</code>.  The line style can
+be altered by the <code>linespec</code> argument in the same manner as the
+<code>plot</code> command.  If the <code>&quot;filled&quot;</code> argument is present the
+markers at the top of the stems will be filled in.  For example,
+</p>
+<div class="example">
+<pre class="example">x = 1:10;
+y = 2*x;
+stem (x, y, &quot;r&quot;);
+</pre></div>
+
+<p>plots 10 stems with heights from 2 to 20 in red;
+</p>
+<p>Optional property/value pairs may be specified to control the appearance
+of the plot.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a handle to a &quot;stem series&quot;
+hggroup.  The single hggroup handle has all of the graphical elements
+comprising the plot as its children; This allows the properties of
+multiple graphics objects to be changed by modifying just a single
+property of the &quot;stem series&quot; hggroup.
+</p>
+<p>For example,
+</p>
+<div class="example">
+<pre class="example">x = [0:10]';
+y = [sin(x), cos(x)]
+h = stem (x, y);
+set (h(2), &quot;color&quot;, &quot;g&quot;);
+set (h(1), &quot;basevalue&quot;, -1)
+</pre></div>
+
+<p>changes the color of the second &quot;stem series&quot; and moves the base
+line of the first.
+</p>
+<p>Stem Series Properties
+</p>
+<dl compact="compact">
+<dt>linestyle</dt>
+<dd><p>The linestyle of the stem.  (Default: <code>&quot;-&quot;</code>)
+</p>
+</dd>
+<dt>linewidth</dt>
+<dd><p>The width of the stem.  (Default: 0.5)
+</p>
+</dd>
+<dt>color</dt>
+<dd><p>The color of the stem, and if not separately specified, the marker.
+(Default: <code>&quot;b&quot;</code> [blue])
+</p>
+</dd>
+<dt>marker</dt>
+<dd><p>The marker symbol to use at the top of each stem.  (Default: <code>&quot;o&quot;</code>)
+</p>
+</dd>
+<dt>markeredgecolor</dt>
+<dd><p>The edge color of the marker.  (Default: <code>&quot;color&quot;</code> property)
+</p>
+</dd>
+<dt>markerfacecolor</dt>
+<dd><p>The color to use for &quot;filling&quot; the marker.
+(Default: <code>&quot;none&quot;</code> [unfilled])
+</p>
+</dd>
+<dt>markersize</dt>
+<dd><p>The size of the marker.  (Default: 6)
+</p>
+</dd>
+<dt>baseline</dt>
+<dd><p>The handle of the line object which implements the baseline.  Use <code>set</code>
+with the returned handle to change graphic properties of the baseline.
+</p>
+</dd>
+<dt>basevalue</dt>
+<dd><p>The y-value where the baseline is drawn.  (Default: 0)
+</p></dd>
+</dl>
+
+<p><strong>See also:</strong> <a href="#XREFstem3">stem3</a>, <a href="#XREFbar">bar</a>, <a href="#XREFhist">hist</a>, <a href="#XREFplot">plot</a>, <a href="#XREFstairs">stairs</a>.
+</p></dd></dl>
+
+
+<a name="XREFstem3"></a><dl>
+<dt><a name="index-stem3"></a>Function File: <em></em> <strong>stem3</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-stem3-1"></a>Function File: <em></em> <strong>stem3</strong> <em>(&hellip;, <var>linespec</var>)</em></dt>
+<dt><a name="index-stem3-2"></a>Function File: <em></em> <strong>stem3</strong> <em>(&hellip;, &quot;filled&quot;)</em></dt>
+<dt><a name="index-stem3-3"></a>Function File: <em></em> <strong>stem3</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-stem3-4"></a>Function File: <em></em> <strong>stem3</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-stem3-5"></a>Function File: <em><var>h</var> =</em> <strong>stem3</strong> <em>(&hellip;)</em></dt>
+<dd><p>Plot a 3-D stem graph.
+</p>
+<p>Stems are drawn from the height <var>z</var> to the location in the x-y plane
+determined by <var>x</var> and <var>y</var>.  The default color is <code>&quot;b&quot;</code> (blue),
+the default line style is <code>&quot;-&quot;</code>, and the default marker is <code>&quot;o&quot;</code>.
+</p>
+<p>The line style can be altered by the <code>linespec</code> argument in the same
+manner as the <code>plot</code> command.  If the <code>&quot;filled&quot;</code> argument is
+present the markers at the top of the stems will be filled in.
+</p>
+<p>Optional property/value pairs may be specified to control the appearance
+of the plot.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a handle to the &quot;stem series&quot;
+hggroup containing the line and marker objects used for the plot.
+See <a href="#XREFstem">stem</a>, for a description of the &quot;stem series&quot;
+object.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">theta = 0:0.2:6;
+stem3 (cos (theta), sin (theta), theta);
+</pre></div>
+
+<p>plots 31 stems with heights from 0 to 6 lying on a circle.
+</p>
+<p>Implementation Note: Color definitions with RGB-triples are not valid.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstem">stem</a>, <a href="#XREFbar">bar</a>, <a href="#XREFhist">hist</a>, <a href="#XREFplot">plot</a>.
+</p></dd></dl>
+
+
+<a name="XREFscatter"></a><dl>
+<dt><a name="index-scatter"></a>Function File: <em></em> <strong>scatter</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-scatter-1"></a>Function File: <em></em> <strong>scatter</strong> <em>(<var>x</var>, <var>y</var>, <var>s</var>)</em></dt>
+<dt><a name="index-scatter-2"></a>Function File: <em></em> <strong>scatter</strong> <em>(<var>x</var>, <var>y</var>, <var>s</var>, <var>c</var>)</em></dt>
+<dt><a name="index-scatter-3"></a>Function File: <em></em> <strong>scatter</strong> <em>(&hellip;, <var>style</var>)</em></dt>
+<dt><a name="index-scatter-4"></a>Function File: <em></em> <strong>scatter</strong> <em>(&hellip;, &quot;filled&quot;)</em></dt>
+<dt><a name="index-scatter-5"></a>Function File: <em></em> <strong>scatter</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-scatter-6"></a>Function File: <em></em> <strong>scatter</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-scatter-7"></a>Function File: <em><var>h</var> =</em> <strong>scatter</strong> <em>(&hellip;)</em></dt>
+<dd><p>Draw a 2-D scatter plot.
+</p>
+<p>A marker is plotted at each point defined by the coordinates in the vectors
+<var>x</var> and <var>y</var>.
+</p>
+<p>The size of the markers is determined by <var>s</var>, which can be a scalar
+or a vector of the same length as <var>x</var> and <var>y</var>.  If <var>s</var>
+is not given, or is an empty matrix, then a default value of 8 points is
+used.
+</p>
+<p>The color of the markers is determined by <var>c</var>, which can be a string
+defining a fixed color; a 3-element vector giving the red, green, and blue
+components of the color; a vector of the same length as <var>x</var> that gives
+a scaled index into the current colormap; or an Nx3 matrix defining
+the RGB color of each marker individually.
+</p>
+<p>The marker to use can be changed with the <var>style</var> argument, that is a
+string defining a marker in the same manner as the <code>plot</code> command.
+If no marker is specified it defaults to <code>&quot;o&quot;</code> or circles.
+If the argument <code>&quot;filled&quot;</code> is given then the markers are filled.
+</p>
+<p>Additional property/value pairs are passed directly to the underlying
+patch object.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created patch
+object.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">x = randn (100, 1);
+y = randn (100, 1);
+scatter (x, y, [], sqrt (x.^2 + y.^2));
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Three_002dDimensional-Plots.html#XREFscatter3">scatter3</a>, <a href="Graphics-Objects.html#XREFpatch">patch</a>, <a href="#XREFplot">plot</a>.
+</p></dd></dl>
+
+
+<a name="XREFplotmatrix"></a><dl>
+<dt><a name="index-plotmatrix"></a>Function File: <em></em> <strong>plotmatrix</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-plotmatrix-1"></a>Function File: <em></em> <strong>plotmatrix</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-plotmatrix-2"></a>Function File: <em></em> <strong>plotmatrix</strong> <em>(&hellip;, <var>style</var>)</em></dt>
+<dt><a name="index-plotmatrix-3"></a>Function File: <em></em> <strong>plotmatrix</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-plotmatrix-4"></a>Function File: <em>[<var>h</var>, <var>ax</var>, <var>bigax</var>, <var>p</var>, <var>pax</var>] =</em> <strong>plotmatrix</strong> <em>(&hellip;)</em></dt>
+<dd><p>Scatter plot of the columns of one matrix against another.
+</p>
+<p>Given the arguments <var>x</var> and <var>y</var> that have a matching number of
+rows, <code>plotmatrix</code> plots a set of axes corresponding to
+</p>
+<div class="example">
+<pre class="example">plot (<var>x</var>(:, i), <var>y</var>(:, j))
+</pre></div>
+
+<p>When called with a single argument <var>x</var> this is equivalent to
+</p>
+<div class="example">
+<pre class="example">plotmatrix (<var>x</var>, <var>x</var>)
+</pre></div>
+
+<p>except that the diagonal of the set of axes will be replaced with the
+histogram <code>hist (<var>x</var>(:, i))</code>.
+</p>
+<p>The marker to use can be changed with the <var>style</var> argument, that is a
+string defining a marker in the same manner as the <code>plot</code> command.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> provides handles to the individual
+graphics objects in the scatter plots, whereas <var>ax</var> returns the
+handles to the scatter plot axis objects.
+</p>
+<p><var>bigax</var> is a hidden axis object that surrounds the other axes, such
+that the commands <code>xlabel</code>, <code>title</code>, etc., will be associated
+with this hidden axis.
+</p>
+<p>Finally, <var>p</var> returns the graphics objects associated with the histogram
+and <var>pax</var> the corresponding axes objects.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">plotmatrix (randn (100, 3), &quot;g+&quot;)
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFscatter">scatter</a>, <a href="#XREFplot">plot</a>.
+</p></dd></dl>
+
+
+<a name="XREFpareto"></a><dl>
+<dt><a name="index-pareto"></a>Function File: <em></em> <strong>pareto</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-pareto-1"></a>Function File: <em></em> <strong>pareto</strong> <em>(<var>y</var>, <var>x</var>)</em></dt>
+<dt><a name="index-pareto-2"></a>Function File: <em></em> <strong>pareto</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-pareto-3"></a>Function File: <em><var>h</var> =</em> <strong>pareto</strong> <em>(&hellip;)</em></dt>
+<dd><p>Draw a Pareto chart.
+</p>
+<p>A Pareto chart is a bar graph that arranges information in such a way
+that priorities for process improvement can be established; It organizes
+and displays information to show the relative importance of data.  The chart
+is similar to the histogram or bar chart, except that the bars are arranged
+in decreasing magnitude from left to right along the x-axis.
+</p>
+<p>The fundamental idea (Pareto principle) behind the use of Pareto
+diagrams is that the majority of an effect is due to a small subset of the
+causes.  For quality improvement, the first few contributing causes
+(leftmost bars as presented on the diagram) to a problem usually account for
+the majority of the result.  Thus, targeting these &quot;major causes&quot; for
+elimination results in the most cost-effective improvement scheme.
+</p>
+<p>Typically only the magnitude data <var>y</var> is present in which case
+<var>x</var> is taken to be the range <code>1 : length (<var>y</var>)</code>.  If <var>x</var>
+is given it may be a string array, a cell array of strings, or a numerical
+vector.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a 2-element vector with a graphics
+handle for the created bar plot and a second handle for the created line
+plot.
+</p>
+<p>An example of the use of <code>pareto</code> is
+</p>
+<div class="example">
+<pre class="example">Cheese = {&quot;Cheddar&quot;, &quot;Swiss&quot;, &quot;Camembert&quot;, ...
+          &quot;Munster&quot;, &quot;Stilton&quot;, &quot;Blue&quot;};
+Sold = [105, 30, 70, 10, 15, 20];
+pareto (Sold, Cheese);
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFbar">bar</a>, <a href="#XREFbarh">barh</a>, <a href="#XREFhist">hist</a>, <a href="#XREFpie">pie</a>, <a href="#XREFplot">plot</a>.
+</p></dd></dl>
+
+
+<a name="XREFrose"></a><dl>
+<dt><a name="index-rose"></a>Function File: <em></em> <strong>rose</strong> <em>(<var>th</var>)</em></dt>
+<dt><a name="index-rose-1"></a>Function File: <em></em> <strong>rose</strong> <em>(<var>th</var>, <var>nbins</var>)</em></dt>
+<dt><a name="index-rose-2"></a>Function File: <em></em> <strong>rose</strong> <em>(<var>th</var>, <var>bins</var>)</em></dt>
+<dt><a name="index-rose-3"></a>Function File: <em></em> <strong>rose</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-rose-4"></a>Function File: <em><var>h</var> =</em> <strong>rose</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-rose-5"></a>Function File: <em>[<var>thout</var> <var>rout</var>] =</em> <strong>rose</strong> <em>(&hellip;)</em></dt>
+<dd><p>Plot an angular histogram.
+</p>
+<p>With one vector argument, <var>th</var>, plot the histogram with 20 angular bins.
+If <var>th</var> is a matrix then each column of <var>th</var> produces a separate
+histogram.
+</p>
+<p>If <var>nbins</var> is given and is a scalar, then the histogram is produced with
+<var>nbin</var> bins.  If <var>bins</var> is a vector, then the center of each bin is
+defined by the values of <var>bins</var> and the number of bins is
+given by the number of elements in <var>bins</var>.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a vector of graphics handles to the
+line objects representing each histogram.
+</p>
+<p>If two output arguments are requested then no plot is made and
+the polar vectors necessary to plot the histogram are returned instead.
+</p>
+<div class="example">
+<pre class="example">[th, r] = rose ([2*randn(1e5,1), pi + 2*randn(1e5,1)]);
+polar (th, r);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFhist">hist</a>, <a href="#XREFpolar">polar</a>.
+</p></dd></dl>
+
+
+<p>The <code>contour</code>, <code>contourf</code> and <code>contourc</code> functions
+produce two-dimensional contour plots from three-dimensional data.
+</p>
+<a name="XREFcontour"></a><dl>
+<dt><a name="index-contour"></a>Function File: <em></em> <strong>contour</strong> <em>(<var>z</var>)</em></dt>
+<dt><a name="index-contour-1"></a>Function File: <em></em> <strong>contour</strong> <em>(<var>z</var>, <var>vn</var>)</em></dt>
+<dt><a name="index-contour-2"></a>Function File: <em></em> <strong>contour</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-contour-3"></a>Function File: <em></em> <strong>contour</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>vn</var>)</em></dt>
+<dt><a name="index-contour-4"></a>Function File: <em></em> <strong>contour</strong> <em>(&hellip;, <var>style</var>)</em></dt>
+<dt><a name="index-contour-5"></a>Function File: <em></em> <strong>contour</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-contour-6"></a>Function File: <em>[<var>c</var>, <var>h</var>] =</em> <strong>contour</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create a 2-D contour plot.
+</p>
+<p>Plot level curves (contour lines) of the matrix <var>z</var>, using the
+contour matrix <var>c</var> computed by <code>contourc</code> from the same
+arguments; see the latter for their interpretation.
+</p>
+<p>The appearance of contour lines can be defined with a line style <var>style</var>
+in the same manner as <code>plot</code>.  Only line style and color are used;
+Any markers defined by <var>style</var> are ignored.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional output <var>c</var> contains the contour levels in <code>contourc</code>
+format.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the hggroup
+comprising the contour lines.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">x = 0:2;
+y = x;
+z = x' * y;
+contour (x, y, z, 2:3)
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Two_002ddimensional-Function-Plotting.html#XREFezcontour">ezcontour</a>, <a href="#XREFcontourc">contourc</a>, <a href="#XREFcontourf">contourf</a>, <a href="#XREFcontour3">contour3</a>, <a href="Plot-Annotations.html#XREFclabel">clabel</a>, <a href="Three_002dDimensional-Plots.html#XREFmeshc">meshc</a>, <a href="Three_002dDimensional-Plots.html#XREFsurfc">surfc</a>, <a href="Axis-Configuration.html#XREFcaxis">caxis</a>, <a href="Representing-Images.html#XREFcolormap">colormap</a>, <a href="#XREFplot">plot</a>.
+</p>
+</dd></dl>
+
+
+<a name="XREFcontourf"></a><dl>
+<dt><a name="index-contourf"></a>Function File: <em></em> <strong>contourf</strong> <em>(<var>z</var>)</em></dt>
+<dt><a name="index-contourf-1"></a>Function File: <em></em> <strong>contourf</strong> <em>(<var>z</var>, <var>vn</var>)</em></dt>
+<dt><a name="index-contourf-2"></a>Function File: <em></em> <strong>contourf</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-contourf-3"></a>Function File: <em></em> <strong>contourf</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>vn</var>)</em></dt>
+<dt><a name="index-contourf-4"></a>Function File: <em></em> <strong>contourf</strong> <em>(&hellip;, <var>style</var>)</em></dt>
+<dt><a name="index-contourf-5"></a>Function File: <em></em> <strong>contourf</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-contourf-6"></a>Function File: <em>[<var>c</var>, <var>h</var>] =</em> <strong>contourf</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create a 2-D contour plot with filled intervals.
+</p>
+<p>Plot level curves (contour lines) of the matrix <var>z</var> and fill the region
+between lines with colors from the current colormap.
+</p>
+<p>The level curves are taken from the contour matrix <var>c</var> computed by
+<code>contourc</code> for the same arguments; see the latter for their
+interpretation.
+</p>
+<p>The appearance of contour lines can be defined with a line style <var>style</var>
+in the same manner as <code>plot</code>.  Only line style and color are used;
+Any markers defined by <var>style</var> are ignored.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional output <var>c</var> contains the contour levels in <code>contourc</code>
+format.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the hggroup
+comprising the contour lines.
+</p>
+<p>The following example plots filled contours of the <code>peaks</code> function.
+</p>
+<div class="example">
+<pre class="example">[x, y, z] = peaks (50);
+contourf (x, y, z, -7:9)
+</pre></div>
+
+<p><strong>See also:</strong> <a href="Two_002ddimensional-Function-Plotting.html#XREFezcontourf">ezcontourf</a>, <a href="#XREFcontour">contour</a>, <a href="#XREFcontourc">contourc</a>, <a href="#XREFcontour3">contour3</a>, <a href="Plot-Annotations.html#XREFclabel">clabel</a>, <a href="Three_002dDimensional-Plots.html#XREFmeshc">meshc</a>, <a href="Three_002dDimensional-Plots.html#XREFsurfc">surfc</a>, <a href="Axis-Configuration.html#XREFcaxis">caxis</a>, <a href="Representing-Images.html#XREFcolormap">colormap</a>, <a href="#XREFplot">plot</a>.
+</p></dd></dl>
+
+
+<a name="XREFcontourc"></a><dl>
+<dt><a name="index-contourc"></a>Function File: <em>[<var>c</var>, <var>lev</var>] =</em> <strong>contourc</strong> <em>(<var>z</var>)</em></dt>
+<dt><a name="index-contourc-1"></a>Function File: <em>[<var>c</var>, <var>lev</var>] =</em> <strong>contourc</strong> <em>(<var>z</var>, <var>vn</var>)</em></dt>
+<dt><a name="index-contourc-2"></a>Function File: <em>[<var>c</var>, <var>lev</var>] =</em> <strong>contourc</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-contourc-3"></a>Function File: <em>[<var>c</var>, <var>lev</var>] =</em> <strong>contourc</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>vn</var>)</em></dt>
+<dd><p>Compute contour lines (isolines of constant Z value).
+</p>
+<p>The matrix <var>z</var> contains height values above the rectangular grid
+determined by <var>x</var> and <var>y</var>.  If only a single input <var>z</var> is
+provided then <var>x</var> is taken to be <code>1:rows (<var>z</var>)</code> and <var>y</var> is
+taken to be <code>1:columns (<var>z</var>)</code>.
+</p>
+<p>The optional input <var>vn</var> is either a scalar denoting the number of
+contour lines to compute or a vector containing the Z values where lines
+will be computed.  When <var>vn</var> is a vector the number of contour lines
+is <code>numel (<var>vn</var>)</code>.  However, to compute a single contour line
+at a given value use <code><var>vn</var> = [val, val]</code>.  If <var>vn</var> is omitted
+it defaults to 10.
+</p>
+<p>The return value <var>c</var> is a 2x<var>n</var> matrix containing the
+contour lines in the following format
+</p>
+<div class="example">
+<pre class="example"><var>c</var> = [lev1, x1, x2, &hellip;, levn, x1, x2, ...
+     len1, y1, y2, &hellip;, lenn, y1, y2, &hellip;]
+</pre></div>
+
+<p>in which contour line <var>n</var> has a level (height) of <var>levn</var> and
+length of <var>lenn</var>.
+</p>
+<p>The optional return value <var>lev</var> is a vector with the Z values of
+the contour levels.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">x = 0:2;
+y = x;
+z = x' * y;
+contourc (x, y, z, 2:3)
+   &rArr;   2.0000   2.0000   1.0000   3.0000   1.5000   2.0000
+        2.0000   1.0000   2.0000   2.0000   2.0000   1.5000
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFcontour">contour</a>, <a href="#XREFcontourf">contourf</a>, <a href="#XREFcontour3">contour3</a>, <a href="Plot-Annotations.html#XREFclabel">clabel</a>.
+</p></dd></dl>
+
+
+<a name="XREFcontour3"></a><dl>
+<dt><a name="index-contour3"></a>Function File: <em></em> <strong>contour3</strong> <em>(<var>z</var>)</em></dt>
+<dt><a name="index-contour3-1"></a>Function File: <em></em> <strong>contour3</strong> <em>(<var>z</var>, <var>vn</var>)</em></dt>
+<dt><a name="index-contour3-2"></a>Function File: <em></em> <strong>contour3</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-contour3-3"></a>Function File: <em></em> <strong>contour3</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>vn</var>)</em></dt>
+<dt><a name="index-contour3-4"></a>Function File: <em></em> <strong>contour3</strong> <em>(&hellip;, <var>style</var>)</em></dt>
+<dt><a name="index-contour3-5"></a>Function File: <em></em> <strong>contour3</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-contour3-6"></a>Function File: <em>[<var>c</var>, <var>h</var>] =</em> <strong>contour3</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create a 3-D contour plot.
+</p>
+<p><code>contour3</code> plots level curves (contour lines) of the matrix <var>z</var>
+at a Z level corresponding to each contour.  This is in contrast to
+<code>contour</code> which plots all of the contour lines at the same Z level
+and produces a 2-D plot.
+</p>
+<p>The level curves are taken from the contour matrix <var>c</var> computed by
+<code>contourc</code> for the same arguments; see the latter for their
+interpretation.
+</p>
+<p>The appearance of contour lines can be defined with a line style <var>style</var>
+in the same manner as <code>plot</code>.  Only line style and color are used;
+Any markers defined by <var>style</var> are ignored.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional output <var>c</var> are the contour levels in <code>contourc</code> format.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the hggroup
+comprising the contour lines.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">contour3 (peaks (19));
+colormap cool;
+hold on;
+surf (peaks (19), &quot;facecolor&quot;, &quot;none&quot;, &quot;edgecolor&quot;, &quot;black&quot;);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFcontour">contour</a>, <a href="#XREFcontourc">contourc</a>, <a href="#XREFcontourf">contourf</a>, <a href="Plot-Annotations.html#XREFclabel">clabel</a>, <a href="Three_002dDimensional-Plots.html#XREFmeshc">meshc</a>, <a href="Three_002dDimensional-Plots.html#XREFsurfc">surfc</a>, <a href="Axis-Configuration.html#XREFcaxis">caxis</a>, <a href="Representing-Images.html#XREFcolormap">colormap</a>, <a href="#XREFplot">plot</a>.
+</p></dd></dl>
+
+
+<p>The <code>errorbar</code>, <code>semilogxerr</code>, <code>semilogyerr</code>, and
+<code>loglogerr</code> functions produce plots with error bar markers.  For
+example,
+</p>
+<div class="example">
+<pre class="example">x = 0:0.1:10;
+y = sin (x);
+lerr = 0.1 .* rand (size (x));
+uerr = 0.1 .* rand (size (x));
+errorbar (x, y, lerr, uerr);
+</pre></div>
+
+<p>produces the figure shown in <a href="#fig_003aerrorbar">Figure 15.3</a>.
+</p>
+<div class="float"><a name="fig_003aerrorbar"></a>
+<div align="center"><img src="errorbar.png" alt="errorbar">
+</div>
+<div class="float-caption"><p><strong>Figure 15.3: </strong>Errorbar plot.</p></div></div>
+<a name="XREFerrorbar"></a><dl>
+<dt><a name="index-errorbar"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-errorbar-1"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>y</var>, &hellip;, <var>fmt</var>)</em></dt>
+<dt><a name="index-errorbar-2"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>x</var>, <var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-errorbar-3"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>x</var>, <var>y</var>, <var>err</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-errorbar-4"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>x</var>, <var>y</var>, <var>lerr</var>, <var>uerr</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-errorbar-5"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>x</var>, <var>y</var>, <var>ex</var>, <var>ey</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-errorbar-6"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>x</var>, <var>y</var>, <var>lx</var>, <var>ux</var>, <var>ly</var>, <var>uy</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-errorbar-7"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>x1</var>, <var>y1</var>, &hellip;, <var>fmt</var>, <var>xn</var>, <var>yn</var>, &hellip;)</em></dt>
+<dt><a name="index-errorbar-8"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-errorbar-9"></a>Function File: <em><var>h</var> =</em> <strong>errorbar</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create a 2-D plot with errorbars.
+</p>
+<p>Many different combinations of arguments are possible.  The simplest form is
+</p>
+<div class="example">
+<pre class="example">errorbar (<var>y</var>, <var>ey</var>)
+</pre></div>
+
+<p>where the first argument is taken as the set of <var>y</var> coordinates, the
+second argument <var>ey</var> are the errors around the <var>y</var> values, and the
+<var>x</var> coordinates are taken to be the indices of the elements
+(<code>1:numel (<var>y</var>)</code>).
+</p>
+<p>The general form of the function is
+</p>
+<div class="example">
+<pre class="example">errorbar (<var>x</var>, <var>y</var>, <var>err1</var>, &hellip;, <var>fmt</var>, &hellip;)
+</pre></div>
+
+<p>After the <var>x</var> and <var>y</var> arguments there can be 1, 2, or 4
+parameters specifying the error values depending on the nature of the error
+values and the plot format <var>fmt</var>.
+</p>
+<dl compact="compact">
+<dt><var>err</var> (scalar)</dt>
+<dd><p>When the error is a scalar all points share the same error value.
+The errorbars are symmetric and are drawn from <var>data</var>-<var>err</var> to
+<var>data</var>+<var>err</var>.
+The <var>fmt</var> argument determines whether <var>err</var> is in the x-direction,
+y-direction (default), or both.
+</p>
+</dd>
+<dt><var>err</var> (vector or matrix)</dt>
+<dd><p>Each data point has a particular error value.
+The errorbars are symmetric and are drawn from <var>data</var>(n)-<var>err</var>(n) to
+<var>data</var>(n)+<var>err</var>(n).
+</p>
+</dd>
+<dt><var>lerr</var>, <var>uerr</var> (scalar)</dt>
+<dd><p>The errors have a single low-side value and a single upper-side value.
+The errorbars are not symmetric and are drawn from <var>data</var>-<var>lerr</var> to
+<var>data</var>+<var>uerr</var>.
+</p>
+</dd>
+<dt><var>lerr</var>, <var>uerr</var> (vector or matrix)</dt>
+<dd><p>Each data point has a low-side error and an upper-side error.
+The errorbars are not symmetric and are drawn from
+<var>data</var>(n)-<var>lerr</var>(n) to <var>data</var>(n)+<var>uerr</var>(n).
+</p></dd>
+</dl>
+
+<p>Any number of data sets (<var>x1</var>,<var>y1</var>, <var>x2</var>,<var>y2</var>, &hellip;) may
+appear as long as they are separated by a format string <var>fmt</var>.
+</p>
+<p>If <var>y</var> is a matrix, <var>x</var> and the error parameters must also be
+matrices having the same dimensions.  The columns of <var>y</var> are plotted
+versus the corresponding columns of <var>x</var> and errorbars are taken from
+the corresponding columns of the error parameters.
+</p>
+<p>If <var>fmt</var> is missing, the yerrorbars (&quot;~&quot;) plot style is assumed.
+</p>
+<p>If the <var>fmt</var> argument is supplied then it is interpreted, as in normal
+plots, to specify the line style, marker, and color.  In addition,
+<var>fmt</var> may include an errorbar style which <strong>must precede</strong> the
+ordinary format codes.  The following errorbar styles are supported:
+</p>
+<dl compact="compact">
+<dt>&lsquo;<samp>~</samp>&rsquo;</dt>
+<dd><p>Set yerrorbars plot style (default).
+</p>
+</dd>
+<dt>&lsquo;<samp>&gt;</samp>&rsquo;</dt>
+<dd><p>Set xerrorbars plot style.
+</p>
+</dd>
+<dt>&lsquo;<samp>~&gt;</samp>&rsquo;</dt>
+<dd><p>Set xyerrorbars plot style.
+</p>
+</dd>
+<dt>&lsquo;<samp>#~</samp>&rsquo;</dt>
+<dd><p>Set yboxes plot style.
+</p>
+</dd>
+<dt>&lsquo;<samp>#</samp>&rsquo;</dt>
+<dd><p>Set xboxes plot style.
+</p>
+</dd>
+<dt>&lsquo;<samp>#~&gt;</samp>&rsquo;</dt>
+<dd><p>Set xyboxes plot style.
+</p></dd>
+</dl>
+
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a handle to the hggroup object
+representing the data plot and errorbars.
+</p>
+<p>Note: For compatibility with <small>MATLAB</small> a line is drawn through all data
+points.  However, most scientific errorbar plots are a scatter plot of
+points with errorbars.  To accomplish this, add a marker style to the
+<var>fmt</var> argument such as <code>&quot;.&quot;</code>.  Alternatively, remove the line
+by modifying the returned graphic handle with
+<code>set (h, &quot;linestyle&quot;, &quot;none&quot;)</code>.
+</p>
+<p>Examples:
+</p>
+<div class="example">
+<pre class="example">errorbar (<var>x</var>, <var>y</var>, <var>ex</var>, &quot;&gt;.r&quot;)
+</pre></div>
+
+<p>produces an xerrorbar plot of <var>y</var> versus <var>x</var> with <var>x</var>
+errorbars drawn from <var>x</var>-<var>ex</var> to <var>x</var>+<var>ex</var>.  The marker
+<code>&quot;.&quot;</code> is used so no connecting line is drawn and the errorbars
+appear in red.
+</p>
+<div class="example">
+<pre class="example">errorbar (<var>x</var>, <var>y1</var>, <var>ey</var>, &quot;~&quot;,
+          <var>x</var>, <var>y2</var>, <var>ly</var>, <var>uy</var>)
+</pre></div>
+
+<p>produces yerrorbar plots with <var>y1</var> and <var>y2</var> versus <var>x</var>.
+Errorbars for <var>y1</var> are drawn from <var>y1</var>-<var>ey</var> to
+<var>y1</var>+<var>ey</var>, errorbars for <var>y2</var> from <var>y2</var>-<var>ly</var> to
+<var>y2</var>+<var>uy</var>.
+</p>
+<div class="example">
+<pre class="example">errorbar (<var>x</var>, <var>y</var>, <var>lx</var>, <var>ux</var>,
+          <var>ly</var>, <var>uy</var>, &quot;~&gt;&quot;)
+</pre></div>
+
+<p>produces an xyerrorbar plot of <var>y</var> versus <var>x</var> in which
+<var>x</var> errorbars are drawn from <var>x</var>-<var>lx</var> to <var>x</var>+<var>ux</var>
+and <var>y</var> errorbars from <var>y</var>-<var>ly</var> to <var>y</var>+<var>uy</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsemilogxerr">semilogxerr</a>, <a href="#XREFsemilogyerr">semilogyerr</a>, <a href="#XREFloglogerr">loglogerr</a>, <a href="#XREFplot">plot</a>.
+</p></dd></dl>
+
+
+<a name="XREFsemilogxerr"></a><dl>
+<dt><a name="index-semilogxerr"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-semilogxerr-1"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>y</var>, &hellip;, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogxerr-2"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x</var>, <var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-semilogxerr-3"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x</var>, <var>y</var>, <var>err</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogxerr-4"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x</var>, <var>y</var>, <var>lerr</var>, <var>uerr</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogxerr-5"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x</var>, <var>y</var>, <var>ex</var>, <var>ey</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogxerr-6"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x</var>, <var>y</var>, <var>lx</var>, <var>ux</var>, <var>ly</var>, <var>uy</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogxerr-7"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x1</var>, <var>y1</var>, &hellip;, <var>fmt</var>, <var>xn</var>, <var>yn</var>, &hellip;)</em></dt>
+<dt><a name="index-semilogxerr-8"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-semilogxerr-9"></a>Function File: <em><var>h</var> =</em> <strong>semilogxerr</strong> <em>(&hellip;)</em></dt>
+<dd><p>Produce 2-D plots using a logarithmic scale for the x-axis and errorbars
+at each data point.
+</p>
+<p>Many different combinations of arguments are possible.  The most common
+form is
+</p>
+<div class="example">
+<pre class="example">semilogxerr (<var>x</var>, <var>y</var>, <var>ey</var>, <var>fmt</var>)
+</pre></div>
+
+<p>which produces a semi-logarithmic plot of <var>y</var> versus <var>x</var>
+with errors in the <var>y</var>-scale defined by <var>ey</var> and the plot
+format defined by <var>fmt</var>.  See <a href="#XREFerrorbar">errorbar</a>, for available
+formats and additional information.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFerrorbar">errorbar</a>, <a href="#XREFsemilogyerr">semilogyerr</a>, <a href="#XREFloglogerr">loglogerr</a>.
+</p></dd></dl>
+
+
+<a name="XREFsemilogyerr"></a><dl>
+<dt><a name="index-semilogyerr"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-semilogyerr-1"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>y</var>, &hellip;, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogyerr-2"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x</var>, <var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-semilogyerr-3"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x</var>, <var>y</var>, <var>err</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogyerr-4"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x</var>, <var>y</var>, <var>lerr</var>, <var>uerr</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogyerr-5"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x</var>, <var>y</var>, <var>ex</var>, <var>ey</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogyerr-6"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x</var>, <var>y</var>, <var>lx</var>, <var>ux</var>, <var>ly</var>, <var>uy</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogyerr-7"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x1</var>, <var>y1</var>, &hellip;, <var>fmt</var>, <var>xn</var>, <var>yn</var>, &hellip;)</em></dt>
+<dt><a name="index-semilogyerr-8"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-semilogyerr-9"></a>Function File: <em><var>h</var> =</em> <strong>semilogyerr</strong> <em>(&hellip;)</em></dt>
+<dd><p>Produce 2-D plots using a logarithmic scale for the y-axis and errorbars
+at each data point.
+</p>
+<p>Many different combinations of arguments are possible.  The most common
+form is
+</p>
+<div class="example">
+<pre class="example">semilogyerr (<var>x</var>, <var>y</var>, <var>ey</var>, <var>fmt</var>)
+</pre></div>
+
+<p>which produces a semi-logarithmic plot of <var>y</var> versus <var>x</var>
+with errors in the <var>y</var>-scale defined by <var>ey</var> and the plot
+format defined by <var>fmt</var>.  See <a href="#XREFerrorbar">errorbar</a>, for available
+formats and additional information.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFerrorbar">errorbar</a>, <a href="#XREFsemilogxerr">semilogxerr</a>, <a href="#XREFloglogerr">loglogerr</a>.
+</p></dd></dl>
+
+
+<a name="XREFloglogerr"></a><dl>
+<dt><a name="index-loglogerr"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-loglogerr-1"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>y</var>, &hellip;, <var>fmt</var>)</em></dt>
+<dt><a name="index-loglogerr-2"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>x</var>, <var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-loglogerr-3"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>x</var>, <var>y</var>, <var>err</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-loglogerr-4"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>x</var>, <var>y</var>, <var>lerr</var>, <var>uerr</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-loglogerr-5"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>x</var>, <var>y</var>, <var>ex</var>, <var>ey</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-loglogerr-6"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>x</var>, <var>y</var>, <var>lx</var>, <var>ux</var>, <var>ly</var>, <var>uy</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-loglogerr-7"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>x1</var>, <var>y1</var>, &hellip;, <var>fmt</var>, <var>xn</var>, <var>yn</var>, &hellip;)</em></dt>
+<dt><a name="index-loglogerr-8"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-loglogerr-9"></a>Function File: <em><var>h</var> =</em> <strong>loglogerr</strong> <em>(&hellip;)</em></dt>
+<dd><p>Produce 2-D plots on a double logarithm axis with errorbars.
+</p>
+<p>Many different combinations of arguments are possible.  The most common
+form is
+</p>
+<div class="example">
+<pre class="example">loglogerr (<var>x</var>, <var>y</var>, <var>ey</var>, <var>fmt</var>)
+</pre></div>
+
+<p>which produces a double logarithm plot of <var>y</var> versus <var>x</var>
+with errors in the <var>y</var>-scale defined by <var>ey</var> and the plot
+format defined by <var>fmt</var>.  See <a href="#XREFerrorbar">errorbar</a>, for available
+formats and additional information.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFerrorbar">errorbar</a>, <a href="#XREFsemilogxerr">semilogxerr</a>, <a href="#XREFsemilogyerr">semilogyerr</a>.
+</p></dd></dl>
+
+
+<p>Finally, the <code>polar</code> function allows you to easily plot data in
+polar coordinates.  However, the display coordinates remain rectangular
+and linear.  For example,
+</p>
+<div class="example">
+<pre class="example">polar (0:0.1:10*pi, 0:0.1:10*pi);
+</pre></div>
+
+<p>produces the spiral plot shown in <a href="#fig_003apolar">Figure 15.4</a>.
+</p>
+<div class="float"><a name="fig_003apolar"></a>
+<div align="center"><img src="polar.png" alt="polar">
+</div>
+<div class="float-caption"><p><strong>Figure 15.4: </strong>Polar plot.</p></div></div>
+<a name="XREFpolar"></a><dl>
+<dt><a name="index-polar"></a>Function File: <em></em> <strong>polar</strong> <em>(<var>theta</var>, <var>rho</var>)</em></dt>
+<dt><a name="index-polar-1"></a>Function File: <em></em> <strong>polar</strong> <em>(<var>theta</var>, <var>rho</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-polar-2"></a>Function File: <em></em> <strong>polar</strong> <em>(<var>cplx</var>)</em></dt>
+<dt><a name="index-polar-3"></a>Function File: <em></em> <strong>polar</strong> <em>(<var>cplx</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-polar-4"></a>Function File: <em></em> <strong>polar</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-polar-5"></a>Function File: <em><var>h</var> =</em> <strong>polar</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create a 2-D plot from polar coordinates <var>theta</var> and <var>rho</var>.
+</p>
+<p>If a single complex input <var>cplx</var> is given then the real part is used
+for <var>theta</var> and the imaginary part is used for <var>rho</var>.
+</p>
+<p>The optional argument <var>fmt</var> specifies the line format in the same way
+as <code>plot</code>.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created plot.
+</p>
+<p>Implementation Note: The polar axis is drawn using line and text objects
+encapsulated in an hggroup.  The hggroup properties are linked to the
+original axes object such that altering an appearance property, for example
+<code>fontname</code>, will update the polar axis.  Two new properties are
+added to the original axes&ndash;<code>rtick</code>, <code>ttick</code>&ndash;which replace
+<code>xtick</code>, <code>ytick</code>.  The first is a list of tick locations in the
+radial (rho) direction; The second is a list of tick locations in the
+angular (theta) direction specified in degrees, i.e., in the range 0&ndash;359.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrose">rose</a>, <a href="#XREFcompass">compass</a>, <a href="#XREFplot">plot</a>.
+</p></dd></dl>
+
+
+<a name="XREFpie"></a><dl>
+<dt><a name="index-pie"></a>Function File: <em></em> <strong>pie</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-pie-1"></a>Function File: <em></em> <strong>pie</strong> <em>(&hellip;, <var>explode</var>)</em></dt>
+<dt><a name="index-pie-2"></a>Function File: <em></em> <strong>pie</strong> <em>(&hellip;, <var>labels</var>)</em></dt>
+<dt><a name="index-pie-3"></a>Function File: <em></em> <strong>pie</strong> <em>(<var>hax</var>, &hellip;);</em></dt>
+<dt><a name="index-pie-4"></a>Function File: <em><var>h</var> =</em> <strong>pie</strong> <em>(&hellip;);</em></dt>
+<dd><p>Plot a 2-D pie chart.
+</p>
+<p>When called with a single vector argument, produce a pie chart of the
+elements in <var>x</var>.  The size of the ith slice is the percentage that the
+element <var>x</var>i represents of the total sum of <var>x</var>:
+<code>pct = <var>x</var>(i) / sum (<var>x</var>)</code>.
+</p>
+<p>The optional input <var>explode</var> is a vector of the same length as <var>x</var>
+that, if nonzero, &quot;explodes&quot; the slice from the pie chart.
+</p>
+<p>The optional input <var>labels</var> is a cell array of strings of the same
+length as <var>x</var> specifying the label for each slice.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a list of handles to the patch
+and text objects generating the plot.
+</p>
+<p>Note: If <code>sum (<var>x</var>) &le; 1</code> then the elements of <var>x</var> are
+interpreted as percentages directly and are not normalized by <code>sum (x)</code>.
+Furthermore, if the sum is less than 1 then there will be a missing slice
+in the pie plot to represent the missing, unspecified percentage.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFpie3">pie3</a>, <a href="#XREFbar">bar</a>, <a href="#XREFhist">hist</a>, <a href="#XREFrose">rose</a>.
+</p></dd></dl>
+
+
+<a name="XREFpie3"></a><dl>
+<dt><a name="index-pie3"></a>Function File: <em></em> <strong>pie3</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-pie3-1"></a>Function File: <em></em> <strong>pie3</strong> <em>(&hellip;, <var>explode</var>)</em></dt>
+<dt><a name="index-pie3-2"></a>Function File: <em></em> <strong>pie3</strong> <em>(&hellip;, <var>labels</var>)</em></dt>
+<dt><a name="index-pie3-3"></a>Function File: <em></em> <strong>pie3</strong> <em>(<var>hax</var>, &hellip;);</em></dt>
+<dt><a name="index-pie3-4"></a>Function File: <em><var>h</var> =</em> <strong>pie3</strong> <em>(&hellip;);</em></dt>
+<dd><p>Plot a 3-D pie chart.
+</p>
+<p>Called with a single vector argument, produces a 3-D pie chart of the
+elements in <var>x</var>.  The size of the ith slice is the percentage that the
+element <var>x</var>i represents of the total sum of <var>x</var>:
+<code>pct = <var>x</var>(i) / sum (<var>x</var>)</code>.
+</p>
+<p>The optional input <var>explode</var> is a vector of the same length as <var>x</var>
+that, if nonzero, &quot;explodes&quot; the slice from the pie chart.
+</p>
+<p>The optional input <var>labels</var> is a cell array of strings of the same
+length as <var>x</var> specifying the label for each slice.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a list of graphics handles to the
+patch, surface, and text objects generating the plot.
+</p>
+<p>Note: If <code>sum (<var>x</var>) &le; 1</code> then the elements of <var>x</var> are
+interpreted as percentages directly and are not normalized by <code>sum (x)</code>.
+Furthermore, if the sum is less than 1 then there will be a missing slice
+in the pie plot to represent the missing, unspecified percentage.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFpie">pie</a>, <a href="#XREFbar">bar</a>, <a href="#XREFhist">hist</a>, <a href="#XREFrose">rose</a>.
+</p></dd></dl>
+
+
+<a name="XREFquiver"></a><dl>
+<dt><a name="index-quiver"></a>Function File: <em></em> <strong>quiver</strong> <em>(<var>u</var>, <var>v</var>)</em></dt>
+<dt><a name="index-quiver-1"></a>Function File: <em></em> <strong>quiver</strong> <em>(<var>x</var>, <var>y</var>, <var>u</var>, <var>v</var>)</em></dt>
+<dt><a name="index-quiver-2"></a>Function File: <em></em> <strong>quiver</strong> <em>(&hellip;, <var>s</var>)</em></dt>
+<dt><a name="index-quiver-3"></a>Function File: <em></em> <strong>quiver</strong> <em>(&hellip;, <var>style</var>)</em></dt>
+<dt><a name="index-quiver-4"></a>Function File: <em></em> <strong>quiver</strong> <em>(&hellip;, &quot;filled&quot;)</em></dt>
+<dt><a name="index-quiver-5"></a>Function File: <em></em> <strong>quiver</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-quiver-6"></a>Function File: <em><var>h</var> =</em> <strong>quiver</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot a 2-D vector field with arrows.
+</p>
+<p>Plot the (<var>u</var>, <var>v</var>) components of a vector field in
+an (<var>x</var>, <var>y</var>) meshgrid.  If the grid is uniform then <var>x</var> and
+<var>y</var> can be specified as vectors.
+</p>
+<p>If <var>x</var> and <var>y</var> are undefined they are assumed to be
+<code>(1:<var>m</var>, 1:<var>n</var>)</code> where
+<code>[<var>m</var>, <var>n</var>] = size (<var>u</var>)</code>.
+</p>
+<p>The variable <var>s</var> is a scalar defining a scaling factor to use for
+the arrows of the field relative to the mesh spacing.  A value of 0
+disables all scaling.  The default value is 0.9.
+</p>
+<p>The style to use for the plot can be defined with a line style <var>style</var>
+of the same format as the <code>plot</code> command.
+If a marker is specified then markers at the grid points of the vectors are
+drawn rather than arrows.  If the argument <code>&quot;filled&quot;</code> is given then
+the markers are filled.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to a quiver object.
+A quiver object regroups the components of the quiver plot (body, arrow,
+and marker), and allows them to be changed together.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">[x, y] = meshgrid (1:2:20);
+h = quiver (x, y, sin (2*pi*x/10), sin (2*pi*y/10));
+set (h, &quot;maxheadsize&quot;, 0.33);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFquiver3">quiver3</a>, <a href="#XREFcompass">compass</a>, <a href="#XREFfeather">feather</a>, <a href="#XREFplot">plot</a>.
+</p></dd></dl>
+
+
+<a name="XREFquiver3"></a><dl>
+<dt><a name="index-quiver3"></a>Function File: <em></em> <strong>quiver3</strong> <em>(<var>u</var>, <var>v</var>, <var>w</var>)</em></dt>
+<dt><a name="index-quiver3-1"></a>Function File: <em></em> <strong>quiver3</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>u</var>, <var>v</var>, <var>w</var>)</em></dt>
+<dt><a name="index-quiver3-2"></a>Function File: <em></em> <strong>quiver3</strong> <em>(&hellip;, <var>s</var>)</em></dt>
+<dt><a name="index-quiver3-3"></a>Function File: <em></em> <strong>quiver3</strong> <em>(&hellip;, <var>style</var>)</em></dt>
+<dt><a name="index-quiver3-4"></a>Function File: <em></em> <strong>quiver3</strong> <em>(&hellip;, &quot;filled&quot;)</em></dt>
+<dt><a name="index-quiver3-5"></a>Function File: <em></em> <strong>quiver3</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-quiver3-6"></a>Function File: <em><var>h</var> =</em> <strong>quiver3</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot a 3-D vector field with arrows.
+</p>
+<p>Plot the (<var>u</var>, <var>v</var>, <var>w</var>) components of a vector field in
+an (<var>x</var>, <var>y</var>, <var>z</var>) meshgrid.  If the grid is uniform then
+<var>x</var>, <var>y</var>, and <var>z</var> can be specified as vectors.
+</p>
+<p>If <var>x</var>, <var>y</var>, and <var>z</var> are undefined they are assumed to be
+<code>(1:<var>m</var>, 1:<var>n</var>, 1:<var>p</var>)</code> where <code>[<var>m</var>, <var>n</var>] =
+size (<var>u</var>)</code> and <code><var>p</var> = max (size (<var>w</var>))</code>.
+</p>
+<p>The variable <var>s</var> is a scalar defining a scaling factor to use for
+the arrows of the field relative to the mesh spacing.  A value of 0
+disables all scaling.  The default value is 0.9.
+</p>
+<p>The style to use for the plot can be defined with a line style <var>style</var>
+of the same format as the <code>plot</code> command.
+If a marker is specified then markers at the grid points of the vectors are
+drawn rather than arrows.  If the argument <code>&quot;filled&quot;</code> is given then the
+markers are filled.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to a quiver object.
+A quiver object regroups the components of the quiver plot (body, arrow,
+and marker), and allows them to be changed together.
+</p>
+<div class="example">
+<pre class="example">[x, y, z] = peaks (25);
+surf (x, y, z);
+hold on;
+[u, v, w] = surfnorm (x, y, z / 10);
+h = quiver3 (x, y, z, u, v, w);
+set (h, &quot;maxheadsize&quot;, 0.33);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFquiver">quiver</a>, <a href="#XREFcompass">compass</a>, <a href="#XREFfeather">feather</a>, <a href="#XREFplot">plot</a>.
+</p></dd></dl>
+
+
+<a name="XREFcompass"></a><dl>
+<dt><a name="index-compass"></a>Function File: <em></em> <strong>compass</strong> <em>(<var>u</var>, <var>v</var>)</em></dt>
+<dt><a name="index-compass-1"></a>Function File: <em></em> <strong>compass</strong> <em>(<var>z</var>)</em></dt>
+<dt><a name="index-compass-2"></a>Function File: <em></em> <strong>compass</strong> <em>(&hellip;, <var>style</var>)</em></dt>
+<dt><a name="index-compass-3"></a>Function File: <em></em> <strong>compass</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-compass-4"></a>Function File: <em><var>h</var> =</em> <strong>compass</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot the <code>(<var>u</var>, <var>v</var>)</code> components of a vector field emanating
+from the origin of a polar plot.
+</p>
+<p>The arrow representing each vector has one end at the origin and the tip at
+[<var>u</var>(i), <var>v</var>(i)].  If a single complex argument <var>z</var> is given,
+then <code><var>u</var> = real (<var>z</var>)</code> and <code><var>v</var> = imag (<var>z</var>)</code>.
+</p>
+<p>The style to use for the plot can be defined with a line style <var>style</var>
+of the same format as the <code>plot</code> command.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a vector of graphics handles to the
+line objects representing the drawn vectors.
+</p>
+<div class="example">
+<pre class="example">a = toeplitz ([1;randn(9,1)], [1,randn(1,9)]);
+compass (eig (a));
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFpolar">polar</a>, <a href="#XREFfeather">feather</a>, <a href="#XREFquiver">quiver</a>, <a href="#XREFrose">rose</a>, <a href="#XREFplot">plot</a>.
+</p></dd></dl>
+
+
+<a name="XREFfeather"></a><dl>
+<dt><a name="index-feather"></a>Function File: <em></em> <strong>feather</strong> <em>(<var>u</var>, <var>v</var>)</em></dt>
+<dt><a name="index-feather-1"></a>Function File: <em></em> <strong>feather</strong> <em>(<var>z</var>)</em></dt>
+<dt><a name="index-feather-2"></a>Function File: <em></em> <strong>feather</strong> <em>(&hellip;, <var>style</var>)</em></dt>
+<dt><a name="index-feather-3"></a>Function File: <em></em> <strong>feather</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-feather-4"></a>Function File: <em><var>h</var> =</em> <strong>feather</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Plot the <code>(<var>u</var>, <var>v</var>)</code> components of a vector field emanating
+from equidistant points on the x-axis.
+</p>
+<p>If a single complex argument <var>z</var> is given, then
+<code><var>u</var> = real (<var>z</var>)</code> and <code><var>v</var> = imag (<var>z</var>)</code>.
+</p>
+<p>The style to use for the plot can be defined with a line style <var>style</var>
+of the same format as the <code>plot</code> command.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a vector of graphics handles to the
+line objects representing the drawn vectors.
+</p>
+<div class="example">
+<pre class="example">phi = [0 : 15 : 360] * pi/180;
+feather (sin (phi), cos (phi));
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFplot">plot</a>, <a href="#XREFquiver">quiver</a>, <a href="#XREFcompass">compass</a>.
+</p></dd></dl>
+
+
+<a name="XREFpcolor"></a><dl>
+<dt><a name="index-pcolor"></a>Function File: <em></em> <strong>pcolor</strong> <em>(<var>x</var>, <var>y</var>, <var>c</var>)</em></dt>
+<dt><a name="index-pcolor-1"></a>Function File: <em></em> <strong>pcolor</strong> <em>(<var>c</var>)</em></dt>
+<dt><a name="index-pcolor-2"></a>Function File: <em></em> <strong>pcolor</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-pcolor-3"></a>Function File: <em><var>h</var> =</em> <strong>pcolor</strong> <em>(&hellip;)</em></dt>
+<dd><p>Produce a 2-D density plot.
+</p>
+<p>A <code>pcolor</code> plot draws rectangles with colors from the matrix <var>c</var>
+over the two-dimensional region represented by the matrices <var>x</var> and
+<var>y</var>.  <var>x</var> and <var>y</var> are the coordinates of the mesh&rsquo;s vertices
+and are typically the output of <code>meshgrid</code>.  If <var>x</var> and <var>y</var> are
+vectors, then a typical vertex is (<var>x</var>(j), <var>y</var>(i), <var>c</var>(i,j)).
+Thus, columns of <var>c</var> correspond to different <var>x</var> values and rows
+of <var>c</var> correspond to different <var>y</var> values.
+</p>
+<p>The values in <var>c</var> are scaled to span the range of the current
+colormap.  Limits may be placed on the color axis by the command
+<code>caxis</code>, or by setting the <code>clim</code> property of the parent axis.
+</p>
+<p>The face color of each cell of the mesh is determined by interpolating
+the values of <var>c</var> for each of the cell&rsquo;s vertices; Contrast this with
+<code>imagesc</code> which renders one cell for each element of <var>c</var>.
+</p>
+<p><code>shading</code> modifies an attribute determining the manner by which the
+face color of each cell is interpolated from the values of <var>c</var>,
+and the visibility of the cells&rsquo; edges.  By default the attribute is
+<code>&quot;faceted&quot;</code>, which renders a single color for each cell&rsquo;s face with
+the edge visible.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created
+surface object.
+</p>
+
+<p><strong>See also:</strong> <a href="Axis-Configuration.html#XREFcaxis">caxis</a>, <a href="Three_002dDimensional-Plots.html#XREFshading">shading</a>, <a href="Three_002dDimensional-Plots.html#XREFmeshgrid">meshgrid</a>, <a href="#XREFcontour">contour</a>, <a href="Displaying-Images.html#XREFimagesc">imagesc</a>.
+</p></dd></dl>
+
+
+<a name="XREFarea"></a><dl>
+<dt><a name="index-area"></a>Function File: <em></em> <strong>area</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-area-1"></a>Function File: <em></em> <strong>area</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-area-2"></a>Function File: <em></em> <strong>area</strong> <em>(&hellip;, <var>lvl</var>)</em></dt>
+<dt><a name="index-area-3"></a>Function File: <em></em> <strong>area</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-area-4"></a>Function File: <em></em> <strong>area</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-area-5"></a>Function File: <em><var>h</var> =</em> <strong>area</strong> <em>(&hellip;)</em></dt>
+<dd><p>Area plot of the columns of <var>y</var>.
+</p>
+<p>This plot shows the contributions of each column value to the row sum.
+It is functionally similar to <code>plot (<var>x</var>, cumsum (<var>y</var>, 2))</code>,
+except that the area under the curve is shaded.
+</p>
+<p>If the <var>x</var> argument is omitted it defaults to <code>1:rows (<var>y</var>)</code>.
+A value <var>lvl</var> can be defined that determines where the base level of
+the shading under the curve should be defined.  The default level is 0.
+</p>
+<p>Additional property/value pairs are passed directly to the underlying patch
+object.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the hggroup
+object comprising the area patch objects.  The <code>&quot;BaseValue&quot;</code> property
+of the hggroup can be used to adjust the level where shading begins.
+</p>
+<p>Example: Verify identity sin^2 + cos^2 = 1
+</p>
+<div class="example">
+<pre class="example">t = linspace (0, 2*pi, 100)';
+y = [sin(t).^2, cos(t).^2];
+area (t, y);
+legend (&quot;sin^2&quot;, &quot;cos^2&quot;, &quot;location&quot;, &quot;NorthEastOutside&quot;);
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFplot">plot</a>, <a href="Graphics-Objects.html#XREFpatch">patch</a>.
+</p></dd></dl>
+
+
+<a name="XREFfill"></a><dl>
+<dt><a name="index-fill"></a>Function File: <em></em> <strong>fill</strong> <em>(<var>x</var>, <var>y</var>, <var>c</var>)</em></dt>
+<dt><a name="index-fill-1"></a>Function File: <em></em> <strong>fill</strong> <em>(<var>x1</var>, <var>y1</var>, <var>c1</var>, <var>x2</var>, <var>y2</var>, <var>c2</var>)</em></dt>
+<dt><a name="index-fill-2"></a>Function File: <em></em> <strong>fill</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>)</em></dt>
+<dt><a name="index-fill-3"></a>Function File: <em></em> <strong>fill</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-fill-4"></a>Function File: <em><var>h</var> =</em> <strong>fill</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create one or more filled 2-D polygons.
+</p>
+<p>The inputs <var>x</var> and <var>y</var> are the coordinates of the polygon vertices.
+If the inputs are matrices then the rows represent different vertices and
+each column produces a different polygon.  <code>fill</code> will close any open
+polygons before plotting.
+</p>
+<p>The input <var>c</var> determines the color of the polygon.  The simplest form
+is a single color specification such as a <code>plot</code> format or an
+RGB-triple.  In this case the polygon(s) will have one unique color.  If
+<var>c</var> is a vector or matrix then the color data is first scaled using
+<code>caxis</code> and then indexed into the current colormap.  A row vector will
+color each polygon (a column from matrices <var>x</var> and <var>y</var>) with a
+single computed color.  A matrix <var>c</var> of the same size as <var>x</var> and
+<var>y</var> will compute the color of each vertex and then interpolate the face
+color between the vertices.
+</p>
+<p>Multiple property/value pairs for the underlying patch object may be
+specified, but they must appear in pairs.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a vector of graphics handles to
+the created patch objects.
+</p>
+<p>Example: red square
+</p>
+<div class="example">
+<pre class="example">vertices = [0 0
+            1 0
+            1 1
+            0 1];
+fill (vertices(:,1), vertices(:,2), &quot;r&quot;);
+axis ([-0.5 1.5, -0.5 1.5])
+axis equal
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Graphics-Objects.html#XREFpatch">patch</a>, <a href="Axis-Configuration.html#XREFcaxis">caxis</a>, <a href="Representing-Images.html#XREFcolormap">colormap</a>.
+</p></dd></dl>
+
+
+<a name="XREFcomet"></a><dl>
+<dt><a name="index-comet"></a>Function File: <em></em> <strong>comet</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-comet-1"></a>Function File: <em></em> <strong>comet</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-comet-2"></a>Function File: <em></em> <strong>comet</strong> <em>(<var>x</var>, <var>y</var>, <var>p</var>)</em></dt>
+<dt><a name="index-comet-3"></a>Function File: <em></em> <strong>comet</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dd><p>Produce a simple comet style animation along the trajectory provided by
+the input coordinate vectors (<var>x</var>, <var>y</var>).
+</p>
+<p>If <var>x</var> is not specified it defaults to the indices of <var>y</var>.
+</p>
+<p>The speed of the comet may be controlled by <var>p</var>, which represents the
+time each point is displayed before moving to the next one.  The default for
+<var>p</var> is 0.1 seconds.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFcomet3">comet3</a>.
+</p></dd></dl>
+
+
+<a name="XREFcomet3"></a><dl>
+<dt><a name="index-comet3"></a>Function File: <em></em> <strong>comet3</strong> <em>(<var>z</var>)</em></dt>
+<dt><a name="index-comet3-1"></a>Function File: <em></em> <strong>comet3</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-comet3-2"></a>Function File: <em></em> <strong>comet3</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>p</var>)</em></dt>
+<dt><a name="index-comet3-3"></a>Function File: <em></em> <strong>comet3</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dd><p>Produce a simple comet style animation along the trajectory provided by
+the input coordinate vectors (<var>x</var>, <var>y</var>, <var>z</var>).
+</p>
+<p>If only <var>z</var> is specified then <var>x</var>, <var>y</var> default to the indices
+of <var>z</var>.
+</p>
+<p>The speed of the comet may be controlled by <var>p</var>, which represents the
+time each point is displayed before moving to the next one.  The default for
+<var>p</var> is 0.1 seconds.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFcomet">comet</a>.
+</p></dd></dl>
+
+
+<a name="XREFframe2im"></a><dl>
+<dt><a name="index-frame2im"></a>Function File: <em>[<var>x</var>, <var>map</var>] =</em> <strong>frame2im</strong> <em>(<var>f</var>)</em></dt>
+<dd><p>Convert movie frame to indexed image.
+</p>
+<p>A movie frame is simply a struct with the fields <code>&quot;cdata&quot;</code> and
+<code>&quot;colormap&quot;</code>.
+</p>
+<p>Support for N-dimensional images or movies is given when <var>f</var> is a
+struct array.  In such cases, <var>x</var> will be a MxNx1xK or MxNx3xK
+for indexed and RGB movies respectively, with each frame concatenated
+along the 4th dimension.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFim2frame">im2frame</a>.
+</p></dd></dl>
+
+
+<a name="XREFim2frame"></a><dl>
+<dt><a name="index-im2frame"></a>Function File: <em></em> <strong>im2frame</strong> <em>(<var>rgb</var>)</em></dt>
+<dt><a name="index-im2frame-1"></a>Function File: <em></em> <strong>im2frame</strong> <em>(<var>x</var>, <var>map</var>)</em></dt>
+<dd><p>Convert image to movie frame.
+</p>
+<p>A movie frame is simply a struct with the fields <code>&quot;cdata&quot;</code> and
+<code>&quot;colormap&quot;</code>.
+</p>
+<p>Support for N-dimensional images is given when each image projection,
+matrix sizes of MxN and MxNx3 for RGB images, is concatenated
+along the fourth dimension.  In such cases, the returned value is a struct
+array.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFframe2im">frame2im</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" accesskey="n" rel="next">Three-Dimensional Plots</a>, Up: <a href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" accesskey="u" rel="up">High-Level Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

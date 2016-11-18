@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: One-dimensional Interpolation</title>
+
+<meta name="description" content="GNU Octave: One-dimensional Interpolation">
+<meta name="keywords" content="GNU Octave: One-dimensional Interpolation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Interpolation.html#Interpolation" rel="up" title="Interpolation">
+<link href="Multi_002ddimensional-Interpolation.html#Multi_002ddimensional-Interpolation" rel="next" title="Multi-dimensional Interpolation">
+<link href="Interpolation.html#Interpolation" rel="prev" title="Interpolation">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="One_002ddimensional-Interpolation"></a>
+<div class="header">
+<p>
+Next: <a href="Multi_002ddimensional-Interpolation.html#Multi_002ddimensional-Interpolation" accesskey="n" rel="next">Multi-dimensional Interpolation</a>, Up: <a href="Interpolation.html#Interpolation" accesskey="u" rel="up">Interpolation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="One_002ddimensional-Interpolation-1"></a>
+<h3 class="section">29.1 One-dimensional Interpolation</h3>
+
+<p>Octave supports several methods for one-dimensional interpolation, most
+of which are described in this section.  <a href="Polynomial-Interpolation.html#Polynomial-Interpolation">Polynomial Interpolation</a>
+and <a href="Interpolation-on-Scattered-Data.html#Interpolation-on-Scattered-Data">Interpolation on Scattered Data</a> describe additional methods.
+</p>
+<a name="XREFinterp1"></a><dl>
+<dt><a name="index-interp1"></a>Function File: <em><var>yi</var> =</em> <strong>interp1</strong> <em>(<var>x</var>, <var>y</var>, <var>xi</var>)</em></dt>
+<dt><a name="index-interp1-1"></a>Function File: <em><var>yi</var> =</em> <strong>interp1</strong> <em>(<var>y</var>, <var>xi</var>)</em></dt>
+<dt><a name="index-interp1-2"></a>Function File: <em><var>yi</var> =</em> <strong>interp1</strong> <em>(&hellip;, <var>method</var>)</em></dt>
+<dt><a name="index-interp1-3"></a>Function File: <em><var>yi</var> =</em> <strong>interp1</strong> <em>(&hellip;, <var>extrap</var>)</em></dt>
+<dt><a name="index-interp1-4"></a>Function File: <em><var>yi</var> =</em> <strong>interp1</strong> <em>(&hellip;, &quot;left&quot;)</em></dt>
+<dt><a name="index-interp1-5"></a>Function File: <em><var>yi</var> =</em> <strong>interp1</strong> <em>(&hellip;, &quot;right&quot;)</em></dt>
+<dt><a name="index-interp1-6"></a>Function File: <em><var>pp</var> =</em> <strong>interp1</strong> <em>(&hellip;, &quot;pp&quot;)</em></dt>
+<dd>
+<p>One-dimensional interpolation.
+</p>
+<p>Interpolate input data to determine the value of <var>yi</var> at the points
+<var>xi</var>.  If not specified, <var>x</var> is taken to be the indices of <var>y</var>
+(<code>1:length (<var>y</var>)</code>).  If <var>y</var> is a matrix or an N-dimensional
+array, the interpolation is performed on each column of <var>y</var>.
+</p>
+<p>The interpolation <var>method</var> is one of:
+</p>
+<dl compact="compact">
+<dt><code>&quot;nearest&quot;</code></dt>
+<dd><p>Return the nearest neighbor.
+</p>
+</dd>
+<dt><code>&quot;previous&quot;</code></dt>
+<dd><p>Return the previous neighbor.
+</p>
+</dd>
+<dt><code>&quot;next&quot;</code></dt>
+<dd><p>Return the next neighbor.
+</p>
+</dd>
+<dt><code>&quot;linear&quot;</code> (default)</dt>
+<dd><p>Linear interpolation from nearest neighbors.
+</p>
+</dd>
+<dt><code>&quot;pchip&quot;</code></dt>
+<dd><p>Piecewise cubic Hermite interpolating polynomial&mdash;shape-preserving
+interpolation with smooth first derivative.
+</p>
+</dd>
+<dt><code>&quot;cubic&quot;</code></dt>
+<dd><p>Cubic interpolation (same as <code>&quot;pchip&quot;</code>).
+</p>
+</dd>
+<dt><code>&quot;spline&quot;</code></dt>
+<dd><p>Cubic spline interpolation&mdash;smooth first and second derivatives
+throughout the curve.
+</p></dd>
+</dl>
+
+<p>Adding &rsquo;*&rsquo; to the start of any method above forces <code>interp1</code>
+to assume that <var>x</var> is uniformly spaced, and only <code><var>x</var>(1)</code>
+and <code><var>x</var>(2)</code> are referenced.  This is usually faster,
+and is never slower.  The default method is <code>&quot;linear&quot;</code>.
+</p>
+<p>If <var>extrap</var> is the string <code>&quot;extrap&quot;</code>, then extrapolate values
+beyond the endpoints using the current <var>method</var>.  If <var>extrap</var> is a
+number, then replace values beyond the endpoints with that number.  When
+unspecified, <var>extrap</var> defaults to <code>NA</code>.
+</p>
+<p>If the string argument <code>&quot;pp&quot;</code> is specified, then <var>xi</var> should not
+be supplied and <code>interp1</code> returns a piecewise polynomial object.  This
+object can later be used with <code>ppval</code> to evaluate the interpolation.
+There is an equivalence, such that <code>ppval (interp1 (<var>x</var>,
+<var>y</var>, <var>method</var>, <code>&quot;pp&quot;</code>), <var>xi</var>) == interp1 (<var>x</var>, <var>y</var>,
+<var>xi</var>, <var>method</var>, <code>&quot;extrap&quot;</code>)</code>.
+</p>
+<p>Duplicate points in <var>x</var> specify a discontinuous interpolant.  There
+may be at most 2 consecutive points with the same value.
+If <var>x</var> is increasing, the default discontinuous interpolant is
+right-continuous.  If <var>x</var> is decreasing, the default discontinuous
+interpolant is left-continuous.
+The continuity condition of the interpolant may be specified by using
+the options <code>&quot;left&quot;</code> or <code>&quot;right&quot;</code> to select a left-continuous
+or right-continuous interpolant, respectively.
+Discontinuous interpolation is only allowed for <code>&quot;nearest&quot;</code> and
+<code>&quot;linear&quot;</code> methods; in all other cases, the <var>x</var>-values must be
+unique.
+</p>
+<p>An example of the use of <code>interp1</code> is
+</p>
+<div class="example">
+<pre class="example">xf = [0:0.05:10];
+yf = sin (2*pi*xf/5);
+xp = [0:10];
+yp = sin (2*pi*xp/5);
+lin = interp1 (xp, yp, xf);
+near = interp1 (xp, yp, xf, &quot;nearest&quot;);
+pch = interp1 (xp, yp, xf, &quot;pchip&quot;);
+spl = interp1 (xp, yp, xf, &quot;spline&quot;);
+plot (xf,yf,&quot;r&quot;, xf,near,&quot;g&quot;, xf,lin,&quot;b&quot;, xf,pch,&quot;c&quot;, xf,spl,&quot;m&quot;,
+      xp,yp,&quot;r*&quot;);
+legend (&quot;original&quot;, &quot;nearest&quot;, &quot;linear&quot;, &quot;pchip&quot;, &quot;spline&quot;);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Signal-Processing.html#XREFpchip">pchip</a>, <a href="#XREFspline">spline</a>, <a href="#XREFinterpft">interpft</a>, <a href="Multi_002ddimensional-Interpolation.html#XREFinterp2">interp2</a>, <a href="Multi_002ddimensional-Interpolation.html#XREFinterp3">interp3</a>, <a href="Multi_002ddimensional-Interpolation.html#XREFinterpn">interpn</a>.
+</p></dd></dl>
+
+
+<p>There are some important differences between the various interpolation
+methods.  The <code>&quot;spline&quot;</code> method enforces that both the first and second
+derivatives of the interpolated values have a continuous derivative,
+whereas the other methods do not.  This means that the results of the
+<code>&quot;spline&quot;</code> method are generally smoother.  If the function to be
+interpolated is in fact smooth, then <code>&quot;spline&quot;</code> will give excellent
+results.  However, if the function to be evaluated is in some manner
+discontinuous, then <code>&quot;pchip&quot;</code> interpolation might give better results.
+</p>
+<p>This can be demonstrated by the code
+</p>
+<div class="example">
+<pre class="example">t = -2:2;
+dt = 1;
+ti =-2:0.025:2;
+dti = 0.025;
+y = sign (t);
+ys = interp1 (t,y,ti,&quot;spline&quot;);
+yp = interp1 (t,y,ti,&quot;pchip&quot;);
+ddys = diff (diff (ys)./dti) ./ dti;
+ddyp = diff (diff (yp)./dti) ./ dti;
+figure (1);
+plot (ti,ys,&quot;r-&quot;, ti,yp,&quot;g-&quot;);
+legend (&quot;spline&quot;, &quot;pchip&quot;, 4);
+figure (2);
+plot (ti,ddys,&quot;r+&quot;, ti,ddyp,&quot;g*&quot;);
+legend (&quot;spline&quot;, &quot;pchip&quot;);
+</pre></div>
+
+<p>The result of which can be seen in <a href="#fig_003ainterpderiv1">Figure 29.1</a> and
+<a href="#fig_003ainterpderiv2">Figure 29.2</a>.
+</p>
+<div class="float"><a name="fig_003ainterpderiv1"></a>
+<div align="center"><img src="interpderiv1.png" alt="interpderiv1">
+</div>
+<div class="float-caption"><p><strong>Figure 29.1: </strong>Comparison of <code>&quot;pchip&quot;</code> and <code>&quot;spline&quot;</code> interpolation methods for a
+step function</p></div></div>
+<div class="float"><a name="fig_003ainterpderiv2"></a>
+<div align="center"><img src="interpderiv2.png" alt="interpderiv2">
+</div>
+<div class="float-caption"><p><strong>Figure 29.2: </strong>Comparison of the second derivative of the <code>&quot;pchip&quot;</code> and <code>&quot;spline&quot;</code>
+interpolation methods for a step function</p></div></div>
+<p>Fourier interpolation, is a resampling technique where a signal is
+converted to the frequency domain, padded with zeros and then
+reconverted to the time domain.
+</p>
+<a name="XREFinterpft"></a><dl>
+<dt><a name="index-interpft"></a>Function File: <em></em> <strong>interpft</strong> <em>(<var>x</var>, <var>n</var>)</em></dt>
+<dt><a name="index-interpft-1"></a>Function File: <em></em> <strong>interpft</strong> <em>(<var>x</var>, <var>n</var>, <var>dim</var>)</em></dt>
+<dd>
+<p>Fourier interpolation.
+</p>
+<p>If <var>x</var> is a vector then <var>x</var> is resampled with <var>n</var> points.  The
+data in <var>x</var> is assumed to be equispaced.  If <var>x</var> is a matrix or an
+N-dimensional array, the interpolation is performed on each column of
+<var>x</var>.
+</p>
+<p>If <var>dim</var> is specified, then interpolate along the dimension <var>dim</var>.
+</p>
+<p><code>interpft</code> assumes that the interpolated function is periodic, and so
+assumptions are made about the endpoints of the interpolation.
+</p>
+<p><strong>See also:</strong> <a href="#XREFinterp1">interp1</a>.
+</p></dd></dl>
+
+
+<p>There are two significant limitations on Fourier interpolation.  First,
+the function signal is assumed to be periodic, and so non-periodic
+signals will be poorly represented at the edges.  Second, both the
+signal and its interpolation are required to be sampled at equispaced
+points.  An example of the use of <code>interpft</code> is
+</p>
+<div class="example">
+<pre class="example">t = 0 : 0.3 : pi; dt = t(2)-t(1);
+n = length (t); k = 100;
+ti = t(1) + [0 : k-1]*dt*n/k;
+y = sin (4*t + 0.3) .* cos (3*t - 0.1);
+yp = sin (4*ti + 0.3) .* cos (3*ti - 0.1);
+plot (ti, yp, &quot;g&quot;, ti, interp1 (t, y, ti, &quot;spline&quot;), &quot;b&quot;, ...
+      ti, interpft (y, k), &quot;c&quot;, t, y, &quot;r+&quot;);
+legend (&quot;sin(4t+0.3)cos(3t-0.1)&quot;, &quot;spline&quot;, &quot;interpft&quot;, &quot;data&quot;);
+</pre></div>
+
+<p>which demonstrates the poor behavior of Fourier interpolation for non-periodic
+functions, as can be seen in <a href="#fig_003ainterpft">Figure 29.3</a>.
+</p>
+<div class="float"><a name="fig_003ainterpft"></a>
+<div align="center"><img src="interpft.png" alt="interpft">
+</div>
+<div class="float-caption"><p><strong>Figure 29.3: </strong>Comparison of <code>interp1</code> and <code>interpft</code> for non-periodic data</p></div></div>
+<p>In addition, the support functions <code>spline</code> and <code>lookup</code> that
+underlie the <code>interp1</code> function can be called directly.
+</p>
+<a name="XREFspline"></a><dl>
+<dt><a name="index-spline"></a>Function File: <em><var>pp</var> =</em> <strong>spline</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-spline-1"></a>Function File: <em><var>yi</var> =</em> <strong>spline</strong> <em>(<var>x</var>, <var>y</var>, <var>xi</var>)</em></dt>
+<dd><p>Return the cubic spline interpolant of points <var>x</var> and <var>y</var>.
+</p>
+<p>When called with two arguments, return the piecewise polynomial <var>pp</var>
+that may be used with <code>ppval</code> to evaluate the polynomial at specific
+points.
+</p>
+<p>When called with a third input argument, <code>spline</code> evaluates the spline
+at the points <var>xi</var>.  The third calling form
+<code>spline (<var>x</var>, <var>y</var>, <var>xi</var>)</code> is equivalent to
+<code>ppval (spline (<var>x</var>, <var>y</var>), <var>xi</var>)</code>.
+</p>
+<p>The variable <var>x</var> must be a vector of length <var>n</var>.
+</p>
+<p><var>y</var> can be either a vector or array.  If <var>y</var> is a vector it must
+have a length of either <var>n</var> or <code><var>n</var> + 2</code>.  If the length of
+<var>y</var> is <var>n</var>, then the <code>&quot;not-a-knot&quot;</code> end condition is used.
+If the length of <var>y</var> is <code><var>n</var> + 2</code>, then the first and last
+values of the vector <var>y</var> are the values of the first derivative of the
+cubic spline at the endpoints.
+</p>
+<p>If <var>y</var> is an array, then the size of <var>y</var> must have the form
+<code>[<var>s1</var>, <var>s2</var>, &hellip;, <var>sk</var>, <var>n</var>]</code>
+or
+<code>[<var>s1</var>, <var>s2</var>, &hellip;, <var>sk</var>, <var>n</var> + 2]</code>.
+The array is reshaped internally to a matrix where the leading
+dimension is given by
+<code><var>s1</var> * <var>s2</var> * &hellip; * <var>sk</var></code>
+and each row of this matrix is then treated separately.  Note that this is
+exactly the opposite of <code>interp1</code> but is done for <small>MATLAB</small>
+compatibility.
+</p>
+
+<p><strong>See also:</strong> <a href="Signal-Processing.html#XREFpchip">pchip</a>, <a href="Polynomial-Interpolation.html#XREFppval">ppval</a>, <a href="Polynomial-Interpolation.html#XREFmkpp">mkpp</a>, <a href="Polynomial-Interpolation.html#XREFunmkpp">unmkpp</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Multi_002ddimensional-Interpolation.html#Multi_002ddimensional-Interpolation" accesskey="n" rel="next">Multi-dimensional Interpolation</a>, Up: <a href="Interpolation.html#Interpolation" accesskey="u" rel="up">Interpolation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

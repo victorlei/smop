@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Overloading and Autoloading</title>
+
+<meta name="description" content="GNU Octave: Overloading and Autoloading">
+<meta name="keywords" content="GNU Octave: Overloading and Autoloading">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Function-Files.html#Function-Files" rel="up" title="Function Files">
+<link href="Function-Locking.html#Function-Locking" rel="next" title="Function Locking">
+<link href="Nested-Functions.html#Nested-Functions" rel="prev" title="Nested Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Overloading-and-Autoloading"></a>
+<div class="header">
+<p>
+Next: <a href="Function-Locking.html#Function-Locking" accesskey="n" rel="next">Function Locking</a>, Previous: <a href="Nested-Functions.html#Nested-Functions" accesskey="p" rel="prev">Nested Functions</a>, Up: <a href="Function-Files.html#Function-Files" accesskey="u" rel="up">Function Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Overloading-and-Autoloading-1"></a>
+<h4 class="subsection">11.9.5 Overloading and Autoloading</h4>
+
+<p>Functions can be overloaded to work with different input arguments.  For
+example, the operator &rsquo;+&rsquo; has been overloaded in Octave to work with single,
+double, uint8, int32, and many other arguments.  The preferred way to overload
+functions is through classes and object oriented programming
+(see <a href="Function-Overloading.html#Function-Overloading">Function Overloading</a>).  Occasionally, however, one needs to undo
+user overloading and call the default function associated with a specific
+type.  The <code>builtin</code> function exists for this purpose.
+</p>
+<a name="XREFbuiltin"></a><dl>
+<dt><a name="index-builtin"></a>Built-in Function: <em>[&hellip;] =</em> <strong>builtin</strong> <em>(<var>f</var>, &hellip;)</em></dt>
+<dd><p>Call the base function <var>f</var> even if <var>f</var> is overloaded to another
+function for the given type signature.
+</p>
+<p>This is normally useful when doing object-oriented programming and there is
+a requirement to call one of Octave&rsquo;s base functions rather than the
+overloaded one of a new class.
+</p>
+<p>A trivial example which redefines the <code>sin</code> function to be the
+<code>cos</code> function shows how <code>builtin</code> works.
+</p>
+<div class="example">
+<pre class="example">sin (0)
+  &rArr; 0
+function y = sin (x), y = cos (x); endfunction
+sin (0)
+  &rArr; 1
+builtin (&quot;sin&quot;, 0)
+  &rArr; 0
+</pre></div>
+</dd></dl>
+
+
+<p>A single dynamically linked file might define several
+functions.  However, as Octave searches for functions based on the
+functions filename, Octave needs a manner in which to find each of the
+functions in the dynamically linked file.  On operating systems that
+support symbolic links, it is possible to create a symbolic link to the
+original file for each of the functions which it contains.
+</p>
+<p>However, there is at least one well known operating system that doesn&rsquo;t
+support symbolic links.  Making copies of the original file for each of
+the functions is undesirable as it increases the
+amount of disk space used by Octave.  Instead Octave supplies the
+<code>autoload</code> function, that permits the user to define in which
+file a certain function will be found.
+</p>
+<a name="XREFautoload"></a><dl>
+<dt><a name="index-autoload"></a>Built-in Function: <em><var>autoload_map</var> =</em> <strong>autoload</strong> <em>()</em></dt>
+<dt><a name="index-autoload-1"></a>Built-in Function: <em></em> <strong>autoload</strong> <em>(<var>function</var>, <var>file</var>)</em></dt>
+<dt><a name="index-autoload-2"></a>Built-in Function: <em></em> <strong>autoload</strong> <em>(&hellip;, &quot;remove&quot;)</em></dt>
+<dd><p>Define <var>function</var> to autoload from <var>file</var>.
+</p>
+<p>The second argument, <var>file</var>, should be an absolute file name or a file
+name in the same directory as the function or script from which the autoload
+command was run.  <var>file</var> <em>should not</em> depend on the Octave load
+path.
+</p>
+<p>Normally, calls to <code>autoload</code> appear in PKG_ADD script files that are
+evaluated when a directory is added to Octave&rsquo;s load path.  To avoid having
+to hardcode directory names in <var>file</var>, if <var>file</var> is in the same
+directory as the PKG_ADD script then
+</p>
+<div class="example">
+<pre class="example">autoload (&quot;foo&quot;, &quot;bar.oct&quot;);
+</pre></div>
+
+<p>will load the function <code>foo</code> from the file <code>bar.oct</code>.  The above
+usage when <code>bar.oct</code> is not in the same directory, or usages such as
+</p>
+<div class="example">
+<pre class="example">autoload (&quot;foo&quot;, file_in_loadpath (&quot;bar.oct&quot;))
+</pre></div>
+
+<p>are strongly discouraged, as their behavior may be unpredictable.
+</p>
+<p>With no arguments, return a structure containing the current autoload map.
+</p>
+<p>If a third argument <code>&quot;remove&quot;</code> is given, the function is cleared and
+not loaded anymore during the current Octave session.
+</p>
+
+<p><strong>See also:</strong> <a href="Creating-Packages.html#XREFPKG_005fADD">PKG_ADD</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Function-Locking.html#Function-Locking" accesskey="n" rel="next">Function Locking</a>, Previous: <a href="Nested-Functions.html#Nested-Functions" accesskey="p" rel="prev">Nested Functions</a>, Up: <a href="Function-Files.html#Function-Files" accesskey="u" rel="up">Function Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

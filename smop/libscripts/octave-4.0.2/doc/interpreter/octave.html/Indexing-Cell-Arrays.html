@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Indexing Cell Arrays</title>
+
+<meta name="description" content="GNU Octave: Indexing Cell Arrays">
+<meta name="keywords" content="GNU Octave: Indexing Cell Arrays">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Cell-Arrays.html#Cell-Arrays" rel="up" title="Cell Arrays">
+<link href="Cell-Arrays-of-Strings.html#Cell-Arrays-of-Strings" rel="next" title="Cell Arrays of Strings">
+<link href="Creating-Cell-Arrays.html#Creating-Cell-Arrays" rel="prev" title="Creating Cell Arrays">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Indexing-Cell-Arrays"></a>
+<div class="header">
+<p>
+Next: <a href="Cell-Arrays-of-Strings.html#Cell-Arrays-of-Strings" accesskey="n" rel="next">Cell Arrays of Strings</a>, Previous: <a href="Creating-Cell-Arrays.html#Creating-Cell-Arrays" accesskey="p" rel="prev">Creating Cell Arrays</a>, Up: <a href="Cell-Arrays.html#Cell-Arrays" accesskey="u" rel="up">Cell Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Indexing-Cell-Arrays-1"></a>
+<h4 class="subsection">6.2.3 Indexing Cell Arrays</h4>
+
+<p>As shown in see <a href="Basic-Usage-of-Cell-Arrays.html#Basic-Usage-of-Cell-Arrays">Basic Usage of Cell Arrays</a> elements can be
+extracted from cell arrays using the &lsquo;<samp>{</samp>&rsquo; and &lsquo;<samp>}</samp>&rsquo;
+operators.  If you want to extract or access subarrays which are still
+cell arrays, you need to use the &lsquo;<samp>(</samp>&rsquo; and &lsquo;<samp>)</samp>&rsquo; operators.  The
+following example illustrates the difference:
+</p>
+<div class="example">
+<pre class="example">c = {&quot;1&quot;, &quot;2&quot;, &quot;3&quot;; &quot;x&quot;, &quot;y&quot;, &quot;z&quot;; &quot;4&quot;, &quot;5&quot;, &quot;6&quot;};
+c{2,3}
+     &rArr; ans = z
+
+c(2,3)
+     &rArr; ans =
+        {
+          [1,1] = z
+        }
+</pre></div>
+
+<p>So with &lsquo;<samp>{}</samp>&rsquo; you access elements of a cell
+array, while with &lsquo;<samp>()</samp>&rsquo; you access a sub array of a cell
+array.
+</p>
+<p>Using the &lsquo;<samp>(</samp>&rsquo; and &lsquo;<samp>)</samp>&rsquo; operators, indexing works for cell
+arrays like for multi-dimensional arrays.  As an example, all the rows
+of the first and third column of a cell array can be set to <code>0</code>
+with the following command:
+</p>
+<div class="example">
+<pre class="example">c(:, [1, 3]) = {0}
+     &rArr;  =
+        {
+          [1,1] = 0
+          [2,1] = 0
+          [3,1] = 0
+          [1,2] = 2
+          [2,2] =  10
+          [3,2] =  20
+          [1,3] = 0
+          [2,3] = 0
+          [3,3] = 0
+        }
+</pre></div>
+
+<p>Note, that the above can also be achieved like this:
+</p>
+<div class="example">
+<pre class="example">c(:, [1, 3]) = 0;
+</pre></div>
+
+<p>Here, the scalar &lsquo;<samp>0</samp>&rsquo; is automatically promoted to
+cell array &lsquo;<samp>{0}</samp>&rsquo; and then assigned to the subarray of <code>c</code>.
+</p>
+<p>To give another example for indexing cell arrays with &lsquo;<samp>()</samp>&rsquo;, you
+can exchange the first and the second row of a cell array as in the
+following command:
+</p>
+<div class="example">
+<pre class="example">c = {1, 2, 3; 4, 5, 6};
+c([1, 2], :) = c([2, 1], :)
+     &rArr; =
+        {
+          [1,1] =  4
+          [2,1] =  1
+          [1,2] =  5
+          [2,2] =  2
+          [1,3] =  6
+          [2,3] =  3
+        }
+</pre></div>
+
+<p>Accessing multiple elements of a cell array with the &lsquo;<samp>{</samp>&rsquo; and
+&lsquo;<samp>}</samp>&rsquo; operators will result in a comma-separated list of all the
+requested elements (see <a href="Comma-Separated-Lists.html#Comma-Separated-Lists">Comma Separated Lists</a>).  Using the
+&lsquo;<samp>{</samp>&rsquo; and &lsquo;<samp>}</samp>&rsquo; operators the first two rows in the above
+example can be swapped back like this:
+</p>
+<div class="example">
+<pre class="example">[c{[1,2], :}] = deal (c{[2, 1], :})
+     &rArr; =
+        {
+          [1,1] =  1
+          [2,1] =  4
+          [1,2] =  2
+          [2,2] =  5
+          [1,3] =  3
+          [2,3] =  6
+        }
+</pre></div>
+
+<p>As for struct arrays and numerical arrays, the empty matrix &lsquo;<samp>[]</samp>&rsquo;
+can be used to delete elements from a cell array:
+</p>
+<div class="example">
+<pre class="example">x = {&quot;1&quot;, &quot;2&quot;; &quot;3&quot;, &quot;4&quot;};
+x(1, :) = []
+     &rArr; x =
+        {
+          [1,1] = 3
+          [1,2] = 4
+        }
+</pre></div>
+
+<p>The following example shows how to just remove the contents of cell
+array elements but not delete the space for them:
+</p>
+<div class="example">
+<pre class="example">x = {&quot;1&quot;, &quot;2&quot;; &quot;3&quot;, &quot;4&quot;};
+x(1, :) = {[]}
+&rArr; x =
+      {
+        [1,1] = [](0x0)
+        [2,1] = 3
+        [1,2] = [](0x0)
+        [2,2] = 4
+      }
+</pre></div>
+
+<p>The indexing operations operate on the cell array and not on the objects
+within the cell array.  By contrast, <code>cellindexmat</code> applies matrix indexing
+to the objects within each cell array entry and returns the requested values.
+</p>
+<a name="XREFcellindexmat"></a><dl>
+<dt><a name="index-cellindexmat"></a>Built-in Function: <em><var>y</var> =</em> <strong>cellindexmat</strong> <em>(<var>x</var>, <var>varargin</var>)</em></dt>
+<dd><p>Perform indexing of matrices in a cell array.
+</p>
+<p>Given a cell array of matrices <var>x</var>, this function computes
+</p>
+<div class="example">
+<pre class="example">Y = cell (size (X));
+for i = 1:numel (X)
+  Y{i} = X{i}(varargin{:});
+endfor
+</pre></div>
+
+<p><strong>See also:</strong> <a href="Creating-Cell-Arrays.html#XREFcellslices">cellslices</a>, <a href="Function-Application.html#XREFcellfun">cellfun</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Cell-Arrays-of-Strings.html#Cell-Arrays-of-Strings" accesskey="n" rel="next">Cell Arrays of Strings</a>, Previous: <a href="Creating-Cell-Arrays.html#Creating-Cell-Arrays" accesskey="p" rel="prev">Creating Cell Arrays</a>, Up: <a href="Cell-Arrays.html#Cell-Arrays" accesskey="u" rel="up">Cell Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Minimizers</title>
+
+<meta name="description" content="GNU Octave: Minimizers">
+<meta name="keywords" content="GNU Octave: Minimizers">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Nonlinear-Equations.html#Nonlinear-Equations" rel="up" title="Nonlinear Equations">
+<link href="Diagonal-and-Permutation-Matrices.html#Diagonal-and-Permutation-Matrices" rel="next" title="Diagonal and Permutation Matrices">
+<link href="Solvers.html#Solvers" rel="prev" title="Solvers">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Minimizers"></a>
+<div class="header">
+<p>
+Previous: <a href="Solvers.html#Solvers" accesskey="p" rel="prev">Solvers</a>, Up: <a href="Nonlinear-Equations.html#Nonlinear-Equations" accesskey="u" rel="up">Nonlinear Equations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Minimizers-1"></a>
+<h3 class="section">20.2 Minimizers</h3>
+<a name="index-local-minimum"></a>
+<a name="index-finding-minimums"></a>
+
+<p>Often it is useful to find the minimum value of a function rather than just
+the zeroes where it crosses the x-axis.  <code>fminbnd</code> is designed for the
+simpler, but very common, case of a univariate function where the interval
+to search is bounded.  For unbounded minimization of a function with
+potentially many variables use <code>fminunc</code> or <code>fminsearch</code>.  The two
+functions use different internal algorithms and some knowledge of the objective
+function is required.  For functions which can be differentiated, <code>fminunc</code>
+is appropriate.  For functions with discontinuities, or for which a gradient
+search would fail, use <code>fminsearch</code>.  See <a href="Optimization.html#Optimization">Optimization</a>, for
+minimization with the presence of constraint functions.  Note that searches
+can be made for maxima by simply inverting the objective function
+(<code>Fto_max = -Fto_min</code>).
+</p>
+<a name="XREFfminbnd"></a><dl>
+<dt><a name="index-fminbnd"></a>Function File: <em>[<var>x</var>, <var>fval</var>, <var>info</var>, <var>output</var>] =</em> <strong>fminbnd</strong> <em>(<var>fun</var>, <var>a</var>, <var>b</var>, <var>options</var>)</em></dt>
+<dd><p>Find a minimum point of a univariate function.
+</p>
+<p><var>fun</var> should be a function handle or name.  <var>a</var>, <var>b</var> specify a
+starting interval.  <var>options</var> is a structure specifying additional
+options.  Currently, <code>fminbnd</code> recognizes these options:
+<code>&quot;FunValCheck&quot;</code>, <code>&quot;OutputFcn&quot;</code>, <code>&quot;TolX&quot;</code>,
+<code>&quot;MaxIter&quot;</code>, <code>&quot;MaxFunEvals&quot;</code>.  For a description of these
+options, see <a href="Linear-Least-Squares.html#XREFoptimset">optimset</a>.
+</p>
+<p>On exit, the function returns <var>x</var>, the approximate minimum point and
+<var>fval</var>, the function value thereof.
+</p>
+<p><var>info</var> is an exit flag that can have these values:
+</p>
+<ul>
+<li> 1
+The algorithm converged to a solution.
+
+</li><li> 0
+Maximum number of iterations or function evaluations has been exhausted.
+
+</li><li> -1
+The algorithm has been terminated from user output function.
+</li></ul>
+
+<p>Notes: The search for a minimum is restricted to be in the interval bound by
+<var>a</var> and <var>b</var>.  If you only have an initial point to begin searching
+from you will need to use an unconstrained minimization algorithm such as
+<code>fminunc</code> or <code>fminsearch</code>.  <code>fminbnd</code> internally uses a
+Golden Section search strategy.
+</p>
+<p><strong>See also:</strong> <a href="Solvers.html#XREFfzero">fzero</a>, <a href="#XREFfminunc">fminunc</a>, <a href="#XREFfminsearch">fminsearch</a>, <a href="Linear-Least-Squares.html#XREFoptimset">optimset</a>.
+</p></dd></dl>
+
+
+<a name="XREFfminunc"></a><dl>
+<dt><a name="index-fminunc"></a>Function File: <em></em> <strong>fminunc</strong> <em>(<var>fcn</var>, <var>x0</var>)</em></dt>
+<dt><a name="index-fminunc-1"></a>Function File: <em></em> <strong>fminunc</strong> <em>(<var>fcn</var>, <var>x0</var>, <var>options</var>)</em></dt>
+<dt><a name="index-fminunc-2"></a>Function File: <em>[<var>x</var>, <var>fval</var>, <var>info</var>, <var>output</var>, <var>grad</var>, <var>hess</var>] =</em> <strong>fminunc</strong> <em>(<var>fcn</var>, &hellip;)</em></dt>
+<dd><p>Solve an unconstrained optimization problem defined by the function
+<var>fcn</var>.
+</p>
+<p><var>fcn</var> should accept a vector (array) defining the unknown variables, and
+return the objective function value, optionally with gradient.
+<code>fminunc</code> attempts to determine a vector <var>x</var> such that
+<code><var>fcn</var> (<var>x</var>)</code> is a local minimum.
+</p>
+<p><var>x0</var> determines a starting guess.  The shape of <var>x0</var> is preserved in
+all calls to <var>fcn</var>, but otherwise is treated as a column vector.
+</p>
+<p><var>options</var> is a structure specifying additional options.  Currently,
+<code>fminunc</code> recognizes these options:
+<code>&quot;FunValCheck&quot;</code>, <code>&quot;OutputFcn&quot;</code>, <code>&quot;TolX&quot;</code>,
+<code>&quot;TolFun&quot;</code>, <code>&quot;MaxIter&quot;</code>, <code>&quot;MaxFunEvals&quot;</code>,
+<code>&quot;GradObj&quot;</code>, <code>&quot;FinDiffType&quot;</code>, <code>&quot;TypicalX&quot;</code>,
+<code>&quot;AutoScaling&quot;</code>.
+</p>
+<p>If <code>&quot;GradObj&quot;</code> is <code>&quot;on&quot;</code>, it specifies that <var>fcn</var>, when
+called with 2 output arguments, also returns the Jacobian matrix of partial
+first derivatives at the requested point.  <code>TolX</code> specifies the
+termination tolerance for the unknown variables <var>x</var>, while <code>TolFun</code>
+is a tolerance for the objective function value <var>fval</var>.  The default is
+<code>1e-7</code> for both options.
+</p>
+<p>For a description of the other options, see <code>optimset</code>.
+</p>
+<p>On return, <var>x</var> is the location of the minimum and <var>fval</var> contains
+the value of the objective function at <var>x</var>.
+</p>
+<p><var>info</var> may be one of the following values:
+</p>
+<dl compact="compact">
+<dt>1</dt>
+<dd><p>Converged to a solution point.  Relative gradient error is less than
+specified by <code>TolFun</code>.
+</p>
+</dd>
+<dt>2</dt>
+<dd><p>Last relative step size was less than <code>TolX</code>.
+</p>
+</dd>
+<dt>3</dt>
+<dd><p>Last relative change in function value was less than <code>TolFun</code>.
+</p>
+</dd>
+<dt>0</dt>
+<dd><p>Iteration limit exceeded&mdash;either maximum number of algorithm iterations
+<code>MaxIter</code> or maximum number of function evaluations <code>MaxFunEvals</code>.
+</p>
+</dd>
+<dt>-1</dt>
+<dd><p>Algorithm terminated by <code>OutputFcn</code>.
+</p>
+</dd>
+<dt>-3</dt>
+<dd><p>The trust region radius became excessively small.
+</p></dd>
+</dl>
+
+<p>Optionally, <code>fminunc</code> can return a structure with convergence statistics
+(<var>output</var>), the output gradient (<var>grad</var>) at the solution <var>x</var>,
+and approximate Hessian (<var>hess</var>) at the solution <var>x</var>.
+</p>
+<p>Application Notes: If have only a single nonlinear equation of one variable
+then using <code>fminbnd</code> is usually a better choice.
+</p>
+<p>The algorithm used by <code>fminsearch</code> is a gradient search which depends
+on the objective function being differentiable.  If the function has
+discontinuities it may be better to use a derivative-free algorithm such as
+<code>fminsearch</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfminbnd">fminbnd</a>, <a href="#XREFfminsearch">fminsearch</a>, <a href="Linear-Least-Squares.html#XREFoptimset">optimset</a>.
+</p></dd></dl>
+
+
+<a name="XREFfminsearch"></a><dl>
+<dt><a name="index-fminsearch"></a>Function File: <em><var>x</var> =</em> <strong>fminsearch</strong> <em>(<var>fun</var>, <var>x0</var>)</em></dt>
+<dt><a name="index-fminsearch-1"></a>Function File: <em><var>x</var> =</em> <strong>fminsearch</strong> <em>(<var>fun</var>, <var>x0</var>, <var>options</var>)</em></dt>
+<dt><a name="index-fminsearch-2"></a>Function File: <em>[<var>x</var>, <var>fval</var>] =</em> <strong>fminsearch</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Find a value of <var>x</var> which minimizes the function <var>fun</var>.
+</p>
+<p>The search begins at the point <var>x0</var> and iterates using the
+Nelder &amp; Mead Simplex algorithm (a derivative-free method).  This
+algorithm is better-suited to functions which have discontinuities or for
+which a gradient-based search such as <code>fminunc</code> fails.
+</p>
+<p>Options for the search are provided in the parameter <var>options</var> using the
+function <code>optimset</code>.  Currently, <code>fminsearch</code> accepts the options:
+<code>&quot;TolX&quot;</code>, <code>&quot;MaxFunEvals&quot;</code>, <code>&quot;MaxIter&quot;</code>, <code>&quot;Display&quot;</code>.
+For a description of these options, see <code>optimset</code>.
+</p>
+<p>On exit, the function returns <var>x</var>, the minimum point, and <var>fval</var>,
+the function value thereof.
+</p>
+<p>Example usages:
+</p>
+<div class="example">
+<pre class="example">fminsearch (@(x) (x(1)-5).^2+(x(2)-8).^4, [0;0])
+
+fminsearch (inline (&quot;(x(1)-5).^2+(x(2)-8).^4&quot;, &quot;x&quot;), [0;0])
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFfminbnd">fminbnd</a>, <a href="#XREFfminunc">fminunc</a>, <a href="Linear-Least-Squares.html#XREFoptimset">optimset</a>.
+</p></dd></dl>
+
+
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Solvers.html#Solvers" accesskey="p" rel="prev">Solvers</a>, Up: <a href="Nonlinear-Equations.html#Nonlinear-Equations" accesskey="u" rel="up">Nonlinear Equations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+See the file README.Cygwin for information about installing the binary
+package of Octave for Cygwin.
+
+See the file README.MinGW for information about Octave on the MinGW platform
+including installation of binaries or compiling Octave from source.
+
+
+John W. Eaton
+jwe@octave.org
+
+Last updated: Sat Jan 22 16:56:05 PST 2011

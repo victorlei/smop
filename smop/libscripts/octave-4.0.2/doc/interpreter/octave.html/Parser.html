@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Parser</title>
+
+<meta name="description" content="GNU Octave: Parser">
+<meta name="keywords" content="GNU Octave: Parser">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Grammar-and-Parser.html#Grammar-and-Parser" rel="up" title="Grammar and Parser">
+<link href="Copying.html#Copying" rel="next" title="Copying">
+<link href="Keywords.html#Keywords" rel="prev" title="Keywords">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Parser"></a>
+<div class="header">
+<p>
+Previous: <a href="Keywords.html#Keywords" accesskey="p" rel="prev">Keywords</a>, Up: <a href="Grammar-and-Parser.html#Grammar-and-Parser" accesskey="u" rel="up">Grammar and Parser</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Parser-1"></a>
+<h3 class="section">I.2 Parser</h3>
+<a name="index-parser"></a>
+
+<p>The parser has a number of variables that affect its internal operation.
+These variables are generally documented in the manual alongside the code that
+they affect.  For example, <code>allow_noninteger_range_as_index</code> is discussed
+in the section on index expressions.
+</p>
+<p>In addition, there are three non-specific parser customization functions.
+<code>add_input_event_hook</code> can be used to schedule a user function for
+periodic evaluation.  <code>remove_input_event_hook</code> will stop a user function
+from being evaluated periodically.
+</p>
+<a name="XREFadd_005finput_005fevent_005fhook"></a><dl>
+<dt><a name="index-add_005finput_005fevent_005fhook"></a>Built-in Function: <em><var>id</var> =</em> <strong>add_input_event_hook</strong> <em>(<var>fcn</var>)</em></dt>
+<dt><a name="index-add_005finput_005fevent_005fhook-1"></a>Built-in Function: <em><var>id</var> =</em> <strong>add_input_event_hook</strong> <em>(<var>fcn</var>, <var>data</var>)</em></dt>
+<dd><p>Add the named function or function handle <var>fcn</var> to the list of functions
+to call periodically when Octave is waiting for input.
+</p>
+<p>The function should have the form
+</p>
+<div class="example">
+<pre class="example"><var>fcn</var> (<var>data</var>)
+</pre></div>
+
+<p>If <var>data</var> is omitted, Octave calls the function without any arguments.
+</p>
+<p>The returned identifier may be used to remove the function handle from the
+list of input hook functions.
+</p>
+<p><strong>See also:</strong> <a href="#XREFremove_005finput_005fevent_005fhook">remove_input_event_hook</a>.
+</p></dd></dl>
+
+
+<a name="XREFremove_005finput_005fevent_005fhook"></a><dl>
+<dt><a name="index-remove_005finput_005fevent_005fhook"></a>Built-in Function: <em></em> <strong>remove_input_event_hook</strong> <em>(<var>name</var>)</em></dt>
+<dt><a name="index-remove_005finput_005fevent_005fhook-1"></a>Built-in Function: <em></em> <strong>remove_input_event_hook</strong> <em>(<var>fcn_id</var>)</em></dt>
+<dd><p>Remove the named function or function handle with the given identifier
+from the list of functions to call periodically when Octave is waiting
+for input.
+</p>
+<p><strong>See also:</strong> <a href="#XREFadd_005finput_005fevent_005fhook">add_input_event_hook</a>.
+</p></dd></dl>
+
+
+<p>Finally, when the parser cannot identify an input token it calls a particular
+function to handle this.  By default, this is the internal function
+<code>&quot;__unimplemented__&quot;</code> which makes suggestions about possible Octave
+substitutes for <small>MATLAB</small> functions.
+</p>
+<a name="XREFmissing_005ffunction_005fhook"></a><dl>
+<dt><a name="index-missing_005ffunction_005fhook"></a>Built-in Function: <em><var>val</var> =</em> <strong>missing_function_hook</strong> <em>()</em></dt>
+<dt><a name="index-missing_005ffunction_005fhook-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>missing_function_hook</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-missing_005ffunction_005fhook-2"></a>Built-in Function: <em></em> <strong>missing_function_hook</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that specifies the function to call when
+an unknown identifier is requested.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="Missing-Components.html#XREFmissing_005fcomponent_005fhook">missing_component_hook</a>.
+</p></dd></dl>
+
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Keywords.html#Keywords" accesskey="p" rel="prev">Keywords</a>, Up: <a href="Grammar-and-Parser.html#Grammar-and-Parser" accesskey="u" rel="up">Grammar and Parser</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

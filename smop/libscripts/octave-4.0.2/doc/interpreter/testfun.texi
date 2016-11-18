@@ -1,0 +1,850 @@
+@c DO NOT EDIT!  Generated automatically by munge-texi.pl.
+
+@c Copyright (C) 2005-2015 David Bateman
+@c Copyright (C) 2002-2005 Paul Kienzle
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Test and Demo Functions
+@appendix Test and Demo Functions
+@cindex test functions
+
+Octave includes a number of functions to allow the integration of testing
+and demonstration code in the source code of the functions themselves.
+
+@menu
+* Test Functions::
+* Demonstration Functions::
+@end menu
+
+@node Test Functions
+@section Test Functions
+
+@c test scripts/testfun/test.m
+@anchor{XREFtest}
+@deftypefn  {Command} {} test @var{name}
+@deftypefnx {Command} {} test @var{name} quiet|normal|verbose
+@deftypefnx {Function File} {} test ("@var{name}", "quiet|normal|verbose", @var{fid})
+@deftypefnx {Function File} {} test ("@var{name}", "quiet|normal|verbose", @var{fname})
+@deftypefnx {Function File} {@var{success} =} test (@dots{})
+@deftypefnx {Function File} {[@var{n}, @var{nmax}, @var{nxfail}, @var{nskip}] =} test (@dots{})
+@deftypefnx {Function File} {[@var{code}, @var{idx}] =} test ("@var{name}", "grabdemo")
+@deftypefnx {Function File} {} test ([], "explain", @var{fid})
+@deftypefnx {Function File} {} test ([], "explain", @var{fname})
+
+Perform built-in self-tests from the first file in the loadpath matching
+@var{name}.
+
+@code{test} can be called in either command or functional form.  The exact
+operation of test is determined by a combination of mode (interactive or
+batch), reporting level (@qcode{"quiet"}, @qcode{"normal"},
+@qcode{"verbose"}), and whether a logfile or summary output variable is
+used.
+
+The default mode when @code{test} is called from the command line is
+interactive.  In this mode, tests will be run until the first error is
+encountered, or all tests complete successfully.  In batch mode, all tests
+are run regardless of any failures, and the results are collected for
+reporting.  Tests which require user interaction, i.e., demo blocks,
+are never run in batch mode.
+
+Batch mode is enabled by either 1) specifying a logfile using the third
+argument @var{fname} or @var{fid}, or 2) requesting an output argument
+such as @var{success}, @var{n}, etc.
+
+The optional second argument determines the amount of output to generate and
+which types of tests to run.  The default value is @qcode{"normal"}.
+Requesting an output argument will suppress printing the final summary
+message and any intermediate warnings, unless verbose reporting is
+enabled.
+
+@table @asis
+@item @qcode{"quiet"}
+Print a summary message when all tests pass, or print an error with the
+results of the first bad test when a failure occurs.  Don't run tests which
+require user interaction.
+
+@item @qcode{"normal"}
+Display warning messages about skipped tests or failing xtests during test
+execution.
+Print a summary message when all tests pass, or print an error with the
+results of the first bad test when a failure occurs.  Don't run tests which
+require user interaction.
+
+@item @qcode{"verbose"}
+Display tests before execution.  Print all warning messages.  In interactive
+mode, run all tests including those which require user interaction.
+@end table
+
+The optional third input argument specifies a logfile where results of the
+tests should be written.  The logfile may be a character string
+(@var{fname}) or an open file descriptor ID (@var{fid}).  To enable batch
+processing, but still print the results to the screen, use @code{stdout} for
+@var{fid}.
+
+When called with just a single output argument @var{success}, @code{test}
+returns true if all of the tests were successful.  If called with more
+than one output argument then the number of successful tests (@var{n}),
+the total number of tests in the file (@var{nmax}), the number of xtest
+failures (@var{nxfail}), and the number of skipped tests (@var{nskip} are
+returned.
+
+Example
+
+@example
+@group
+test sind
+@result{}
+PASSES 5 out of 5 tests
+
+[n, nmax] = test ("sind")
+@result{}
+n =  5
+nmax =  5
+@end group
+@end example
+
+Additional Calling Syntaxes
+
+If the second argument is the string @qcode{"grabdemo"}, the contents of
+any built-in demo blocks are extracted but not executed.  The text for all
+code blocks is concatenated and returned as @var{code} with @var{idx} being
+a vector of positions of the ends of each demo block.  For an easier way to
+extract demo blocks from files, @xref{XREFexample,,example}.
+
+If the second argument is @qcode{"explain"} then @var{name} is ignored and
+an explanation of the line markers used in @code{test} output reports is
+written to the file specified by @var{fname} or @var{fid}.
+
+@seealso{@ref{XREFassert,,assert}, @ref{XREFfail,,fail}, @ref{XREFdemo,,demo}, @ref{XREFexample,,example}, @ref{XREFerror,,error}}
+@end deftypefn
+
+
+@code{test} scans the named script file looking for lines which start
+with the identifier @samp{%!}.  The prefix is stripped off and the rest
+of the line is processed through the Octave interpreter.  If the code
+generates an error, then the test is said to fail.
+
+Since @code{eval()} will stop at the first error it encounters, you must
+divide your tests up into blocks, with anything in a separate
+block evaluated separately.  Blocks are introduced by valid keywords like
+@code{test}, @code{function}, or @code{assert} immediately following @samp{%!}.
+A block is defined by indentation as in Python.  Lines beginning with
+@samp{%!<whitespace>} are part of the preceeding block.
+
+For example:
+
+@example
+@group
+%!test error ("this test fails!");
+%!test "test doesn't fail. it doesn't generate an error";
+@end group
+@end example
+
+When a test fails, you will see something like:
+
+@example
+@group
+  ***** test error ("this test fails!")
+!!!!! test failed
+this test fails!
+@end group
+@end example
+
+Generally, to test if something works, you want to assert that it
+produces a correct value.  A real test might look something like
+
+@example
+@group
+%!test
+%! @var{a} = [1, 2, 3; 4, 5, 6]; B = [1; 2];
+%! expect = [ @var{a} ; 2*@var{a} ];
+%! get = kron (@var{b}, @var{a});
+%! if (any (size (expect) != size (get)))
+%!   error ("wrong size: expected %d,%d but got %d,%d",
+%!          size (expect), size (get));
+%! elseif (any (any (expect != get)))
+%!   error ("didn't get what was expected.");
+%! endif
+@end group
+@end example
+
+To make the process easier, use the @code{assert} function.  For example,
+with @code{assert} the previous test is reduced to:
+
+@example
+@group
+%!test
+%! @var{a} = [1, 2, 3; 4, 5, 6]; @var{b} = [1; 2];
+%! assert (kron (@var{b}, @var{a}), [ @var{a}; 2*@var{a} ]);
+@end group
+@end example
+
+@code{assert} can accept a tolerance so that you can compare results
+absolutely or relatively.  For example, the following all succeed:
+
+@example
+@group
+%!test assert (1+eps, 1, 2*eps)          # absolute error
+%!test assert (100+100*eps, 100, -2*eps) # relative error
+@end group
+@end example
+
+You can also do the comparison yourself, but still have assert
+generate the error:
+
+@example
+@group
+%!test assert (isempty ([]))
+%!test assert ([1, 2; 3, 4] > 0)
+@end group
+@end example
+
+Because @code{assert} is so frequently used alone in a test block, there
+is a shorthand form:
+
+@example
+%!assert (@dots{})
+@end example
+
+@noindent
+which is equivalent to:
+
+@example
+%!test assert (@dots{})
+@end example
+
+Occasionally a block of tests will depend on having optional
+functionality in Octave.  Before testing such blocks the availability of
+the required functionality must be checked.  A @code{%!testif HAVE_XXX}
+block will only be run if Octave was compiled with functionality
+@samp{HAVE_XXX}.  For example, the sparse single value decomposition,
+@code{svds()}, depends on having the @sc{arpack} library.  All of the tests
+for @code{svds} begin with
+
+@example
+%!testif HAVE_ARPACK
+@end example
+
+@noindent
+Review @file{config.h} or @code{octave_config_info ("features")} to see some
+of the possible values to check.
+
+Sometimes during development there is a test that should work but is
+known to fail.  You still want to leave the test in because when the
+final code is ready the test should pass, but you may not be able to
+fix it immediately.  To avoid unnecessary bug reports for these known
+failures, mark the block with @code{xtest} rather than @code{test}:
+
+@example
+@group
+%!xtest assert (1==0)
+%!xtest fail ("success=1", "error")
+@end group
+@end example
+
+@noindent
+In this case, the test will run and any failure will be reported.
+However, testing is not aborted and subsequent test blocks will be
+processed normally.  Another use of @code{xtest} is for statistical
+tests which should pass most of the time but are known to fail
+occasionally.
+
+Each block is evaluated in its own function environment, which means
+that variables defined in one block are not automatically shared
+with other blocks.  If you do want to share variables, then you
+must declare them as @code{shared} before you use them.  For example, the
+following declares the variable @var{a}, gives it an initial value (default
+is empty), and then uses it in several subsequent tests.
+
+@example
+@group
+%!shared @var{a}
+%! @var{a} = [1, 2, 3; 4, 5, 6];
+%!assert (kron ([1; 2], @var{a}), [ @var{a}; 2*@var{a} ]);
+%!assert (kron ([1, 2], @var{a}), [ @var{a}, 2*@var{a} ]);
+%!assert (kron ([1,2; 3,4], @var{a}), [ @var{a},2*@var{a}; 3*@var{a},4*@var{a} ]);
+@end group
+@end example
+
+You can share several variables at the same time:
+
+@example
+%!shared @var{a}, @var{b}
+@end example
+
+You can also share test functions:
+
+@example
+@group
+%!function @var{a} = fn (@var{b})
+%!  @var{a} = 2*@var{b};
+%!endfunction
+%!assert (fn(2), 4);
+@end group
+@end example
+
+Note that all previous variables and values are lost when a new
+shared block is declared.
+
+Remember that @code{%!function} begins a new block and that
+@code{%!endfunction} ends this block.  Be aware that until a new block
+is started, lines starting with @samp{%!<space>} will be discarded as comments.
+The following is nearly identical to the example above, but does nothing.
+
+@example
+@group
+%!function @var{a} = fn (@var{b})
+%!  @var{a} = 2*@var{b};
+%!endfunction
+%! assert (fn(2), 4);
+@end group
+@end example
+
+@noindent
+Because there is a space after @samp{%!} the @code{assert} statement does
+not begin a new block and this line is treated as a comment.
+
+Error and warning blocks are like test blocks, but they only succeed
+if the code generates an error.  You can check the text of the error
+is correct using an optional regular expression @code{<pattern>}.
+For example:
+
+@example
+%!error <passes!> error ("this test passes!");
+@end example
+
+If the code doesn't generate an error, the test fails.  For example:
+
+@example
+%!error "this is an error because it succeeds.";
+@end example
+
+@noindent
+produces
+
+@example
+@group
+  ***** error "this is an error because it succeeds.";
+!!!!! test failed: no error
+@end group
+@end example
+
+It is important to automate the tests as much as possible, however
+some tests require user interaction.  These can be isolated into
+demo blocks, which if you are in batch mode, are only run when
+called with @code{demo} or the @code{verbose} option to @code{test}.
+The code is displayed before it is executed.  For example,
+
+@example
+@group
+%!demo
+%! @var{t} = [0:0.01:2*pi]; @var{x} = sin (@var{t});
+%! plot (@var{t}, @var{x});
+%! # you should now see a sine wave in your figure window
+@end group
+@end example
+
+@noindent
+produces
+
+@example
+@group
+funcname example 1:
+ @var{t} = [0:0.01:2*pi]; @var{x} = sin (@var{t});
+ plot (@var{t}, @var{x});
+ # you should now see a sine wave in your figure window
+
+Press <enter> to continue:
+@end group
+@end example
+
+Note that demo blocks cannot use any shared variables.  This is so
+that they can be executed by themselves, ignoring all other tests.
+
+If you want to temporarily disable a test block, put @code{#} in place
+of the block type.  This creates a comment block which is echoed
+in the log file but not executed.  For example:
+
+@example
+@group
+%!#demo
+%! @var{t} = [0:0.01:2*pi]; @var{x} = sin (@var{t});
+%! plot (@var{t}, @var{x});
+%! # you should now see a sine wave in your figure window
+@end group
+@end example
+
+@noindent
+The following trivial code snippet provides examples for the use of
+fail, assert, error and xtest:
+
+@example
+@group
+function output = must_be_zero (@var{input})
+  if (@var{input} != 0)
+    error ("Nonzero input!")
+  endif
+  output = input;
+endfunction
+
+%!fail ("must_be_zero (1)");
+%!assert (must_be_zero (0), 0);
+%!error <Nonzero> must_be_zero (1);
+%!xtest error ("This code generates an error");
+@end group
+@end example
+
+@noindent
+When putting this a file @file{must_be_zero.m}, and running the test, we see
+
+@example
+@group
+test must_be_zero verbose
+
+@result{}
+>>>>> /path/to/must_be_zero.m
+  ***** fail ("must_be_zero (1)");
+  ***** assert (must_be_zero (0), 0);
+  ***** error <Nonzero> must_be_zero (1);
+  ***** xtest error ("This code generates an error");
+!!!!! known failure
+This code generates an error
+PASSES 4 out of 4 tests (1 expected failures)
+@end group
+@end example
+
+@subsubheading Block type summary:
+
+@table @code
+@item %!test
+check that entire block is correct
+
+@item %!testif HAVE_XXX
+check block only if Octave was compiled with feature HAVE_XXX.
+
+@item %!xtest
+check block, report a test failure but do not abort testing.
+
+@item %!error
+check for correct error message
+
+@item %!warning
+check for correct warning message
+
+@item %!demo
+demo only executes in interactive mode
+
+@item %!#
+comment: ignore everything within the block
+
+@item %!shared x,y,z
+declare variables for use in multiple tests
+
+@item %!function
+define a function for use in multiple tests
+
+@item %!endfunction
+close a function definition
+
+@item %!assert (x, y, tol)
+shorthand for @code{%!test assert (x, y, tol)}
+@end table
+
+You can also create test scripts for built-in functions and your own C++
+functions.  To do so, put a file with the bare function name (no .m
+extension) in a directory in the load path and it will be discovered by
+the @code{test} function.  Alternatively, you can embed tests directly in your
+C++ code:
+
+@example
+@group
+/*
+%!test disp ("this is a test")
+*/
+@end group
+@end example
+
+@noindent
+or
+
+@example
+@group
+#if 0
+%!test disp ("this is a test")
+#endif
+@end group
+@end example
+
+@noindent
+However, in this case the raw source code will need to be on the load
+path and the user will have to remember to type
+@code{test ("funcname.cc")}.
+
+@c assert scripts/testfun/assert.m
+@anchor{XREFassert}
+@deftypefn  {Function File} {} assert (@var{cond})
+@deftypefnx {Function File} {} assert (@var{cond}, @var{errmsg})
+@deftypefnx {Function File} {} assert (@var{cond}, @var{errmsg}, @dots{})
+@deftypefnx {Function File} {} assert (@var{cond}, @var{msg_id}, @var{errmsg}, @dots{})
+@deftypefnx {Function File} {} assert (@var{observed}, @var{expected})
+@deftypefnx {Function File} {} assert (@var{observed}, @var{expected}, @var{tol})
+
+Produce an error if the specified condition is not met.
+
+@code{assert} can be called in three different ways.
+
+@table @code
+@item  assert (@var{cond})
+@itemx assert (@var{cond}, @var{errmsg})
+@itemx assert (@var{cond}, @var{errmsg}, @dots{})
+@itemx assert (@var{cond}, @var{msg_id}, @var{errmsg}, @dots{})
+Called with a single argument @var{cond}, @code{assert} produces an error if
+@var{cond} is false (numeric zero).
+
+Any additional arguments are passed to the @code{error} function for
+processing.
+
+@item assert (@var{observed}, @var{expected})
+Produce an error if observed is not the same as expected.
+
+Note that @var{observed} and @var{expected} can be scalars, vectors,
+matrices, strings, cell arrays, or structures.
+
+@item assert (@var{observed}, @var{expected}, @var{tol})
+Produce an error if observed is not the same as expected but equality
+comparison for numeric data uses a tolerance @var{tol}.
+
+If @var{tol} is positive then it is an absolute tolerance which will produce
+an error if @code{abs (@var{observed} - @var{expected}) > abs (@var{tol})}.
+
+If @var{tol} is negative then it is a relative tolerance which will produce
+an error if @code{abs (@var{observed} - @var{expected}) >
+abs (@var{tol} * @var{expected})}.
+
+If @var{expected} is zero @var{tol} will always be interpreted as an
+absolute tolerance.
+
+If @var{tol} is not scalar its dimensions must agree with those of
+@var{observed} and @var{expected} and tests are performed on an
+element-by-element basis.
+@end table
+@seealso{@ref{XREFfail,,fail}, @ref{XREFtest,,test}, @ref{XREFerror,,error}, @ref{XREFisequal,,isequal}}
+@end deftypefn
+
+
+@c fail scripts/testfun/fail.m
+@anchor{XREFfail}
+@deftypefn  {Function File} {} fail (@var{code})
+@deftypefnx {Function File} {} fail (@var{code}, @var{pattern})
+@deftypefnx {Function File} {} fail (@var{code}, "warning")
+@deftypefnx {Function File} {} fail (@var{code}, "warning", @var{pattern})
+
+Return true if @var{code} fails with an error message matching
+@var{pattern}, otherwise produce an error.
+
+@var{code} must be in the form of a string that is passed to the Octave
+interpreter via the @code{evalin} function, i.e., a (quoted) string constant
+or a string variable.
+
+Note that if @var{code} runs successfully, rather than failing, the error
+printed is:
+
+@example
+          expected error <.> but got none
+@end example
+
+If called with two arguments, the return value will be true only if
+@var{code} fails with an error message containing @var{pattern}
+(case sensitive).  If the code fails with a different error than the one
+specified in @var{pattern} then the message produced is:
+
+@example
+@group
+          expected <@var{pattern}>
+          but got <text of actual error>
+@end group
+@end example
+
+The angle brackets are not part of the output.
+
+When called with the @qcode{"warning"} option @code{fail} will produce an
+error if executing the code produces no warning.
+@seealso{@ref{XREFassert,,assert}, @ref{XREFerror,,error}}
+@end deftypefn
+
+
+@node Demonstration Functions
+@section Demonstration Functions
+
+@c demo scripts/testfun/demo.m
+@anchor{XREFdemo}
+@deftypefn  {Command} {} demo @var{name}
+@deftypefnx {Command} {} demo @var{name} @var{n}
+@deftypefnx {Function File} {} demo ("@var{name}")
+@deftypefnx {Function File} {} demo ("@var{name}", @var{n})
+
+Run example code block @var{n} associated with the function @var{name}.
+
+If @var{n} is not specified, all examples are run.
+
+The preferred location for example code blocks is embedded within the script
+m-file immediately following the code that it exercises.  Alternatively,
+the examples may be stored in a file with the same name but no extension
+located on Octave's load path.  To separate examples from regular script
+code all lines are prefixed by @code{%!}.  Each example must also be
+introduced by the keyword @qcode{"demo"} flush left to the prefix with no
+intervening spaces.  The remainder of the example can contain arbitrary
+Octave code.  For example:
+
+@example
+@group
+%!demo
+%! t = 0:0.01:2*pi;
+%! x = sin (t);
+%! plot (t, x);
+%! title ("one cycle of a sine wave");
+%! #-------------------------------------------------
+%! # the figure window shows one cycle of a sine wave
+@end group
+@end example
+
+Note that the code is displayed before it is executed so that a simple
+comment at the end suffices for labeling what is being shown.  For plots,
+labeling can also be done with @code{title} or @code{text}.  It is generally
+@strong{not} necessary to use @code{disp} or @code{printf} within the demo.
+
+Demos are run in a stand-alone function environment with no access to
+external variables.  This means that every demo must have separate
+initialization code.  Alternatively, all demos can be combined into a single
+large demo with the code
+
+@example
+%! input ("Press <enter> to continue: ", "s");
+@end example
+
+@noindent
+between the sections, but this usage is discouraged.  Other techniques to
+avoid multiple initialization blocks include using multiple plots with a new
+@code{figure} command between each plot, or using @code{subplot} to put
+multiple plots in the same window.
+
+Finally, because @code{demo} evaluates within a function context it is not
+possible to define new functions within the code.  Anonymous functions make
+a good substitute in most instances.  If function blocks @strong{must} be
+used then the code @code{eval (example ("function", n))} will allow Octave
+to see them.  This has its own problems, however, as @code{eval} only
+evaluates one line or statement at a time.  In this case the function
+declaration must be wrapped with @qcode{"if 1 <demo stuff> endif"} where
+@qcode{"if"} is on the same line as @qcode{"demo"}.  For example:
+
+@example
+@group
+%!demo if 1
+%!  function y = f(x)
+%!    y = x;
+%!  endfunction
+%!  f(3)
+%! endif
+@end group
+@end example
+
+@seealso{@ref{XREFrundemos,,rundemos}, @ref{XREFexample,,example}, @ref{XREFtest,,test}}
+@end deftypefn
+
+
+@c example scripts/testfun/example.m
+@anchor{XREFexample}
+@deftypefn  {Command} {} example @var{name}
+@deftypefnx {Command} {} example @var{name} @var{n}
+@deftypefnx {Function File} {} example ("@var{name}")
+@deftypefnx {Function File} {} example ("@var{name}", @var{n})
+@deftypefnx {Function File} {[@var{s}, @var{idx}] =} example (@dots{})
+
+Display the code for example @var{n} associated with the function
+@var{name}, but do not run it.
+
+If @var{n} is not specified, all examples are displayed.
+
+When called with output arguments, the examples are returned in the form of
+a string @var{s}, with @var{idx} indicating the ending position of the
+various examples.
+
+See @code{demo} for a complete explanation.
+@seealso{@ref{XREFdemo,,demo}, @ref{XREFtest,,test}}
+@end deftypefn
+
+
+@c rundemos scripts/testfun/rundemos.m
+@anchor{XREFrundemos}
+@deftypefn  {Function File} {} rundemos ()
+@deftypefnx {Function File} {} rundemos (@var{directory})
+Execute built-in demos for all m-files in the specified @var{directory}.
+
+Demo blocks in any C++ source files (@file{*.cc}) will also be executed
+for use with dynamically linked oct-file functions.
+
+If no directory is specified, operate on all directories in Octave's search
+path for functions.
+@seealso{@ref{XREFdemo,,demo}, @ref{XREFruntests,,runtests}, @ref{XREFpath,,path}}
+@end deftypefn
+
+
+@c runtests scripts/testfun/runtests.m
+@anchor{XREFruntests}
+@deftypefn  {Function File} {} runtests ()
+@deftypefnx {Function File} {} runtests (@var{directory})
+Execute built-in tests for all m-files in the specified @var{directory}.
+
+Test blocks in any C++ source files (@file{*.cc}) will also be executed
+for use with dynamically linked oct-file functions.
+
+If no directory is specified, operate on all directories in Octave's search
+path for functions.
+@seealso{@ref{XREFrundemos,,rundemos}, @ref{XREFtest,,test}, @ref{XREFpath,,path}}
+@end deftypefn
+
+
+@c speed scripts/testfun/speed.m
+@anchor{XREFspeed}
+@deftypefn  {Function File} {} speed (@var{f}, @var{init}, @var{max_n}, @var{f2}, @var{tol})
+@deftypefnx {Function File} {[@var{order}, @var{n}, @var{T_f}, @var{T_f2}] =} speed (@dots{})
+
+Determine the execution time of an expression (@var{f}) for various input
+values (@var{n}).
+
+The @var{n} are log-spaced from 1 to @var{max_n}.  For each @var{n}, an
+initialization expression (@var{init}) is computed to create any data needed
+for the test.  If a second expression (@var{f2}) is given then the
+execution times of the two expressions are compared.  When called without
+output arguments the results are printed to stdout and displayed
+graphically.
+
+@table @code
+@item @var{f}
+The code expression to evaluate.
+
+@item @var{max_n}
+The maximum test length to run.  The default value is 100.  Alternatively,
+use @code{[min_n, max_n]} or specify the @var{n} exactly with
+@code{[n1, n2, @dots{}, nk]}.
+
+@item @var{init}
+Initialization expression for function argument values.  Use @var{k} for
+the test number and @var{n} for the size of the test.  This should compute
+values for all variables used by @var{f}.  Note that @var{init} will be
+evaluated first for @math{k = 0}, so things which are constant throughout
+the test series can be computed once.  The default value is
+@code{@var{x} = randn (@var{n}, 1)}.
+
+@item @var{f2}
+An alternative expression to evaluate, so that the speed of two
+expressions can be directly compared.  The default is @code{[]}.
+
+@item @var{tol}
+Tolerance used to compare the results of expression @var{f} and expression
+@var{f2}.  If @var{tol} is positive, the tolerance is an absolute one.
+If @var{tol} is negative, the tolerance is a relative one.  The default is
+@code{eps}.  If @var{tol} is @code{Inf}, then no comparison will be made.
+
+@item @var{order}
+The time complexity of the expression @math{O(a*n^p)}.  This is a
+structure with fields @code{a} and @code{p}.
+
+@item @var{n}
+The values @var{n} for which the expression was calculated @strong{AND}
+the execution time was greater than zero.
+
+@item @var{T_f}
+The nonzero execution times recorded for the expression @var{f} in seconds.
+
+@item @var{T_f2}
+The nonzero execution times recorded for the expression @var{f2} in seconds.
+If required, the mean time ratio is simply @code{mean (T_f ./ T_f2)}.
+
+@end table
+
+The slope of the execution time graph shows the approximate power of the
+asymptotic running time @math{O(n^p)}.  This power is plotted for the
+region over which it is approximated (the latter half of the graph).  The
+estimated power is not very accurate, but should be sufficient to
+determine the general order of an algorithm.  It should indicate if, for
+example, the implementation is unexpectedly @math{O(n^2)} rather than
+@math{O(n)} because it extends a vector each time through the loop rather
+than pre-allocating storage.  In the current version of Octave, the
+following is not the expected @math{O(n)}.
+
+@example
+speed ("for i = 1:n, y@{i@} = x(i); endfor", "", [1000, 10000])
+@end example
+
+@noindent
+But it is if you preallocate the cell array @code{y}:
+
+@example
+@group
+speed ("for i = 1:n, y@{i@} = x(i); endfor", ...
+       "x = rand (n, 1); y = cell (size (x));", [1000, 10000])
+@end group
+@end example
+
+An attempt is made to approximate the cost of individual operations, but
+it is wildly inaccurate.  You can improve the stability somewhat by doing
+more work for each @code{n}.  For example:
+
+@example
+speed ("airy(x)", "x = rand (n, 10)", [10000, 100000])
+@end example
+
+When comparing two different expressions (@var{f}, @var{f2}), the slope of
+the line on the speedup ratio graph should be larger than 1 if the new
+expression is faster.  Better algorithms have a shallow slope.  Generally,
+vectorizing an algorithm will not change the slope of the execution time
+graph, but will shift it relative to the original.  For example:
+
+@example
+@group
+speed ("sum (x)", "", [10000, 100000], ...
+       "v = 0; for i = 1:length (x), v += x(i); endfor")
+@end group
+@end example
+
+The following is a more complex example.  If there was an original version
+of @code{xcorr} using for loops and a second version using an FFT, then
+one could compare the run speed for various lags as follows, or for a fixed
+lag with varying vector lengths as follows:
+
+@example
+@group
+speed ("xcorr (x, n)", "x = rand (128, 1);", 100,
+       "xcorr_orig (x, n)", -100*eps)
+speed ("xcorr (x, 15)", "x = rand (20+n, 1);", 100,
+       "xcorr_orig (x, n)", -100*eps)
+@end group
+@end example
+
+Assuming one of the two versions is in xcorr_orig, this would compare their
+speed and their output values.  Note that the FFT version is not exact, so
+one must specify an acceptable tolerance on the comparison @code{100*eps}.
+In this case, the comparison should be computed relatively, as
+@code{abs ((@var{x} - @var{y}) ./ @var{y})} rather than absolutely as
+@code{abs (@var{x} - @var{y})}.
+
+Type @kbd{example ("speed")} to see some real examples or
+@kbd{demo ("speed")} to run them.
+@end deftypefn
+

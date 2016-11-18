@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Basic Vectorization</title>
+
+<meta name="description" content="GNU Octave: Basic Vectorization">
+<meta name="keywords" content="GNU Octave: Basic Vectorization">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Vectorization-and-Faster-Code-Execution.html#Vectorization-and-Faster-Code-Execution" rel="up" title="Vectorization and Faster Code Execution">
+<link href="Broadcasting.html#Broadcasting" rel="next" title="Broadcasting">
+<link href="Vectorization-and-Faster-Code-Execution.html#Vectorization-and-Faster-Code-Execution" rel="prev" title="Vectorization and Faster Code Execution">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Basic-Vectorization"></a>
+<div class="header">
+<p>
+Next: <a href="Broadcasting.html#Broadcasting" accesskey="n" rel="next">Broadcasting</a>, Up: <a href="Vectorization-and-Faster-Code-Execution.html#Vectorization-and-Faster-Code-Execution" accesskey="u" rel="up">Vectorization and Faster Code Execution</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Basic-Vectorization-1"></a>
+<h3 class="section">19.1 Basic Vectorization</h3>
+
+<p>To a very good first approximation, the goal in vectorization is to
+write code that avoids loops and uses whole-array operations.  As a
+trivial example, consider
+</p>
+<div class="example">
+<pre class="example">for i = 1:n
+  for j = 1:m
+    c(i,j) = a(i,j) + b(i,j);
+  endfor
+endfor
+</pre></div>
+
+<p>compared to the much simpler
+</p>
+<div class="example">
+<pre class="example">c = a + b;
+</pre></div>
+
+<p>This isn&rsquo;t merely easier to write; it is also internally much easier to
+optimize.  Octave delegates this operation to an underlying
+implementation which, among other optimizations, may use special vector
+hardware instructions or could conceivably even perform the additions in
+parallel.  In general, if the code is vectorized, the underlying
+implementation has more freedom about the assumptions it can make
+in order to achieve faster execution.
+</p>
+<p>This is especially important for loops with &quot;cheap&quot; bodies.  Often it
+suffices to vectorize just the innermost loop to get acceptable
+performance.  A general rule of thumb is that the &quot;order&quot; of the
+vectorized body should be greater or equal to the &quot;order&quot; of the
+enclosing loop.
+</p>
+<p>As a less trivial example, instead of
+</p>
+<div class="example">
+<pre class="example">for i = 1:n-1
+  a(i) = b(i+1) - b(i);
+endfor
+</pre></div>
+
+<p>write
+</p>
+<div class="example">
+<pre class="example">a = b(2:n) - b(1:n-1);
+</pre></div>
+
+<p>This shows an important general concept about using arrays for indexing
+instead of looping over an index variable.  See <a href="Index-Expressions.html#Index-Expressions">Index Expressions</a>.
+Also use boolean indexing generously.  If a condition needs to be tested,
+this condition can also be written as a boolean index.  For instance,
+instead of
+</p>
+<div class="example">
+<pre class="example">for i = 1:n
+  if (a(i) &gt; 5)
+    a(i) -= 20
+  endif
+endfor
+</pre></div>
+
+<p>write
+</p>
+<div class="example">
+<pre class="example">a(a&gt;5) -= 20;
+</pre></div>
+
+<p>which exploits the fact that <code>a &gt; 5</code> produces a boolean index.
+</p>
+<p>Use elementwise vector operators whenever possible to avoid looping
+(operators like <code>.*</code> and <code>.^</code>).  See <a href="Arithmetic-Ops.html#Arithmetic-Ops">Arithmetic Ops</a>.  For
+simple inline functions, the <code>vectorize</code> function can do this
+automatically.
+</p>
+<a name="XREFvectorize"></a><dl>
+<dt><a name="index-vectorize-1"></a>Built-in Function: <em></em> <strong>vectorize</strong> <em>(<var>fun</var>)</em></dt>
+<dd><p>Create a vectorized version of the inline function <var>fun</var> by replacing
+all occurrences of <code>*</code>, <code>/</code>, etc., with <code>.*</code>, <code>./</code>, etc.
+</p>
+<p>This may be useful, for example, when using inline functions with numerical
+integration or optimization where a vector-valued function is expected.
+</p>
+<div class="example">
+<pre class="example">fcn = vectorize (inline (&quot;x^2 - 1&quot;))
+   &rArr; fcn = f(x) = x.^2 - 1
+quadv (fcn, 0, 3)
+   &rArr; 6
+</pre></div>
+
+<p><strong>See also:</strong> <a href="Inline-Functions.html#XREFinline">inline</a>, <a href="Inline-Functions.html#XREFformula">formula</a>, <a href="Inline-Functions.html#XREFargnames">argnames</a>.
+</p></dd></dl>
+
+
+<p>Also exploit broadcasting in these elementwise operators both to avoid
+looping and unnecessary intermediate memory allocations.
+See <a href="Broadcasting.html#Broadcasting">Broadcasting</a>.
+</p>
+<p>Use built-in and library functions if possible.  Built-in and compiled
+functions are very fast.  Even with an m-file library function, chances
+are good that it is already optimized, or will be optimized more in a
+future release.
+</p>
+<p>For instance, even better than
+</p>
+<div class="example">
+<pre class="example">a = b(2:n) - b(1:n-1);
+</pre></div>
+
+<p>is
+</p>
+<div class="example">
+<pre class="example">a = diff (b);
+</pre></div>
+
+<p>Most Octave functions are written with vector and array arguments in
+mind.  If you find yourself writing a loop with a very simple operation,
+chances are that such a function already exists.  The following functions
+occur frequently in vectorized code:
+</p>
+<ul>
+<li> Index manipulation
+
+<ul>
+<li> find
+
+</li><li> sub2ind
+
+</li><li> ind2sub
+
+</li><li> sort
+
+</li><li> unique
+
+</li><li> lookup
+
+</li><li> ifelse / merge
+</li></ul>
+
+</li><li> Repetition
+
+<ul>
+<li> repmat
+
+</li><li> repelems
+</li></ul>
+
+</li><li> Vectorized arithmetic
+
+<ul>
+<li> sum
+
+</li><li> prod
+
+</li><li> cumsum
+
+</li><li> cumprod
+
+</li><li> sumsq
+
+</li><li> diff
+
+</li><li> dot
+
+</li><li> cummax
+
+</li><li> cummin
+</li></ul>
+
+</li><li> Shape of higher dimensional arrays
+
+<ul>
+<li> reshape
+
+</li><li> resize
+
+</li><li> permute
+
+</li><li> squeeze
+
+</li><li> deal
+</li></ul>
+
+</li></ul>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Broadcasting.html#Broadcasting" accesskey="n" rel="next">Broadcasting</a>, Up: <a href="Vectorization-and-Faster-Code-Execution.html#Vectorization-and-Faster-Code-Execution" accesskey="u" rel="up">Vectorization and Faster Code Execution</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Products of Polynomials</title>
+
+<meta name="description" content="GNU Octave: Products of Polynomials">
+<meta name="keywords" content="GNU Octave: Products of Polynomials">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Polynomial-Manipulations.html#Polynomial-Manipulations" rel="up" title="Polynomial Manipulations">
+<link href="Derivatives-_002f-Integrals-_002f-Transforms.html#Derivatives-_002f-Integrals-_002f-Transforms" rel="next" title="Derivatives / Integrals / Transforms">
+<link href="Finding-Roots.html#Finding-Roots" rel="prev" title="Finding Roots">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Products-of-Polynomials"></a>
+<div class="header">
+<p>
+Next: <a href="Derivatives-_002f-Integrals-_002f-Transforms.html#Derivatives-_002f-Integrals-_002f-Transforms" accesskey="n" rel="next">Derivatives / Integrals / Transforms</a>, Previous: <a href="Finding-Roots.html#Finding-Roots" accesskey="p" rel="prev">Finding Roots</a>, Up: <a href="Polynomial-Manipulations.html#Polynomial-Manipulations" accesskey="u" rel="up">Polynomial Manipulations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Products-of-Polynomials-1"></a>
+<h3 class="section">28.3 Products of Polynomials</h3>
+
+<a name="XREFconv"></a><dl>
+<dt><a name="index-conv"></a>Function File: <em></em> <strong>conv</strong> <em>(<var>a</var>, <var>b</var>)</em></dt>
+<dt><a name="index-conv-1"></a>Function File: <em></em> <strong>conv</strong> <em>(<var>a</var>, <var>b</var>, <var>shape</var>)</em></dt>
+<dd><p>Convolve two vectors <var>a</var> and <var>b</var>.
+</p>
+<p>The output convolution is a vector with length equal to
+<code>length (<var>a</var>) + length (<var>b</var>) - 1</code>.
+When <var>a</var> and <var>b</var> are the coefficient vectors of two polynomials, the
+convolution represents the coefficient vector of the product polynomial.
+</p>
+<p>The optional <var>shape</var> argument may be
+</p>
+<dl compact="compact">
+<dt><var>shape</var> = <code>&quot;full&quot;</code></dt>
+<dd><p>Return the full convolution.  (default)
+</p>
+</dd>
+<dt><var>shape</var> = <code>&quot;same&quot;</code></dt>
+<dd><p>Return the central part of the convolution with the same size as <var>a</var>.
+</p></dd>
+</dl>
+
+
+<p><strong>See also:</strong> <a href="#XREFdeconv">deconv</a>, <a href="#XREFconv2">conv2</a>, <a href="#XREFconvn">convn</a>, <a href="Signal-Processing.html#XREFfftconv">fftconv</a>.
+</p></dd></dl>
+
+
+<a name="XREFconvn"></a><dl>
+<dt><a name="index-convn"></a>Built-in Function: <em><var>C</var> =</em> <strong>convn</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
+<dt><a name="index-convn-1"></a>Built-in Function: <em><var>C</var> =</em> <strong>convn</strong> <em>(<var>A</var>, <var>B</var>, <var>shape</var>)</em></dt>
+<dd><p>Return the n-D convolution of <var>A</var> and <var>B</var>.
+</p>
+<p>The size of the result is determined by the optional <var>shape</var> argument
+which takes the following values
+</p>
+<dl compact="compact">
+<dt><var>shape</var> = <code>&quot;full&quot;</code></dt>
+<dd><p>Return the full convolution.  (default)
+</p>
+</dd>
+<dt><var>shape</var> = <code>&quot;same&quot;</code></dt>
+<dd><p>Return central part of the convolution with the same size as <var>A</var>.
+The central part of the convolution begins at the indices
+<code>floor ([size(<var>B</var>)/2] + 1)</code>.
+</p>
+</dd>
+<dt><var>shape</var> = <code>&quot;valid&quot;</code></dt>
+<dd><p>Return only the parts which do not include zero-padded edges.
+The size of the result is <code>max (size (A) - size (B) + 1, 0)</code>.
+</p></dd>
+</dl>
+
+
+<p><strong>See also:</strong> <a href="#XREFconv2">conv2</a>, <a href="#XREFconv">conv</a>.
+</p></dd></dl>
+
+
+<a name="XREFdeconv"></a><dl>
+<dt><a name="index-deconv"></a>Function File: <em></em> <strong>deconv</strong> <em>(<var>y</var>, <var>a</var>)</em></dt>
+<dd><p>Deconvolve two vectors.
+</p>
+<p><code>[b, r] = deconv (y, a)</code> solves for <var>b</var> and <var>r</var> such that
+<code>y = conv (a, b) + r</code>.
+</p>
+<p>If <var>y</var> and <var>a</var> are polynomial coefficient vectors, <var>b</var> will
+contain the coefficients of the polynomial quotient and <var>r</var> will be
+a remainder polynomial of lowest order.
+</p>
+<p><strong>See also:</strong> <a href="#XREFconv">conv</a>, <a href="#XREFresidue">residue</a>.
+</p></dd></dl>
+
+
+<a name="XREFconv2"></a><dl>
+<dt><a name="index-conv2"></a>Built-in Function: <em></em> <strong>conv2</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
+<dt><a name="index-conv2-1"></a>Built-in Function: <em></em> <strong>conv2</strong> <em>(<var>v1</var>, <var>v2</var>, <var>m</var>)</em></dt>
+<dt><a name="index-conv2-2"></a>Built-in Function: <em></em> <strong>conv2</strong> <em>(&hellip;, <var>shape</var>)</em></dt>
+<dd><p>Return the 2-D convolution of <var>A</var> and <var>B</var>.
+</p>
+<p>The size of the result is determined by the optional <var>shape</var> argument
+which takes the following values
+</p>
+<dl compact="compact">
+<dt><var>shape</var> = <code>&quot;full&quot;</code></dt>
+<dd><p>Return the full convolution.  (default)
+</p>
+</dd>
+<dt><var>shape</var> = <code>&quot;same&quot;</code></dt>
+<dd><p>Return the central part of the convolution with the same size as <var>A</var>.
+The central part of the convolution begins at the indices
+<code>floor ([size(<var>B</var>)/2] + 1)</code>.
+</p>
+</dd>
+<dt><var>shape</var> = <code>&quot;valid&quot;</code></dt>
+<dd><p>Return only the parts which do not include zero-padded edges.
+The size of the result is <code>max (size (A) - size (B) + 1, 0)</code>.
+</p></dd>
+</dl>
+
+<p>When the third argument is a matrix, return the convolution of the matrix
+<var>m</var> by the vector <var>v1</var> in the column direction and by the vector
+<var>v2</var> in the row direction.
+</p>
+<p><strong>See also:</strong> <a href="#XREFconv">conv</a>, <a href="#XREFconvn">convn</a>.
+</p></dd></dl>
+
+
+<a name="XREFpolygcd"></a><dl>
+<dt><a name="index-polygcd"></a>Function File: <em><var>q</var> =</em> <strong>polygcd</strong> <em>(<var>b</var>, <var>a</var>)</em></dt>
+<dt><a name="index-polygcd-1"></a>Function File: <em><var>q</var> =</em> <strong>polygcd</strong> <em>(<var>b</var>, <var>a</var>, <var>tol</var>)</em></dt>
+<dd>
+<p>Find the greatest common divisor of two polynomials.
+</p>
+<p>This is equivalent to the polynomial found by multiplying together all the
+common roots.  Together with deconv, you can reduce a ratio of two
+polynomials.
+</p>
+<p>The tolerance <var>tol</var> defaults to <code>sqrt (eps)</code>.
+</p>
+<p><strong>Caution:</strong> This is a numerically unstable algorithm and should not
+be used on large polynomials.
+</p>
+<p>Example code:
+</p>
+<div class="example">
+<pre class="example">polygcd (poly (1:8), poly (3:12)) - poly (3:8)
+&rArr; [ 0, 0, 0, 0, 0, 0, 0 ]
+deconv (poly (1:8), polygcd (poly (1:8), poly (3:12))) - poly (1:2)
+&rArr; [ 0, 0, 0 ]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="Miscellaneous-Functions.html#XREFpoly">poly</a>, <a href="Finding-Roots.html#XREFroots">roots</a>, <a href="#XREFconv">conv</a>, <a href="#XREFdeconv">deconv</a>, <a href="#XREFresidue">residue</a>.
+</p></dd></dl>
+
+
+<a name="XREFresidue"></a><dl>
+<dt><a name="index-residue"></a>Function File: <em>[<var>r</var>, <var>p</var>, <var>k</var>, <var>e</var>] =</em> <strong>residue</strong> <em>(<var>b</var>, <var>a</var>)</em></dt>
+<dt><a name="index-residue-1"></a>Function File: <em>[<var>b</var>, <var>a</var>] =</em> <strong>residue</strong> <em>(<var>r</var>, <var>p</var>, <var>k</var>)</em></dt>
+<dt><a name="index-residue-2"></a>Function File: <em>[<var>b</var>, <var>a</var>] =</em> <strong>residue</strong> <em>(<var>r</var>, <var>p</var>, <var>k</var>, <var>e</var>)</em></dt>
+<dd><p>The first calling form computes the partial fraction expansion for the
+quotient of the polynomials, <var>b</var> and <var>a</var>.
+</p>
+<p>The quotient is defined as
+</p>
+<div class="example">
+<pre class="example">B(s)    M       r(m)        N
+---- = SUM ------------- + SUM k(i)*s^(N-i)
+A(s)   m=1 (s-p(m))^e(m)   i=1
+</pre></div>
+
+<p>where <em>M</em> is the number of poles (the length of the <var>r</var>, <var>p</var>,
+and <var>e</var>), the <var>k</var> vector is a polynomial of order <em>N-1</em>
+representing the direct contribution, and the <var>e</var> vector specifies the
+multiplicity of the m-th residue&rsquo;s pole.
+</p>
+<p>For example,
+</p>
+<div class="example">
+<pre class="example">b = [1, 1, 1];
+a = [1, -5, 8, -4];
+[r, p, k, e] = residue (b, a)
+   &rArr; r = [-2; 7; 3]
+   &rArr; p = [2; 2; 1]
+   &rArr; k = [](0x0)
+   &rArr; e = [1; 2; 1]
+</pre></div>
+
+<p>which represents the following partial fraction expansion
+</p>
+<div class="example">
+<pre class="example">        s^2 + s + 1       -2        7        3
+   ------------------- = ----- + ------- + -----
+   s^3 - 5s^2 + 8s - 4   (s-2)   (s-2)^2   (s-1)
+</pre></div>
+
+
+<p>The second calling form performs the inverse operation and computes the
+reconstituted quotient of polynomials, <var>b</var>(s)/<var>a</var>(s), from the
+partial fraction expansion; represented by the residues, poles, and a direct
+polynomial specified by <var>r</var>, <var>p</var> and <var>k</var>, and the pole
+multiplicity <var>e</var>.
+</p>
+<p>If the multiplicity, <var>e</var>, is not explicitly specified the multiplicity is
+determined by the function <code>mpoles</code>.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">r = [-2; 7; 3];
+p = [2; 2; 1];
+k = [1, 0];
+[b, a] = residue (r, p, k)
+   &rArr; b = [1, -5, 9, -3, 1]
+   &rArr; a = [1, -5, 8, -4]
+
+where mpoles is used to determine e = [1; 2; 1]
+</pre></div>
+
+<p>Alternatively the multiplicity may be defined explicitly, for example,
+</p>
+<div class="example">
+<pre class="example">r = [7; 3; -2];
+p = [2; 1; 2];
+k = [1, 0];
+e = [2; 1; 1];
+[b, a] = residue (r, p, k, e)
+   &rArr; b = [1, -5, 9, -3, 1]
+   &rArr; a = [1, -5, 8, -4]
+</pre></div>
+
+<p>which represents the following partial fraction expansion
+</p>
+<div class="example">
+<pre class="example"> -2        7        3         s^4 - 5s^3 + 9s^2 - 3s + 1
+----- + ------- + ----- + s = --------------------------
+(s-2)   (s-2)^2   (s-1)          s^3 - 5s^2 + 8s - 4
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="Finding-Roots.html#XREFmpoles">mpoles</a>, <a href="Miscellaneous-Functions.html#XREFpoly">poly</a>, <a href="Finding-Roots.html#XREFroots">roots</a>, <a href="#XREFconv">conv</a>, <a href="#XREFdeconv">deconv</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Derivatives-_002f-Integrals-_002f-Transforms.html#Derivatives-_002f-Integrals-_002f-Transforms" accesskey="n" rel="next">Derivatives / Integrals / Transforms</a>, Previous: <a href="Finding-Roots.html#Finding-Roots" accesskey="p" rel="prev">Finding Roots</a>, Up: <a href="Polynomial-Manipulations.html#Polynomial-Manipulations" accesskey="u" rel="up">Polynomial Manipulations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

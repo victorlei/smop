@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Expressions Involving Permutation Matrices</title>
+
+<meta name="description" content="GNU Octave: Expressions Involving Permutation Matrices">
+<meta name="keywords" content="GNU Octave: Expressions Involving Permutation Matrices">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Matrix-Algebra.html#Matrix-Algebra" rel="up" title="Matrix Algebra">
+<link href="Function-Support.html#Function-Support" rel="next" title="Function Support">
+<link href="Expressions-Involving-Diagonal-Matrices.html#Expressions-Involving-Diagonal-Matrices" rel="prev" title="Expressions Involving Diagonal Matrices">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Expressions-Involving-Permutation-Matrices"></a>
+<div class="header">
+<p>
+Previous: <a href="Expressions-Involving-Diagonal-Matrices.html#Expressions-Involving-Diagonal-Matrices" accesskey="p" rel="prev">Expressions Involving Diagonal Matrices</a>, Up: <a href="Matrix-Algebra.html#Matrix-Algebra" accesskey="u" rel="up">Matrix Algebra</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Expressions-Involving-Permutation-Matrices-1"></a>
+<h4 class="subsection">21.2.2 Expressions Involving Permutation Matrices</h4>
+
+<p>If <var>P</var> is a permutation matrix and <var>M</var> a matrix, the expression
+<code>P*M</code> will permute the rows of <var>M</var>.  Similarly, <code>M*P</code> will
+yield a column permutation.
+Matrix division <code>P\M</code> and <code>M/P</code> can be used to do inverse permutation.
+</p>
+<p>The previously described syntax for creating permutation matrices can actually
+help an user to understand the connection between a permutation matrix and
+a permuting vector.  Namely, the following holds, where <code>I = eye (n)</code>
+is an identity matrix:
+</p>
+<div class="example">
+<pre class="example">  I(p,:) * M = (I*M) (p,:) = M(p,:)
+</pre></div>
+
+<p>Similarly,
+</p>
+<div class="example">
+<pre class="example">  M * I(:,p) = (M*I) (:,p) = M(:,p)
+</pre></div>
+
+<p>The expressions <code>I(p,:)</code> and <code>I(:,p)</code> are permutation matrices.
+</p>
+<p>A permutation matrix can be transposed (or conjugate-transposed, which is the
+same, because a permutation matrix is never complex), inverting the
+permutation, or equivalently, turning a row-permutation matrix into a
+column-permutation one.  For permutation matrices, transpose is equivalent to
+inversion, thus <code>P\M</code> is equivalent to <code>P'*M</code>.  Transpose of a
+permutation matrix (or inverse) is a constant-time operation, flipping only a
+flag internally, and thus the choice between the two above equivalent
+expressions for inverse permuting is completely up to the user&rsquo;s taste.
+</p>
+<p>Multiplication and division by permutation matrices works efficiently also when
+combined with sparse matrices, i.e., <code>P*S</code>, where <var>P</var> is a permutation
+matrix and <var>S</var> is a sparse matrix permutes the rows of the sparse matrix and
+returns a sparse matrix.  The expressions <code>S*P</code>, <code>P\S</code>, <code>S/P</code>
+work analogically.
+</p>
+<p>Two permutation matrices can be multiplied or divided (if their sizes match),
+performing a composition of permutations.  Also a permutation matrix can be
+indexed by a permutation vector (or two vectors), giving again a permutation
+matrix.  Any other operations do not generally yield a permutation matrix and
+will thus trigger the implicit conversion.
+</p>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Expressions-Involving-Diagonal-Matrices.html#Expressions-Involving-Diagonal-Matrices" accesskey="p" rel="prev">Expressions Involving Diagonal Matrices</a>, Up: <a href="Matrix-Algebra.html#Matrix-Algebra" accesskey="u" rel="up">Matrix Algebra</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

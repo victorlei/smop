@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Data Retrieval</title>
+
+<meta name="description" content="GNU Octave: Data Retrieval">
+<meta name="keywords" content="GNU Octave: Data Retrieval">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Audio-Recorder.html#Audio-Recorder" rel="up" title="Audio Recorder">
+<link href="Recorder-Properties.html#Recorder-Properties" rel="next" title="Recorder Properties">
+<link href="Recording.html#Recording" rel="prev" title="Recording">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Data-Retrieval"></a>
+<div class="header">
+<p>
+Next: <a href="Recorder-Properties.html#Recorder-Properties" accesskey="n" rel="next">Recorder Properties</a>, Previous: <a href="Recording.html#Recording" accesskey="p" rel="prev">Recording</a>, Up: <a href="Audio-Recorder.html#Audio-Recorder" accesskey="u" rel="up">Audio Recorder</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Data-Retrieval-1"></a>
+<h4 class="subsection">33.4.2 Data Retrieval</h4>
+
+<p>The following methods allow you to retrieve recorded audio data in
+various ways.
+</p>
+<a name="XREF_0040audiorecorder_002fgetaudiodata"></a><dl>
+<dt><a name="index-getaudiodata"></a>Function File: <em><var>data</var> =</em> <strong>getaudiodata</strong> <em>(<var>recorder</var>)</em></dt>
+<dt><a name="index-getaudiodata-1"></a>Function File: <em><var>data</var> =</em> <strong>getaudiodata</strong> <em>(<var>recorder</var>, <var>datatype</var>)</em></dt>
+<dd><p>Return recorder audio data as a matrix with values between -1.0 and 1.0
+and with as many columns as there are channels in the recorder.
+</p>
+<p>Given the optional argument <var>datatype</var>, convert the recorded data
+to the specified type, which may be one of <code>&quot;double&quot;</code>,
+<code>&quot;single&quot;</code>, <code>&quot;int16&quot;</code>, <code>&quot;int8&quot;</code> or <code>&quot;uint8&quot;</code>.
+</p></dd></dl>
+
+
+<a name="XREF_0040audiorecorder_002fgetplayer"></a><dl>
+<dt><a name="index-getplayer"></a>Function File: <em><var>player</var> =</em> <strong>getplayer</strong> <em>(<var>recorder</var>)</em></dt>
+<dd><p>Return an audioplayer object with data recorded by the audiorecorder object
+<var>recorder</var>.
+</p></dd></dl>
+
+
+<a name="XREF_0040audiorecorder_002fplay"></a><dl>
+<dt><a name="index-play-3"></a>Function File: <em><var>player</var> =</em> <strong>play</strong> <em>(<var>recorder</var>)</em></dt>
+<dt><a name="index-play-4"></a>Function File: <em><var>player</var> =</em> <strong>play</strong> <em>(<var>recorder</var>, <var>start</var>)</em></dt>
+<dt><a name="index-play-5"></a>Function File: <em><var>player</var> =</em> <strong>play</strong> <em>(<var>recorder</var>, [<var>start</var>, <var>end</var>])</em></dt>
+<dd><p>Play the audio recorded in <var>recorder</var> and return a corresponding
+audioplayer object.
+</p>
+<p>If the optional argument <var>start</var> is provided, begin playing
+<var>start</var> seconds in to the recording.
+</p>
+<p>If the optional argument <var>end</var> is provided, stop playing at
+<var>end</var> seconds in the recording.
+</p></dd></dl>
+
+
+
+
+
+</body>
+</html>

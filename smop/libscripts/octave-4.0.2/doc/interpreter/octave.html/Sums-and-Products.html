@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Sums and Products</title>
+
+<meta name="description" content="GNU Octave: Sums and Products">
+<meta name="keywords" content="GNU Octave: Sums and Products">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arithmetic.html#Arithmetic" rel="up" title="Arithmetic">
+<link href="Utility-Functions.html#Utility-Functions" rel="next" title="Utility Functions">
+<link href="Trigonometry.html#Trigonometry" rel="prev" title="Trigonometry">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Sums-and-Products"></a>
+<div class="header">
+<p>
+Next: <a href="Utility-Functions.html#Utility-Functions" accesskey="n" rel="next">Utility Functions</a>, Previous: <a href="Trigonometry.html#Trigonometry" accesskey="p" rel="prev">Trigonometry</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Sums-and-Products-1"></a>
+<h3 class="section">17.4 Sums and Products</h3>
+
+<a name="XREFsum"></a><dl>
+<dt><a name="index-sum"></a>Built-in Function: <em></em> <strong>sum</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-sum-1"></a>Built-in Function: <em></em> <strong>sum</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-sum-2"></a>Built-in Function: <em></em> <strong>sum</strong> <em>(&hellip;, &quot;native&quot;)</em></dt>
+<dt><a name="index-sum-3"></a>Built-in Function: <em></em> <strong>sum</strong> <em>(&hellip;, &quot;double&quot;)</em></dt>
+<dt><a name="index-sum-4"></a>Built-in Function: <em></em> <strong>sum</strong> <em>(&hellip;, &quot;extra&quot;)</em></dt>
+<dd><p>Sum of elements along dimension <var>dim</var>.
+</p>
+<p>If <var>dim</var> is omitted, it defaults to the first non-singleton dimension.
+</p>
+<p>The optional <code>&quot;type&quot;</code> input determines the class of the variable
+used for calculations.  If the argument <code>&quot;native&quot;</code> is given, then
+the operation is performed in the same type as the original argument, rather
+than the default double type.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">sum ([true, true])
+   &rArr; 2
+sum ([true, true], &quot;native&quot;)
+   &rArr; true
+</pre></div>
+
+<p>On the contrary, if <code>&quot;double&quot;</code> is given, the sum is performed in
+double precision even for single precision inputs.
+</p>
+<p>For double precision inputs, the <code>&quot;extra&quot;</code> option will use a more
+accurate algorithm than straightforward summation.  For single precision
+inputs, <code>&quot;extra&quot;</code> is the same as <code>&quot;double&quot;</code>.  Otherwise,
+<code>&quot;extra&quot;</code> has no effect.
+</p>
+<p><strong>See also:</strong> <a href="#XREFcumsum">cumsum</a>, <a href="#XREFsumsq">sumsq</a>, <a href="#XREFprod">prod</a>.
+</p></dd></dl>
+
+
+<a name="XREFprod"></a><dl>
+<dt><a name="index-prod"></a>Built-in Function: <em></em> <strong>prod</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-prod-1"></a>Built-in Function: <em></em> <strong>prod</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-prod-2"></a>Built-in Function: <em></em> <strong>prod</strong> <em>(&hellip;, &quot;native&quot;)</em></dt>
+<dt><a name="index-prod-3"></a>Built-in Function: <em></em> <strong>prod</strong> <em>(&hellip;, &quot;double&quot;)</em></dt>
+<dd><p>Product of elements along dimension <var>dim</var>.
+</p>
+<p>If <var>dim</var> is omitted, it defaults to the first non-singleton dimension.
+</p>
+<p>The optional <code>&quot;type&quot;</code> input determines the class of the variable
+used for calculations.  If the argument <code>&quot;native&quot;</code> is given, then
+the operation is performed in the same type as the original argument, rather
+than the default double type.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">prod ([true, true])
+   &rArr; 1
+prod ([true, true], &quot;native&quot;)
+   &rArr; true
+</pre></div>
+
+<p>On the contrary, if <code>&quot;double&quot;</code> is given, the operation is performed
+in double precision even for single precision inputs.
+</p>
+<p><strong>See also:</strong> <a href="#XREFcumprod">cumprod</a>, <a href="#XREFsum">sum</a>.
+</p></dd></dl>
+
+
+<a name="XREFcumsum"></a><dl>
+<dt><a name="index-cumsum"></a>Built-in Function: <em></em> <strong>cumsum</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-cumsum-1"></a>Built-in Function: <em></em> <strong>cumsum</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-cumsum-2"></a>Built-in Function: <em></em> <strong>cumsum</strong> <em>(&hellip;, &quot;native&quot;)</em></dt>
+<dt><a name="index-cumsum-3"></a>Built-in Function: <em></em> <strong>cumsum</strong> <em>(&hellip;, &quot;double&quot;)</em></dt>
+<dt><a name="index-cumsum-4"></a>Built-in Function: <em></em> <strong>cumsum</strong> <em>(&hellip;, &quot;extra&quot;)</em></dt>
+<dd><p>Cumulative sum of elements along dimension <var>dim</var>.
+</p>
+<p>If <var>dim</var> is omitted, it defaults to the first non-singleton dimension.
+</p>
+<p>See <code>sum</code> for an explanation of the optional parameters
+<code>&quot;native&quot;</code>, <code>&quot;double&quot;</code>, and <code>&quot;extra&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsum">sum</a>, <a href="#XREFcumprod">cumprod</a>.
+</p></dd></dl>
+
+
+<a name="XREFcumprod"></a><dl>
+<dt><a name="index-cumprod"></a>Built-in Function: <em></em> <strong>cumprod</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-cumprod-1"></a>Built-in Function: <em></em> <strong>cumprod</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>Cumulative product of elements along dimension <var>dim</var>.
+</p>
+<p>If <var>dim</var> is omitted, it defaults to the first non-singleton dimension.
+</p>
+<p><strong>See also:</strong> <a href="#XREFprod">prod</a>, <a href="#XREFcumsum">cumsum</a>.
+</p></dd></dl>
+
+
+<a name="XREFsumsq"></a><dl>
+<dt><a name="index-sumsq"></a>Built-in Function: <em></em> <strong>sumsq</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-sumsq-1"></a>Built-in Function: <em></em> <strong>sumsq</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>Sum of squares of elements along dimension <var>dim</var>.
+</p>
+<p>If <var>dim</var> is omitted, it defaults to the first non-singleton dimension.
+</p>
+<p>This function is conceptually equivalent to computing
+</p>
+<div class="example">
+<pre class="example">sum (x .* conj (x), dim)
+</pre></div>
+
+<p>but it uses less memory and avoids calling <code>conj</code> if <var>x</var> is real.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsum">sum</a>, <a href="#XREFprod">prod</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Utility-Functions.html#Utility-Functions" accesskey="n" rel="next">Utility Functions</a>, Previous: <a href="Trigonometry.html#Trigonometry" accesskey="p" rel="prev">Trigonometry</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

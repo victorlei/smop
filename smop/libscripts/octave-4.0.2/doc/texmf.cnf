@@ -1,0 +1,3 @@
+% Increase save size to run @seealso macro for Octave documentation
+save_size = 10000
+

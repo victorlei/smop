@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Character Strings in Oct-Files</title>
+
+<meta name="description" content="GNU Octave: Character Strings in Oct-Files">
+<meta name="keywords" content="GNU Octave: Character Strings in Oct-Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Oct_002dFiles.html#Oct_002dFiles" rel="up" title="Oct-Files">
+<link href="Cell-Arrays-in-Oct_002dFiles.html#Cell-Arrays-in-Oct_002dFiles" rel="next" title="Cell Arrays in Oct-Files">
+<link href="Matrices-and-Arrays-in-Oct_002dFiles.html#Matrices-and-Arrays-in-Oct_002dFiles" rel="prev" title="Matrices and Arrays in Oct-Files">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Character-Strings-in-Oct_002dFiles"></a>
+<div class="header">
+<p>
+Next: <a href="Cell-Arrays-in-Oct_002dFiles.html#Cell-Arrays-in-Oct_002dFiles" accesskey="n" rel="next">Cell Arrays in Oct-Files</a>, Previous: <a href="Matrices-and-Arrays-in-Oct_002dFiles.html#Matrices-and-Arrays-in-Oct_002dFiles" accesskey="p" rel="prev">Matrices and Arrays in Oct-Files</a>, Up: <a href="Oct_002dFiles.html#Oct_002dFiles" accesskey="u" rel="up">Oct-Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Character-Strings-in-Oct_002dFiles-1"></a>
+<h4 class="subsection">A.1.3 Character Strings in Oct-Files</h4>
+
+<p>A character string in Octave is just a special <code>Array</code> class.
+Consider the example:
+</p>
+<div class="example">
+<pre class="verbatim">#include &lt;octave/oct.h&gt;
+
+DEFUN_DLD (stringdemo, args, , &quot;String Demo&quot;)
+{
+  octave_value_list retval;
+  int nargin = args.length ();
+
+  if (nargin != 1)
+    print_usage ();
+  else
+    {
+      charMatrix ch = args(0).char_matrix_value ();
+
+      if (! error_state)
+        {
+          retval(1) = octave_value (ch, '\'');  // Single Quote String
+
+          octave_idx_type nr = ch.rows ();
+          for (octave_idx_type i = 0; i &lt; nr / 2; i++)
+            {
+              std::string tmp = ch.row_as_string (i);
+              ch.insert (ch.row_as_string (nr-i-1).c_str (), i, 0);
+              ch.insert (tmp.c_str (), nr-i-1, 0);
+            }
+          retval(0) = octave_value (ch, '&quot;');  // Double Quote String
+        }
+    }
+  return retval;
+}
+</pre><pre class="example">
+
+</pre></div>
+
+<p>An example of the use of this function is
+</p>
+<div class="example">
+<pre class="example">s0 = [&quot;First String&quot;; &quot;Second String&quot;];
+[s1,s2] = stringdemo (s0)
+&rArr; s1 = Second String
+        First String
+
+&rArr; s2 = First String
+        Second String
+
+typeinfo (s2)
+&rArr; sq_string
+typeinfo (s1)
+&rArr; string
+</pre></div>
+
+<p>One additional complication of strings in Octave is the difference
+between single quoted and double quoted strings.  To find out if an
+<code>octave_value</code> contains a single or double quoted string use
+one of the predicate tests shown below.
+</p>
+<div class="example">
+<pre class="example">if (args(0).is_sq_string ())
+  octave_stdout &lt;&lt; &quot;First argument is a single quoted string\n&quot;;
+else if (args(0).is_dq_string ())
+  octave_stdout &lt;&lt; &quot;First argument is a double quoted string\n&quot;;
+</pre></div>
+
+<p>Note, however, that both types of strings are represented by the
+<code>charNDArray</code> type, and so when assigning to an
+<code>octave_value</code>, the type of string should be specified.  For example:
+</p>
+<div class="example">
+<pre class="example">octave_value_list retval;
+charNDArray ch;
+&hellip;
+// Create single quoted string
+retval(1) = octave_value (ch);        // default constructor is sq_string
+           OR
+retval(1) = octave_value (ch, '\'');  // explicitly create sq_string
+
+// Create a double quoted string
+retval(0) = octave_value (ch, '&quot;');
+</pre></div>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Cell-Arrays-in-Oct_002dFiles.html#Cell-Arrays-in-Oct_002dFiles" accesskey="n" rel="next">Cell Arrays in Oct-Files</a>, Previous: <a href="Matrices-and-Arrays-in-Oct_002dFiles.html#Matrices-and-Arrays-in-Oct_002dFiles" accesskey="p" rel="prev">Matrices and Arrays in Oct-Files</a>, Up: <a href="Oct_002dFiles.html#Oct_002dFiles" accesskey="u" rel="up">Oct-Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

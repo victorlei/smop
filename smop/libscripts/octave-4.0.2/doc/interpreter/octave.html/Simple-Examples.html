@@ -1,0 +1,356 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Simple Examples</title>
+
+<meta name="description" content="GNU Octave: Simple Examples">
+<meta name="keywords" content="GNU Octave: Simple Examples">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Introduction.html#Introduction" rel="up" title="Introduction">
+<link href="Conventions.html#Conventions" rel="next" title="Conventions">
+<link href="Running-Octave.html#Running-Octave" rel="prev" title="Running Octave">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Simple-Examples"></a>
+<div class="header">
+<p>
+Next: <a href="Conventions.html#Conventions" accesskey="n" rel="next">Conventions</a>, Previous: <a href="Running-Octave.html#Running-Octave" accesskey="p" rel="prev">Running Octave</a>, Up: <a href="Introduction.html#Introduction" accesskey="u" rel="up">Introduction</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Simple-Examples-1"></a>
+<h3 class="section">1.2 Simple Examples</h3>
+
+<p>The following chapters describe all of Octave&rsquo;s features in detail, but
+before doing that, it might be helpful to give a sampling of some of its
+capabilities.
+</p>
+<p>If you are new to Octave, we recommend that you try these examples to
+begin learning Octave by using it.  Lines marked like so, &lsquo;<samp>octave:13&gt;</samp>&rsquo;,
+are lines you type, ending each with a carriage return.  Octave will
+respond with an answer, or by displaying a graph.
+</p>
+<a name="Elementary-Calculations"></a>
+<h4 class="subsection">1.2.1 Elementary Calculations</h4>
+
+<p>Octave can easily be used for basic numerical calculations.  Octave
+knows about arithmetic operations (+,-,*,/), exponentiation (^),
+natural logarithms/exponents (log, exp), and the trigonometric
+functions (sin, cos, &hellip;).  Moreover, Octave calculations work
+on real or imaginary numbers (i,j).  In addition, some mathematical
+constants such as the base of the natural logarithm (e) and the ratio
+of a circle&rsquo;s circumference to its diameter (pi) are pre-defined.
+</p>
+<p>For example, to verify Euler&rsquo;s Identity,
+</p><div class="display">
+<pre class="display">
+
+ i*pi
+e     = -1
+</pre></div>
+
+<p>type the following which will evaluate to <code>-1</code> within the
+tolerance of the calculation.
+</p>
+<div class="example">
+<pre class="example">octave:1&gt; exp (i*pi)
+</pre></div>
+
+<a name="Creating-a-Matrix"></a>
+<h4 class="subsection">1.2.2 Creating a Matrix</h4>
+
+<p>Vectors and matrices are the basic building blocks for numerical analysis.
+To create a new matrix and store it in a variable so that you can
+refer to it later, type the command
+</p>
+<div class="example">
+<pre class="example">octave:1&gt; A = [ 1, 1, 2; 3, 5, 8; 13, 21, 34 ]
+</pre></div>
+
+<p>Octave will respond by printing the matrix in neatly aligned columns.
+Octave uses a comma or space to separate entries in a row, and a
+semicolon or carriage return to separate one row from the next.
+Ending a command with a semicolon tells Octave not to print the result
+of the command.  For example,
+</p>
+<div class="example">
+<pre class="example">octave:2&gt; B = rand (3, 2);
+</pre></div>
+
+<p>will create a 3 row, 2 column matrix with each element set to a random
+value between zero and one.
+</p>
+<p>To display the value of a variable, simply type the name of the
+variable at the prompt.  For example, to display the value stored in the
+matrix <code>B</code>, type the command
+</p>
+<div class="example">
+<pre class="example">octave:3&gt; B
+</pre></div>
+
+<a name="Matrix-Arithmetic"></a>
+<h4 class="subsection">1.2.3 Matrix Arithmetic</h4>
+
+<p>Octave has a convenient operator notation for performing matrix
+arithmetic.  For example, to multiply the matrix <code>A</code> by a scalar
+value, type the command
+</p>
+<div class="example">
+<pre class="example">octave:4&gt; 2 * A
+</pre></div>
+
+<p>To multiply the two matrices <code>A</code> and <code>B</code>, type the command
+</p>
+<div class="example">
+<pre class="example">octave:5&gt; A * B
+</pre></div>
+
+<p>and to form the matrix product
+<code>transpose (A) * A</code>,
+type the command
+</p>
+<div class="example">
+<pre class="example">octave:6&gt; A' * A
+</pre></div>
+
+<a name="Solving-Systems-of-Linear-Equations"></a>
+<h4 class="subsection">1.2.4 Solving Systems of Linear Equations</h4>
+
+<p>Systems of linear equations are ubiquitous in numerical analysis.
+To solve the set of linear equations <code>A<var>x</var> = b</code>,
+use the left division operator, &lsquo;<samp>\</samp>&rsquo;:
+</p>
+<div class="example">
+<pre class="example"><var>x</var> = A \ b
+</pre></div>
+
+<p>This is conceptually equivalent to
+<code>inv (A) * b</code>,
+but avoids computing the inverse of a matrix directly.
+</p>
+<p>If the coefficient matrix is singular, Octave will print a warning
+message and compute a minimum norm solution.
+</p>
+<p>A simple example comes from chemistry and the need to obtain balanced
+chemical equations.  Consider the burning of hydrogen and oxygen to
+produce water.
+</p>
+<div class="example">
+<pre class="example">H2 + O2 --&gt; H2O
+</pre></div>
+
+<p>The equation above is not accurate.  The Law of Conservation of Mass requires
+that the number of molecules of each type balance on the left- and right-hand
+sides of the equation.  Writing the variable overall reaction with
+individual equations for hydrogen and oxygen one finds:
+</p>
+<div class="example">
+<pre class="example">x1*H2 + x2*O2 --&gt; H2O
+H: 2*x1 + 0*x2 --&gt; 2
+O: 0*x1 + 2*x2 --&gt; 1
+</pre></div>
+
+<p>The solution in Octave is found in just three steps.
+</p>
+<div class="example">
+<pre class="example">octave:1&gt; A = [ 2, 0; 0, 2 ];
+octave:2&gt; b = [ 2; 1 ];
+octave:3&gt; x = A \ b
+</pre></div>
+
+<a name="Integrating-Differential-Equations"></a>
+<h4 class="subsection">1.2.5 Integrating Differential Equations</h4>
+
+<p>Octave has built-in functions for solving nonlinear differential
+equations of the form
+</p>
+<div class="example">
+<pre class="example">dx
+-- = f (x, t)
+dt
+</pre></div>
+
+<p>with the initial condition
+</p>
+<div class="example">
+<pre class="example">x(t = t0) = x0
+</pre></div>
+
+<p>For Octave to integrate equations of this form, you must first provide a
+definition of the function
+<code>f(x,t)</code>.
+This is straightforward, and may be accomplished by entering the
+function body directly on the command line.  For example, the following
+commands define the right-hand side function for an interesting pair of
+nonlinear differential equations.  Note that while you are entering a
+function, Octave responds with a different prompt, to indicate that it
+is waiting for you to complete your input.
+</p>
+<div class="example">
+<pre class="example">octave:1&gt; function xdot = f (x, t)
+&gt;
+&gt;  r = 0.25;
+&gt;  k = 1.4;
+&gt;  a = 1.5;
+&gt;  b = 0.16;
+&gt;  c = 0.9;
+&gt;  d = 0.8;
+&gt;
+&gt;  xdot(1) = r*x(1)*(1 - x(1)/k) - a*x(1)*x(2)/(1 + b*x(1));
+&gt;  xdot(2) = c*a*x(1)*x(2)/(1 + b*x(1)) - d*x(2);
+&gt;
+&gt; endfunction
+</pre></div>
+
+<p>Given the initial condition
+</p>
+<div class="example">
+<pre class="example">octave:2&gt; x0 = [1; 2];
+</pre></div>
+
+<p>and the set of output times as a column vector (note that the first
+output time corresponds to the initial condition given above)
+</p>
+<div class="example">
+<pre class="example">octave:3&gt; t = linspace (0, 50, 200)';
+</pre></div>
+
+<p>it is easy to integrate the set of differential equations:
+</p>
+<div class="example">
+<pre class="example">octave:4&gt; x = lsode (&quot;f&quot;, x0, t);
+</pre></div>
+
+<p>The function <code>lsode</code> uses the Livermore Solver for Ordinary
+Differential Equations, described in A. C. Hindmarsh,
+<cite>ODEPACK, a Systematized Collection of ODE Solvers</cite>, in: Scientific
+Computing, R. S. Stepleman et al. (Eds.), North-Holland, Amsterdam,
+1983, pages 55&ndash;64.
+</p>
+<a name="Producing-Graphical-Output"></a>
+<h4 class="subsection">1.2.6 Producing Graphical Output</h4>
+
+<p>To display the solution of the previous example graphically, use the
+command
+</p>
+<div class="example">
+<pre class="example">octave:1&gt; plot (t, x)
+</pre></div>
+
+<p>If you are using a graphical user interface, Octave will automatically create
+a separate window to display the plot.
+</p>
+<p>To save a plot once it has been displayed on the screen, use the print
+command.  For example,
+</p>
+<div class="example">
+<pre class="example">print -dpdf foo.pdf
+</pre></div>
+
+<p>will create a file called <samp>foo.pdf</samp> that contains a rendering of
+the current plot in Portable Document Format.  The command
+</p>
+<div class="example">
+<pre class="example">help print
+</pre></div>
+
+<p>explains more options for the <code>print</code> command and provides a list
+of additional output file formats.
+</p>
+<a name="Editing-What-You-Have-Typed"></a>
+<h4 class="subsection">1.2.7 Editing What You Have Typed</h4>
+
+<p>At the Octave prompt, you can recall, edit, and reissue previous
+commands using Emacs- or vi-style editing commands.  The default
+keybindings use Emacs-style commands.  For example, to recall the
+previous command, press <kbd>Control-p</kbd> (written <kbd>C-p</kbd> for
+short).  Doing this will normally bring back the previous line of input.
+<kbd>C-n</kbd> will bring up the next line of input, <kbd>C-b</kbd> will move
+the cursor backward on the line, <kbd>C-f</kbd> will move the cursor forward
+on the line, etc.
+</p>
+<p>A complete description of the command line editing capability is given
+in this manual, see <a href="Command-Line-Editing.html#Command-Line-Editing">Command Line Editing</a>.
+</p>
+<a name="Help-and-Documentation"></a>
+<h4 class="subsection">1.2.8 Help and Documentation</h4>
+
+<p>Octave has an extensive help facility.  The same documentation that is
+available in printed form is also available from the Octave prompt,
+because both forms of the documentation are created from the same input
+file.
+</p>
+<p>In order to get good help you first need to know the name of the command
+that you want to use.  The name of this function may not always be
+obvious, but a good place to start is to type <code>help --list</code>.
+This will show you all the operators, keywords, built-in functions,
+and loadable functions available in the current session of Octave.  An
+alternative is to search the documentation using the <code>lookfor</code>
+function (described in <a href="Getting-Help.html#Getting-Help">Getting Help</a>).
+</p>
+<p>Once you know the name of the function you wish to use, you can get more
+help on the function by simply including the name as an argument to help.
+For example,
+</p>
+<div class="example">
+<pre class="example">help plot
+</pre></div>
+
+<p>will display the help text for the <code>plot</code> function.
+</p>
+<p>Octave sends output that is too long to fit on one screen through a
+pager like <code>less</code> or <code>more</code>.  Type a <tt class="key">RET</tt> to advance one
+line, a <tt class="key">SPC</tt> to advance one page, and <tt class="key">q</tt> to quit the pager.
+</p>
+<p>The part of Octave&rsquo;s help facility that allows you to read the complete
+text of the printed manual from within Octave normally uses a separate
+program called Info.  When you invoke Info you will be put into a menu
+driven program that contains the entire Octave manual.  Help for using
+Info is provided in this manual, see <a href="Getting-Help.html#Getting-Help">Getting Help</a>.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Conventions.html#Conventions" accesskey="n" rel="next">Conventions</a>, Previous: <a href="Running-Octave.html#Running-Octave" accesskey="p" rel="prev">Running Octave</a>, Up: <a href="Introduction.html#Introduction" accesskey="u" rel="up">Introduction</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

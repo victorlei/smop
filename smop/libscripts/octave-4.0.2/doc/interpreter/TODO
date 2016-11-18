@@ -1,0 +1,49 @@
+* Improve the index.
+
+* Describe the grammar (grammar.texi).
+
+* More examples.
+
+* Some things from NEWS that might not be documented yet:
+
+  * Expressions of the form
+
+      A(i,j) = x
+
+    where X is a scalar and the indices i and j define a matrix of
+    elements now work as you would expect rather than giving an error.
+    I am told that this is how Matlab 5.0 will behave when it is
+    released.
+    (assignment)
+
+  * Octave's parser now does some simple constant folding.  This means
+    that expressions like 3*i are now evaluated only once, when a
+    function is compiled, and the right hand side of expressions like
+    a = [1,2;3,4] are treated as true matrix constants rather than
+    lists of elements which must be evaluated each time they are
+    needed.
+    (???)
+
+  * Octave now attempts to continue after floating point exceptions
+    or out-of-memory errors.
+    (???)
+
+  * If Octave crashes, it now attempts to save all user-defined
+    variables in a file named `octave-core' in the current directory
+    before exiting.
+    (???)
+
+  * The info reader is now a separate binary that runs as a
+    subprocess.  You still need the info reader distributed with
+    Octave though, because there are some new command-line arguments
+    that are not yet available in the public release of Info.
+    (install)
+
+  * If it is present, Octave will now use an `ls-R' database file to
+    speed up recursive path searching.  Octave looks for a file called
+    ls-R in the directory specified by the environment variable
+    OCTAVE_DB_DIR.  If that is not set but the environment variable
+    OCTAVE_HOME is set, Octave looks in $OCTAVE_HOME/lib/octave.
+    Otherwise, Octave looks in the directory $datadir/octave (normally
+    /usr/local/lib/octave).
+    (install)

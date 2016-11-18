@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Searching Properties</title>
+
+<meta name="description" content="GNU Octave: Searching Properties">
+<meta name="keywords" content="GNU Octave: Searching Properties">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Graphics-Data-Structures.html#Graphics-Data-Structures" rel="up" title="Graphics Data Structures">
+<link href="Managing-Default-Properties.html#Managing-Default-Properties" rel="next" title="Managing Default Properties">
+<link href="Surface-Properties.html#Surface-Properties" rel="prev" title="Surface Properties">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Searching-Properties"></a>
+<div class="header">
+<p>
+Next: <a href="Managing-Default-Properties.html#Managing-Default-Properties" accesskey="n" rel="next">Managing Default Properties</a>, Previous: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="p" rel="prev">Graphics Object Properties</a>, Up: <a href="Graphics-Data-Structures.html#Graphics-Data-Structures" accesskey="u" rel="up">Graphics Data Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Searching-Properties-1"></a>
+<h4 class="subsection">15.3.4 Searching Properties</h4>
+
+<a name="XREFfindobj"></a><dl>
+<dt><a name="index-findobj"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>()</em></dt>
+<dt><a name="index-findobj-1"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>prop_name</var>, <var>prop_value</var>, &hellip;)</em></dt>
+<dt><a name="index-findobj-2"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>prop_name</var>, <var>prop_value</var>, &quot;-<var>logical_op</var>&quot;, <var>prop_name</var>, <var>prop_value</var>)</em></dt>
+<dt><a name="index-findobj-3"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(&quot;-property&quot;, <var>prop_name</var>)</em></dt>
+<dt><a name="index-findobj-4"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(&quot;-regexp&quot;, <var>prop_name</var>, <var>pattern</var>)</em></dt>
+<dt><a name="index-findobj-5"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>hlist</var>, &hellip;)</em></dt>
+<dt><a name="index-findobj-6"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>hlist</var>, &quot;flat&quot;, &hellip;)</em></dt>
+<dt><a name="index-findobj-7"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>hlist</var>, &quot;-depth&quot;, <var>d</var>, &hellip;)</em></dt>
+<dd><p>Find graphics object with specified property values.
+</p>
+<p>The simplest form is
+</p>
+<div class="example">
+<pre class="example">findobj (<var>prop_name</var>, <var>prop_value</var>)
+</pre></div>
+
+<p>which returns the handles of all objects which have a property named
+<var>prop_name</var> that has the value <var>prop_value</var>.  If multiple
+property/value pairs are specified then only objects meeting all of the
+conditions are returned.
+</p>
+<p>The search can be limited to a particular set of objects and their
+descendants, by passing a handle or set of handles <var>hlist</var> as the first
+argument.
+</p>
+<p>The depth of the object hierarchy to search can be limited with the
+<code>&quot;-depth&quot;</code> argument.  An example of searching only three generations
+of children is:
+</p>
+<div class="example">
+<pre class="example">findobj (<var>hlist</var>, &quot;-depth&quot;, 3, <var>prop_name</var>, <var>prop_value</var>)
+</pre></div>
+
+<p>Specifying a depth <var>d</var> of 0, limits the search to the set of objects
+passed in <var>hlist</var>.  A depth <var>d</var> of 0 is equivalent to the
+<code>&quot;flat&quot;</code> argument.
+</p>
+<p>A specified logical operator may be applied to the pairs of <var>prop_name</var>
+and <var>prop_value</var>.  The supported logical operators are:
+<code>&quot;-and&quot;</code>, <code>&quot;-or&quot;</code>,
+<code>&quot;-xor&quot;</code>, <code>&quot;-not&quot;</code>.
+</p>
+<p>Objects may also be matched by comparing a regular expression to the
+property values, where property values that match
+<code>regexp (<var>prop_value</var>, <var>pattern</var>)</code> are returned.
+</p>
+<p>Finally, objects may be matched by property name only by using the
+<code>&quot;-property&quot;</code> option.
+</p>
+<p>Implementation Note: The search only includes objects with visible
+handles (HandleVisibility = <code>&quot;on&quot;</code>).  See <a href="#XREFfindall">findall</a>, to
+search for all objects including hidden ones.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfindall">findall</a>, <a href="Graphics-Objects.html#XREFallchild">allchild</a>, <a href="Graphics-Objects.html#XREFget">get</a>, <a href="Graphics-Objects.html#XREFset">set</a>.
+</p></dd></dl>
+
+
+<a name="XREFfindall"></a><dl>
+<dt><a name="index-findall"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>()</em></dt>
+<dt><a name="index-findall-1"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>prop_name</var>, <var>prop_value</var>, &hellip;)</em></dt>
+<dt><a name="index-findall-2"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>prop_name</var>, <var>prop_value</var>, &quot;-<var>logical_op</var>&quot;, <var>prop_name</var>, <var>prop_value</var>)</em></dt>
+<dt><a name="index-findall-3"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(&quot;-property&quot;, <var>prop_name</var>)</em></dt>
+<dt><a name="index-findall-4"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(&quot;-regexp&quot;, <var>prop_name</var>, <var>pattern</var>)</em></dt>
+<dt><a name="index-findall-5"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>hlist</var>, &hellip;)</em></dt>
+<dt><a name="index-findall-6"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>hlist</var>, &quot;flat&quot;, &hellip;)</em></dt>
+<dt><a name="index-findall-7"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>hlist</var>, &quot;-depth&quot;, <var>d</var>, &hellip;)</em></dt>
+<dd><p>Find graphics object, including hidden ones, with specified property values.
+</p>
+<p>The return value <var>h</var> is a list of handles to the found graphic objects.
+</p>
+<p><code>findall</code> performs the same search as <code>findobj</code>, but it
+includes hidden objects (HandleVisibility = <code>&quot;off&quot;</code>).  For full
+documentation, see <a href="#XREFfindobj">findobj</a>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfindobj">findobj</a>, <a href="Graphics-Objects.html#XREFallchild">allchild</a>, <a href="Graphics-Objects.html#XREFget">get</a>, <a href="Graphics-Objects.html#XREFset">set</a>.
+</p></dd></dl>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Managing-Default-Properties.html#Managing-Default-Properties" accesskey="n" rel="next">Managing Default Properties</a>, Previous: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="p" rel="prev">Graphics Object Properties</a>, Up: <a href="Graphics-Data-Structures.html#Graphics-Data-Structures" accesskey="u" rel="up">Graphics Data Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

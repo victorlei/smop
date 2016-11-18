@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Convex Hull</title>
+
+<meta name="description" content="GNU Octave: Convex Hull">
+<meta name="keywords" content="GNU Octave: Convex Hull">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Geometry.html#Geometry" rel="up" title="Geometry">
+<link href="Interpolation-on-Scattered-Data.html#Interpolation-on-Scattered-Data" rel="next" title="Interpolation on Scattered Data">
+<link href="Voronoi-Diagrams.html#Voronoi-Diagrams" rel="prev" title="Voronoi Diagrams">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Convex-Hull"></a>
+<div class="header">
+<p>
+Next: <a href="Interpolation-on-Scattered-Data.html#Interpolation-on-Scattered-Data" accesskey="n" rel="next">Interpolation on Scattered Data</a>, Previous: <a href="Voronoi-Diagrams.html#Voronoi-Diagrams" accesskey="p" rel="prev">Voronoi Diagrams</a>, Up: <a href="Geometry.html#Geometry" accesskey="u" rel="up">Geometry</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Convex-Hull-1"></a>
+<h3 class="section">30.3 Convex Hull</h3>
+
+<p>The convex hull of a set of points is the minimum convex envelope
+containing all of the points.  Octave has the functions <code>convhull</code>
+and <code>convhulln</code> to calculate the convex hull of 2-dimensional and
+N-dimensional sets of points.
+</p>
+<a name="XREFconvhull"></a><dl>
+<dt><a name="index-convhull"></a>Function File: <em><var>H</var> =</em> <strong>convhull</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-convhull-1"></a>Function File: <em><var>H</var> =</em> <strong>convhull</strong> <em>(<var>x</var>, <var>y</var>, <var>options</var>)</em></dt>
+<dd><p>Compute the convex hull of the set of points defined by the
+arrays <var>x</var> and <var>y</var>.  The hull <var>H</var> is an index vector into
+the set of points and specifies which points form the enclosing hull.
+</p>
+<p>An optional third argument, which must be a string or cell array of strings,
+contains options passed to the underlying qhull command.
+See the documentation for the Qhull library for details
+<a href="http://www.qhull.org/html/qh-quick.htm#options">http://www.qhull.org/html/qh-quick.htm#options</a>.
+The default option is <code>{&quot;Qt&quot;}</code>.
+</p>
+<p>If <var>options</var> is not present or <code>[]</code> then the default arguments are
+used.  Otherwise, <var>options</var> replaces the default argument list.
+To append user options to the defaults it is necessary to repeat the
+default arguments in <var>options</var>.  Use a null string to pass no arguments.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFconvhulln">convhulln</a>, <a href="Delaunay-Triangulation.html#XREFdelaunay">delaunay</a>, <a href="Voronoi-Diagrams.html#XREFvoronoi">voronoi</a>.
+</p></dd></dl>
+
+
+<a name="XREFconvhulln"></a><dl>
+<dt><a name="index-convhulln"></a>Loadable Function: <em><var>h</var> =</em> <strong>convhulln</strong> <em>(<var>pts</var>)</em></dt>
+<dt><a name="index-convhulln-1"></a>Loadable Function: <em><var>h</var> =</em> <strong>convhulln</strong> <em>(<var>pts</var>, <var>options</var>)</em></dt>
+<dt><a name="index-convhulln-2"></a>Loadable Function: <em>[<var>h</var>, <var>v</var>] =</em> <strong>convhulln</strong> <em>(&hellip;)</em></dt>
+<dd><p>Compute the convex hull of the set of points <var>pts</var>.
+</p>
+<p><var>pts</var> is a matrix of size [n, dim] containing n points in a space of
+dimension dim.
+</p>
+<p>The hull <var>h</var> is an index vector into the set of points and specifies
+which points form the enclosing hull.
+</p>
+<p>An optional second argument, which must be a string or cell array of strings,
+contains options passed to the underlying qhull command.
+See the documentation for the Qhull library for details
+<a href="http://www.qhull.org/html/qh-quick.htm#options">http://www.qhull.org/html/qh-quick.htm#options</a>.
+The default options depend on the dimension of the input:
+</p>
+<ul>
+<li> 2D, 3D, 4D: <var>options</var> = <code>{&quot;Qt&quot;}</code>
+
+</li><li> 5D and higher: <var>options</var> = <code>{&quot;Qt&quot;, &quot;Qx&quot;}</code>
+</li></ul>
+
+<p>If <var>options</var> is not present or <code>[]</code> then the default arguments are
+used.  Otherwise, <var>options</var> replaces the default argument list.
+To append user options to the defaults it is necessary to repeat the
+default arguments in <var>options</var>.  Use a null string to pass no arguments.
+</p>
+<p>If the second output <var>v</var> is requested the volume of the enclosing
+convex hull is calculated.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFconvhull">convhull</a>, <a href="Delaunay-Triangulation.html#XREFdelaunayn">delaunayn</a>, <a href="Voronoi-Diagrams.html#XREFvoronoin">voronoin</a>.
+</p></dd></dl>
+
+
+<p>An example of the use of <code>convhull</code> is
+</p>
+<div class="example">
+<pre class="example">x = -3:0.05:3;
+y = abs (sin (x));
+k = convhull (x, y);
+plot (x(k), y(k), &quot;r-&quot;, x, y, &quot;b+&quot;);
+axis ([-3.05, 3.05, -0.05, 1.05]);
+</pre></div>
+
+<p>The output of the above can be seen in <a href="#fig_003aconvhull">Figure 30.5</a>.
+</p>
+<div class="float"><a name="fig_003aconvhull"></a>
+<div align="center"><img src="convhull.png" alt="convhull">
+</div>
+<div class="float-caption"><p><strong>Figure 30.5: </strong>The convex hull of a simple set of points</p></div></div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Interpolation-on-Scattered-Data.html#Interpolation-on-Scattered-Data" accesskey="n" rel="next">Interpolation on Scattered Data</a>, Previous: <a href="Voronoi-Diagrams.html#Voronoi-Diagrams" accesskey="p" rel="prev">Voronoi Diagrams</a>, Up: <a href="Geometry.html#Geometry" accesskey="u" rel="up">Geometry</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

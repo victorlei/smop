@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Integer Conversions</title>
+
+<meta name="description" content="GNU Octave: Integer Conversions">
+<meta name="keywords" content="GNU Octave: Integer Conversions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" rel="up" title="C-Style I/O Functions">
+<link href="Floating_002dPoint-Conversions.html#Floating_002dPoint-Conversions" rel="next" title="Floating-Point Conversions">
+<link href="Table-of-Output-Conversions.html#Table-of-Output-Conversions" rel="prev" title="Table of Output Conversions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Integer-Conversions"></a>
+<div class="header">
+<p>
+Next: <a href="Floating_002dPoint-Conversions.html#Floating_002dPoint-Conversions" accesskey="n" rel="next">Floating-Point Conversions</a>, Previous: <a href="Table-of-Output-Conversions.html#Table-of-Output-Conversions" accesskey="p" rel="prev">Table of Output Conversions</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Integer-Conversions-1"></a>
+<h4 class="subsection">14.2.8 Integer Conversions</h4>
+
+<p>This section describes the options for the &lsquo;<samp>%d</samp>&rsquo;, &lsquo;<samp>%i</samp>&rsquo;,
+&lsquo;<samp>%o</samp>&rsquo;, &lsquo;<samp>%u</samp>&rsquo;, &lsquo;<samp>%x</samp>&rsquo;, and &lsquo;<samp>%X</samp>&rsquo; conversion
+specifications.  These conversions print integers in various formats.
+</p>
+<p>The &lsquo;<samp>%d</samp>&rsquo; and &lsquo;<samp>%i</samp>&rsquo; conversion specifications both print an
+numeric argument as a signed decimal number; while &lsquo;<samp>%o</samp>&rsquo;,
+&lsquo;<samp>%u</samp>&rsquo;, and &lsquo;<samp>%x</samp>&rsquo; print the argument as an unsigned octal,
+decimal, or hexadecimal number (respectively).  The &lsquo;<samp>%X</samp>&rsquo; conversion
+specification is just like &lsquo;<samp>%x</samp>&rsquo; except that it uses the characters
+&lsquo;<samp>ABCDEF</samp>&rsquo; as digits instead of &lsquo;<samp>abcdef</samp>&rsquo;.
+</p>
+<p>The following flags are meaningful:
+</p>
+<dl compact="compact">
+<dt>&lsquo;<samp>-</samp>&rsquo;</dt>
+<dd><p>Left-justify the result in the field (instead of the normal
+right-justification).
+</p>
+</dd>
+<dt>&lsquo;<samp>+</samp>&rsquo;</dt>
+<dd><p>For the signed &lsquo;<samp>%d</samp>&rsquo; and &lsquo;<samp>%i</samp>&rsquo; conversions, print a
+plus sign if the value is positive.
+</p>
+</dd>
+<dt>&lsquo;<samp> </samp>&rsquo;</dt>
+<dd><p>For the signed &lsquo;<samp>%d</samp>&rsquo; and &lsquo;<samp>%i</samp>&rsquo; conversions, if the result
+doesn&rsquo;t start with a plus or minus sign, prefix it with a space
+character instead.  Since the &lsquo;<samp>+</samp>&rsquo; flag ensures that the result
+includes a sign, this flag is ignored if you supply both of them.
+</p>
+</dd>
+<dt>&lsquo;<samp>#</samp>&rsquo;</dt>
+<dd><p>For the &lsquo;<samp>%o</samp>&rsquo; conversion, this forces the leading digit to be
+&lsquo;<samp>0</samp>&rsquo;, as if by increasing the precision.  For &lsquo;<samp>%x</samp>&rsquo; or
+&lsquo;<samp>%X</samp>&rsquo;, this prefixes a leading &lsquo;<samp>0x</samp>&rsquo; or &lsquo;<samp>0X</samp>&rsquo; (respectively)
+to the result.  This doesn&rsquo;t do anything useful for the &lsquo;<samp>%d</samp>&rsquo;,
+&lsquo;<samp>%i</samp>&rsquo;, or &lsquo;<samp>%u</samp>&rsquo; conversions.
+</p>
+</dd>
+<dt>&lsquo;<samp>0</samp>&rsquo;</dt>
+<dd><p>Pad the field with zeros instead of spaces.  The zeros are placed after
+any indication of sign or base.  This flag is ignored if the &lsquo;<samp>-</samp>&rsquo;
+flag is also specified, or if a precision is specified.
+</p></dd>
+</dl>
+
+<p>If a precision is supplied, it specifies the minimum number of digits to
+appear; leading zeros are produced if necessary.  If you don&rsquo;t specify a
+precision, the number is printed with as many digits as it needs.  If
+you convert a value of zero with an explicit precision of zero, then no
+characters at all are produced.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Floating_002dPoint-Conversions.html#Floating_002dPoint-Conversions" accesskey="n" rel="next">Floating-Point Conversions</a>, Previous: <a href="Table-of-Output-Conversions.html#Table-of-Output-Conversions" accesskey="p" rel="prev">Table of Output Conversions</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

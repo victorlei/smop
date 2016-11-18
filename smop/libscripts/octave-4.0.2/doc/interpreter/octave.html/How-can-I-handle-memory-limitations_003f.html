@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: How can I handle memory limitations?</title>
+
+<meta name="description" content="GNU Octave: How can I handle memory limitations?">
+<meta name="keywords" content="GNU Octave: How can I handle memory limitations?">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions" rel="up" title="FAQ - Frequently asked Questions">
+<link href="Which-TeX-symbols-are-implemented-in-dialog-functions_003f.html#Which-TeX-symbols-are-implemented-in-dialog-functions_003f" rel="next" title="Which TeX symbols are implemented in dialog functions?">
+<link href="How-to-create-an-instance-of-a-Java-class_003f.html#How-to-create-an-instance-of-a-Java-class_003f" rel="prev" title="How to create an instance of a Java class?">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="How-can-I-handle-memory-limitations_003f"></a>
+<div class="header">
+<p>
+Next: <a href="Which-TeX-symbols-are-implemented-in-dialog-functions_003f.html#Which-TeX-symbols-are-implemented-in-dialog-functions_003f" accesskey="n" rel="next">Which TeX symbols are implemented in dialog functions?</a>, Previous: <a href="How-to-create-an-instance-of-a-Java-class_003f.html#How-to-create-an-instance-of-a-Java-class_003f" accesskey="p" rel="prev">How to create an instance of a Java class?</a>, Up: <a href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions" accesskey="u" rel="up">FAQ - Frequently asked Questions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="How-can-I-handle-memory-limitations_003f-1"></a>
+<h4 class="subsection">37.3.4 How can I handle memory limitations?</h4>
+<a name="index-memory_002c-limitations"></a>
+
+<p>In order to execute Java code Octave creates a Java Virtual Machine (JVM).
+Such a JVM allocates a fixed amount of initial memory and may expand this pool
+up to a fixed maximum memory limit.  The default values depend on the Java
+version (see <a href="Java-Interface-Functions.html#XREFjavamem">javamem</a>).  The memory pool is shared by all
+Java objects running in the JVM.  This strict memory limit is intended mainly
+to avoid that runaway applications inside web browsers or in enterprise servers
+can consume all memory and crash the system.  When the maximum memory limit is
+hit, Java code will throw exceptions so that applications will fail or behave
+unexpectedly.
+</p>
+<p>You can specify options for the creation of the JVM inside a file named
+<samp>java.opts</samp>.  This is a text file where you can enter lines containing
+<samp>-X</samp> and <samp>-D</samp> options handed to the JVM during initialization.
+</p>
+<p>The directory where the Java options file is located is specified by the
+environment variable <code><span class="nolinebreak">OCTAVE_JAVA_DIR</span></code><!-- /@w -->.  If unset the directory where
+<samp>javaclasspath.m</samp> resides is used instead (typically
+<samp><code><span class="nolinebreak">OCTAVE_HOME</span></code><!-- /@w -->/share/octave/<code><span class="nolinebreak">OCTAVE_VERSION</span></code><!-- /@w -->/m/java/</samp>).  You can
+find this directory by executing
+</p>
+<div class="example">
+<pre class="example">which javaclasspath
+</pre></div>
+
+<p>The <samp>-X</samp> options allow you to increase the maximum amount of memory
+available to the JVM.  The following example allows up to 256 Megabytes to
+be used by adding the following line to the <samp>java.opts</samp> file:
+</p>
+<div class="example">
+<pre class="example">-Xmx256m
+</pre></div>
+
+<p>The maximum possible amount of memory depends on your system.  On a Windows
+system with 2 Gigabytes main memory you should be able to set this maximum to
+about 1 Gigabyte.
+</p>
+<p>If your application requires a large amount of memory from the beginning, you
+can also specify the initial amount of memory allocated to the JVM.  Adding
+the following line to the <samp>java.opts</samp> file starts the JVM with 64
+Megabytes of initial memory:
+</p>
+<div class="example">
+<pre class="example">-Xms64m
+</pre></div>
+
+<p>For more details on the available <samp>-X</samp> options of your Java Virtual
+Machine issue the command &lsquo;<samp>java -X</samp>&rsquo; at the operating system command prompt
+and consult the Java documentation.
+</p>
+<p>The <samp>-D</samp> options can be used to define system properties which can then
+be used by Java classes inside Octave.  System properties can be retrieved by
+using the <code>getProperty()</code> methods of the <code>java.lang.System</code> class.
+The following example line defines the property <var>MyProperty</var> and assigns it
+the string <code>12.34</code>.
+</p>
+<div class="example">
+<pre class="example">-DMyProperty=12.34
+</pre></div>
+
+<p>The value of this property can then be retrieved as a string by a Java object
+or in Octave:
+</p>
+<div class="example">
+<pre class="example">octave&gt; javaMethod (&quot;getProperty&quot;, &quot;java.lang.System&quot;, &quot;MyProperty&quot;);
+ans = 12.34
+</pre></div>
+
+
+<p><strong>See also:</strong> javamem.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Which-TeX-symbols-are-implemented-in-dialog-functions_003f.html#Which-TeX-symbols-are-implemented-in-dialog-functions_003f" accesskey="n" rel="next">Which TeX symbols are implemented in dialog functions?</a>, Previous: <a href="How-to-create-an-instance-of-a-Java-class_003f.html#How-to-create-an-instance-of-a-Java-class_003f" accesskey="p" rel="prev">How to create an instance of a Java class?</a>, Up: <a href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions" accesskey="u" rel="up">FAQ - Frequently asked Questions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

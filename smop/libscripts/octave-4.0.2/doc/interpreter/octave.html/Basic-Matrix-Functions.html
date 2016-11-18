@@ -1,0 +1,633 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Basic Matrix Functions</title>
+
+<meta name="description" content="GNU Octave: Basic Matrix Functions">
+<meta name="keywords" content="GNU Octave: Basic Matrix Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Linear-Algebra.html#Linear-Algebra" rel="up" title="Linear Algebra">
+<link href="Matrix-Factorizations.html#Matrix-Factorizations" rel="next" title="Matrix Factorizations">
+<link href="Techniques-Used-for-Linear-Algebra.html#Techniques-Used-for-Linear-Algebra" rel="prev" title="Techniques Used for Linear Algebra">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Basic-Matrix-Functions"></a>
+<div class="header">
+<p>
+Next: <a href="Matrix-Factorizations.html#Matrix-Factorizations" accesskey="n" rel="next">Matrix Factorizations</a>, Previous: <a href="Techniques-Used-for-Linear-Algebra.html#Techniques-Used-for-Linear-Algebra" accesskey="p" rel="prev">Techniques Used for Linear Algebra</a>, Up: <a href="Linear-Algebra.html#Linear-Algebra" accesskey="u" rel="up">Linear Algebra</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Basic-Matrix-Functions-1"></a>
+<h3 class="section">18.2 Basic Matrix Functions</h3>
+<a name="index-matrix-functions_002c-basic"></a>
+
+<a name="XREFbalance"></a><dl>
+<dt><a name="index-balance"></a>Built-in Function: <em><var>AA</var> =</em> <strong>balance</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-balance-1"></a>Built-in Function: <em><var>AA</var> =</em> <strong>balance</strong> <em>(<var>A</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-balance-2"></a>Built-in Function: <em>[<var>DD</var>, <var>AA</var>] =</em> <strong>balance</strong> <em>(<var>A</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-balance-3"></a>Built-in Function: <em>[<var>D</var>, <var>P</var>, <var>AA</var>] =</em> <strong>balance</strong> <em>(<var>A</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-balance-4"></a>Built-in Function: <em>[<var>CC</var>, <var>DD</var>, <var>AA</var>, <var>BB</var>] =</em> <strong>balance</strong> <em>(<var>A</var>, <var>B</var>, <var>opt</var>)</em></dt>
+<dd>
+<p>Balance the matrix <var>A</var> to reduce numerical errors in future
+calculations.
+</p>
+<p>Compute <code><var>AA</var> = <var>DD</var> \ <var>A</var> * <var>DD</var></code> in which <var>AA</var>
+is a matrix whose row and column norms are roughly equal in magnitude, and
+<code><var>DD</var> = <var>P</var> * <var>D</var></code>, in which <var>P</var> is a permutation
+matrix and <var>D</var> is a diagonal matrix of powers of two.  This allows the
+equilibration to be computed without round-off.  Results of eigenvalue
+calculation are typically improved by balancing first.
+</p>
+<p>If two output values are requested, <code>balance</code> returns
+the diagonal <var>D</var> and the permutation <var>P</var> separately as vectors.
+In this case, <code><var>DD</var> = eye(n)(:,<var>P</var>) * diag (<var>D</var>)</code>, where
+<em>n</em> is the matrix size.
+</p>
+<p>If four output values are requested, compute <code><var>AA</var> =
+<var>CC</var>*<var>A</var>*<var>DD</var></code> and <code><var>BB</var> = <var>CC</var>*<var>B</var>*<var>DD</var></code>,
+in which <var>AA</var> and <var>BB</var> have nonzero elements of approximately the
+same magnitude and <var>CC</var> and <var>DD</var> are permuted diagonal matrices as
+in <var>DD</var> for the algebraic eigenvalue problem.
+</p>
+<p>The eigenvalue balancing option <var>opt</var> may be one of:
+</p>
+<dl compact="compact">
+<dt><code>&quot;noperm&quot;</code>, <code>&quot;S&quot;</code></dt>
+<dd><p>Scale only; do not permute.
+</p>
+</dd>
+<dt><code>&quot;noscal&quot;</code>, <code>&quot;P&quot;</code></dt>
+<dd><p>Permute only; do not scale.
+</p></dd>
+</dl>
+
+<p>Algebraic eigenvalue balancing uses standard <small>LAPACK</small> routines.
+</p>
+<p>Generalized eigenvalue problem balancing uses Ward&rsquo;s algorithm
+(SIAM Journal on Scientific and Statistical Computing, 1981).
+</p></dd></dl>
+
+
+<a name="XREFbandwidth"></a><dl>
+<dt><a name="index-bandwidth"></a>Function File: <em><var>bw</var> =</em> <strong>bandwidth</strong> <em>(<var>A</var>, <var>type</var>)</em></dt>
+<dt><a name="index-bandwidth-1"></a>Function File: <em>[<var>lower</var>, <var>upper</var>] =</em> <strong>bandwidth</strong> <em>(<var>A</var>)</em></dt>
+<dd><p>Compute the bandwidth of <var>A</var>.
+</p>
+<p>The <var>type</var> argument is the string <code>&quot;lower&quot;</code> for the lower
+bandwidth and <code>&quot;upper&quot;</code> for the upper bandwidth.  If no <var>type</var> is
+specified return both the lower and upper bandwidth of <var>A</var>.
+</p>
+<p>The lower/upper bandwidth of a matrix is the number of
+subdiagonals/superdiagonals with nonzero entries.
+</p>
+
+<p><strong>See also:</strong> <a href="Predicates-for-Numeric-Objects.html#XREFisbanded">isbanded</a>, <a href="Predicates-for-Numeric-Objects.html#XREFisdiag">isdiag</a>, <a href="Predicates-for-Numeric-Objects.html#XREFistril">istril</a>, <a href="Predicates-for-Numeric-Objects.html#XREFistriu">istriu</a>.
+</p></dd></dl>
+
+
+<a name="XREFcond"></a><dl>
+<dt><a name="index-cond"></a>Function File: <em></em> <strong>cond</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-cond-1"></a>Function File: <em></em> <strong>cond</strong> <em>(<var>A</var>, <var>p</var>)</em></dt>
+<dd><p>Compute the <var>p</var>-norm condition number of a matrix.
+</p>
+<p><code>cond (<var>A</var>)</code> is defined as
+<code>norm (<var>A</var>, <var>p</var>) * norm (inv (<var>A</var>), <var>p</var>)</code>.
+</p>
+<p>By default, <code><var>p</var> = 2</code> is used which implies a (relatively slow)
+singular value decomposition.  Other possible selections are
+<code><var>p</var> = 1, Inf, &quot;fro&quot;</code> which are generally faster.  See <code>norm</code>
+for a full discussion of possible <var>p</var> values.
+</p>
+<p>The condition number of a matrix quantifies the sensitivity of the matrix
+inversion operation when small changes are made to matrix elements.  Ideally
+the condition number will be close to 1.  When the number is large this
+indicates small changes (such as underflow or round-off error) will produce
+large changes in the resulting output.  In such cases the solution results
+from numerical computing are not likely to be accurate.
+</p>
+<p><strong>See also:</strong> <a href="Sparse-Linear-Algebra.html#XREFcondest">condest</a>, <a href="#XREFrcond">rcond</a>, <a href="#XREFnorm">norm</a>, <a href="Matrix-Factorizations.html#XREFsvd">svd</a>.
+</p></dd></dl>
+
+
+<a name="XREFdet"></a><dl>
+<dt><a name="index-det"></a>Built-in Function: <em></em> <strong>det</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-det-1"></a>Built-in Function: <em>[<var>d</var>, <var>rcond</var>] =</em> <strong>det</strong> <em>(<var>A</var>)</em></dt>
+<dd><p>Compute the determinant of <var>A</var>.
+</p>
+<p>Return an estimate of the reciprocal condition number if requested.
+</p>
+<p>Programming Notes: Routines from <small>LAPACK</small> are used for full matrices and
+code from <small>UMFPACK</small> is used for sparse matrices.
+</p>
+<p>The determinant should not be used to check a matrix for singularity.
+For that, use any of the condition number functions: <code>cond</code>,
+<code>condest</code>, <code>rcond</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFcond">cond</a>, <a href="Sparse-Linear-Algebra.html#XREFcondest">condest</a>, <a href="#XREFrcond">rcond</a>.
+</p></dd></dl>
+
+
+<a name="XREFeig"></a><dl>
+<dt><a name="index-eig"></a>Built-in Function: <em><var>lambda</var> =</em> <strong>eig</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-eig-1"></a>Built-in Function: <em><var>lambda</var> =</em> <strong>eig</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
+<dt><a name="index-eig-2"></a>Built-in Function: <em>[<var>V</var>, <var>lambda</var>] =</em> <strong>eig</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-eig-3"></a>Built-in Function: <em>[<var>V</var>, <var>lambda</var>] =</em> <strong>eig</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
+<dd><p>Compute the eigenvalues (and optionally the eigenvectors) of a matrix
+or a pair of matrices
+</p>
+<p>The algorithm used depends on whether there are one or two input
+matrices, if they are real or complex, and if they are symmetric
+(Hermitian if complex) or non-symmetric.
+</p>
+<p>The eigenvalues returned by <code>eig</code> are not ordered.
+</p>
+<p><strong>See also:</strong> <a href="Sparse-Linear-Algebra.html#XREFeigs">eigs</a>, <a href="Matrix-Factorizations.html#XREFsvd">svd</a>.
+</p></dd></dl>
+
+
+<a name="XREFgivens"></a><dl>
+<dt><a name="index-givens"></a>Built-in Function: <em><var>G</var> =</em> <strong>givens</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-givens-1"></a>Built-in Function: <em>[<var>c</var>, <var>s</var>] =</em> <strong>givens</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dd><p>Compute the Givens rotation matrix <var>G</var>.
+</p>
+<p>The Givens matrix is a 2 by 2 orthogonal matrix
+</p>
+<p><code><var>g</var> = [<var>c</var> <var>s</var>; -<var>s</var>' <var>c</var>]</code>
+</p>
+<p>such that
+</p>
+<p><code><var>g</var> [<var>x</var>; <var>y</var>] = [*; 0]</code>
+</p>
+<p>with <var>x</var> and <var>y</var> scalars.
+</p>
+<p>If two output arguments are requested, return the factors <var>c</var> and
+<var>s</var> rather than the Givens rotation matrix.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">givens (1, 1)
+   &rArr;   0.70711   0.70711
+       -0.70711   0.70711
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFplanerot">planerot</a>.
+</p></dd></dl>
+
+
+<a name="XREFplanerot"></a><dl>
+<dt><a name="index-planerot"></a>Function File: <em>[<var>G</var>, <var>y</var>] =</em> <strong>planerot</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Given a two-element column vector, return the
+2 by 2 orthogonal matrix
+<var>G</var> such that
+<code><var>y</var> = <var>g</var> * <var>x</var></code> and <code><var>y</var>(2) = 0</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFgivens">givens</a>.
+</p></dd></dl>
+
+
+<a name="XREFinv"></a><dl>
+<dt><a name="index-inv"></a>Built-in Function: <em><var>x</var> =</em> <strong>inv</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-inv-1"></a>Built-in Function: <em>[<var>x</var>, <var>rcond</var>] =</em> <strong>inv</strong> <em>(<var>A</var>)</em></dt>
+<dd><p>Compute the inverse of the square matrix <var>A</var>.
+</p>
+<p>Return an estimate of the reciprocal condition number if requested,
+otherwise warn of an ill-conditioned matrix if the reciprocal condition
+number is small.
+</p>
+<p>In general it is best to avoid calculating the inverse of a matrix directly.
+For example, it is both faster and more accurate to solve systems of
+equations (<var>A</var>*<em>x</em> = <em>b</em>) with
+<code><var>y</var> = <var>A</var> \ <em>b</em></code>, rather than
+<code><var>y</var> = inv (<var>A</var>) * <em>b</em></code>.
+</p>
+<p>If called with a sparse matrix, then in general <var>x</var> will be a full
+matrix requiring significantly more storage.  Avoid forming the inverse of a
+sparse matrix if possible.
+</p>
+<p><strong>See also:</strong> <a href="Arithmetic-Ops.html#XREFldivide">ldivide</a>, <a href="Arithmetic-Ops.html#XREFrdivide">rdivide</a>.
+</p></dd></dl>
+
+
+<a name="XREFlinsolve"></a><dl>
+<dt><a name="index-linsolve"></a>Function File: <em><var>x</var> =</em> <strong>linsolve</strong> <em>(<var>A</var>, <var>b</var>)</em></dt>
+<dt><a name="index-linsolve-1"></a>Function File: <em><var>x</var> =</em> <strong>linsolve</strong> <em>(<var>A</var>, <var>b</var>, <var>opts</var>)</em></dt>
+<dt><a name="index-linsolve-2"></a>Function File: <em>[<var>x</var>, <var>R</var>] =</em> <strong>linsolve</strong> <em>(&hellip;)</em></dt>
+<dd><p>Solve the linear system <code>A*x = b</code>.
+</p>
+<p>With no options, this function is equivalent to the left division operator
+(<code>x&nbsp;=&nbsp;A&nbsp;\&nbsp;b</code>)<!-- /@w --> or the matrix-left-divide function
+(<code>x&nbsp;=&nbsp;mldivide&nbsp;(A,&nbsp;b)</code>)<!-- /@w -->.
+</p>
+<p>Octave ordinarily examines the properties of the matrix <var>A</var> and chooses
+a solver that best matches the matrix.  By passing a structure <var>opts</var>
+to <code>linsolve</code> you can inform Octave directly about the matrix <var>A</var>.
+In this case Octave will skip the matrix examination and proceed directly
+to solving the linear system.
+</p>
+<p><strong>Warning:</strong> If the matrix <var>A</var> does not have the properties
+listed in the <var>opts</var> structure then the result will not be accurate
+AND no warning will be given.  When in doubt, let Octave examine the matrix
+and choose the appropriate solver as this step takes little time and the
+result is cached so that it is only done once per linear system.
+</p>
+<p>Possible <var>opts</var> fields (set value to true/false):
+</p>
+<dl compact="compact">
+<dt>LT</dt>
+<dd><p><var>A</var> is lower triangular
+</p>
+</dd>
+<dt>UT</dt>
+<dd><p><var>A</var> is upper triangular
+</p>
+</dd>
+<dt>UHESS</dt>
+<dd><p><var>A</var> is upper Hessenberg (currently makes no difference)
+</p>
+</dd>
+<dt>SYM</dt>
+<dd><p><var>A</var> is symmetric or complex Hermitian (currently makes no difference)
+</p>
+</dd>
+<dt>POSDEF</dt>
+<dd><p><var>A</var> is positive definite
+</p>
+</dd>
+<dt>RECT</dt>
+<dd><p><var>A</var> is general rectangular (currently makes no difference)
+</p>
+</dd>
+<dt>TRANSA</dt>
+<dd><p>Solve <code>A'*x = b</code> by <code>transpose (A) \ b</code>
+</p></dd>
+</dl>
+
+<p>The optional second output <var>R</var> is the inverse condition number of
+<var>A</var> (zero if matrix is singular).
+</p>
+<p><strong>See also:</strong> <a href="Arithmetic-Ops.html#XREFmldivide">mldivide</a>, <a href="#XREFmatrix_005ftype">matrix_type</a>, <a href="#XREFrcond">rcond</a>.
+</p></dd></dl>
+
+
+<a name="XREFmatrix_005ftype"></a><dl>
+<dt><a name="index-matrix_005ftype"></a>Built-in Function: <em><var>type</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-matrix_005ftype-1"></a>Built-in Function: <em><var>type</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, &quot;nocompute&quot;)</em></dt>
+<dt><a name="index-matrix_005ftype-2"></a>Built-in Function: <em><var>A</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, <var>type</var>)</em></dt>
+<dt><a name="index-matrix_005ftype-3"></a>Built-in Function: <em><var>A</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, &quot;upper&quot;, <var>perm</var>)</em></dt>
+<dt><a name="index-matrix_005ftype-4"></a>Built-in Function: <em><var>A</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, &quot;lower&quot;, <var>perm</var>)</em></dt>
+<dt><a name="index-matrix_005ftype-5"></a>Built-in Function: <em><var>A</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, &quot;banded&quot;, <var>nl</var>, <var>nu</var>)</em></dt>
+<dd><p>Identify the matrix type or mark a matrix as a particular type.
+</p>
+<p>This allows more rapid solutions of linear equations involving <var>A</var> to be
+performed.
+</p>
+<p>Called with a single argument, <code>matrix_type</code> returns the type of the
+matrix and caches it for future use.
+</p>
+<p>Called with more than one argument, <code>matrix_type</code> allows the type of
+the matrix to be defined.
+</p>
+<p>If the option <code>&quot;nocompute&quot;</code> is given, the function will not attempt
+to guess the type if it is still unknown.  This is useful for debugging
+purposes.
+</p>
+<p>The possible matrix types depend on whether the matrix is full or sparse, and
+can be one of the following
+</p>
+<dl compact="compact">
+<dt><code>&quot;unknown&quot;</code></dt>
+<dd><p>Remove any previously cached matrix type, and mark type as unknown.
+</p>
+</dd>
+<dt><code>&quot;full&quot;</code></dt>
+<dd><p>Mark the matrix as full.
+</p>
+</dd>
+<dt><code>&quot;positive definite&quot;</code></dt>
+<dd><p>Probable full positive definite matrix.
+</p>
+</dd>
+<dt><code>&quot;diagonal&quot;</code></dt>
+<dd><p>Diagonal matrix.  (Sparse matrices only)
+</p>
+</dd>
+<dt><code>&quot;permuted diagonal&quot;</code></dt>
+<dd><p>Permuted Diagonal matrix.  The permutation does not need to be specifically
+indicated, as the structure of the matrix explicitly gives this.  (Sparse
+matrices only)
+</p>
+</dd>
+<dt><code>&quot;upper&quot;</code></dt>
+<dd><p>Upper triangular.  If the optional third argument <var>perm</var> is given, the
+matrix is assumed to be a permuted upper triangular with the permutations
+defined by the vector <var>perm</var>.
+</p>
+</dd>
+<dt><code>&quot;lower&quot;</code></dt>
+<dd><p>Lower triangular.  If the optional third argument <var>perm</var> is given, the
+matrix is assumed to be a permuted lower triangular with the permutations
+defined by the vector <var>perm</var>.
+</p>
+</dd>
+<dt><code>&quot;banded&quot;</code></dt>
+<dt><code>&quot;banded positive definite&quot;</code></dt>
+<dd><p>Banded matrix with the band size of <var>nl</var> below the diagonal and <var>nu</var>
+above it.  If <var>nl</var> and <var>nu</var> are 1, then the matrix is tridiagonal and
+treated with specialized code.  In addition the matrix can be marked as
+probably a positive definite.  (Sparse matrices only)
+</p>
+</dd>
+<dt><code>&quot;singular&quot;</code></dt>
+<dd><p>The matrix is assumed to be singular and will be treated with a minimum norm
+solution.
+</p>
+</dd>
+</dl>
+
+<p>Note that the matrix type will be discovered automatically on the first
+attempt to solve a linear equation involving <var>A</var>.  Therefore
+<code>matrix_type</code> is only useful to give Octave hints of the matrix type.
+Incorrectly defining the matrix type will result in incorrect results from
+solutions of linear equations; it is entirely <strong>the responsibility of
+the user</strong> to correctly identify the matrix type.
+</p>
+<p>Also, the test for positive definiteness is a low-cost test for a Hermitian
+matrix with a real positive diagonal.  This does not guarantee that the
+matrix is positive definite, but only that it is a probable candidate.  When
+such a matrix is factorized, a Cholesky&nbsp;factorization is first
+attempted, and if that fails the matrix is then treated with an
+LU&nbsp;factorization.  Once the matrix has been factorized,
+<code>matrix_type</code> will return the correct classification of the matrix.
+</p></dd></dl>
+
+
+<a name="XREFnorm"></a><dl>
+<dt><a name="index-norm"></a>Built-in Function: <em></em> <strong>norm</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-norm-1"></a>Built-in Function: <em></em> <strong>norm</strong> <em>(<var>A</var>, <var>p</var>)</em></dt>
+<dt><a name="index-norm-2"></a>Built-in Function: <em></em> <strong>norm</strong> <em>(<var>A</var>, <var>p</var>, <var>opt</var>)</em></dt>
+<dd><p>Compute the p-norm of the matrix <var>A</var>.
+</p>
+<p>If the second argument is missing, <code>p&nbsp;=&nbsp;2</code><!-- /@w --> is assumed.
+</p>
+<p>If <var>A</var> is a matrix (or sparse matrix):
+</p>
+<dl compact="compact">
+<dt><var>p</var> = <code>1</code></dt>
+<dd><p>1-norm, the largest column sum of the absolute values of <var>A</var>.
+</p>
+</dd>
+<dt><var>p</var> = <code>2</code></dt>
+<dd><p>Largest singular value of <var>A</var>.
+</p>
+</dd>
+<dt><var>p</var> = <code>Inf</code> or <code>&quot;inf&quot;</code></dt>
+<dd><a name="index-infinity-norm"></a>
+<p>Infinity norm, the largest row sum of the absolute values of <var>A</var>.
+</p>
+</dd>
+<dt><var>p</var> = <code>&quot;fro&quot;</code></dt>
+<dd><a name="index-Frobenius-norm"></a>
+<p>Frobenius norm of <var>A</var>, <code>sqrt (sum (diag (<var>A</var>' * <var>A</var>)))</code>.
+</p>
+</dd>
+<dt>other <var>p</var>, <code><var>p</var> &gt; 1</code></dt>
+<dd><a name="index-general-p_002dnorm"></a>
+<p>maximum <code>norm (A*x, p)</code> such that <code>norm (x, p) == 1</code>
+</p></dd>
+</dl>
+
+<p>If <var>A</var> is a vector or a scalar:
+</p>
+<dl compact="compact">
+<dt><var>p</var> = <code>Inf</code> or <code>&quot;inf&quot;</code></dt>
+<dd><p><code>max (abs (<var>A</var>))</code>.
+</p>
+</dd>
+<dt><var>p</var> = <code>-Inf</code></dt>
+<dd><p><code>min (abs (<var>A</var>))</code>.
+</p>
+</dd>
+<dt><var>p</var> = <code>&quot;fro&quot;</code></dt>
+<dd><p>Frobenius norm of <var>A</var>, <code>sqrt (sumsq (abs (A)))</code>.
+</p>
+</dd>
+<dt><var>p</var> = 0</dt>
+<dd><p>Hamming norm - the number of nonzero elements.
+</p>
+</dd>
+<dt>other <var>p</var>, <code><var>p</var> &gt; 1</code></dt>
+<dd><p>p-norm of <var>A</var>, <code>(sum (abs (<var>A</var>) .^ <var>p</var>)) ^ (1/<var>p</var>)</code>.
+</p>
+</dd>
+<dt>other <var>p</var> <code><var>p</var> &lt; 1</code></dt>
+<dd><p>the p-pseudonorm defined as above.
+</p></dd>
+</dl>
+
+<p>If <var>opt</var> is the value <code>&quot;rows&quot;</code>, treat each row as a vector and
+compute its norm.  The result is returned as a column vector.
+Similarly, if <var>opt</var> is <code>&quot;columns&quot;</code> or <code>&quot;cols&quot;</code> then
+compute the norms of each column and return a row vector.
+</p>
+<p><strong>See also:</strong> <a href="#XREFcond">cond</a>, <a href="Matrix-Factorizations.html#XREFsvd">svd</a>.
+</p></dd></dl>
+
+
+<a name="XREFnull"></a><dl>
+<dt><a name="index-null"></a>Function File: <em></em> <strong>null</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-null-1"></a>Function File: <em></em> <strong>null</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
+<dd><p>Return an orthonormal basis of the null space of <var>A</var>.
+</p>
+<p>The dimension of the null space is taken as the number of singular values of
+<var>A</var> not greater than <var>tol</var>.  If the argument <var>tol</var> is missing,
+it is computed as
+</p>
+<div class="example">
+<pre class="example">max (size (<var>A</var>)) * max (svd (<var>A</var>)) * eps
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREForth">orth</a>.
+</p></dd></dl>
+
+
+<a name="XREForth"></a><dl>
+<dt><a name="index-orth"></a>Function File: <em></em> <strong>orth</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-orth-1"></a>Function File: <em></em> <strong>orth</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
+<dd><p>Return an orthonormal basis of the range space of <var>A</var>.
+</p>
+<p>The dimension of the range space is taken as the number of singular values
+of <var>A</var> greater than <var>tol</var>.  If the argument <var>tol</var> is missing, it
+is computed as
+</p>
+<div class="example">
+<pre class="example">max (size (<var>A</var>)) * max (svd (<var>A</var>)) * eps
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFnull">null</a>.
+</p></dd></dl>
+
+
+<a name="XREFmgorth"></a><dl>
+<dt><a name="index-mgorth"></a>Built-in Function: <em>[<var>y</var>, <var>h</var>] =</em> <strong>mgorth</strong> <em>(<var>x</var>, <var>v</var>)</em></dt>
+<dd><p>Orthogonalize a given column vector <var>x</var> with respect to a set of
+orthonormal vectors comprising the columns of <var>v</var> using the modified
+Gram-Schmidt method.
+</p>
+<p>On exit, <var>y</var> is a unit vector such that:
+</p>
+<div class="example">
+<pre class="example">  norm (<var>y</var>) = 1
+  <var>v</var>' * <var>y</var> = 0
+  <var>x</var> = [<var>v</var>, <var>y</var>]*<var>h</var>'
+</pre></div>
+
+</dd></dl>
+
+
+<a name="XREFpinv"></a><dl>
+<dt><a name="index-pinv"></a>Built-in Function: <em></em> <strong>pinv</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-pinv-1"></a>Built-in Function: <em></em> <strong>pinv</strong> <em>(<var>x</var>, <var>tol</var>)</em></dt>
+<dd><p>Return the pseudoinverse of <var>x</var>.
+</p>
+<p>Singular values less than <var>tol</var> are ignored.
+</p>
+<p>If the second argument is omitted, it is taken to be
+</p>
+<div class="example">
+<pre class="example">tol = max (size (<var>x</var>)) * sigma_max (<var>x</var>) * eps,
+</pre></div>
+
+<p>where <code>sigma_max (<var>x</var>)</code> is the maximal singular value of <var>x</var>.
+</p></dd></dl>
+
+<a name="index-pseudoinverse"></a>
+
+<a name="XREFrank"></a><dl>
+<dt><a name="index-rank"></a>Function File: <em></em> <strong>rank</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-rank-1"></a>Function File: <em></em> <strong>rank</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
+<dd><p>Compute the rank of matrix <var>A</var>, using the singular value decomposition.
+</p>
+<p>The rank is taken to be the number of singular values of <var>A</var> that are
+greater than the specified tolerance <var>tol</var>.  If the second argument is
+omitted, it is taken to be
+</p>
+<div class="example">
+<pre class="example">tol = max (size (<var>A</var>)) * sigma(1) * eps;
+</pre></div>
+
+<p>where <code>eps</code> is machine precision and <code>sigma(1)</code> is the largest
+singular value of <var>A</var>.
+</p>
+<p>The rank of a matrix is the number of linearly independent rows or columns
+and determines how many particular solutions exist to a system of equations.
+Use <code>null</code> for finding the remaining homogenous solutions.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">x = [1 2 3
+     4 5 6
+     7 8 9];
+rank (x)
+  &rArr; 2
+</pre></div>
+
+<p>The number of linearly independent rows is only 2 because the final row is a
+linear combination of -1*row1 + 2*row2.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFnull">null</a>, <a href="Sparse-Linear-Algebra.html#XREFsprank">sprank</a>, <a href="Matrix-Factorizations.html#XREFsvd">svd</a>.
+</p></dd></dl>
+
+
+<a name="XREFrcond"></a><dl>
+<dt><a name="index-rcond"></a>Built-in Function: <em><var>c</var> =</em> <strong>rcond</strong> <em>(<var>A</var>)</em></dt>
+<dd><p>Compute the 1-norm estimate of the reciprocal condition number as returned
+by <small>LAPACK</small>.
+</p>
+<p>If the matrix is well-conditioned then <var>c</var> will be near 1 and if the
+matrix is poorly conditioned it will be close to 0.
+</p>
+<p>The matrix <var>A</var> must not be sparse.  If the matrix is sparse then
+<code>condest (<var>A</var>)</code> or <code>rcond (full (<var>A</var>))</code> should be used
+instead.
+</p>
+<p><strong>See also:</strong> <a href="#XREFcond">cond</a>, <a href="Sparse-Linear-Algebra.html#XREFcondest">condest</a>.
+</p></dd></dl>
+
+
+<a name="XREFtrace"></a><dl>
+<dt><a name="index-trace"></a>Function File: <em></em> <strong>trace</strong> <em>(<var>A</var>)</em></dt>
+<dd><p>Compute the trace of <var>A</var>, the sum of the elements along the main
+diagonal.
+</p>
+<p>The implementation is straightforward: <code>sum (diag (<var>A</var>))</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFeig">eig</a>.
+</p></dd></dl>
+
+
+<a name="XREFrref"></a><dl>
+<dt><a name="index-rref"></a>Function File: <em></em> <strong>rref</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-rref-1"></a>Function File: <em></em> <strong>rref</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-rref-2"></a>Function File: <em>[<var>r</var>, <var>k</var>] =</em> <strong>rref</strong> <em>(&hellip;)</em></dt>
+<dd><p>Return the reduced row echelon form of <var>A</var>.
+</p>
+<p><var>tol</var> defaults to
+<code>eps * max (size (<var>A</var>)) * norm (<var>A</var>, inf)</code>.
+</p>
+<p>The optional return argument <var>k</var> contains the vector of
+&quot;bound variables&quot;, which are those columns on which elimination has been
+performed.
+</p>
+</dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Matrix-Factorizations.html#Matrix-Factorizations" accesskey="n" rel="next">Matrix Factorizations</a>, Previous: <a href="Techniques-Used-for-Linear-Algebra.html#Techniques-Used-for-Linear-Algebra" accesskey="p" rel="prev">Techniques Used for Linear Algebra</a>, Up: <a href="Linear-Algebra.html#Linear-Algebra" accesskey="u" rel="up">Linear Algebra</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

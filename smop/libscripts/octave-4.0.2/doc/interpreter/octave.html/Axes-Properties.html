@@ -1,0 +1,712 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Axes Properties</title>
+
+<meta name="description" content="GNU Octave: Axes Properties">
+<meta name="keywords" content="GNU Octave: Axes Properties">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Graphics-Object-Properties.html#Graphics-Object-Properties" rel="up" title="Graphics Object Properties">
+<link href="Line-Properties.html#Line-Properties" rel="next" title="Line Properties">
+<link href="Figure-Properties.html#Figure-Properties" rel="prev" title="Figure Properties">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Axes-Properties"></a>
+<div class="header">
+<p>
+Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Line Properties</a>, Previous: <a href="Figure-Properties.html#Figure-Properties" accesskey="p" rel="prev">Figure Properties</a>, Up: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="u" rel="up">Graphics Object Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Axes-Properties-1"></a>
+<h4 class="subsubsection">15.3.3.3 Axes Properties</h4>
+<a name="index-axes-properties"></a>
+
+<p>The <code>axes</code> properties are:
+</p>
+
+
+<dl compact="compact">
+<dd>
+<a name="XREFaxes_005f_005fmodified_005f_005f"></a><a name="index-axes-_005f_005fmodified_005f_005f"></a>
+</dd>
+<dt><code>__modified__</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFaxesactivepositionproperty"></a><a name="index-axes-activepositionproperty"></a>
+</dd>
+<dt><code>activepositionproperty</code>: {<code>&quot;outerposition&quot;</code>} | <code>&quot;position&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesalim"></a><a name="index-axes-alim"></a>
+</dd>
+<dt><code>alim</code>: def. <code>[0   1]</code></dt>
+<dd><p>Transparency is not yet implemented for axes objects.  <code>alim</code> is unused.
+</p>
+
+<a name="XREFaxesalimmode"></a><a name="index-axes-alimmode"></a>
+</dd>
+<dt><code>alimmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesambientlightcolor"></a><a name="index-axes-ambientlightcolor"></a>
+</dd>
+<dt><code>ambientlightcolor</code>: def. <code>[1   1   1]</code></dt>
+<dd><p>Light is not yet implemented for axes objects.  <code>ambientlightcolor</code> is unused.
+</p>
+
+<a name="XREFaxesbeingdeleted"></a><a name="index-axes-beingdeleted"></a>
+</dd>
+<dt><code>beingdeleted</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesbox"></a><a name="index-axes-box"></a>
+</dd>
+<dt><code>box</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p>Control whether the axes has a surrounding box.
+</p>
+
+<a name="XREFaxesbusyaction"></a><a name="index-axes-busyaction"></a>
+</dd>
+<dt><code>busyaction</code>: <code>&quot;cancel&quot;</code> | {<code>&quot;queue&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFaxesbuttondownfcn"></a><a name="index-axes-buttondownfcn"></a>
+</dd>
+<dt><code>buttondownfcn</code>: string | function handle, def. <code>[](0x0)</code></dt>
+<dd>
+
+
+<a name="XREFaxescameraposition"></a><a name="index-axes-cameraposition"></a>
+</dd>
+<dt><code>cameraposition</code>: three-element vector, def. <code>[0.50000   0.50000   9.16025]</code></dt>
+<dd>
+
+
+<a name="XREFaxescamerapositionmode"></a><a name="index-axes-camerapositionmode"></a>
+</dd>
+<dt><code>camerapositionmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxescameratarget"></a><a name="index-axes-cameratarget"></a>
+</dd>
+<dt><code>cameratarget</code>: three-element vector, def. <code>[0.50000   0.50000   0.50000]</code></dt>
+<dd>
+
+
+<a name="XREFaxescameratargetmode"></a><a name="index-axes-cameratargetmode"></a>
+</dd>
+<dt><code>cameratargetmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxescameraupvector"></a><a name="index-axes-cameraupvector"></a>
+</dd>
+<dt><code>cameraupvector</code>: three-element vector, def. <code>[-0   1   0]</code></dt>
+<dd>
+
+
+<a name="XREFaxescameraupvectormode"></a><a name="index-axes-cameraupvectormode"></a>
+</dd>
+<dt><code>cameraupvectormode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxescameraviewangle"></a><a name="index-axes-cameraviewangle"></a>
+</dd>
+<dt><code>cameraviewangle</code>: scalar, def. <code>6.6086</code></dt>
+<dd>
+
+
+<a name="XREFaxescameraviewanglemode"></a><a name="index-axes-cameraviewanglemode"></a>
+</dd>
+<dt><code>cameraviewanglemode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxeschildren"></a><a name="index-axes-children"></a>
+</dd>
+<dt><code>children</code> (read-only): vector of graphics handles, def. <code>[](0x1)</code></dt>
+<dd><p>Graphics handles of the axes&rsquo;s children.
+</p>
+
+<a name="XREFaxesclim"></a><a name="index-axes-clim"></a>
+</dd>
+<dt><code>clim</code>: two-element vector, def. <code>[0   1]</code></dt>
+<dd><p>Define the limits for the color axis of image children.  Setting <code>clim</code> also forces the <code>climmode</code> property to be set to <code>&quot;manual&quot;</code>.  See <a href="Two_002dDimensional-Plots.html#XREFpcolor">pcolor&nbsp;function<!-- /@w --></a>.
+</p>
+
+<a name="XREFaxesclimmode"></a><a name="index-axes-climmode"></a>
+</dd>
+<dt><code>climmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesclipping"></a><a name="index-axes-clipping"></a>
+</dd>
+<dt><code>clipping</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p><code>clipping</code> is unused.
+</p>
+
+<a name="XREFaxescolor"></a><a name="index-axes-color"></a>
+</dd>
+<dt><code>color</code>: colorspec, def. <code>[1   1   1]</code></dt>
+<dd><p>Color of the axes background.  See <a href="Colors.html#Colors">colorspec</a>.
+</p>
+
+<a name="XREFaxescolororder"></a><a name="index-axes-colororder"></a>
+</dd>
+<dt><code>colororder</code>: N-by-3 RGB matrix, def. 7-by-3 double</dt>
+<dd><p>RGB values used by plot function for automatic line coloring.
+</p>
+
+<a name="XREFaxescreatefcn"></a><a name="index-axes-createfcn"></a>
+</dd>
+<dt><code>createfcn</code>: string | function handle, def. <code>[](0x0)</code></dt>
+<dd><p>Callback function executed immediately after axes has been created.  Function is set by using default property on root object, e.g., <code>set (0, &quot;defaultaxescreatefcn&quot;, 'disp (&quot;axes created!&quot;)')</code>.
+</p>
+
+<a name="XREFaxescurrentpoint"></a><a name="index-axes-currentpoint"></a>
+</dd>
+<dt><code>currentpoint</code>: 2-by-3 matrix, def. 2-by-3 double</dt>
+<dd><p>Matrix <code>[xf, yf, zf; xb, yb, zb]</code> which holds the coordinates (in axes data units) of the point over which the mouse pointer was when the mouse button was pressed.  If a mouse callback function is defined, <code>currentpoint</code> holds the pointer coordinates at the time the mouse button was pressed.  For 3-D plots, the first row of the returned matrix specifies the point nearest to the current camera position and the second row the furthest point.  The two points forms a line which is perpendicular to the screen.
+</p>
+
+<a name="XREFaxesdataaspectratio"></a><a name="index-axes-dataaspectratio"></a>
+</dd>
+<dt><code>dataaspectratio</code>: three-element vector, def. <code>[1   1   1]</code></dt>
+<dd><p>Specify the relative height and width of the data displayed in the axes.  Setting <code>dataaspectratio</code> to <code>[1,&nbsp;2]</code><!-- /@w --> causes the length of one unit as displayed on the x-axis to be the same as the length of 2 units on the y-axis.  Setting <code>dataaspectratio</code> also forces the <code>dataaspectratiomode</code> property to be set to <code>&quot;manual&quot;</code>.
+</p>
+
+<a name="XREFaxesdataaspectratiomode"></a><a name="index-axes-dataaspectratiomode"></a>
+</dd>
+<dt><code>dataaspectratiomode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesdeletefcn"></a><a name="index-axes-deletefcn"></a>
+</dd>
+<dt><code>deletefcn</code>: string | function handle, def. <code>[](0x0)</code></dt>
+<dd><p>Callback function executed immediately before axes is deleted.
+</p>
+
+<a name="XREFaxesdrawmode"></a><a name="index-axes-drawmode"></a>
+</dd>
+<dt><code>drawmode</code>: <code>&quot;fast&quot;</code> | {<code>&quot;normal&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFaxesfontangle"></a><a name="index-axes-fontangle"></a>
+</dd>
+<dt><code>fontangle</code>: <code>&quot;italic&quot;</code> | {<code>&quot;normal&quot;</code>} | <code>&quot;oblique&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesfontname"></a><a name="index-axes-fontname"></a>
+</dd>
+<dt><code>fontname</code>: string, def. <code>&quot;*&quot;</code></dt>
+<dd><p>Name of the font used for axes annotations.
+</p>
+
+<a name="XREFaxesfontsize"></a><a name="index-axes-fontsize"></a>
+</dd>
+<dt><code>fontsize</code>: scalar, def. <code>10</code></dt>
+<dd><p>Size of the font used for axes annotations.  See <a href="#XREFaxesfontunits">fontunits&nbsp;property<!-- /@w --></a>.
+</p>
+
+<a name="XREFaxesfontunits"></a><a name="index-axes-fontunits"></a>
+</dd>
+<dt><code>fontunits</code>: <code>&quot;centimeters&quot;</code> | <code>&quot;inches&quot;</code> | <code>&quot;normalized&quot;</code> | <code>&quot;pixels&quot;</code> | {<code>&quot;points&quot;</code>}</dt>
+<dd><p>Unit used to interpret <code>fontsize</code> property.
+</p>
+
+<a name="XREFaxesfontweight"></a><a name="index-axes-fontweight"></a>
+</dd>
+<dt><code>fontweight</code>: <code>&quot;bold&quot;</code> | <code>&quot;demi&quot;</code> | <code>&quot;light&quot;</code> | {<code>&quot;normal&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFaxesgridlinestyle"></a><a name="index-axes-gridlinestyle"></a>
+</dd>
+<dt><code>gridlinestyle</code>: <code>&quot;-&quot;</code> | <code>&quot;--&quot;</code> | <code>&quot;-.&quot;</code> | {<code>&quot;:&quot;</code>} | <code>&quot;none&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxeshandlevisibility"></a><a name="index-axes-handlevisibility"></a>
+</dd>
+<dt><code>handlevisibility</code>: <code>&quot;callback&quot;</code> | <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p>If <code>handlevisibility</code> is <code>&quot;off&quot;</code>, the axes&rsquo;s handle is not visible in its parent&rsquo;s &quot;children&quot; property.
+</p>
+
+<a name="XREFaxeshittest"></a><a name="index-axes-hittest"></a>
+</dd>
+<dt><code>hittest</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFaxesinterpreter"></a><a name="index-axes-interpreter"></a>
+</dd>
+<dt><code>interpreter</code>: <code>&quot;latex&quot;</code> | {<code>&quot;none&quot;</code>} | <code>&quot;tex&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesinterruptible"></a><a name="index-axes-interruptible"></a>
+</dd>
+<dt><code>interruptible</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFaxeslayer"></a><a name="index-axes-layer"></a>
+</dd>
+<dt><code>layer</code>: {<code>&quot;bottom&quot;</code>} | <code>&quot;top&quot;</code></dt>
+<dd><p>Control whether the axes is drawn below child graphics objects (ticks, labels, etc. covered by plotted objects) or above.
+</p>
+
+<a name="XREFaxeslinestyleorder"></a><a name="index-axes-linestyleorder"></a>
+</dd>
+<dt><code>linestyleorder</code>: def. <code>&quot;-&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxeslinewidth"></a><a name="index-axes-linewidth"></a>
+</dd>
+<dt><code>linewidth</code>: def. <code>0.50000</code></dt>
+<dd>
+
+
+<a name="XREFaxesminorgridlinestyle"></a><a name="index-axes-minorgridlinestyle"></a>
+</dd>
+<dt><code>minorgridlinestyle</code>: <code>&quot;-&quot;</code> | <code>&quot;--&quot;</code> | <code>&quot;-.&quot;</code> | {<code>&quot;:&quot;</code>} | <code>&quot;none&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesmousewheelzoom"></a><a name="index-axes-mousewheelzoom"></a>
+</dd>
+<dt><code>mousewheelzoom</code>: scalar in the range (0, 1), def. <code>0.50000</code></dt>
+<dd><p>Fraction of axes limits to zoom for each wheel movement.
+</p>
+
+<a name="XREFaxesnextplot"></a><a name="index-axes-nextplot"></a>
+</dd>
+<dt><code>nextplot</code>: <code>&quot;add&quot;</code> | {<code>&quot;replace&quot;</code>} | <code>&quot;replacechildren&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesouterposition"></a><a name="index-axes-outerposition"></a>
+</dd>
+<dt><code>outerposition</code>: four-element vector, def. <code>[0   0   1   1]</code></dt>
+<dd><p>Specify the position of the plot including titles, axes, and legend.  The four elements of the vector are the coordinates of the lower left corner and width and height of the plot, in units normalized to the width and height of the plot window.  For example, <code>[0.2, 0.3, 0.4, 0.5]</code> sets the lower left corner of the axes at <em>(0.2, 0.3)</em> and the width and height to be 0.4 and 0.5 respectively.  See <a href="#XREFaxesposition">position&nbsp;property<!-- /@w --></a>.
+</p>
+
+<a name="XREFaxesparent"></a><a name="index-axes-parent"></a>
+</dd>
+<dt><code>parent</code>: graphics handle</dt>
+<dd><p>Handle of the parent graphics object.
+</p>
+
+<a name="XREFaxesplotboxaspectratio"></a><a name="index-axes-plotboxaspectratio"></a>
+</dd>
+<dt><code>plotboxaspectratio</code>: def. <code>[1   1   1]</code></dt>
+<dd>
+
+
+<a name="XREFaxesplotboxaspectratiomode"></a><a name="index-axes-plotboxaspectratiomode"></a>
+</dd>
+<dt><code>plotboxaspectratiomode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesposition"></a><a name="index-axes-position"></a>
+</dd>
+<dt><code>position</code>: four-element vector, def. <code>[0.13000   0.11000   0.77500   0.81500]</code></dt>
+<dd><p>Specify the position of the plot excluding titles, axes, and legend.  The four elements of the vector are the coordinates of the lower left corner and width and height of the plot, in units normalized to the width and height of the plot window.  For example, <code>[0.2, 0.3, 0.4, 0.5]</code> sets the lower left corner of the axes at <em>(0.2, 0.3)</em> and the width and height to be 0.4 and 0.5 respectively.  See <a href="#XREFaxesouterposition">outerposition&nbsp;property<!-- /@w --></a>.
+</p>
+
+<a name="XREFaxesprojection"></a><a name="index-axes-projection"></a>
+</dd>
+<dt><code>projection</code>: {<code>&quot;orthographic&quot;</code>} | <code>&quot;perspective&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesselected"></a><a name="index-axes-selected"></a>
+</dd>
+<dt><code>selected</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesselectionhighlight"></a><a name="index-axes-selectionhighlight"></a>
+</dd>
+<dt><code>selectionhighlight</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd>
+
+
+<a name="XREFaxestag"></a><a name="index-axes-tag"></a>
+</dd>
+<dt><code>tag</code>: string, def. <code>&quot;&quot;</code></dt>
+<dd><p>A user-defined string to label the graphics object.
+</p>
+
+<a name="XREFaxestickdir"></a><a name="index-axes-tickdir"></a>
+</dd>
+<dt><code>tickdir</code>: {<code>&quot;in&quot;</code>} | <code>&quot;out&quot;</code></dt>
+<dd><p>Control whether axes tick marks project &quot;in&quot; to the plot box or &quot;out&quot;.
+</p>
+
+<a name="XREFaxestickdirmode"></a><a name="index-axes-tickdirmode"></a>
+</dd>
+<dt><code>tickdirmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesticklength"></a><a name="index-axes-ticklength"></a>
+</dd>
+<dt><code>ticklength</code>: two-element vector, def. <code>[0.010000   0.025000]</code></dt>
+<dd><p>Two-element vector <code>[2Dlen 3Dlen]</code> specifying the length of the tickmarks relative to the longest visible axis.
+</p>
+
+<a name="XREFaxestightinset"></a><a name="index-axes-tightinset"></a>
+</dd>
+<dt><code>tightinset</code> (read-only): def. <code>[0.042857   0.038106   0.000000   0.023810]</code></dt>
+<dd>
+
+
+<a name="XREFaxestitle"></a><a name="index-axes-title"></a>
+</dd>
+<dt><code>title</code>: graphics handle</dt>
+<dd><p>Graphics handle of the title text object.
+</p>
+
+<a name="XREFaxestype"></a><a name="index-axes-type"></a>
+</dd>
+<dt><code>type</code> (read-only): string</dt>
+<dd><p>Class name of the graphics object.  <code>type</code> is always <code>&quot;axes&quot;</code>
+</p>
+
+<a name="XREFaxesuicontextmenu"></a><a name="index-axes-uicontextmenu"></a>
+</dd>
+<dt><code>uicontextmenu</code>: graphics handle, def. <code>[](0x0)</code></dt>
+<dd><p>Graphics handle of the uicontextmenu object that is currently associated to this axes object.
+</p>
+
+<a name="XREFaxesunits"></a><a name="index-axes-units"></a>
+</dd>
+<dt><code>units</code>: <code>&quot;centimeters&quot;</code> | <code>&quot;characters&quot;</code> | <code>&quot;inches&quot;</code> | {<code>&quot;normalized&quot;</code>} | <code>&quot;pixels&quot;</code> | <code>&quot;points&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesuserdata"></a><a name="index-axes-userdata"></a>
+</dd>
+<dt><code>userdata</code>: Any Octave data, def. <code>[](0x0)</code></dt>
+<dd><p>User-defined data to associate with the graphics object.
+</p>
+
+<a name="XREFaxesview"></a><a name="index-axes-view"></a>
+</dd>
+<dt><code>view</code>: two-element vector, def. <code>[0   90]</code></dt>
+<dd><p>Two-element vector <code>[azimuth elevation]</code> specifying the viewpoint for three-dimensional plots
+</p>
+
+<a name="XREFaxesvisible"></a><a name="index-axes-visible"></a>
+</dd>
+<dt><code>visible</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p>If <code>visible</code> is <code>&quot;off&quot;</code>, the axes is not rendered on screen.
+</p>
+
+<a name="XREFaxesxaxislocation"></a><a name="index-axes-xaxislocation"></a>
+</dd>
+<dt><code>xaxislocation</code>: {<code>&quot;bottom&quot;</code>} | <code>&quot;top&quot;</code> | <code>&quot;zero&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesxcolor"></a><a name="index-axes-xcolor"></a>
+</dd>
+<dt><code>xcolor</code>: {colorspec} | <code>&quot;none&quot;</code>, def. <code>[0   0   0]</code></dt>
+<dd><p>Color of the x-axis.  See <a href="Colors.html#Colors">colorspec</a>.
+</p>
+
+<a name="XREFaxesxdir"></a><a name="index-axes-xdir"></a>
+</dd>
+<dt><code>xdir</code>: {<code>&quot;normal&quot;</code>} | <code>&quot;reverse&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesxgrid"></a><a name="index-axes-xgrid"></a>
+</dd>
+<dt><code>xgrid</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd><p>Control whether major x grid lines are displayed.
+</p>
+
+<a name="XREFaxesxlabel"></a><a name="index-axes-xlabel"></a>
+</dd>
+<dt><code>xlabel</code>: graphics handle</dt>
+<dd><p>Graphics handle of the x label text object.
+</p>
+
+<a name="XREFaxesxlim"></a><a name="index-axes-xlim"></a>
+</dd>
+<dt><code>xlim</code>: two-element vector, def. <code>[0   1]</code></dt>
+<dd><p>Two-element vector <code>[xmin xmax]</code> specifying the limits for the x-axis.  Setting <code>xlim</code> also forces the <code>xlimmode</code> property to be set to <code>&quot;manual&quot;</code>.  See <a href="Axis-Configuration.html#XREFxlim">xlim&nbsp;function<!-- /@w --></a>.
+</p>
+
+<a name="XREFaxesxlimmode"></a><a name="index-axes-xlimmode"></a>
+</dd>
+<dt><code>xlimmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesxminorgrid"></a><a name="index-axes-xminorgrid"></a>
+</dd>
+<dt><code>xminorgrid</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd><p>Control whether minor x grid lines are displayed.
+</p>
+
+<a name="XREFaxesxminortick"></a><a name="index-axes-xminortick"></a>
+</dd>
+<dt><code>xminortick</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesxscale"></a><a name="index-axes-xscale"></a>
+</dd>
+<dt><code>xscale</code>: {<code>&quot;linear&quot;</code>} | <code>&quot;log&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesxtick"></a><a name="index-axes-xtick"></a>
+</dd>
+<dt><code>xtick</code>: vector</dt>
+<dd><p>Position of x tick marks.  Setting <code>xtick</code> also forces the <code>xtickmode</code> property to be set to <code>&quot;manual&quot;</code>.
+</p>
+
+<a name="XREFaxesxticklabel"></a><a name="index-axes-xticklabel"></a>
+</dd>
+<dt><code>xticklabel</code>: string | cell array of strings, def. 1-by-6 cell</dt>
+<dd><p>Labels of x tick marks.  Setting <code>xticklabel</code> also forces the <code>xticklabelmode</code> property to be set to <code>&quot;manual&quot;</code>.
+</p>
+
+<a name="XREFaxesxticklabelmode"></a><a name="index-axes-xticklabelmode"></a>
+</dd>
+<dt><code>xticklabelmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesxtickmode"></a><a name="index-axes-xtickmode"></a>
+</dd>
+<dt><code>xtickmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesyaxislocation"></a><a name="index-axes-yaxislocation"></a>
+</dd>
+<dt><code>yaxislocation</code>: {<code>&quot;left&quot;</code>} | <code>&quot;right&quot;</code> | <code>&quot;zero&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesycolor"></a><a name="index-axes-ycolor"></a>
+</dd>
+<dt><code>ycolor</code>: {colorspec} | <code>&quot;none&quot;</code>, def. <code>[0   0   0]</code></dt>
+<dd><p>Color of the y-axis.  See <a href="Colors.html#Colors">colorspec</a>.
+</p>
+
+<a name="XREFaxesydir"></a><a name="index-axes-ydir"></a>
+</dd>
+<dt><code>ydir</code>: {<code>&quot;normal&quot;</code>} | <code>&quot;reverse&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesygrid"></a><a name="index-axes-ygrid"></a>
+</dd>
+<dt><code>ygrid</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd><p>Control whether major y grid lines are displayed.
+</p>
+
+<a name="XREFaxesylabel"></a><a name="index-axes-ylabel"></a>
+</dd>
+<dt><code>ylabel</code>: graphics handle</dt>
+<dd><p>Graphics handle of the y label text object.
+</p>
+
+<a name="XREFaxesylim"></a><a name="index-axes-ylim"></a>
+</dd>
+<dt><code>ylim</code>: two-element vector, def. <code>[0   1]</code></dt>
+<dd><p>Two-element vector <code>[ymin ymax]</code> specifying the limits for the y-axis.  Setting <code>ylim</code> also forces the <code>ylimmode</code> property to be set to <code>&quot;manual&quot;</code>.  See <a href="Axis-Configuration.html#XREFylim">ylim&nbsp;function<!-- /@w --></a>.
+</p>
+
+<a name="XREFaxesylimmode"></a><a name="index-axes-ylimmode"></a>
+</dd>
+<dt><code>ylimmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesyminorgrid"></a><a name="index-axes-yminorgrid"></a>
+</dd>
+<dt><code>yminorgrid</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd><p>Control whether minor y grid lines are displayed.
+</p>
+
+<a name="XREFaxesyminortick"></a><a name="index-axes-yminortick"></a>
+</dd>
+<dt><code>yminortick</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesyscale"></a><a name="index-axes-yscale"></a>
+</dd>
+<dt><code>yscale</code>: {<code>&quot;linear&quot;</code>} | <code>&quot;log&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesytick"></a><a name="index-axes-ytick"></a>
+</dd>
+<dt><code>ytick</code>: vector</dt>
+<dd><p>Position of y tick marks.  Setting <code>ytick</code> also forces the <code>ytickmode</code> property to be set to <code>&quot;manual&quot;</code>.
+</p>
+
+<a name="XREFaxesyticklabel"></a><a name="index-axes-yticklabel"></a>
+</dd>
+<dt><code>yticklabel</code>: string | cell array of strings, def. 1-by-6 cell</dt>
+<dd><p>Labels of y tick marks.  Setting <code>yticklabel</code> also forces the <code>yticklabelmode</code> property to be set to <code>&quot;manual&quot;</code>.
+</p>
+
+<a name="XREFaxesyticklabelmode"></a><a name="index-axes-yticklabelmode"></a>
+</dd>
+<dt><code>yticklabelmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesytickmode"></a><a name="index-axes-ytickmode"></a>
+</dd>
+<dt><code>ytickmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxeszcolor"></a><a name="index-axes-zcolor"></a>
+</dd>
+<dt><code>zcolor</code>: {colorspec} | <code>&quot;none&quot;</code>, def. <code>[0   0   0]</code></dt>
+<dd><p>Color of the z-axis.  See <a href="Colors.html#Colors">colorspec</a>.
+</p>
+
+<a name="XREFaxeszdir"></a><a name="index-axes-zdir"></a>
+</dd>
+<dt><code>zdir</code>: {<code>&quot;normal&quot;</code>} | <code>&quot;reverse&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxeszgrid"></a><a name="index-axes-zgrid"></a>
+</dd>
+<dt><code>zgrid</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd><p>Control whether major z grid lines are displayed.
+</p>
+
+<a name="XREFaxeszlabel"></a><a name="index-axes-zlabel"></a>
+</dd>
+<dt><code>zlabel</code>: graphics handle</dt>
+<dd><p>Graphics handle of the z label text object.
+</p>
+
+<a name="XREFaxeszlim"></a><a name="index-axes-zlim"></a>
+</dd>
+<dt><code>zlim</code>: two-element vector, def. <code>[0   1]</code></dt>
+<dd><p>Two-element vector <code>[zmin zmaz]</code> specifying the limits for the z-axis.  Setting <code>zlim</code> also forces the <code>zlimmode</code> property to be set to <code>&quot;manual&quot;</code>.  See <a href="Axis-Configuration.html#XREFzlim">zlim&nbsp;function<!-- /@w --></a>.
+</p>
+
+<a name="XREFaxeszlimmode"></a><a name="index-axes-zlimmode"></a>
+</dd>
+<dt><code>zlimmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxeszminorgrid"></a><a name="index-axes-zminorgrid"></a>
+</dd>
+<dt><code>zminorgrid</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd><p>Control whether minor z grid lines are displayed.
+</p>
+
+<a name="XREFaxeszminortick"></a><a name="index-axes-zminortick"></a>
+</dd>
+<dt><code>zminortick</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxeszscale"></a><a name="index-axes-zscale"></a>
+</dd>
+<dt><code>zscale</code>: {<code>&quot;linear&quot;</code>} | <code>&quot;log&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesztick"></a><a name="index-axes-ztick"></a>
+</dd>
+<dt><code>ztick</code>: vector</dt>
+<dd><p>Position of z tick marks.  Setting <code>ztick</code> also forces the <code>ztickmode</code> property to be set to <code>&quot;manual&quot;</code>.
+</p>
+
+<a name="XREFaxeszticklabel"></a><a name="index-axes-zticklabel"></a>
+</dd>
+<dt><code>zticklabel</code>: string | cell array of strings, def. 1-by-6 cell</dt>
+<dd><p>Labels of z tick marks.  Setting <code>zticklabel</code> also forces the <code>zticklabelmode</code> property to be set to <code>&quot;manual&quot;</code>.
+</p>
+
+<a name="XREFaxeszticklabelmode"></a><a name="index-axes-zticklabelmode"></a>
+</dd>
+<dt><code>zticklabelmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
+
+<a name="XREFaxesztickmode"></a><a name="index-axes-ztickmode"></a>
+</dd>
+<dt><code>ztickmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+</dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Line Properties</a>, Previous: <a href="Figure-Properties.html#Figure-Properties" accesskey="p" rel="prev">Figure Properties</a>, Up: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="u" rel="up">Graphics Object Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Miscellaneous Functions</title>
+
+<meta name="description" content="GNU Octave: Miscellaneous Functions">
+<meta name="keywords" content="GNU Octave: Miscellaneous Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Polynomial-Manipulations.html#Polynomial-Manipulations" rel="up" title="Polynomial Manipulations">
+<link href="Interpolation.html#Interpolation" rel="next" title="Interpolation">
+<link href="Polynomial-Interpolation.html#Polynomial-Interpolation" rel="prev" title="Polynomial Interpolation">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Miscellaneous-Functions"></a>
+<div class="header">
+<p>
+Previous: <a href="Polynomial-Interpolation.html#Polynomial-Interpolation" accesskey="p" rel="prev">Polynomial Interpolation</a>, Up: <a href="Polynomial-Manipulations.html#Polynomial-Manipulations" accesskey="u" rel="up">Polynomial Manipulations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Miscellaneous-Functions-1"></a>
+<h3 class="section">28.6 Miscellaneous Functions</h3>
+
+<a name="XREFpoly"></a><dl>
+<dt><a name="index-poly"></a>Function File: <em></em> <strong>poly</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-poly-1"></a>Function File: <em></em> <strong>poly</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>If <var>A</var> is a square <em>N</em>-by-<em>N</em> matrix, <code>poly (<var>A</var>)</code>
+is the row vector of the coefficients of <code>det (z * eye (N) - A)</code>,
+the characteristic polynomial of <var>A</var>.
+</p>
+<p>For example, the following code finds the eigenvalues of <var>A</var> which are
+the roots of <code>poly (<var>A</var>)</code>.
+</p>
+<div class="example">
+<pre class="example">roots (poly (eye (3)))
+    &rArr; 1.00001 + 0.00001i
+       1.00001 - 0.00001i
+       0.99999 + 0.00000i
+</pre></div>
+
+<p>In fact, all three eigenvalues are exactly 1 which emphasizes that for
+numerical performance the <code>eig</code> function should be used to compute
+eigenvalues.
+</p>
+<p>If <var>x</var> is a vector, <code>poly (<var>x</var>)</code> is a vector of the
+coefficients of the polynomial whose roots are the elements of <var>x</var>.
+That is, if <var>c</var> is a polynomial, then the elements of
+<code><var>d</var> = roots (poly (<var>c</var>))</code> are contained in <var>c</var>.  The
+vectors <var>c</var> and <var>d</var> are not identical, however, due to sorting and
+numerical errors.
+</p>
+<p><strong>See also:</strong> <a href="Finding-Roots.html#XREFroots">roots</a>, <a href="Basic-Matrix-Functions.html#XREFeig">eig</a>.
+</p></dd></dl>
+
+
+<a name="XREFpolyout"></a><dl>
+<dt><a name="index-polyout"></a>Function File: <em></em> <strong>polyout</strong> <em>(<var>c</var>)</em></dt>
+<dt><a name="index-polyout-1"></a>Function File: <em></em> <strong>polyout</strong> <em>(<var>c</var>, <var>x</var>)</em></dt>
+<dt><a name="index-polyout-2"></a>Function File: <em><var>str</var> =</em> <strong>polyout</strong> <em>(&hellip;)</em></dt>
+<dd><p>Display a formatted version of the polynomial <var>c</var>.
+</p>
+<p>The formatted polynomial
+</p>
+<div class="example">
+<pre class="example">c(x) = c(1) * x^n + &hellip; + c(n) x + c(n+1)
+</pre></div>
+
+<p>is returned as a string or written to the screen if <code>nargout</code> is zero.
+</p>
+<p>The second argument <var>x</var> specifies the variable name to use for each term
+and defaults to the string <code>&quot;s&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFpolyreduce">polyreduce</a>.
+</p></dd></dl>
+
+
+<a name="XREFpolyreduce"></a><dl>
+<dt><a name="index-polyreduce"></a>Function File: <em></em> <strong>polyreduce</strong> <em>(<var>c</var>)</em></dt>
+<dd><p>Reduce a polynomial coefficient vector to a minimum number of terms by
+stripping off any leading zeros.
+</p>
+<p><strong>See also:</strong> <a href="#XREFpolyout">polyout</a>.
+</p></dd></dl>
+
+
+
+
+
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Polynomial-Interpolation.html#Polynomial-Interpolation" accesskey="p" rel="prev">Polynomial Interpolation</a>, Up: <a href="Polynomial-Manipulations.html#Polynomial-Manipulations" accesskey="u" rel="up">Polynomial Manipulations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

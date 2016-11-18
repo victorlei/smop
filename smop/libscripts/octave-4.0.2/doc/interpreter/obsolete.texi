@@ -1,0 +1,183 @@
+@c DO NOT EDIT!  Generated automatically by munge-texi.pl.
+
+@c Copyright (C) 2010-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@c The text of this file appears in the file BUGS in the Octave
+@c distribution, as well as in the Octave manual.
+
+@node Obsolete Functions
+@appendix Obsolete Functions
+
+@cindex obsolete functions
+@cindex deprecated functions
+@cindex functions, obsolete
+@cindex functions, deprecated
+
+After being marked as deprecated for two major releases, the following
+functions have been removed from Octave.  The third column of the table
+shows the version of Octave in which the function was removed.  Prior to
+removal, each function in the list was marked as deprecated for at least
+two major releases.  All deprecated functions issue warnings explaining
+that they will be removed in a future version of Octave, and which
+function should be used instead.
+
+Replacement functions do not always accept precisely the same arguments
+as the obsolete function, but should provide equivalent functionality.
+
+@multitable @columnfractions .3 .3 .15
+@headitem Obsolete Function @tab Replacement @tab Version
+@item @code{beta_cdf} @tab @code{betacdf} @tab 3.4.0
+@item @code{beta_inv} @tab @code{betainv} @tab 3.4.0
+@item @code{beta_pdf} @tab @code{betapdf} @tab 3.4.0
+@item @code{beta_rnd} @tab @code{betarnd} @tab 3.4.0
+@item @code{binomial_cdf} @tab @code{binocdf} @tab 3.4.0
+@item @code{binomial_inv} @tab @code{binoinv} @tab 3.4.0
+@item @code{binomial_pdf} @tab @code{binopdf} @tab 3.4.0
+@item @code{binomial_rnd} @tab @code{binornd} @tab 3.4.0
+@item @code{chisquare_cdf} @tab @code{chi2cdf} @tab 3.4.0
+@item @code{chisquare_inv} @tab @code{chi2inv} @tab 3.4.0
+@item @code{chisquare_pdf} @tab @code{chi2pdf} @tab 3.4.0
+@item @code{chisquare_rnd} @tab @code{chi2rnd} @tab 3.4.0
+@item @code{clearplot} @tab @code{clf} @tab 3.4.0
+@item @code{com2str} @tab @code{num2str} @tab 3.4.0
+@item @code{exponential_cdf} @tab @code{expcdf} @tab 3.4.0
+@item @code{exponential_inv} @tab @code{expinv} @tab 3.4.0
+@item @code{exponential_pdf} @tab @code{exppdf} @tab 3.4.0
+@item @code{exponential_rnd} @tab @code{exprnd} @tab 3.4.0
+@item @code{f_cdf} @tab @code{fcdf} @tab 3.4.0
+@item @code{f_inv} @tab @code{finv} @tab 3.4.0
+@item @code{f_pdf} @tab @code{fpdf} @tab 3.4.0
+@item @code{f_rnd} @tab @code{frnd} @tab 3.4.0
+@item @code{gamma_cdf} @tab @code{gamcdf} @tab 3.4.0
+@item @code{gamma_inv} @tab @code{gaminv} @tab 3.4.0
+@item @code{gamma_pdf} @tab @code{gampdf} @tab 3.4.0
+@item @code{gamma_rnd} @tab @code{gamrnd} @tab 3.4.0
+@item @code{geometric_cdf} @tab @code{geocdf} @tab 3.4.0
+@item @code{geometric_inv} @tab @code{geoinv} @tab 3.4.0
+@item @code{geometric_pdf} @tab @code{geopdf} @tab 3.4.0
+@item @code{geometric_rnd} @tab @code{geornd} @tab 3.4.0
+@item @code{hypergeometric_cdf} @tab @code{hygecdf} @tab 3.4.0
+@item @code{hypergeometric_inv} @tab @code{hygeinv} @tab 3.4.0
+@item @code{hypergeometric_pdf} @tab @code{hygepdf} @tab 3.4.0
+@item @code{hypergeometric_rnd} @tab @code{hygernd} @tab 3.4.0
+@item @code{intersection} @tab @code{intersect} @tab 3.4.0
+@item @code{is_bool} @tab @code{isbool} @tab 3.4.0
+@item @code{is_complex} @tab @code{iscomplex} @tab 3.4.0
+@item @code{is_list} @tab @code{islist} @tab 3.4.0
+@item @code{is_matrix} @tab @code{ismatrix} @tab 3.4.0
+@item @code{is_scalar} @tab @code{isscalar} @tab 3.4.0
+@item @code{is_square} @tab @code{issquare} @tab 3.4.0
+@item @code{is_stream} @tab @code{isstream} @tab 3.4.0
+@item @code{is_struct} @tab @code{isstruct} @tab 3.4.0
+@item @code{is_symmetric} @tab @code{issymmetric} @tab 3.4.0
+@item @code{is_vector} @tab @code{isvector} @tab 3.4.0
+@item @code{lognormal_cdf} @tab @code{logncdf} @tab 3.4.0
+@item @code{lognormal_inv} @tab @code{logninv} @tab 3.4.0
+@item @code{lognormal_pdf} @tab @code{lognpdf} @tab 3.4.0
+@item @code{lognormal_rnd} @tab @code{lognrnd} @tab 3.4.0
+@item @code{meshdom} @tab @code{meshgrid} @tab 3.4.0
+@item @code{normal_cdf} @tab @code{normcdf} @tab 3.4.0
+@item @code{normal_inv} @tab @code{norminv} @tab 3.4.0
+@item @code{normal_pdf} @tab @code{normpdf} @tab 3.4.0
+@item @code{normal_rnd} @tab @code{normrnd} @tab 3.4.0
+@item @code{pascal_cdf} @tab @code{nbincdf} @tab 3.4.0
+@item @code{pascal_inv} @tab @code{nbininv} @tab 3.4.0
+@item @code{pascal_pdf} @tab @code{nbinpdf} @tab 3.4.0
+@item @code{pascal_rnd} @tab @code{nbinrnd} @tab 3.4.0
+@item @code{poisson_cdf} @tab @code{poisscdf} @tab 3.4.0
+@item @code{poisson_inv} @tab @code{poissinv} @tab 3.4.0
+@item @code{poisson_pdf} @tab @code{poisspdf} @tab 3.4.0
+@item @code{poisson_rnd} @tab @code{poissrnd} @tab 3.4.0
+@item @code{polyinteg} @tab @code{polyint} @tab 3.4.0
+@item @code{struct_contains} @tab @code{isfield} @tab 3.4.0
+@item @code{struct_elements} @tab @code{fieldnames} @tab 3.4.0
+@item @code{t_cdf} @tab @code{tcdf} @tab 3.4.0
+@item @code{t_inv} @tab @code{tinv} @tab 3.4.0
+@item @code{t_pdf} @tab @code{tpdf} @tab 3.4.0
+@item @code{t_rnd} @tab @code{trnd} @tab 3.4.0
+@item @code{uniform_cdf} @tab @code{unifcdf} @tab 3.4.0
+@item @code{uniform_inv} @tab @code{unifinv} @tab 3.4.0
+@item @code{uniform_pdf} @tab @code{unifpdf} @tab 3.4.0
+@item @code{uniform_rnd} @tab @code{unifrnd} @tab 3.4.0
+@item @code{weibull_cdf} @tab @code{wblcdf} @tab 3.4.0
+@item @code{weibull_inv} @tab @code{wblinv} @tab 3.4.0
+@item @code{weibull_pdf} @tab @code{wblpdf} @tab 3.4.0
+@item @code{weibull_rnd} @tab @code{wblrnd} @tab 3.4.0
+@item @code{wiener_rnd} @tab @code{wienrnd} @tab 3.4.0
+@item @code{create_set} @tab @code{unique} @tab 3.6.0
+@item @code{dmult} @tab @code{diag (A) * B} @tab 3.6.0
+@item @code{iscommand} @tab None @tab 3.6.0
+@item @code{israwcommand} @tab None @tab 3.6.0
+@item @code{lchol} @tab @code{chol (@dots{}, "lower")} @tab 3.6.0
+@item @code{loadimage} @tab @code{load} or @code{imread} @tab 3.6.0
+@item @code{mark_as_command} @tab None @tab 3.6.0
+@item @code{mark_as_rawcommand} @tab None @tab 3.6.0
+@item @code{spatan2} @tab @code{atan2} @tab 3.6.0
+@item @code{spchol} @tab @code{chol} @tab 3.6.0
+@item @code{spchol2inv} @tab @code{chol2inv} @tab 3.6.0
+@item @code{spcholinv} @tab @code{cholinv} @tab 3.6.0
+@item @code{spcumprod} @tab @code{cumprod} @tab 3.6.0
+@item @code{spcumsum} @tab @code{cumsum} @tab 3.6.0
+@item @code{spdet} @tab @code{det} @tab 3.6.0
+@item @code{spdiag} @tab @code{sparse (diag (@dots{}))} @tab 3.6.0
+@item @code{spfind} @tab @code{find} @tab 3.6.0
+@item @code{sphcat} @tab @code{horzcat} @tab 3.6.0
+@item @code{spinv} @tab @code{inv} @tab 3.6.0
+@item @code{spkron} @tab @code{kron} @tab 3.6.0
+@item @code{splchol} @tab @code{chol (@dots{}, "lower")} @tab 3.6.0
+@item @code{split} @tab @code{char (strsplit (s, t))} @tab 3.6.0
+@item @code{splu} @tab @code{lu} @tab 3.6.0
+@item @code{spmax} @tab @code{max} @tab 3.6.0
+@item @code{spmin} @tab @code{min} @tab 3.6.0
+@item @code{spprod} @tab @code{prod} @tab 3.6.0
+@item @code{spqr} @tab @code{qr} @tab 3.6.0
+@item @code{spsum} @tab @code{sum} @tab 3.6.0
+@item @code{spsumsq} @tab @code{sumsq} @tab 3.6.0
+@item @code{spvcat} @tab @code{vertcat} @tab 3.6.0
+@item @code{str2mat} @tab @code{char} @tab 3.6.0
+@item @code{unmark_command} @tab None @tab 3.6.0
+@item @code{unmark_rawcommand} @tab None @tab 3.6.0
+@item @code{autocor} @tab Octave-Forge signal pkg, @code{xcor} @tab 3.8.0
+@item @code{autocov} @tab Octave-Forge signal pkg, @code{xcov} @tab 3.8.0
+@item @code{betai} @tab @code{betainc} @tab 3.8.0
+@item @code{cellidx} @tab @code{ismember} @tab 3.8.0
+@item @code{cquad} @tab @code{quadcc} @tab 3.8.0
+@item @code{dispatch} @tab None @tab 3.8.0
+@item @code{fstat} @tab @code{stat} @tab 3.8.0
+@item @code{gammai} @tab @code{gammainc} @tab 3.8.0
+@item @code{glpkmex} @tab @code{glpk} @tab 3.8.0
+@item @code{is_duplicate_entry} @tab @code{unique} @tab 3.8.0
+@item @code{is_global} @tab @code{isglobal} @tab 3.8.0
+@item @code{krylovb} @tab @code{[Uret, ~, Ucols] = krylov (@dots{})} @tab 3.8.0
+@item @code{perror} @tab None @tab 3.8.0
+@item @code{replot} @tab @code{refresh} @tab 3.8.0
+@item @code{saveimage} @tab @code{imwrite} @tab 3.8.0
+@item @code{setstr} @tab @code{char} @tab 3.8.0
+@item @code{strerror} @tab None @tab 3.8.0
+@item @code{values} @tab @code{unique} @tab 3.8.0
+@item @code{cut} @tab @code{histc} @tab 4.0.0
+@item @code{cor} @tab @code{corr} @tab 4.0.0
+@item @code{corrcoef} @tab @code{corr} @tab 4.0.0
+@item @code{__error_text__} @tab @code{lasterr} @tab 4.0.0
+@item @code{error_text} @tab @code{lasterr} @tab 4.0.0
+@item @code{polyderiv} @tab @code{polyder} @tab 4.0.0
+@item @code{shell_cmd} @tab @code{system} @tab 4.0.0
+@item @code{studentize} @tab @code{zscore} @tab 4.0.0
+@item @code{sylvester_matrix} @tab @code{hadamard (2^k)} @tab 4.0.0
+@end multitable

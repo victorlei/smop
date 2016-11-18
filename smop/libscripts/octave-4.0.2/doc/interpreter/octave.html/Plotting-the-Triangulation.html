@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Plotting the Triangulation</title>
+
+<meta name="description" content="GNU Octave: Plotting the Triangulation">
+<meta name="keywords" content="GNU Octave: Plotting the Triangulation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Delaunay-Triangulation.html#Delaunay-Triangulation" rel="up" title="Delaunay Triangulation">
+<link href="Identifying-Points-in-Triangulation.html#Identifying-Points-in-Triangulation" rel="next" title="Identifying Points in Triangulation">
+<link href="Delaunay-Triangulation.html#Delaunay-Triangulation" rel="prev" title="Delaunay Triangulation">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Plotting-the-Triangulation"></a>
+<div class="header">
+<p>
+Next: <a href="Identifying-Points-in-Triangulation.html#Identifying-Points-in-Triangulation" accesskey="n" rel="next">Identifying Points in Triangulation</a>, Up: <a href="Delaunay-Triangulation.html#Delaunay-Triangulation" accesskey="u" rel="up">Delaunay Triangulation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Plotting-the-Triangulation-1"></a>
+<h4 class="subsection">30.1.1 Plotting the Triangulation</h4>
+
+<p>Octave has the functions <code>triplot</code>, <code>trimesh</code>, and <code>trisurf</code>
+to plot the Delaunay triangulation of a 2-dimensional set of points.
+<code>tetramesh</code> will plot the triangulation of a 3-dimensional set of points.
+</p>
+<a name="XREFtriplot"></a><dl>
+<dt><a name="index-triplot"></a>Function File: <em></em> <strong>triplot</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-triplot-1"></a>Function File: <em></em> <strong>triplot</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>linespec</var>)</em></dt>
+<dt><a name="index-triplot-2"></a>Function File: <em><var>h</var> =</em> <strong>triplot</strong> <em>(&hellip;)</em></dt>
+<dd><p>Plot a 2-D triangular mesh.
+</p>
+<p><var>tri</var> is typically the output of a Delaunay triangulation over the
+grid of <var>x</var>, <var>y</var>.  Every row of <var>tri</var> represents one triangle
+and contains three indices into [<var>x</var>, <var>y</var>] which are the
+vertices of the triangles in the x-y plane.
+</p>
+<p>The linestyle to use for the plot can be defined with the argument
+<var>linespec</var> of the same format as the <code>plot</code> command.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created
+patch object.
+</p>
+<p><strong>See also:</strong> <a href="Two_002dDimensional-Plots.html#XREFplot">plot</a>, <a href="#XREFtrimesh">trimesh</a>, <a href="#XREFtrisurf">trisurf</a>, <a href="Delaunay-Triangulation.html#XREFdelaunay">delaunay</a>.
+</p></dd></dl>
+
+
+<a name="XREFtrimesh"></a><dl>
+<dt><a name="index-trimesh"></a>Function File: <em></em> <strong>trimesh</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>z</var>, <var>c</var>)</em></dt>
+<dt><a name="index-trimesh-1"></a>Function File: <em></em> <strong>trimesh</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-trimesh-2"></a>Function File: <em></em> <strong>trimesh</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-trimesh-3"></a>Function File: <em></em> <strong>trimesh</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-trimesh-4"></a>Function File: <em><var>h</var> =</em> <strong>trimesh</strong> <em>(&hellip;)</em></dt>
+<dd><p>Plot a 3-D triangular wireframe mesh.
+</p>
+<p>In contrast to <code>mesh</code>, which plots a mesh using rectangles,
+<code>trimesh</code> plots the mesh using triangles.
+</p>
+<p><var>tri</var> is typically the output of a Delaunay triangulation over the
+grid of <var>x</var>, <var>y</var>.  Every row of <var>tri</var> represents one triangle
+and contains three indices into [<var>x</var>, <var>y</var>] which are the
+vertices of the triangles in the x-y plane.  <var>z</var> determines the
+height above the plane of each vertex.  If no <var>z</var> input is given then
+the triangles are plotted as a 2-D figure.
+</p>
+<p>The color of the trimesh is computed by linearly scaling the <var>z</var> values
+to fit the range of the current colormap.  Use <code>caxis</code> and/or
+change the colormap to control the appearance.
+</p>
+<p>Optionally, the color of the mesh can be specified independently of <var>z</var>
+by supplying a color matrix, <var>c</var>.  If <var>z</var> has N elements, then
+<var>c</var> should be an Nx1 vector for colormap data or an Nx3 matrix for
+RGB data.
+</p>
+<p>Any property/value pairs are passed directly to the underlying patch object.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created patch
+object.
+</p>
+<p><strong>See also:</strong> <a href="Three_002dDimensional-Plots.html#XREFmesh">mesh</a>, <a href="#XREFtetramesh">tetramesh</a>, <a href="#XREFtriplot">triplot</a>, <a href="#XREFtrisurf">trisurf</a>, <a href="Delaunay-Triangulation.html#XREFdelaunay">delaunay</a>, <a href="Graphics-Objects.html#XREFpatch">patch</a>, <a href="Three_002dDimensional-Plots.html#XREFhidden">hidden</a>.
+</p></dd></dl>
+
+
+<a name="XREFtrisurf"></a><dl>
+<dt><a name="index-trisurf"></a>Function File: <em></em> <strong>trisurf</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>z</var>, <var>c</var>)</em></dt>
+<dt><a name="index-trisurf-1"></a>Function File: <em></em> <strong>trisurf</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-trisurf-2"></a>Function File: <em></em> <strong>trisurf</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-trisurf-3"></a>Function File: <em><var>h</var> =</em> <strong>trisurf</strong> <em>(&hellip;)</em></dt>
+<dd><p>Plot a 3-D triangular surface.
+</p>
+<p>In contrast to <code>surf</code>, which plots a surface mesh using rectangles,
+<code>trisurf</code> plots the mesh using triangles.
+</p>
+<p><var>tri</var> is typically the output of a Delaunay triangulation over the
+grid of <var>x</var>, <var>y</var>.  Every row of <var>tri</var> represents one triangle
+and contains three indices into [<var>x</var>, <var>y</var>] which are the
+vertices of the triangles in the x-y plane.  <var>z</var> determines the
+height above the plane of each vertex.
+</p>
+<p>The color of the trimesh is computed by linearly scaling the <var>z</var> values
+to fit the range of the current colormap.  Use <code>caxis</code> and/or
+change the colormap to control the appearance.
+</p>
+<p>Optionally, the color of the mesh can be specified independently of <var>z</var>
+by supplying a color matrix, <var>c</var>.  If <var>z</var> has N elements, then
+<var>c</var> should be an Nx1 vector for colormap data or an Nx3 matrix for
+RGB data.
+</p>
+<p>Any property/value pairs are passed directly to the underlying patch object.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created patch
+object.
+</p>
+<p><strong>See also:</strong> <a href="Three_002dDimensional-Plots.html#XREFsurf">surf</a>, <a href="#XREFtriplot">triplot</a>, <a href="#XREFtrimesh">trimesh</a>, <a href="Delaunay-Triangulation.html#XREFdelaunay">delaunay</a>, <a href="Graphics-Objects.html#XREFpatch">patch</a>, <a href="Three_002dDimensional-Plots.html#XREFshading">shading</a>.
+</p></dd></dl>
+
+
+<a name="XREFtetramesh"></a><dl>
+<dt><a name="index-tetramesh"></a>Function File: <em></em> <strong>tetramesh</strong> <em>(<var>T</var>, <var>X</var>)</em></dt>
+<dt><a name="index-tetramesh-1"></a>Function File: <em></em> <strong>tetramesh</strong> <em>(<var>T</var>, <var>X</var>, <var>C</var>)</em></dt>
+<dt><a name="index-tetramesh-2"></a>Function File: <em></em> <strong>tetramesh</strong> <em>(&hellip;, <var>property</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-tetramesh-3"></a>Function File: <em><var>h</var> =</em> <strong>tetramesh</strong> <em>(&hellip;)</em></dt>
+<dd><p>Display the tetrahedrons defined in the m-by-4 matrix <var>T</var> as 3-D patches.
+</p>
+<p><var>T</var> is typically the output of a Delaunay triangulation of a 3-D set
+of points.  Every row of <var>T</var> contains four indices into the n-by-3
+matrix <var>X</var> of the vertices of a tetrahedron.  Every row in <var>X</var>
+represents one point in 3-D space.
+</p>
+<p>The vector <var>C</var> specifies the color of each tetrahedron as an index
+into the current colormap.  The default value is 1:m where m is the number
+of tetrahedrons; the indices are scaled to map to the full range of the
+colormap.  If there are more tetrahedrons than colors in the colormap then
+the values in <var>C</var> are cyclically repeated.
+</p>
+<p>Calling <code>tetramesh (&hellip;, &quot;property&quot;, &quot;value&quot;, &hellip;)</code> passes all
+property/value pairs directly to the patch function as additional arguments.
+</p>
+<p>The optional return value <var>h</var> is a vector of patch handles where each
+handle represents one tetrahedron in the order given by <var>T</var>.
+A typical use case for <var>h</var> is to turn the respective patch
+<code>&quot;visible&quot;</code> property <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>.
+</p>
+<p>Type <code>demo tetramesh</code> to see examples on using <code>tetramesh</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFtrimesh">trimesh</a>, <a href="Delaunay-Triangulation.html#XREFdelaunay">delaunay</a>, <a href="Delaunay-Triangulation.html#XREFdelaunayn">delaunayn</a>, <a href="Graphics-Objects.html#XREFpatch">patch</a>.
+</p></dd></dl>
+
+
+<p>The difference between <code>triplot</code>, and <code>trimesh</code> or <code>triplot</code>,
+is that the former only plots the 2-dimensional triangulation itself, whereas
+the second two plot the value of a function <code>f (<var>x</var>, <var>y</var>)</code>.  An
+example of the use of the <code>triplot</code> function is
+</p>
+<div class="example">
+<pre class="example">rand (&quot;state&quot;, 2)
+x = rand (20, 1);
+y = rand (20, 1);
+tri = delaunay (x, y);
+triplot (tri, x, y);
+</pre></div>
+
+<p>which plots the Delaunay triangulation of a set of random points in
+2-dimensions.
+The output of the above can be seen in <a href="#fig_003atriplot">Figure 30.2</a>.
+</p>
+<div class="float"><a name="fig_003atriplot"></a>
+<div align="center"><img src="triplot.png" alt="triplot">
+</div>
+<div class="float-caption"><p><strong>Figure 30.2: </strong>Delaunay triangulation of a random set of points</p></div></div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Identifying-Points-in-Triangulation.html#Identifying-Points-in-Triangulation" accesskey="n" rel="next">Identifying Points in Triangulation</a>, Up: <a href="Delaunay-Triangulation.html#Delaunay-Triangulation" accesskey="u" rel="up">Delaunay Triangulation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

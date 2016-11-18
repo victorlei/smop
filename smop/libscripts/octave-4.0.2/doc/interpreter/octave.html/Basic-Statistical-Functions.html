@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Basic Statistical Functions</title>
+
+<meta name="description" content="GNU Octave: Basic Statistical Functions">
+<meta name="keywords" content="GNU Octave: Basic Statistical Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Statistics.html#Statistics" rel="up" title="Statistics">
+<link href="Statistical-Plots.html#Statistical-Plots" rel="next" title="Statistical Plots">
+<link href="Descriptive-Statistics.html#Descriptive-Statistics" rel="prev" title="Descriptive Statistics">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Basic-Statistical-Functions"></a>
+<div class="header">
+<p>
+Next: <a href="Statistical-Plots.html#Statistical-Plots" accesskey="n" rel="next">Statistical Plots</a>, Previous: <a href="Descriptive-Statistics.html#Descriptive-Statistics" accesskey="p" rel="prev">Descriptive Statistics</a>, Up: <a href="Statistics.html#Statistics" accesskey="u" rel="up">Statistics</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Basic-Statistical-Functions-1"></a>
+<h3 class="section">26.2 Basic Statistical Functions</h3>
+
+<p>Octave supports various helpful statistical functions.  Many are useful as
+initial steps to prepare a data set for further analysis.  Others provide
+different measures from those of the basic descriptive statistics.
+</p>
+<a name="XREFcenter"></a><dl>
+<dt><a name="index-center"></a>Function File: <em></em> <strong>center</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-center-1"></a>Function File: <em></em> <strong>center</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>Center data by subtracting its mean.
+</p>
+<p>If <var>x</var> is a vector, subtract its mean.
+</p>
+<p>If <var>x</var> is a matrix, do the above for each column.
+</p>
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p>Programming Note: <code>center</code> has obvious application for normalizing
+statistical data.  It is also useful for improving the precision of general
+numerical calculations.  Whenever there is a large value that is common
+to a batch of data, the mean can be subtracted off, the calculation
+performed, and then the mean added back to obtain the final answer.
+</p>
+<p><strong>See also:</strong> <a href="#XREFzscore">zscore</a>.
+</p></dd></dl>
+
+
+<a name="XREFzscore"></a><dl>
+<dt><a name="index-zscore"></a>Function File: <em><var>z</var> =</em> <strong>zscore</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-zscore-1"></a>Function File: <em><var>z</var> =</em> <strong>zscore</strong> <em>(<var>x</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-zscore-2"></a>Function File: <em><var>z</var> =</em> <strong>zscore</strong> <em>(<var>x</var>, <var>opt</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-zscore-3"></a>Function File: <em>[<var>z</var>, <var>mu</var>, <var>sigma</var>] =</em> <strong>zscore</strong> <em>(&hellip;)</em></dt>
+<dd><p>Compute the Z score of <var>x</var>
+</p>
+<p>If <var>x</var> is a vector, subtract its mean and divide by its standard
+deviation.  If the standard deviation is zero, divide by 1 instead.
+</p>
+<p>The optional parameter <var>opt</var> determines the normalization to use when
+computing the standard deviation and has the same definition as the
+corresponding parameter for <code>std</code>.
+</p>
+<p>If <var>x</var> is a matrix, calculate along the first non-singleton dimension.
+If the third optional argument <var>dim</var> is given, operate along this
+dimension.
+</p>
+<p>The optional outputs <var>mu</var> and <var>sigma</var> contain the mean and standard
+deviation.
+</p>
+
+<p><strong>See also:</strong> <a href="Descriptive-Statistics.html#XREFmean">mean</a>, <a href="Descriptive-Statistics.html#XREFstd">std</a>, <a href="#XREFcenter">center</a>.
+</p></dd></dl>
+
+
+<a name="XREFhistc"></a><dl>
+<dt><a name="index-histc"></a>Function File: <em><var>n</var> =</em> <strong>histc</strong> <em>(<var>x</var>, <var>edges</var>)</em></dt>
+<dt><a name="index-histc-1"></a>Function File: <em><var>n</var> =</em> <strong>histc</strong> <em>(<var>x</var>, <var>edges</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-histc-2"></a>Function File: <em>[<var>n</var>, <var>idx</var>] =</em> <strong>histc</strong> <em>(&hellip;)</em></dt>
+<dd><p>Compute histogram counts.
+</p>
+<p>When <var>x</var> is a vector, the function counts the number of elements of
+<var>x</var> that fall in the histogram bins defined by <var>edges</var>.  This must be
+a vector of monotonically increasing values that define the edges of the
+histogram bins.  <code><var>n</var>(k)</code> contains the number of elements in
+<var>x</var> for which <code><var>edges</var>(k) &lt;= <var>x</var> &lt; <var>edges</var>(k+1)</code>.
+The final element of <var>n</var> contains the number of elements of <var>x</var>
+exactly equal to the last element of <var>edges</var>.
+</p>
+<p>When <var>x</var> is an <em>N</em>-dimensional array, the computation is carried
+out along dimension <var>dim</var>.  If not specified <var>dim</var> defaults to the
+first non-singleton dimension.
+</p>
+<p>When a second output argument is requested an index matrix is also returned.
+The <var>idx</var> matrix has the same size as <var>x</var>.  Each element of <var>idx</var>
+contains the index of the histogram bin in which the corresponding element
+of <var>x</var> was counted.
+</p>
+<p><strong>See also:</strong> <a href="Two_002dDimensional-Plots.html#XREFhist">hist</a>.
+</p></dd></dl>
+
+
+
+<a name="XREFnchoosek"></a><dl>
+<dt><a name="index-nchoosek"></a>Function File: <em><var>c</var> =</em> <strong>nchoosek</strong> <em>(<var>n</var>, <var>k</var>)</em></dt>
+<dt><a name="index-nchoosek-1"></a>Function File: <em><var>c</var> =</em> <strong>nchoosek</strong> <em>(<var>set</var>, <var>k</var>)</em></dt>
+<dd>
+<p>Compute the binomial coefficient of <var>n</var> or list all possible
+combinations of a <var>set</var> of items.
+</p>
+<p>If <var>n</var> is a scalar then calculate the binomial coefficient
+of <var>n</var> and <var>k</var> which is defined as
+</p>
+<div class="example">
+<pre class="example"> /   \
+ | n |    n (n-1) (n-2) &hellip; (n-k+1)       n!
+ |   |  = ------------------------- =  ---------
+ | k |               k!                k! (n-k)!
+ \   /
+</pre></div>
+
+<p>This is the number of combinations of <var>n</var> items taken in groups of
+size <var>k</var>.
+</p>
+<p>If the first argument is a vector, <var>set</var>, then generate all
+combinations of the elements of <var>set</var>, taken <var>k</var> at a time, with
+one row per combination.  The result <var>c</var> has <var>k</var> columns and
+<code>nchoosek&nbsp;(length&nbsp;(<var>set</var>),&nbsp;<var>k</var>)</code><!-- /@w --> rows.
+</p>
+<p>For example:
+</p>
+<p>How many ways can three items be grouped into pairs?
+</p>
+<div class="example">
+<pre class="example">nchoosek (3, 2)
+   &rArr; 3
+</pre></div>
+
+<p>What are the possible pairs?
+</p>
+<div class="example">
+<pre class="example">nchoosek (1:3, 2)
+   &rArr;  1   2
+       1   3
+       2   3
+</pre></div>
+
+<p>Programming Note: When calculating the binomial coefficient <code>nchoosek</code>
+works only for non-negative, integer arguments.  Use <code>bincoeff</code> for
+non-integer and negative scalar arguments, or for computing many binomial
+coefficients at once with vector inputs for <var>n</var> or <var>k</var>.
+</p>
+
+<p><strong>See also:</strong> <a href="Special-Functions.html#XREFbincoeff">bincoeff</a>, <a href="#XREFperms">perms</a>.
+</p></dd></dl>
+
+
+<a name="XREFperms"></a><dl>
+<dt><a name="index-perms"></a>Function File: <em></em> <strong>perms</strong> <em>(<var>v</var>)</em></dt>
+<dd><p>Generate all permutations of <var>v</var> with one row per permutation.
+</p>
+<p>The result has size <code>factorial (<var>n</var>) * <var>n</var></code>, where <var>n</var>
+is the length of <var>v</var>.
+</p>
+<p>Example
+</p>
+<div class="example">
+<pre class="example">perms ([1, 2, 3])
+&rArr;
+  1   2   3
+  2   1   3
+  1   3   2
+  2   3   1
+  3   1   2
+  3   2   1
+</pre></div>
+
+<p>Programming Note: The maximum length of <var>v</var> should be less than or
+equal to 10 to limit memory consumption.
+</p>
+<p><strong>See also:</strong> <a href="Rearranging-Matrices.html#XREFpermute">permute</a>, <a href="Special-Utility-Matrices.html#XREFrandperm">randperm</a>, <a href="#XREFnchoosek">nchoosek</a>.
+</p></dd></dl>
+
+
+<a name="XREFranks"></a><dl>
+<dt><a name="index-ranks"></a>Function File: <em></em> <strong>ranks</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>Return the ranks of <var>x</var> along the first non-singleton dimension
+adjusted for ties.
+</p>
+<p>If the optional argument <var>dim</var> is given, operate along this dimension.
+</p>
+<p><strong>See also:</strong> <a href="Correlation-and-Regression-Analysis.html#XREFspearman">spearman</a>, <a href="Correlation-and-Regression-Analysis.html#XREFkendall">kendall</a>.
+</p></dd></dl>
+
+
+<a name="XREFrun_005fcount"></a><dl>
+<dt><a name="index-run_005fcount"></a>Function File: <em></em> <strong>run_count</strong> <em>(<var>x</var>, <var>n</var>)</em></dt>
+<dt><a name="index-run_005fcount-1"></a>Function File: <em></em> <strong>run_count</strong> <em>(<var>x</var>, <var>n</var>, <var>dim</var>)</em></dt>
+<dd><p>Count the upward runs along the first non-singleton dimension of <var>x</var>
+of length 1, 2, &hellip;, <var>n</var>-1 and greater than or equal to <var>n</var>.
+</p>
+<p>If the optional argument <var>dim</var> is given then operate along this
+dimension.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrunlength">runlength</a>.
+</p></dd></dl>
+
+
+<a name="XREFrunlength"></a><dl>
+<dt><a name="index-runlength"></a>Function File: <em>count =</em> <strong>runlength</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-runlength-1"></a>Function File: <em>[count, value] =</em> <strong>runlength</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Find the lengths of all sequences of common values.
+</p>
+<p><var>count</var> is a vector with the lengths of each repeated value.
+</p>
+<p>The optional output <var>value</var> contains the value that was repeated in
+the sequence.
+</p>
+<div class="example">
+<pre class="example">runlength ([2, 2, 0, 4, 4, 4, 0, 1, 1, 1, 1])
+&rArr;  [2, 1, 3, 1, 4]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFrun_005fcount">run_count</a>.
+</p></dd></dl>
+
+
+<a name="XREFprobit"></a><dl>
+<dt><a name="index-probit"></a>Function File: <em></em> <strong>probit</strong> <em>(<var>p</var>)</em></dt>
+<dd><p>Return the probit (the quantile of the standard normal distribution) for
+each element of <var>p</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFlogit">logit</a>.
+</p></dd></dl>
+
+
+<a name="XREFlogit"></a><dl>
+<dt><a name="index-logit"></a>Function File: <em></em> <strong>logit</strong> <em>(<var>p</var>)</em></dt>
+<dd><p>Compute the logit for each value of <var>p</var>
+</p>
+<p>The logit is defined as
+</p>
+<div class="example">
+<pre class="example">logit (<var>p</var>) = log (<var>p</var> / (1-<var>p</var>))
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFprobit">probit</a>, <a href="Distributions.html#XREFlogistic_005fcdf">logistic_cdf</a>.
+</p></dd></dl>
+
+
+<a name="XREFcloglog"></a><dl>
+<dt><a name="index-cloglog"></a>Function File: <em></em> <strong>cloglog</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return the complementary log-log function of <var>x</var>.
+</p>
+<p>The complementary log-log function is defined as
+</p>
+<div class="example">
+<pre class="example">cloglog (x) = - log (- log (<var>x</var>))
+</pre></div>
+
+</dd></dl>
+
+
+<a name="XREFmahalanobis"></a><dl>
+<dt><a name="index-mahalanobis"></a>Function File: <em></em> <strong>mahalanobis</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dd><p>Return the Mahalanobis&rsquo; D-square distance between the multivariate
+samples <var>x</var> and <var>y</var>.
+</p>
+<p>The data <var>x</var> and <var>y</var> must have the same number of components
+(columns), but may have a different number of observations (rows).
+</p></dd></dl>
+
+
+<a name="XREFtable"></a><dl>
+<dt><a name="index-table"></a>Function File: <em>[<var>t</var>, <var>l_x</var>] =</em> <strong>table</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-table-1"></a>Function File: <em>[<var>t</var>, <var>l_x</var>, <var>l_y</var>] =</em> <strong>table</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dd><p>Create a contingency table <var>t</var> from data vectors.
+</p>
+<p>The <var>l_x</var> and <var>l_y</var> vectors are the corresponding levels.
+</p>
+<p>Currently, only 1- and 2-dimensional tables are supported.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Statistical-Plots.html#Statistical-Plots" accesskey="n" rel="next">Statistical Plots</a>, Previous: <a href="Descriptive-Statistics.html#Descriptive-Statistics" accesskey="p" rel="prev">Descriptive Statistics</a>, Up: <a href="Statistics.html#Statistics" accesskey="u" rel="up">Statistics</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

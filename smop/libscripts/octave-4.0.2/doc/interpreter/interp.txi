@@ -1,0 +1,178 @@
+@c Copyright (C) 2007-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Interpolation
+@chapter Interpolation
+
+@menu
+* One-dimensional Interpolation::
+* Multi-dimensional Interpolation::
+@end menu
+
+@node One-dimensional Interpolation
+@section One-dimensional Interpolation
+
+Octave supports several methods for one-dimensional interpolation, most
+of which are described in this section.  @ref{Polynomial Interpolation}
+and @ref{Interpolation on Scattered Data} describe additional methods.
+
+@DOCSTRING(interp1)
+
+There are some important differences between the various interpolation
+methods.  The @qcode{"spline"} method enforces that both the first and second
+derivatives of the interpolated values have a continuous derivative,
+whereas the other methods do not.  This means that the results of the
+@qcode{"spline"} method are generally smoother.  If the function to be
+interpolated is in fact smooth, then @qcode{"spline"} will give excellent
+results.  However, if the function to be evaluated is in some manner
+discontinuous, then @qcode{"pchip"} interpolation might give better results.
+
+This can be demonstrated by the code
+
+@example
+@group
+t = -2:2;
+dt = 1;
+ti =-2:0.025:2;
+dti = 0.025;
+y = sign (t);
+ys = interp1 (t,y,ti,"spline");
+yp = interp1 (t,y,ti,"pchip");
+ddys = diff (diff (ys)./dti) ./ dti;
+ddyp = diff (diff (yp)./dti) ./ dti;
+figure (1);
+plot (ti,ys,"r-", ti,yp,"g-");
+legend ("spline", "pchip", 4);
+figure (2);
+plot (ti,ddys,"r+", ti,ddyp,"g*");
+legend ("spline", "pchip");
+@end group
+@end example
+
+@ifnotinfo
+@noindent
+The result of which can be seen in @ref{fig:interpderiv1} and
+@ref{fig:interpderiv2}.
+
+@float Figure,fig:interpderiv1
+@center @image{interpderiv1,4in}
+@caption{Comparison of @qcode{"pchip"} and @qcode{"spline"} interpolation methods for a
+step function}
+@end float
+
+@float Figure,fig:interpderiv2
+@center @image{interpderiv2,4in}
+@caption{Comparison of the second derivative of the @qcode{"pchip"} and @qcode{"spline"}
+interpolation methods for a step function}
+@end float
+@end ifnotinfo
+
+Fourier interpolation, is a resampling technique where a signal is
+converted to the frequency domain, padded with zeros and then
+reconverted to the time domain.
+
+@DOCSTRING(interpft)
+
+There are two significant limitations on Fourier interpolation.  First,
+the function signal is assumed to be periodic, and so non-periodic
+signals will be poorly represented at the edges.  Second, both the
+signal and its interpolation are required to be sampled at equispaced
+points.  An example of the use of @code{interpft} is
+
+@example
+@group
+t = 0 : 0.3 : pi; dt = t(2)-t(1);
+n = length (t); k = 100;
+ti = t(1) + [0 : k-1]*dt*n/k;
+y = sin (4*t + 0.3) .* cos (3*t - 0.1);
+yp = sin (4*ti + 0.3) .* cos (3*ti - 0.1);
+plot (ti, yp, "g", ti, interp1 (t, y, ti, "spline"), "b", ...
+      ti, interpft (y, k), "c", t, y, "r+");
+legend ("sin(4t+0.3)cos(3t-0.1)", "spline", "interpft", "data");
+@end group
+@end example
+
+@noindent
+@ifinfo
+which demonstrates the poor behavior of Fourier interpolation for non-periodic
+functions.
+@end ifinfo
+@ifnotinfo
+which demonstrates the poor behavior of Fourier interpolation for non-periodic
+functions, as can be seen in @ref{fig:interpft}.
+
+@float Figure,fig:interpft
+@center @image{interpft,4in}
+@caption{Comparison of @code{interp1} and @code{interpft} for non-periodic data}
+@end float
+@end ifnotinfo
+
+In addition, the support functions @code{spline} and @code{lookup} that
+underlie the @code{interp1} function can be called directly.
+
+@DOCSTRING(spline)
+
+@node Multi-dimensional Interpolation
+@section Multi-dimensional Interpolation
+
+There are three multi-dimensional interpolation functions in Octave, with
+similar capabilities.  Methods using Delaunay tessellation are described
+in @ref{Interpolation on Scattered Data}.
+
+@DOCSTRING(interp2)
+
+@DOCSTRING(interp3)
+
+@DOCSTRING(interpn)
+
+A significant difference between @code{interpn} and the other two
+multi-dimensional interpolation functions is the fashion in which the
+dimensions are treated.  For @code{interp2} and @code{interp3}, the y-axis is
+considered to be the columns of the matrix, whereas the x-axis corresponds to
+the rows of the array.  As Octave indexes arrays in column major order, the
+first dimension of any array is the columns, and so @code{interpn} effectively
+reverses the 'x' and 'y' dimensions.  Consider the example,
+
+@example
+@group
+x = y = z = -1:1;
+f = @@(x,y,z) x.^2 - y - z.^2;
+[xx, yy, zz] = meshgrid (x, y, z);
+v = f (xx,yy,zz);
+xi = yi = zi = -1:0.1:1;
+[xxi, yyi, zzi] = meshgrid (xi, yi, zi);
+vi = interp3 (x, y, z, v, xxi, yyi, zzi, "spline");
+[xxi, yyi, zzi] = ndgrid (xi, yi, zi);
+vi2 = interpn (x, y, z, v, xxi, yyi, zzi, "spline");
+mesh (zi, yi, squeeze (vi2(1,:,:)));
+@end group
+@end example
+
+@noindent
+where @code{vi} and @code{vi2} are identical.  The reversal of the
+dimensions is treated in the @code{meshgrid} and @code{ndgrid} functions
+respectively.
+@ifnotinfo
+The result of this code can be seen in @ref{fig:interpn}.
+
+@float Figure,fig:interpn
+@center @image{interpn,4in}
+@caption{Demonstration of the use of @code{interpn}}
+@end float
+@end ifnotinfo
+

@@ -1,0 +1,708 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Differential-Algebraic Equations</title>
+
+<meta name="description" content="GNU Octave: Differential-Algebraic Equations">
+<meta name="keywords" content="GNU Octave: Differential-Algebraic Equations">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Differential-Equations.html#Differential-Equations" rel="up" title="Differential Equations">
+<link href="Optimization.html#Optimization" rel="next" title="Optimization">
+<link href="Ordinary-Differential-Equations.html#Ordinary-Differential-Equations" rel="prev" title="Ordinary Differential Equations">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Differential_002dAlgebraic-Equations"></a>
+<div class="header">
+<p>
+Previous: <a href="Ordinary-Differential-Equations.html#Ordinary-Differential-Equations" accesskey="p" rel="prev">Ordinary Differential Equations</a>, Up: <a href="Differential-Equations.html#Differential-Equations" accesskey="u" rel="up">Differential Equations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Differential_002dAlgebraic-Equations-1"></a>
+<h3 class="section">24.2 Differential-Algebraic Equations</h3>
+
+<p>The function <code>daspk</code> can be used to solve DAEs of the form
+</p>
+<div class="example">
+<pre class="example">0 = f (x-dot, x, t),    x(t=0) = x_0, x-dot(t=0) = x-dot_0
+</pre></div>
+
+
+<p>where
+<em>x-dot</em>
+is the derivative of <em>x</em>.  The equation is solved using
+Petzold&rsquo;s DAE solver <small>DASPK</small>.
+</p>
+<a name="XREFdaspk"></a><dl>
+<dt><a name="index-daspk"></a>Built-in Function: <em>[<var>x</var>, <var>xdot</var>, <var>istate</var>, <var>msg</var>] =</em> <strong>daspk</strong> <em>(<var>fcn</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
+<dd><p>Solve the set of differential-algebraic equations
+</p>
+<div class="example">
+<pre class="example">0 = f (x, xdot, t)
+</pre></div>
+
+<p>with
+</p>
+<div class="example">
+<pre class="example">x(t_0) = x_0, xdot(t_0) = xdot_0
+</pre></div>
+
+<p>The solution is returned in the matrices <var>x</var> and <var>xdot</var>,
+with each row in the result matrices corresponding to one of the
+elements in the vector <var>t</var>.  The first element of <var>t</var>
+should be <em>t_0</em> and correspond to the initial state of the
+system <var>x_0</var> and its derivative <var>xdot_0</var>, so that the first
+row of the output <var>x</var> is <var>x_0</var> and the first row
+of the output <var>xdot</var> is <var>xdot_0</var>.
+</p>
+<p>The first argument, <var>fcn</var>, is a string, inline, or function handle
+that names the function <em>f</em> to call to compute the vector of
+residuals for the set of equations.  It must have the form
+</p>
+<div class="example">
+<pre class="example"><var>res</var> = f (<var>x</var>, <var>xdot</var>, <var>t</var>)
+</pre></div>
+
+<p>in which <var>x</var>, <var>xdot</var>, and <var>res</var> are vectors, and <var>t</var> is a
+scalar.
+</p>
+<p>If <var>fcn</var> is a two-element string array or a two-element cell array
+of strings, inline functions, or function handles, the first element names
+the function <em>f</em> described above, and the second element names a
+function to compute the modified Jacobian
+</p>
+<div class="example">
+<pre class="example">      df       df
+jac = -- + c ------
+      dx     d xdot
+</pre></div>
+
+
+<p>The modified Jacobian function must have the form
+</p>
+<div class="example">
+<pre class="example">
+
+<var>jac</var> = j (<var>x</var>, <var>xdot</var>, <var>t</var>, <var>c</var>)
+
+</pre></div>
+
+<p>The second and third arguments to <code>daspk</code> specify the initial
+condition of the states and their derivatives, and the fourth argument
+specifies a vector of output times at which the solution is desired,
+including the time corresponding to the initial condition.
+</p>
+<p>The set of initial states and derivatives are not strictly required to
+be consistent.  If they are not consistent, you must use the
+<code>daspk_options</code> function to provide additional information so
+that <code>daspk</code> can compute a consistent starting point.
+</p>
+<p>The fifth argument is optional, and may be used to specify a set of
+times that the DAE solver should not integrate past.  It is useful for
+avoiding difficulties with singularities and points where there is a
+discontinuity in the derivative.
+</p>
+<p>After a successful computation, the value of <var>istate</var> will be
+greater than zero (consistent with the Fortran version of <small>DASPK</small>).
+</p>
+<p>If the computation is not successful, the value of <var>istate</var> will be
+less than zero and <var>msg</var> will contain additional information.
+</p>
+<p>You can use the function <code>daspk_options</code> to set optional
+parameters for <code>daspk</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdassl">dassl</a>.
+</p></dd></dl>
+
+
+<a name="XREFdaspk_005foptions"></a><dl>
+<dt><a name="index-daspk_005foptions"></a>Built-in Function: <em></em> <strong>daspk_options</strong> <em>()</em></dt>
+<dt><a name="index-daspk_005foptions-1"></a>Built-in Function: <em>val =</em> <strong>daspk_options</strong> <em>(<var>opt</var>)</em></dt>
+<dt><a name="index-daspk_005foptions-2"></a>Built-in Function: <em></em> <strong>daspk_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
+<dd><p>Query or set options for the function <code>daspk</code>.
+</p>
+<p>When called with no arguments, the names of all available options and
+their current values are displayed.
+</p>
+<p>Given one argument, return the value of the option <var>opt</var>.
+</p>
+<p>When called with two arguments, <code>daspk_options</code> sets the option
+<var>opt</var> to value <var>val</var>.
+</p>
+<p>Options include
+</p>
+<dl compact="compact">
+<dt><code><code>&quot;absolute tolerance&quot;</code></code></dt>
+<dd><p>Absolute tolerance.  May be either vector or scalar.  If a vector, it
+must match the dimension of the state vector, and the relative
+tolerance must also be a vector of the same length.
+</p>
+</dd>
+<dt><code><code>&quot;relative tolerance&quot;</code></code></dt>
+<dd><p>Relative tolerance.  May be either vector or scalar.  If a vector, it
+must match the dimension of the state vector, and the absolute
+tolerance must also be a vector of the same length.
+</p>
+<p>The local error test applied at each integration step is
+</p>
+<div class="example">
+<pre class="example">  abs (local error in x(i))
+       &lt;= rtol(i) * abs (Y(i)) + atol(i)
+</pre></div>
+
+</dd>
+<dt><code><code>&quot;compute consistent initial condition&quot;</code></code></dt>
+<dd><p>Denoting the differential variables in the state vector by &lsquo;<samp>Y_d</samp>&rsquo;
+and the algebraic variables by &lsquo;<samp>Y_a</samp>&rsquo;, <code>ddaspk</code> can solve
+one of two initialization problems:
+</p>
+<ol>
+<li> Given Y_d, calculate Y_a and Y&rsquo;_d
+
+</li><li> Given Y&rsquo;, calculate Y.
+</li></ol>
+
+<p>In either case, initial values for the given components are input, and
+initial guesses for the unknown components must also be provided as
+input.  Set this option to 1 to solve the first problem, or 2 to solve
+the second (the default is 0, so you must provide a set of
+initial conditions that are consistent).
+</p>
+<p>If this option is set to a nonzero value, you must also set the
+<code>&quot;algebraic variables&quot;</code> option to declare which variables in the
+problem are algebraic.
+</p>
+</dd>
+<dt><code><code>&quot;use initial condition heuristics&quot;</code></code></dt>
+<dd><p>Set to a nonzero value to use the initial condition heuristics options
+described below.
+</p>
+</dd>
+<dt><code><code>&quot;initial condition heuristics&quot;</code></code></dt>
+<dd><p>A vector of the following parameters that can be used to control the
+initial condition calculation.
+</p>
+<dl compact="compact">
+<dt><code>MXNIT</code></dt>
+<dd><p>Maximum number of Newton iterations (default is 5).
+</p>
+</dd>
+<dt><code>MXNJ</code></dt>
+<dd><p>Maximum number of Jacobian evaluations (default is 6).
+</p>
+</dd>
+<dt><code>MXNH</code></dt>
+<dd><p>Maximum number of values of the artificial stepsize parameter to be
+tried if the <code>&quot;compute consistent initial condition&quot;</code> option has
+been set to 1 (default is 5).
+</p>
+<p>Note that the maximum total number of Newton iterations allowed is
+<code>MXNIT*MXNJ*MXNH</code> if the <code>&quot;compute consistent initial
+condition&quot;</code> option has been set to 1 and <code>MXNIT*MXNJ</code> if it is
+set to 2.
+</p>
+</dd>
+<dt><code>LSOFF</code></dt>
+<dd><p>Set to a nonzero value to disable the linesearch algorithm (default is
+0).
+</p>
+</dd>
+<dt><code>STPTOL</code></dt>
+<dd><p>Minimum scaled step in linesearch algorithm (default is eps^(2/3)).
+</p>
+</dd>
+<dt><code>EPINIT</code></dt>
+<dd><p>Swing factor in the Newton iteration convergence test.  The test is
+applied to the residual vector, premultiplied by the approximate
+Jacobian.  For convergence, the weighted RMS norm of this vector
+(scaled by the error weights) must be less than <code>EPINIT*EPCON</code>,
+where <code>EPCON</code> = 0.33 is the analogous test constant used in the
+time steps.  The default is <code>EPINIT</code> = 0.01.
+</p></dd>
+</dl>
+
+</dd>
+<dt><code><code>&quot;print initial condition info&quot;</code></code></dt>
+<dd><p>Set this option to a nonzero value to display detailed information
+about the initial condition calculation (default is 0).
+</p>
+</dd>
+<dt><code><code>&quot;exclude algebraic variables from error test&quot;</code></code></dt>
+<dd><p>Set to a nonzero value to exclude algebraic variables from the error
+test.  You must also set the <code>&quot;algebraic variables&quot;</code> option to
+declare which variables in the problem are algebraic (default is 0).
+</p>
+</dd>
+<dt><code><code>&quot;algebraic variables&quot;</code></code></dt>
+<dd><p>A vector of the same length as the state vector.  A nonzero element
+indicates that the corresponding element of the state vector is an
+algebraic variable (i.e., its derivative does not appear explicitly
+in the equation set).
+</p>
+<p>This option is required by the
+<code>&quot;compute consistent initial condition&quot;</code> and
+<code>&quot;exclude algebraic variables from error test&quot;</code> options.
+</p>
+</dd>
+<dt><code><code>&quot;enforce inequality constraints&quot;</code></code></dt>
+<dd><p>Set to one of the following values to enforce the inequality
+constraints specified by the <code>&quot;inequality constraint types&quot;</code>
+option (default is 0).
+</p>
+<ol>
+<li> To have constraint checking only in the initial condition calculation.
+
+</li><li> To enforce constraint checking during the integration.
+
+</li><li> To enforce both options 1 and 2.
+</li></ol>
+
+</dd>
+<dt><code><code>&quot;inequality constraint types&quot;</code></code></dt>
+<dd><p>A vector of the same length as the state specifying the type of
+inequality constraint.  Each element of the vector corresponds to an
+element of the state and should be assigned one of the following
+codes
+</p>
+<dl compact="compact">
+<dt>-2</dt>
+<dd><p>Less than zero.
+</p>
+</dd>
+<dt>-1</dt>
+<dd><p>Less than or equal to zero.
+</p>
+</dd>
+<dt>0</dt>
+<dd><p>Not constrained.
+</p>
+</dd>
+<dt>1</dt>
+<dd><p>Greater than or equal to zero.
+</p>
+</dd>
+<dt>2</dt>
+<dd><p>Greater than zero.
+</p></dd>
+</dl>
+
+<p>This option only has an effect if the
+<code>&quot;enforce inequality constraints&quot;</code> option is nonzero.
+</p>
+</dd>
+<dt><code><code>&quot;initial step size&quot;</code></code></dt>
+<dd><p>Differential-algebraic problems may occasionally suffer from severe
+scaling difficulties on the first step.  If you know a great deal
+about the scaling of your problem, you can help to alleviate this
+problem by specifying an initial stepsize (default is computed
+automatically).
+</p>
+</dd>
+<dt><code><code>&quot;maximum order&quot;</code></code></dt>
+<dd><p>Restrict the maximum order of the solution method.  This option must
+be between 1 and 5, inclusive (default is 5).
+</p>
+</dd>
+<dt><code><code>&quot;maximum step size&quot;</code></code></dt>
+<dd><p>Setting the maximum stepsize will avoid passing over very large
+regions (default is not specified).
+</p></dd>
+</dl>
+</dd></dl>
+
+
+<p>Octave also includes <small>DASSL</small>, an earlier version of <small>DASPK</small>,
+and <small>DASRT</small>, which can be used to solve DAEs with constraints
+(stopping conditions).
+</p>
+<a name="XREFdassl"></a><dl>
+<dt><a name="index-dassl"></a>Built-in Function: <em>[<var>x</var>, <var>xdot</var>, <var>istate</var>, <var>msg</var>] =</em> <strong>dassl</strong> <em>(<var>fcn</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
+<dd><p>Solve the set of differential-algebraic equations
+</p>
+<div class="example">
+<pre class="example">0 = f (x, xdot, t)
+</pre></div>
+
+<p>with
+</p>
+<div class="example">
+<pre class="example">x(t_0) = x_0, xdot(t_0) = xdot_0
+</pre></div>
+
+<p>The solution is returned in the matrices <var>x</var> and <var>xdot</var>,
+with each row in the result matrices corresponding to one of the
+elements in the vector <var>t</var>.  The first element of <var>t</var>
+should be <em>t_0</em> and correspond to the initial state of the
+system <var>x_0</var> and its derivative <var>xdot_0</var>, so that the first
+row of the output <var>x</var> is <var>x_0</var> and the first row
+of the output <var>xdot</var> is <var>xdot_0</var>.
+</p>
+<p>The first argument, <var>fcn</var>, is a string, inline, or function handle
+that names the function <em>f</em> to call to compute the vector of
+residuals for the set of equations.  It must have the form
+</p>
+<div class="example">
+<pre class="example"><var>res</var> = f (<var>x</var>, <var>xdot</var>, <var>t</var>)
+</pre></div>
+
+<p>in which <var>x</var>, <var>xdot</var>, and <var>res</var> are vectors, and <var>t</var> is a
+scalar.
+</p>
+<p>If <var>fcn</var> is a two-element string array or a two-element cell array
+of strings, inline functions, or function handles, the first element names
+the function <em>f</em> described above, and the second element names a
+function to compute the modified Jacobian
+</p>
+
+<div class="example">
+<pre class="example">      df       df
+jac = -- + c ------
+      dx     d xdot
+</pre></div>
+
+
+<p>The modified Jacobian function must have the form
+</p>
+<div class="example">
+<pre class="example">
+
+<var>jac</var> = j (<var>x</var>, <var>xdot</var>, <var>t</var>, <var>c</var>)
+
+</pre></div>
+
+<p>The second and third arguments to <code>dassl</code> specify the initial
+condition of the states and their derivatives, and the fourth argument
+specifies a vector of output times at which the solution is desired,
+including the time corresponding to the initial condition.
+</p>
+<p>The set of initial states and derivatives are not strictly required to
+be consistent.  In practice, however, <small>DASSL</small> is not very good at
+determining a consistent set for you, so it is best if you ensure that
+the initial values result in the function evaluating to zero.
+</p>
+<p>The fifth argument is optional, and may be used to specify a set of
+times that the DAE solver should not integrate past.  It is useful for
+avoiding difficulties with singularities and points where there is a
+discontinuity in the derivative.
+</p>
+<p>After a successful computation, the value of <var>istate</var> will be
+greater than zero (consistent with the Fortran version of <small>DASSL</small>).
+</p>
+<p>If the computation is not successful, the value of <var>istate</var> will be
+less than zero and <var>msg</var> will contain additional information.
+</p>
+<p>You can use the function <code>dassl_options</code> to set optional
+parameters for <code>dassl</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdaspk">daspk</a>, <a href="#XREFdasrt">dasrt</a>, <a href="Ordinary-Differential-Equations.html#XREFlsode">lsode</a>.
+</p></dd></dl>
+
+
+<a name="XREFdassl_005foptions"></a><dl>
+<dt><a name="index-dassl_005foptions"></a>Built-in Function: <em></em> <strong>dassl_options</strong> <em>()</em></dt>
+<dt><a name="index-dassl_005foptions-1"></a>Built-in Function: <em>val =</em> <strong>dassl_options</strong> <em>(<var>opt</var>)</em></dt>
+<dt><a name="index-dassl_005foptions-2"></a>Built-in Function: <em></em> <strong>dassl_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
+<dd><p>Query or set options for the function <code>dassl</code>.
+</p>
+<p>When called with no arguments, the names of all available options and
+their current values are displayed.
+</p>
+<p>Given one argument, return the value of the option <var>opt</var>.
+</p>
+<p>When called with two arguments, <code>dassl_options</code> sets the option
+<var>opt</var> to value <var>val</var>.
+</p>
+<p>Options include
+</p>
+<dl compact="compact">
+<dt><code><code>&quot;absolute tolerance&quot;</code></code></dt>
+<dd><p>Absolute tolerance.  May be either vector or scalar.  If a vector, it
+must match the dimension of the state vector, and the relative
+tolerance must also be a vector of the same length.
+</p>
+</dd>
+<dt><code><code>&quot;relative tolerance&quot;</code></code></dt>
+<dd><p>Relative tolerance.  May be either vector or scalar.  If a vector, it
+must match the dimension of the state vector, and the absolute
+tolerance must also be a vector of the same length.
+</p>
+<p>The local error test applied at each integration step is
+</p>
+<div class="example">
+<pre class="example">  abs (local error in x(i))
+       &lt;= rtol(i) * abs (Y(i)) + atol(i)
+</pre></div>
+
+</dd>
+<dt><code><code>&quot;compute consistent initial condition&quot;</code></code></dt>
+<dd><p>If nonzero, <code>dassl</code> will attempt to compute a consistent set of initial
+conditions.  This is generally not reliable, so it is best to provide
+a consistent set and leave this option set to zero.
+</p>
+</dd>
+<dt><code><code>&quot;enforce nonnegativity constraints&quot;</code></code></dt>
+<dd><p>If you know that the solutions to your equations will always be
+non-negative, it may help to set this parameter to a nonzero
+value.  However, it is probably best to try leaving this option set to
+zero first, and only setting it to a nonzero value if that doesn&rsquo;t
+work very well.
+</p>
+</dd>
+<dt><code><code>&quot;initial step size&quot;</code></code></dt>
+<dd><p>Differential-algebraic problems may occasionally suffer from severe
+scaling difficulties on the first step.  If you know a great deal
+about the scaling of your problem, you can help to alleviate this
+problem by specifying an initial stepsize.
+</p>
+</dd>
+<dt><code><code>&quot;maximum order&quot;</code></code></dt>
+<dd><p>Restrict the maximum order of the solution method.  This option must
+be between 1 and 5, inclusive.
+</p>
+</dd>
+<dt><code><code>&quot;maximum step size&quot;</code></code></dt>
+<dd><p>Setting the maximum stepsize will avoid passing over very large
+regions  (default is not specified).
+</p>
+</dd>
+<dt><code><code>&quot;step limit&quot;</code></code></dt>
+<dd><p>Maximum number of integration steps to attempt on a single call to the
+underlying Fortran code.
+</p></dd>
+</dl>
+</dd></dl>
+
+
+<a name="XREFdasrt"></a><dl>
+<dt><a name="index-dasrt"></a>Built-in Function: <em>[<var>x</var>, <var>xdot</var>, <var>t_out</var>, <var>istat</var>, <var>msg</var>] =</em> <strong>dasrt</strong> <em>(<var>fcn</var>, [], <var>x_0</var>, <var>xdot_0</var>, <var>t</var>)</em></dt>
+<dt><a name="index-dasrt-1"></a>Built-in Function: <em>&hellip; =</em> <strong>dasrt</strong> <em>(<var>fcn</var>, <var>g</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>)</em></dt>
+<dt><a name="index-dasrt-2"></a>Built-in Function: <em>&hellip; =</em> <strong>dasrt</strong> <em>(<var>fcn</var>, [], <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
+<dt><a name="index-dasrt-3"></a>Built-in Function: <em>&hellip; =</em> <strong>dasrt</strong> <em>(<var>fcn</var>, <var>g</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
+<dd><p>Solve the set of differential-algebraic equations
+</p>
+<div class="example">
+<pre class="example">0 = f (x, xdot, t)
+</pre></div>
+
+<p>with
+</p>
+<div class="example">
+<pre class="example">x(t_0) = x_0, xdot(t_0) = xdot_0
+</pre></div>
+
+<p>with functional stopping criteria (root solving).
+</p>
+<p>The solution is returned in the matrices <var>x</var> and <var>xdot</var>,
+with each row in the result matrices corresponding to one of the
+elements in the vector <var>t_out</var>.  The first element of <var>t</var>
+should be <em>t_0</em> and correspond to the initial state of the
+system <var>x_0</var> and its derivative <var>xdot_0</var>, so that the first
+row of the output <var>x</var> is <var>x_0</var> and the first row
+of the output <var>xdot</var> is <var>xdot_0</var>.
+</p>
+<p>The vector <var>t</var> provides an upper limit on the length of the
+integration.  If the stopping condition is met, the vector
+<var>t_out</var> will be shorter than <var>t</var>, and the final element of
+<var>t_out</var> will be the point at which the stopping condition was met,
+and may not correspond to any element of the vector <var>t</var>.
+</p>
+<p>The first argument, <var>fcn</var>, is a string, inline, or function handle
+that names the function <em>f</em> to call to compute the vector of
+residuals for the set of equations.  It must have the form
+</p>
+<div class="example">
+<pre class="example"><var>res</var> = f (<var>x</var>, <var>xdot</var>, <var>t</var>)
+</pre></div>
+
+<p>in which <var>x</var>, <var>xdot</var>, and <var>res</var> are vectors, and <var>t</var> is a
+scalar.
+</p>
+<p>If <var>fcn</var> is a two-element string array or a two-element cell array
+of strings, inline functions, or function handles, the first element names
+the function <em>f</em> described above, and the second element names a
+function to compute the modified Jacobian
+</p>
+
+<div class="example">
+<pre class="example">      df       df
+jac = -- + c ------
+      dx     d xdot
+</pre></div>
+
+
+<p>The modified Jacobian function must have the form
+</p>
+<div class="example">
+<pre class="example">
+
+<var>jac</var> = j (<var>x</var>, <var>xdot</var>, <var>t</var>, <var>c</var>)
+
+</pre></div>
+
+<p>The optional second argument names a function that defines the
+constraint functions whose roots are desired during the integration.
+This function must have the form
+</p>
+<div class="example">
+<pre class="example"><var>g_out</var> = g (<var>x</var>, <var>t</var>)
+</pre></div>
+
+<p>and return a vector of the constraint function values.
+If the value of any of the constraint functions changes sign, <small>DASRT</small>
+will attempt to stop the integration at the point of the sign change.
+</p>
+<p>If the name of the constraint function is omitted, <code>dasrt</code> solves
+the same problem as <code>daspk</code> or <code>dassl</code>.
+</p>
+<p>Note that because of numerical errors in the constraint functions
+due to round-off and integration error, <small>DASRT</small> may return false
+roots, or return the same root at two or more nearly equal values of
+<var>T</var>.  If such false roots are suspected, the user should consider
+smaller error tolerances or higher precision in the evaluation of the
+constraint functions.
+</p>
+<p>If a root of some constraint function defines the end of the problem,
+the input to <small>DASRT</small> should nevertheless allow integration to a
+point slightly past that root, so that <small>DASRT</small> can locate the root
+by interpolation.
+</p>
+<p>The third and fourth arguments to <code>dasrt</code> specify the initial
+condition of the states and their derivatives, and the fourth argument
+specifies a vector of output times at which the solution is desired,
+including the time corresponding to the initial condition.
+</p>
+<p>The set of initial states and derivatives are not strictly required to
+be consistent.  In practice, however, <small>DASSL</small> is not very good at
+determining a consistent set for you, so it is best if you ensure that
+the initial values result in the function evaluating to zero.
+</p>
+<p>The sixth argument is optional, and may be used to specify a set of
+times that the DAE solver should not integrate past.  It is useful for
+avoiding difficulties with singularities and points where there is a
+discontinuity in the derivative.
+</p>
+<p>After a successful computation, the value of <var>istate</var> will be
+greater than zero (consistent with the Fortran version of <small>DASSL</small>).
+</p>
+<p>If the computation is not successful, the value of <var>istate</var> will be
+less than zero and <var>msg</var> will contain additional information.
+</p>
+<p>You can use the function <code>dasrt_options</code> to set optional
+parameters for <code>dasrt</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdasrt_005foptions">dasrt_options</a>, <a href="#XREFdaspk">daspk</a>, <a href="#XREFdasrt">dasrt</a>, <a href="Ordinary-Differential-Equations.html#XREFlsode">lsode</a>.
+</p></dd></dl>
+
+
+<a name="XREFdasrt_005foptions"></a><dl>
+<dt><a name="index-dasrt_005foptions"></a>Built-in Function: <em></em> <strong>dasrt_options</strong> <em>()</em></dt>
+<dt><a name="index-dasrt_005foptions-1"></a>Built-in Function: <em>val =</em> <strong>dasrt_options</strong> <em>(<var>opt</var>)</em></dt>
+<dt><a name="index-dasrt_005foptions-2"></a>Built-in Function: <em></em> <strong>dasrt_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
+<dd><p>Query or set options for the function <code>dasrt</code>.
+</p>
+<p>When called with no arguments, the names of all available options and
+their current values are displayed.
+</p>
+<p>Given one argument, return the value of the option <var>opt</var>.
+</p>
+<p>When called with two arguments, <code>dasrt_options</code> sets the option
+<var>opt</var> to value <var>val</var>.
+</p>
+<p>Options include
+</p>
+<dl compact="compact">
+<dt><code><code>&quot;absolute tolerance&quot;</code></code></dt>
+<dd><p>Absolute tolerance.  May be either vector or scalar.  If a vector, it
+must match the dimension of the state vector, and the relative
+tolerance must also be a vector of the same length.
+</p>
+</dd>
+<dt><code><code>&quot;relative tolerance&quot;</code></code></dt>
+<dd><p>Relative tolerance.  May be either vector or scalar.  If a vector, it
+must match the dimension of the state vector, and the absolute
+tolerance must also be a vector of the same length.
+</p>
+<p>The local error test applied at each integration step is
+</p>
+<div class="example">
+<pre class="example">  abs (local error in x(i)) &lt;= ...
+      rtol(i) * abs (Y(i)) + atol(i)
+</pre></div>
+
+</dd>
+<dt><code><code>&quot;initial step size&quot;</code></code></dt>
+<dd><p>Differential-algebraic problems may occasionally suffer from severe
+scaling difficulties on the first step.  If you know a great deal
+about the scaling of your problem, you can help to alleviate this
+problem by specifying an initial stepsize.
+</p>
+</dd>
+<dt><code><code>&quot;maximum order&quot;</code></code></dt>
+<dd><p>Restrict the maximum order of the solution method.  This option must
+be between 1 and 5, inclusive.
+</p>
+</dd>
+<dt><code><code>&quot;maximum step size&quot;</code></code></dt>
+<dd><p>Setting the maximum stepsize will avoid passing over very large
+regions.
+</p>
+</dd>
+<dt><code><code>&quot;step limit&quot;</code></code></dt>
+<dd><p>Maximum number of integration steps to attempt on a single call to the
+underlying Fortran code.
+</p></dd>
+</dl>
+</dd></dl>
+
+
+<p>See K. E. Brenan, et al., <cite>Numerical Solution of Initial-Value
+Problems in Differential-Algebraic Equations</cite>, North-Holland (1989) for
+more information about the implementation of <small>DASSL</small>.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Ordinary-Differential-Equations.html#Ordinary-Differential-Equations" accesskey="p" rel="prev">Ordinary Differential Equations</a>, Up: <a href="Differential-Equations.html#Differential-Equations" accesskey="u" rel="up">Differential Equations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

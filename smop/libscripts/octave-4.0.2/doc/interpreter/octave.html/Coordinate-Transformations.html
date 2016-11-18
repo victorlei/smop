@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Coordinate Transformations</title>
+
+<meta name="description" content="GNU Octave: Coordinate Transformations">
+<meta name="keywords" content="GNU Octave: Coordinate Transformations">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arithmetic.html#Arithmetic" rel="up" title="Arithmetic">
+<link href="Mathematical-Constants.html#Mathematical-Constants" rel="next" title="Mathematical Constants">
+<link href="Rational-Approximations.html#Rational-Approximations" rel="prev" title="Rational Approximations">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Coordinate-Transformations"></a>
+<div class="header">
+<p>
+Next: <a href="Mathematical-Constants.html#Mathematical-Constants" accesskey="n" rel="next">Mathematical Constants</a>, Previous: <a href="Rational-Approximations.html#Rational-Approximations" accesskey="p" rel="prev">Rational Approximations</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Coordinate-Transformations-1"></a>
+<h3 class="section">17.8 Coordinate Transformations</h3>
+
+<a name="XREFcart2pol"></a><dl>
+<dt><a name="index-cart2pol"></a>Function File: <em>[<var>theta</var>, <var>r</var>] =</em> <strong>cart2pol</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-cart2pol-1"></a>Function File: <em>[<var>theta</var>, <var>r</var>, <var>z</var>] =</em> <strong>cart2pol</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-cart2pol-2"></a>Function File: <em>[<var>theta</var>, <var>r</var>] =</em> <strong>cart2pol</strong> <em>(<var>C</var>)</em></dt>
+<dt><a name="index-cart2pol-3"></a>Function File: <em>[<var>theta</var>, <var>r</var>, <var>z</var>] =</em> <strong>cart2pol</strong> <em>(<var>C</var>)</em></dt>
+<dt><a name="index-cart2pol-4"></a>Function File: <em><var>P</var> =</em> <strong>cart2pol</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Transform Cartesian coordinates to polar or cylindrical coordinates.
+</p>
+<p>The inputs <var>x</var>, <var>y</var> (, and <var>z</var>) must be the same shape, or
+scalar.  If called with a single matrix argument then each row of <var>C</var>
+represents the Cartesian coordinate (<var>x</var>, <var>y</var> (, <var>z</var>)).
+</p>
+<p><var>theta</var> describes the angle relative to the positive x-axis.
+</p>
+<p><var>r</var> is the distance to the z-axis (0,&nbsp;0,&nbsp;z)<!-- /@w -->.
+</p>
+<p>If only a single return argument is requested then return a matrix <var>P</var>
+where each row represents one polar/(cylindrical) coordinate
+(<var>theta</var>, <var>phi</var> (, <var>z</var>)).
+</p>
+<p><strong>See also:</strong> <a href="#XREFpol2cart">pol2cart</a>, <a href="#XREFcart2sph">cart2sph</a>, <a href="#XREFsph2cart">sph2cart</a>.
+</p></dd></dl>
+
+
+<a name="XREFpol2cart"></a><dl>
+<dt><a name="index-pol2cart"></a>Function File: <em>[<var>x</var>, <var>y</var>] =</em> <strong>pol2cart</strong> <em>(<var>theta</var>, <var>r</var>)</em></dt>
+<dt><a name="index-pol2cart-1"></a>Function File: <em>[<var>x</var>, <var>y</var>, <var>z</var>] =</em> <strong>pol2cart</strong> <em>(<var>theta</var>, <var>r</var>, <var>z</var>)</em></dt>
+<dt><a name="index-pol2cart-2"></a>Function File: <em>[<var>x</var>, <var>y</var>] =</em> <strong>pol2cart</strong> <em>(<var>P</var>)</em></dt>
+<dt><a name="index-pol2cart-3"></a>Function File: <em>[<var>x</var>, <var>y</var>, <var>z</var>] =</em> <strong>pol2cart</strong> <em>(<var>P</var>)</em></dt>
+<dt><a name="index-pol2cart-4"></a>Function File: <em><var>C</var> =</em> <strong>pol2cart</strong> <em>(&hellip;)</em></dt>
+<dd><p>Transform polar or cylindrical coordinates to Cartesian coordinates.
+</p>
+<p>The inputs <var>theta</var>, <var>r</var>, (and <var>z</var>) must be the same shape, or
+scalar.  If called with a single matrix argument then each row of <var>P</var>
+represents the polar/(cylindrical) coordinate (<var>theta</var>, <var>r</var>
+(, <var>z</var>)).
+</p>
+<p><var>theta</var> describes the angle relative to the positive x-axis.
+</p>
+<p><var>r</var> is the distance to the z-axis (0, 0, z).
+</p>
+<p>If only a single return argument is requested then return a matrix <var>C</var>
+where each row represents one Cartesian coordinate
+(<var>x</var>, <var>y</var> (, <var>z</var>)).
+</p>
+<p><strong>See also:</strong> <a href="#XREFcart2pol">cart2pol</a>, <a href="#XREFsph2cart">sph2cart</a>, <a href="#XREFcart2sph">cart2sph</a>.
+</p></dd></dl>
+
+
+<a name="XREFcart2sph"></a><dl>
+<dt><a name="index-cart2sph"></a>Function File: <em>[<var>theta</var>, <var>phi</var>, <var>r</var>] =</em> <strong>cart2sph</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-cart2sph-1"></a>Function File: <em>[<var>theta</var>, <var>phi</var>, <var>r</var>] =</em> <strong>cart2sph</strong> <em>(<var>C</var>)</em></dt>
+<dt><a name="index-cart2sph-2"></a>Function File: <em><var>S</var> =</em> <strong>cart2sph</strong> <em>(&hellip;)</em></dt>
+<dd><p>Transform Cartesian coordinates to spherical coordinates.
+</p>
+<p>The inputs <var>x</var>, <var>y</var>, and <var>z</var> must be the same shape, or scalar.
+If called with a single matrix argument then each row of <var>C</var> represents
+the Cartesian coordinate (<var>x</var>, <var>y</var>, <var>z</var>).
+</p>
+<p><var>theta</var> describes the angle relative to the positive x-axis.
+</p>
+<p><var>phi</var> is the angle relative to the xy-plane.
+</p>
+<p><var>r</var> is the distance to the origin (0,&nbsp;0,&nbsp;0)<!-- /@w -->.
+</p>
+<p>If only a single return argument is requested then return a matrix <var>S</var>
+where each row represents one spherical coordinate
+(<var>theta</var>, <var>phi</var>, <var>r</var>).
+</p>
+<p><strong>See also:</strong> <a href="#XREFsph2cart">sph2cart</a>, <a href="#XREFcart2pol">cart2pol</a>, <a href="#XREFpol2cart">pol2cart</a>.
+</p></dd></dl>
+
+
+<a name="XREFsph2cart"></a><dl>
+<dt><a name="index-sph2cart"></a>Function File: <em>[<var>x</var>, <var>y</var>, <var>z</var>] =</em> <strong>sph2cart</strong> <em>(<var>theta</var>, <var>phi</var>, <var>r</var>)</em></dt>
+<dt><a name="index-sph2cart-1"></a>Function File: <em>[<var>x</var>, <var>y</var>, <var>z</var>] =</em> <strong>sph2cart</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-sph2cart-2"></a>Function File: <em><var>C</var> =</em> <strong>sph2cart</strong> <em>(&hellip;)</em></dt>
+<dd><p>Transform spherical coordinates to Cartesian coordinates.
+</p>
+<p>The inputs <var>theta</var>, <var>phi</var>, and <var>r</var> must be the same shape, or
+scalar.  If called with a single matrix argument then each row of <var>S</var>
+represents the spherical coordinate (<var>theta</var>, <var>phi</var>, <var>r</var>).
+</p>
+<p><var>theta</var> describes the angle relative to the positive x-axis.
+</p>
+<p><var>phi</var> is the angle relative to the xy-plane.
+</p>
+<p><var>r</var> is the distance to the origin (0,&nbsp;0,&nbsp;0)<!-- /@w -->.
+</p>
+<p>If only a single return argument is requested then return a matrix <var>C</var>
+where each row represents one Cartesian coordinate
+(<var>x</var>, <var>y</var>, <var>z</var>).
+</p>
+<p><strong>See also:</strong> <a href="#XREFcart2sph">cart2sph</a>, <a href="#XREFpol2cart">pol2cart</a>, <a href="#XREFcart2pol">cart2pol</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Mathematical-Constants.html#Mathematical-Constants" accesskey="n" rel="next">Mathematical Constants</a>, Previous: <a href="Rational-Approximations.html#Rational-Approximations" accesskey="p" rel="prev">Rational Approximations</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

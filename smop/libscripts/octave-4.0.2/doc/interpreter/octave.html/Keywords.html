@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Keywords</title>
+
+<meta name="description" content="GNU Octave: Keywords">
+<meta name="keywords" content="GNU Octave: Keywords">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Grammar-and-Parser.html#Grammar-and-Parser" rel="up" title="Grammar and Parser">
+<link href="Parser.html#Parser" rel="next" title="Parser">
+<link href="Grammar-and-Parser.html#Grammar-and-Parser" rel="prev" title="Grammar and Parser">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Keywords"></a>
+<div class="header">
+<p>
+Next: <a href="Parser.html#Parser" accesskey="n" rel="next">Parser</a>, Up: <a href="Grammar-and-Parser.html#Grammar-and-Parser" accesskey="u" rel="up">Grammar and Parser</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Keywords-1"></a>
+<h3 class="section">I.1 Keywords</h3>
+<a name="index-keywords"></a>
+
+<p>The following identifiers are keywords, and may not be used as variable
+or function names:
+</p>
+<table>
+<tr><td width="33%"><code>__FILE__</code></td><td width="33%"><code>__LINE__</code></td><td width="33%"><code>break</code></td></tr>
+<tr><td width="33%"><code>case</code></td><td width="33%"><code>catch</code></td><td width="33%"><code>classdef</code></td></tr>
+<tr><td width="33%"><code>continue</code></td><td width="33%"><code>do</code></td><td width="33%"><code>else</code></td></tr>
+<tr><td width="33%"><code>elseif</code></td><td width="33%"><code>end</code></td><td width="33%"><code>end_try_catch</code></td></tr>
+<tr><td width="33%"><code>end_unwind_protect</code></td><td width="33%"><code>endclassdef</code></td><td width="33%"><code>endenumeration</code></td></tr>
+<tr><td width="33%"><code>endevents</code></td><td width="33%"><code>endfor</code></td><td width="33%"><code>endfunction</code></td></tr>
+<tr><td width="33%"><code>endif</code></td><td width="33%"><code>endmethods</code></td><td width="33%"><code>endparfor</code></td></tr>
+<tr><td width="33%"><code>endproperties</code></td><td width="33%"><code>endswitch</code></td><td width="33%"><code>endwhile</code></td></tr>
+<tr><td width="33%"><code>enumeration</code></td><td width="33%"><code>events</code></td><td width="33%"><code>for</code></td></tr>
+<tr><td width="33%"><code>function</code></td><td width="33%"><code>global</code></td><td width="33%"><code>if</code></td></tr>
+<tr><td width="33%"><code>methods</code></td><td width="33%"><code>otherwise</code></td><td width="33%"><code>parfor</code></td></tr>
+<tr><td width="33%"><code>persistent</code></td><td width="33%"><code>properties</code></td><td width="33%"><code>return</code></td></tr>
+<tr><td width="33%"><code>switch</code></td><td width="33%"><code>try</code></td><td width="33%"><code>until</code></td></tr>
+<tr><td width="33%"><code>unwind_protect</code></td><td width="33%"><code>unwind_protect_cleanup</code></td><td width="33%"><code>while</code></td></tr>
+</table>
+
+<p>The function <code>iskeyword</code> can be used to quickly check whether an
+identifier is reserved by Octave.
+</p>
+<a name="XREFiskeyword"></a><dl>
+<dt><a name="index-iskeyword"></a>Built-in Function: <em></em> <strong>iskeyword</strong> <em>()</em></dt>
+<dt><a name="index-iskeyword-1"></a>Built-in Function: <em></em> <strong>iskeyword</strong> <em>(<var>name</var>)</em></dt>
+<dd><p>Return true if <var>name</var> is an Octave keyword.
+</p>
+<p>If <var>name</var> is omitted, return a list of keywords.
+</p>
+<p><strong>See also:</strong> <a href="Variables.html#XREFisvarname">isvarname</a>, <a href="Status-of-Variables.html#XREFexist">exist</a>.
+</p></dd></dl>
+
+
+
+
+
+</body>
+</html>

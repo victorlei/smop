@@ -1,0 +1,1908 @@
+2011-03-24  Jarno Rajahalme  <jarno.rajahalme@gmail.com>
+
+	* misc/blaswrap.c: New file.
+	* misc/module.mk (EXTRA_DIST): Add it to the list.
+
+2011-01-31  Rik  <octave@nomad.inbox5.com>
+
+	* arpack/src/dseupd.f, arpack/src/sseupd.f: Change GOTO target
+	to eliminate warning about landing on end if.
+
+2011-01-31  John W. Eaton  <jwe@octave.org>
+
+	* arpack/module.mk (EXTRA_DIST): Include arpack/module.mk in the
+	list.  Remove arpack/src/module.mk and arpacck/util/module.mk
+	from the list.
+
+2011-01-31  John W. Eaton  <jwe@octave.org>
+
+	* arpack/LICENSE: Update to current version from
+	http://www.caam.rice.edu/software/ARPACK.
+	* arpack/ARPACK-license-question.email: Delete as it no longer
+	applies to the current license terms.
+	* arpack/RiceBSD.txt: Delete.
+	* arpack/module.mk: Update for license changes.
+	Add arpack/ prefix to doc files in list.
+
+2011-01-28  David Bateman  <dbateman@free.fr>
+
+	* arpack/src/cneupd.f (cneupd): Restore value of nconv if ctrsen
+	returns a smaller value.
+	* arpack/src/dneupd.f (dneupd): Likewise, for dtrsen.
+	* arpack/src/sneupd.f (sneupd): Likewise, for strsen.
+	* arpack/src/zneupd.f (zneupd): Likewise, for ztrsen.
+
+2011-01-28  John W. Eaton  <jwe@octave.org>
+
+	* arpack/util/second.f (ARSCND): Declare ETIME INTRINSIC, not EXTERNAL.
+
+2011-01-28  John W. Eaton  <jwe@octave.org>
+
+	* arpack: New directory.
+	* Makefile.am: Include arpack/module.mk.
+
+2011-01-26  John W. Eaton  <jwe@octave.org>
+
+	* mkf77def.in: Strip trailing whitespace.
+
+2011-01-20  John W. Eaton  <jwe@octave.org>
+
+	* misc/cquit.c, misc/f77-fcn.h, misc/quit.cc: Strip trailing
+	whitespace.
+
+2011-01-14  John W. Eaton  <jwe@octave.org>
+
+	* Update copyright notices for 2011.
+
+2010-09-07  Jaroslav Hajek  <highegg@gmail.com>
+
+	* blas-xtra/cconv2.f, blas-xtra/csconv2.f, blas-xtra/dconv2.f,
+	blas-xtra/sconv2.f, blas-xtra/zconv2.f, blas-xtra/zdconv2.f:
+	Fix inner convolution formula.
+
+2010-07-27  Jaroslav Hajek  <highegg@gmail.com>
+
+	* lapack-xtra/zrsf2csf.f, lapack-xtra/crsf2csf.f: New sources.
+	* lapack-xtra/module.mk: Add them.
+
+2010-05-04  John W. Eaton  <jwe@octave.org>
+
+	* villad/dfopr.f, villad/dif.f, villad/intrp.f, villad/jcobi.f,
+	villad/radau.f, villad/vilerr.f, villad/module.mk: Delete.
+	* Makefile.am: Don't include villad/module.mk.
+
+2010-04-11  Jaroslav Hajek  <highegg@gmail.com>
+
+	* blas-xtra/cmatm3.f, blas-xtra/zmatm3.f,
+	blas-xtra/dmatm3.f, blas-xtra/xsdot.f: Fix typos. Add missing
+	decls.
+
+2010-03-21  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.am (libcruft_la_LIBADD): Include ../libgnu/libgnu.la
+	in the list.  From Marco Atzeri <marco_atzeri@yahoo.it>.
+
+2010-03-15  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.am (libcruft_la_CPPFLAGS): Append $(AM_CPPFLAGS).
+
+2010-03-03  Jaroslav Hajek  <highegg@gmail.com>
+
+	* blas-xtra/cconv2.f, blas-xtra/csconv2.f, blas-xtra/dconv2.f,
+	blas-xtra/sconv2.f, blas-xtra/zconv2.f, blas-xtra/zdconv2.f:
+	New sources.
+	* blas-xtra/module.mk: Add them here.
+
+2010-03-02  John W. Eaton  <jwe@octave.org>
+
+	* misc/cquit.c (octave_restore_signal_mask): Assume we have
+	POSIX signal handling.
+
+2010-02-28  Jaroslav Hajek  <highegg@gmail.com>
+
+	* misc/lo-error.c (liboctave_fatal_with_id,
+	set_liboctave_error_with_id_handler): New functions.
+	(current_liboctave_error_with_id_handler): New variable.
+	* misc/lo-error.h: Declare them.
+	(liboctave_error_with_id_handler): New typedef.
+
+2010-02-21  Michael Goffioul  <michael.goffioul@gmail.com>
+
+	* misc/quit.h: Define WIN32_LEAN_AND_MEAN and don't #undef min/max.
+
+	* Makefile.am: Add -bindir option to libcruft_la_LDFLAGS.
+
+2010-02-17  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.am (libcruft_la_LIBADD): Include libranlib.la in the list.
+	(noinst_LTLIBRARIES, libranlib_la_SOURCES, libranlib_la_DEPENDENCIES,
+	libcruft_la_FFLAGS): New variables.
+	(ranlib.def): New target.
+	(DISTCLEANFILES): Also remove ranlib.def.
+	* ranlib/module.mk (libranlib_la_SOURCES): Rename from
+	libcruft_la_SOURCES.
+
+2010-01-20  John W. Eaton  <jwe@octave.org>
+
+	* misc/quit.cc: Untabify.
+
+2010-01-20  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.am (EXTRA_DIST): Remove STOP.patch from the list.
+
+2010-01-20  Jaroslav Hajek  <highegg@gmail.com>
+
+	* misc/quit.h: Define inline-function variant of OCTAVE_QUIT in C++
+	mode.
+
+2009-01-13  Rik  <octave@nomad.inbox5.com>
+
+	* STOP.patch: Remove unmaintained patch for Fortran code
+
+2009-01-13  Rik  <octave@nomad.inbox5.com>
+
+	* ranlib/advnst.f ranlib/genbet.f ranlib/genchi.f ranlib/genexp.f
+	ranlib/genf.f ranlib/gengam.f ranlib/genmul.f ranlib/gennch.f
+	ranlib/gennf.f ranlib/gennor.f ranlib/genunf.f ranlib/getcgn.f
+	ranlib/getsd.f ranlib/ignbin.f ranlib/ignnbn.f ranlib/ignpoi.f
+	ranlib/ignuin.f ranlib/initgn.f ranlib/mltmod.f ranlib/setant.f
+	ranlib/setgmn.f ranlib/setsd.f: call XSTOPX instead of STOP so Octave's
+	error handler can intercept errors in Fortran code
+
+2010-01-07  Jaroslav Hajek  <highegg@gmail.com>
+
+	* misc/quit.cc (octave_rethrow_exception): Set octave_interrupt_state
+	to -1 when throwing octave_interrupt_exception.
+
+2010-01-05  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.am (AM_CPPFLAGS): New variable.
+
+2009-12-31  Rik  <octave@nomad.inbox5.com>
+
+	* Makefile.am: Reverse using simple_move_if_change_rule for cruft.def
+	which interferes with make timestamp algorithm.
+
+2009-12-19  Rik  <octave@nomad.inbox5.com>
+
+	* Makefile.am: Eliminate TOPDIR variable in favor of built-in automake
+	variables of top_builddir and top_srcdir.
+
+2009-12-13  Rik  <octave@nomad.inbox5.com>
+
+	* Makefile.am: Use simple_move_if_change_rule for cruft.def to eliminate
+	unnecessary compilations.
+
+2009-12-07  John W. Eaton  <jwe@octave.org>
+
+	* misc/f77-fcn.h, misc/lo-error.h, misc/quit.h,
+	misc/f77-extern.cc, misc/quit.cc, misc/cquit.c, misc/f77-fcn.c,
+	misc/lo-error.c: Remove Emacs local variable list.
+
+2009-12-07  John W. Eaton  <jwe@octave.org>
+
+	* misc/cquit.c, misc/f77-fcn.h, misc/quit.h: Untabify.
+
+2009-12-03  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.am (DISTCLEANFILES): New variable.
+
+2009-11-26  Jaroslav Hajek  <highegg@gmail.com>
+
+	* blas-xtra/sdot3.f: Use nested cache-aligned loop for general case.
+	* blas-xtra/ddot3.f: Ditto.
+	* blas-xtra/cdotc3.f: Ditto.
+	* blas-xtra/zdotc3.f: Ditto.
+
+2009-11-26  Jaroslav Hajek  <highegg@gmail.com>
+
+	* blas-xtra/sdot3.f: New source.
+	* blas-xtra/ddot3.f: New source.
+	* blas-xtra/cdotc3.f: New source.
+	* blas-xtra/zdotc3.f: New source.
+	* blas-xtra/smatm3.f: New source.
+	* blas-xtra/dmatm3.f: New source.
+	* blas-xtra/cmatm3.f: New source.
+	* blas-xtra/zmatm3.f: New source.
+	* blas-xtra/module.mk: Include them.
+
+2009-11-17  John W. Eaton  <jwe@octave.org>
+
+	* mkf77def.in: Only process files with names that match *.f.
+
+2009-11-13  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.am: Restore rules for building cruft.def.
+	(libcruft_la_LDFLAGS): Also append @XTRA_CRUFT_SH_LDFLAGS@.
+	(libcruft_la_DEPENDENCIES): New variable.
+	* mkf77def.in: Use @VAR@ instead of %VAR% substitutions.
+	Process	srcdir plus list of files instead of working as a filter.
+
+2009-11-13  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.am (libcruft_la_CPPFLAGS): Define.
+
+2009-11-10  John W. Eaton  <jwe@octave.org>
+
+	* blas, lapack: Remove directories and all files.
+	* Makefile.am: Don't include blas/module.mk or lapack/module.mk.
+
+2009-11-10  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.am, amos/module.mk, blas-xtra/module.mk,
+	blas/module.mk, daspk/module.mk, dasrt/module.mk, dassl/module.mk,
+	fftpack/module.mk, lapack-xtra/module.mk, lapack/module.mk,
+	misc/module.mk, odepack/module.mk, ordered-qz/module.mk,
+	quadpack/module.mk, ranlib/module.mk, slatec-err/module.mk,
+	slatec-fn/module.mk, villad/module.mk: New files.
+
+	* Makefile.in, Makerules.in, amos/Makefile.in,
+	blas-xtra/Makefile.in, blas/Makefile.in, daspk/Makefile.in,
+	dasrt/Makefile.in, dassl/Makefile.in, fftpack/Makefile.in,
+	lapack-xtra/Makefile.in, lapack/Makefile.in, misc/Makefile.in,
+	odepack/Makefile.in, ordered-qz/Makefile.in, quadpack/Makefile.in,
+	ranlib/Makefile.in, slatec-err/Makefile.in, slatec-fn/Makefile.in,
+	villad/Makefile.in: Delete.
+
+2009-09-17  John W. Eaton  <jwe@octave.org>
+
+	* misc/oct-dlldefs.h: Delete.
+	* misc/Makefile.in (INCLUDES): Remove oct-dlldefs.h from the list.
+
+2009-08-05  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in (LINK_DEPS): Omit $(FFTW_LIBS) from the list.
+
+2009-06-22  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in (MISC_OBJ): Remove misc/machar.o and misc/smachar.o
+	from the list.
+
+	* misc/i1mach.f, misc/r1mach.f, misc/d1mach.f: Rewite in terms of
+	LAPACK functions slamch and dlamch.
+	* misc/machar.c: Delete.
+	* misc/Makefile.in (CSRC): Remove machar.c from the list.
+	(CEXTRA, XCC, XALL_CFLAGS): Delete variables.
+	(machar.o, smachar.o, pic/machar.o, pic/smachar.o): Delete rules.
+
+2009-05-07  Marco Atzeri  <marco_atzeri@yahoo.it>
+
+	* Makefile.in: (SHLPRE): Rename from SHLLIBPRE.
+
+2009-03-07  John W. Eaton  <jwe@octave.org>
+
+	* misc/quit.h (octave_rethrow_exception):
+	Don't tag with GCC_ATTR_NORETURN.
+
+2009-02-25  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in (maintainer-clean): Also remove libraries.
+
+	* Makerules.in: Make maintainer-clean and distclean the same.
+
+2009-02-23  Jaroslav Hajek  <highegg@gmail.com>
+
+	* misc/quit.h (octave_signal_caught): Declare as volatile.
+	* misc/cquit.cc (octave_signal_caught): Likewise.
+
+2009-02-06  Jaroslav Hajek  <highegg@gmail.com>
+
+	* blas/ssymm.f, blas/dsymm.f, blas/chemm.f, blas/zhemm.f: New sources.
+	* blas/Makefile.in: Include them.
+
+2009-01-28  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in (LIBRARIES, install, uninstall): use SHLLIBPRE and
+	SHLBINPRE library prefixes.
+	From Marco Atzeri <marco_atzeri@yahoo.it>.
+
+2008-12-21  Jaroslav Hajek  <highegg@gmail.com>
+
+	* lapack/chegs2.f lapack/chegst.f lapack/chegv.f lapack/dsygs2.f
+	lapack/dsygst.f lapack/dsygv.f lapack/ssygs2.f lapack/ssygst.f
+	lapack/ssygv.f lapack/zhegs2.f lapack/zhegst.f lapack/zhegv.f:
+	New sources.
+	* lapack/Makefile.in: Include them.
+
+2008-12-15  Jaroslav Hajek  <highegg@gmail.com>
+
+	* blas/zsyrk.f: New source.
+	* lapack/cggbak.f, lapack/cggev.f, lapack/cgghrd.f, lapack/chgeqz.f,
+	lapack/ctgevc.f, lapack/dggev.f, lapack/sggev.f, lapack/zggbak.f,
+	lapack/zggev.f, lapack/zgghrd.f, lapack/zhgeqz.f, lapack/ztgevc.f:
+	New sources.
+	* lapack/Makefile.in: Include them.
+
+2008-08-12  Thomas Treichl  <Thomas.Treichl@gmx.net>
+
+	* blas/icamax.f, blas/isamax.f: New files.
+	* blas/Makefile.in (FSRC): Add them to the list.
+
+	* lapack/icmax1.f: New file.
+	* lapack/Makefile.in (FSRC): Add it to the list.
+
+2008-06-16  David Bateman  <dbateman@free.fr>
+
+	* slatec-fn/xacosh.f, slatec-fn/xasinh.f: Replace xsacosh with
+	xacosh, xdacosh with xacosh and xdasinh with xasinh.
+
+2008-06-12  Jaroslav Hajek  <highegg@gmail.com>
+
+	* misc/Makefile.in (MAKEDEPS): Remove CEXTRA.
+
+2008-06-04  Michael Goffioul  <michael.goffioul@gmail.com>
+
+	* misc/oct-dlldefs.h (OCTGRAPHICS_API): New macro for import/export
+	in graphics related libraries.
+
+2008-06-02  David Bateman  <dbateman@free.fr>
+
+	* slatec/xsgmainc.f: Replace DLGAMS with ALGAMS.
+
+2008-05-30  Thomas Treichl  <Thomas.Treichl@gmx.net>
+
+	* quadpack/qk15i.f: Delete extraneous semicolons.
+
+2008-05-21  David Bateman  <dbateman@free.fr>
+
+	* odepack/slsode.f, odepack/sintdy.f: Replace the use of xerrwv
+	with xerrwd and rumach with d1mach(4).
+
+	* odepack/scfode.f, odepack/sewset.f, odepack/sintdy.f,
+	odepack/slsode.f, odepack/sprepj.f, odepack/ssolsy.f,
+	odepack/sstode.f, odepack/svnorm.f: New files.
+	* odepack/Makefile.in (FSRC): Add them.
+
+	* ordered-qz/sexchqz.f, ordered-qz/ssubsp.f: New files.
+	* ordered-qz/Makefile.in (FSRC): Add them.
+	* quadpack/qagi.f, quadpack/qagie.f, quadpack/qagp.f,
+	quadpack/qagpe.f, quadpack/qelg.f, quadpack/qk15i.f,
+	quadpack/qk21.f, quadpack/qpsrt.f: New files.
+	* quadpack/Makefile.in (FSRC): Add them.
+
+2008-05-20  Jaroslav Hajek  <highegg@gmail.com>
+
+	* qrupdate/cch1dn.f, qrupdate/cchinx.f, qrupdate/cqhqr.f,
+	qrupdate/cqrinc.f, qrupdate/cqrinr.f, qrupdate/cqrqhu.f,
+	qrupdate/cqrqhv.f, qrupdate/sch1dn.f, qrupdate/schinx.f,
+	qrupdate/sqhqr.f, qrupdate/sqrinc.f, qrupdate/sqrinr.f,
+	qrupdate/sqrqhu.f: Convert DOUBLE PRECISION constants to REAL.
+	* qrupdate/cqrinr.f, qrupdate/sqrinr.f: Correct EXTERNAL
+	declarations.
+	* qrupdate/sqrinr.f: Convert DOUBLE PRECISION calls to
+	REAL counterparts.
+
+2008-05-20  David Bateman  <dbateman@free.fr>
+
+	* Makefile.in (MISC_OBJ): Add misc/smachar.o
+	* Makerules.in (CRUFT_CSRC, CRUFT_CPICOBJ): Add CEXTRA, allowing
+	objects files with no corresponding source file in the
+	distribution.
+
+	* amos/cacai.f, amos/cacon.f, amos/cbesh.f, amos/cbesi.f,
+	amos/cbesj.f, amos/cbesk.f, amos/cbesy.f, amos/cbinu.f,
+	amos/cbuni.f, amos/cbunk.f, amos/cunk1.f amos/cunk2.f,
+	amos/crati.f, amos/cshch.f, amos/cuni1.f, amos/cuoik.f,
+	amos/cairy.f, amos/cbiry.f, amos/ckscl.f, amos/cs1s2.f,
+	amos/cuchk.f, amos/cuni2.f, amos/cwrsk.f, amos/casyi.f,
+	amos/cbknu.f, amos/cmlri.f, amos/cseri.f, amos/cunhj.f,
+	amos/cunik.f: New files.
+	* amos/Makefile.in (FSRC): Add them.
+
+	* blas-xtra/xsdot.f, blas-xtra/xsnrm2.f, blas-xtra/xscnrm2.f,
+	blas-xtra/xcdotc.f, blas-xtra/xcdotu.f: New files
+	* blas-xtra/Makefile.in (FSRC): Add them.
+
+	* blas/sasum.f, blas/saxpy.f, blas/scabs1.f, blas/scopy.f,
+	blas/sger.f, blas/smach.f, blas/snrm2.f, blas/srot.f,
+	blas/sswap.f, blas/ssymv.f, blas/ssyr.f, blas/ssyr2.f,
+	blas/ssyr2k.f, blas/stbsv.f, blas/strmm.f, blas/strmv.f,
+	blas/strsv.f, blas/scasum.f, blas/scnrm2.f, blas/caxpy.f,
+	blas/ccopy.f, blas/cdotc.f, blas/cdotu.f, blas/, blas/csrot.f,
+	blas/csscal.f, blas/cgemm.f, blas/cgemv.f, blas/cgerc.f,
+	blas/cgeru.f, blas/chemv.f, blas/cher.f, blas/cher2.f,
+	blas/cher2k.f, blas/cherk.f, blas/cscal.f, blas/cswap.f,
+	blas/ctbsv.f, blas/ctrmm.f, blas/ctrmv.f, blas/, blas/ctrsm.f,
+	blas/ctrsv.f: New files
+	* blas/Makefile.in (FSRC): Add them.
+
+	* fftpack/zfftb.f, zfftb1.f, fftpack/zfftf.f, fftpack/zfftf1.f,
+	fftpack/zffti.f, fftpack/zffti1.f, fftpack/zpassb.f,
+	fftpack/zpassb2.f, fftpack/zpassb3.f, fftpack/zpassb4.f,
+	fftpack/zpassb5.f, fftpack/zpassf.f, fftpack/zpassf2.f,
+	fftpack/zpassf3.f, fftpack/zpassf4.f, fftpack/zpassf5.f: Rename
+	function (c -> z | add z).
+	* fftpack/cfftb.f, cfftb1.f, fftpack/cfftf.f, fftpack/cfftf1.f,
+	fftpack/cffti.f, fftpack/cffti1.f, fftpack/passb.f,
+	fftpack/passb2.f, fftpack/passb3.f, fftpack/passb4.f,
+	fftpack/passb5.f, fftpack/passf.f, fftpack/passf2.f,
+	fftpack/passf3.f, fftpack/passf4.f, fftpack/passf5.f: New files
+	for single precision.
+	* fftpack/Makefile.in (FSRC): Add new files.
+
+	* lapack-xtra/xclange.f, lapack-xtra/xslamch.f,
+	lapack-xtra/xslange.f: New files.
+	* lapack-xtra/Makefile.in (FSRC): Add them.
+
+	* lapack/cbdsqr.f, lapack/csrscl.f, lapack/cgbcon.f,
+	lapack/cgbtf2.f, lapack/cgbtrf.f, lapack/cgbtrs.f,
+	lapack/cgebak.f, lapack/cgebal.f, lapack/cgebd2.f,
+	lapack/cgebrd.f, lapack/cgecon.f, lapack/cgeesx.f, lapack/cgeev.f,
+	lapack/cgehd2.f, lapack/cgehrd.f, lapack/cgelq2.f,
+	lapack/cgelqf.f, lapack/cgelsd.f, lapack/cgelss.f,
+	lapack/cgelsy.f, lapack/cgeqp3.f, lapack/cgeqpf.f,
+	lapack/cgeqr2.f, lapack/cgeqrf.f, lapack/cgesv.f, lapack/cgesvd.f,
+	lapack/cgetf2.f, lapack/cgetrf.f, lapack/cgetri.f,
+	lapack/cgetrs.f, lapack/cggbal.f, lapack/cgtsv.f, lapack/cgttrf.f,
+	lapack/cgttrs.f, lapack/cgtts2.f, lapack/cheev.f, lapack/chetd2.f,
+	lapack/chetrd.f, lapack/chseqr.f, lapack/clabrd.f,
+	lapack/clacgv.f, lapack/clacn2.f, lapack/clacon.f,
+	lapack/clacpy.f, lapack/cladiv.f, lapack/clahqr.f,
+	lapack/clahr2.f, lapack/clahrd.f, lapack/claic1.f,
+	lapack/clals0.f, lapack/clalsa.f, lapack/clalsd.f,
+	lapack/clange.f, lapack/clanhe.f, lapack/clanhs.f,
+	lapack/clantr.f, lapack/claqp2.f, lapack/claqps.f,
+	lapack/claqr0.f, lapack/claqr1.f, lapack/claqr2.f,
+	lapack/claqr3.f, lapack/claqr4.f, lapack/claqr5.f, lapack/clarf.f,
+	lapack/clarfb.f, lapack/clarfg.f, lapack/clarft.f,
+	lapack/clarfx.f, lapack/clartg.f, lapack/clarz.f, lapack/clarzb.f,
+	lapack/clarzt.f, lapack/clascl.f, lapack/claset.f, lapack/clasr.f,
+	lapack/classq.f, lapack/claswp.f, lapack/clatbs.f,
+	lapack/clatrd.f, lapack/clatrs.f, lapack/clatrz.f,
+	lapack/clauu2.f, lapack/clauum.f, lapack/cpbcon.f,
+	lapack/cpbtf2.f, lapack/cpbtrf.f, lapack/cpbtrs.f,
+	lapack/cpocon.f, lapack/cpotf2.f, lapack/cpotrf.f,
+	lapack/cpotri.f, lapack/cpotrs.f, lapack/cptsv.f, lapack/cpttrf.f,
+	lapack/cpttrs.f, lapack/cptts2.f, lapack/crot.f, lapack/csteqr.f,
+	lapack/ctrcon.f, lapack/ctrevc.f, lapack/ctrexc.f,
+	lapack/ctrsen.f, lapack/ctrsyl.f, lapack/ctrti2.f,
+	lapack/ctrtri.f, lapack/ctrtrs.f, lapack/ctzrzf.f,
+	lapack/cung2l.f, lapack/cung2r.f, lapack/cungbr.f,
+	lapack/cunghr.f, lapack/cungl2.f, lapack/cunglq.f,
+	lapack/cungql.f, lapack/cungqr.f, lapack/cungtr.f,
+	lapack/cunm2r.f, lapack/cunmbr.f, lapack/cunml2.f,
+	lapack/cunmlq.f, lapack/cunmqr.f, lapack/cunmr3.f,
+	lapack/cunmrz.f, lapack/sbdsqr.f, lapack/sgbcon.f,
+	lapack/sgbtf2.f, lapack/sgbtrf.f, lapack/sgbtrs.f,
+	lapack/sgebak.f, lapack/sgebal.f, lapack/sgebd2.f,
+	lapack/sgebrd.f, lapack/sgecon.f, lapack/sgeesx.f, lapack/sgeev.f,
+	lapack/sgehd2.f, lapack/sgehrd.f, lapack/sgelq2.f,
+	lapack/sgelqf.f, lapack/sgelsd.f, lapack/sgelss.f,
+	lapack/sgelsy.f, lapack/sgeqp3.f, lapack/sgeqpf.f,
+	lapack/sgeqr2.f, lapack/sgeqrf.f, lapack/sgesv.f, lapack/sgesvd.f,
+	lapack/sgetf2.f, lapack/sgetrf.f, lapack/sgetri.f,
+	lapack/sgetrs.f, lapack/sggbak.f, lapack/sggbal.f,
+	lapack/sgghrd.f, lapack/sgtsv.f, lapack/sgttrf.f, lapack/sgttrs.f,
+	lapack/sgtts2.f, lapack/shgeqz.f, lapack/shseqr.f,
+	lapack/slabad.f, lapack/slabrd.f, lapack/slacn2.f,
+	lapack/slacon.f, lapack/slacpy.f, lapack/sladiv.f, lapack/slae2.f,
+	lapack/slaed6.f, lapack/slaev2.f, lapack/slaexc.f, lapack/slag2.f,
+	lapack/slahqr.f, lapack/slahr2.f, lapack/slahrd.f,
+	lapack/slaic1.f, lapack/slaln2.f, lapack/slals0.f,
+	lapack/slalsa.f, lapack/slalsd.f, lapack/slamc1.f,
+	lapack/slamc2.f, lapack/slamc3.f, lapack/slamc4.f,
+	lapack/slamc5.f, lapack/slamch.f, lapack/slamrg.f,
+	lapack/slange.f, lapack/slanhs.f, lapack/slanst.f,
+	lapack/slansy.f, lapack/slantr.f, lapack/slanv2.f,
+	lapack/slapy2.f, lapack/slapy3.f, lapack/slaqp2.f,
+	lapack/slaqps.f, lapack/slaqr0.f, lapack/slaqr1.f,
+	lapack/slaqr2.f, lapack/slaqr3.f, lapack/slaqr4.f,
+	lapack/slaqr5.f, lapack/slarf.f, lapack/slarfb.f, lapack/slarfg.f,
+	lapack/slarft.f, lapack/slarfx.f, lapack/slartg.f, lapack/slarz.f,
+	lapack/slarzb.f, lapack/slarzt.f, lapack/slas2.f, lapack/slascl.f,
+	lapack/slasd0.f, lapack/slasd1.f, lapack/slasd2.f,
+	lapack/slasd3.f, lapack/slasd4.f, lapack/slasd5.f,
+	lapack/slasd6.f, lapack/slasd7.f, lapack/slasd8.f,
+	lapack/slasda.f, lapack/slasdq.f, lapack/slasdt.f,
+	lapack/slaset.f, lapack/slasq1.f, lapack/slasq2.f,
+	lapack/slasq3.f, lapack/slasq4.f, lapack/slasq5.f,
+	lapack/slasq6.f, lapack/slasr.f, lapack/slasrt.f, lapack/slassq.f,
+	lapack/slasv2.f, lapack/slaswp.f, lapack/slasy2.f,
+	lapack/slatbs.f, lapack/slatrd.f, lapack/slatrs.f,
+	lapack/slatrz.f, lapack/slauu2.f, lapack/slauum.f,
+	lapack/slazq3.f, lapack/slazq4.f, lapack/sorg2l.f,
+	lapack/sorg2r.f, lapack/sorgbr.f, lapack/sorghr.f,
+	lapack/sorgl2.f, lapack/sorglq.f, lapack/sorgql.f,
+	lapack/sorgqr.f, lapack/sorgtr.f, lapack/sorm2r.f,
+	lapack/sormbr.f, lapack/sorml2.f, lapack/sormlq.f,
+	lapack/sormqr.f, lapack/sormr3.f, lapack/sormrz.f,
+	lapack/spbcon.f, lapack/spbtf2.f, lapack/spbtrf.f,
+	lapack/spbtrs.f, lapack/spocon.f, lapack/spotri.f,
+	lapack/spotrs.f, lapack/sptsv.f, lapack/spttrf.f, lapack/spttrs.f,
+	lapack/sptts2.f, lapack/srscl.f, lapack/ssteqr.f, lapack/ssterf.f,
+	lapack/ssyev.f, lapack/ssytd2.f, lapack/ssytrd.f, lapack/stgevc.f,
+	lapack/strcon.f, lapack/strevc.f, lapack/strexc.f,
+	lapack/strsen.f, lapack/strsyl.f, lapack/strti2.f,
+	lapack/strtri.f, lapack/strtrs.f, lapack/stzrzf.f,
+	lapack/scsum1.f: New files
+	* lapack/Makefile.in (FSRC): Add them.
+
+	* misc/r1mach.f: New file
+	* misc/machar.cc: Modify to allow to be build twice, once for
+	double precision and once for single precision.
+	* misc/Makefile.in (FSRC): Add it.
+	(CEXTRA): Add smachar.c, and target for smachar.o
+	(MAKEDEPS): Include CEXTRA.
+
+	* qrupdate/sch1up.f, qrupdate/cch1up.f, qrupdate/sqrinc.f,
+	qrupdate/cqrinc.f, qrupdate/sqrdec.f, qrupdate/cqrdec.f,
+	qrupdate/sqrinr.f, qrupdate/cqrinr.f, qrupdate/sqrder.f,
+	qrupdate/cqrder.f, qrupdate/sqrshc.f, qrupdate/cqrshc.f,
+	qrupdate/sqr1up.f, qrupdate/cqr1up.f, qrupdate/sch1dn.f,
+	qrupdate/cch1dn.f, qrupdate/schinx.f, qrupdate/cchinx.f,
+	qrupdate/schdex.f, qrupdate/cchdex.f, qrupdate/sqrqhu.f,
+	qrupdate/cqrqhu.f, qrupdate/sqrqhv.f, qrupdate/cqrqhv.f,
+	qrupdate/sqhqr.f, qrupdate/cqhqr.f: New files.
+	* qrupdate/Makefile.in (FSRC): Add them.
+
+	* slatec-fn/acosh.f, slatec-fn/albeta.f, slatec-fn/algams.f,
+	slatec-fn/alngam.f, slatec-fn/alnrel.f, slatec-fn/asinh.f,
+	slatec-fn/atanh.f, slatec-fn/betai.f, slatec-fn/csevl.f,
+	slatec-fn/erf.f, slatec-fn/erfc.f, slatec-fn/gami.f,
+	slatec-fn/gamit.f, slatec-fn/gamlim.f, slatec-fn/gamma.f,
+	slatec-fn/gamr.f, slatec-fn/inits.f, slatec-fn/pchim.f,
+	slatec-fn/pchst.f, slatec-fn/r9gmit.f, slatec-fn/r9lgic.f,
+	slatec-fn/r9lgit.f, slatec-fn/r9lgmc.f, slatec-fn/xacosh.f,
+	slatec-fn/xasinh.f, slatec-fn/xatanh.f, slatec-fn/xbetai.f,
+	slatec-fn/xerf.f, slatec-fn/xerfc.f, slatec-fn/xgamma.f,
+	slatec-fn/xsgmainc.f: New files.
+	* slatec-fn/Makefile.in (FSRC): Add them.
+
+2008-04-20  Jaroslav Hajek  <highegg@gmail.com>
+
+	* qrupdate/dch1dn.f, qrupdate/dchdex.f, qrupdate/dchinx.f,
+	qrupdate/dqhqr.f, qrupdate/dqrdec.f, qrupdate/dqrinc.f,
+	qrupdate/dqrqhu.f, qrupdate/dqrqhv.f, qrupdate/dqrshc.f,
+	qrupdate/zch1dn.f, qrupdate/zchdex.f, qrupdate/zchinx.f,
+	qrupdate/zqhqr.f, qrupdate/zqrdec.f, qrupdate/zqrder.f,
+	qrupdate/zqrinc.f, qrupdate/zqrinr.f, qrupdate/zqrqhu.f,
+	qrupdate/zqrqhv.f, qrupdate/zqrshc.f:
+	Fix external declarations, XERBLA calls, and docs.
+
+2008-04-07  Jaroslav Hajek  <highegg@gmail.com>
+
+	* qrupdate/dqrqhu.f, qrupdate/zqrqhu.f,
+	* qrupdate/dqrshc.f, qrupdate/zqrshc.f,
+	* qrupdate/dchinx.f, qrupdate/zchinx.f,
+	* qrupdate/dchdex.f, qrupdate/zchdex.f: New files.
+
+2008-04-02  Jaroslav Hajek  <highegg@gmail.com>
+
+	* blas-xtra/xzdotu.f: Turn into simple wrapper for zdotu.
+	* blas-xtra/xzdotc.f: Turn into simple wrapper for zdotc.
+	* qrupdate/zqrqhv.f: Undo previous change.
+
+2008-03-22  David Bateman  <dbateman@free.fr>
+
+	* qrupdate/dch1up.f: Remove unused external reference to dlartv.
+
+2008-03-18  John W. Eaton  <jwe@octave.org>
+
+	* qrupdate/zqrqhv.f (zqrqhv): Call xzdotc instead of zdotc.
+	* blas-xtra/xzdotu.f: Eliminate local zdotu variable.
+	* blas-xtra/xzdotc.f: New file.
+	* blas-xtra/Makefile.in (FSRC): Add it to the list.
+
+2008-03-10  John W. Eaton  <jwe@octave.org>
+
+	* blas/zdrot.f, odepack/dlsode.f, odepack/ewset.f,
+	odepack/intdy.f, fftpack/cffti.f, fftpack/cfftb.f,
+	fftpack/cfftf.f:
+	Use (*) instead of (1) for assumed-size dimensions.
+
+2008-03-06  Jaroslav Hajek  <highegg@gmail.com>
+
+	* qrupdate/dqrinc.f: Declare DGEMV external.
+	* qrupdate/zqrinc.f: Declare ZGEMV external.
+	Fix complex constant args in call to ZGEMV.
+
+2008-03-05  Jaroslav Hajek  <highegg@gmail.com>
+
+	* qrupdate/dch1dn.f, qrupdate/zch1dn.f: add "quick return" checks.
+
+2008-03-04 Jaroslav Hajek  <highegg@gmail.com>
+
+	* qrupdate/dch1dn.f, qrupdate/dch1up.f,
+	qrupdate/zch1dn.f, qrupdate/zch1up.f: New files.
+	* qrupdate/Makefile.in (FSRC): Add them to the list.
+
+	* qrupdate/Makefile.in, qrupdate/dqhqr.f, qrupdate/dqr1up.f,
+	qrupdate/dqrdec.f, qrupdate/dqrder.f, qrupdate/dqrinc.f,
+	qrupdate/dqrinr.f, qrupdate/dqrqhv.f, qrupdate/zqhqr.f,
+	qrupdate/zqr1up.f, qrupdate/zqrdec.f, qrupdate/zqrder.f,
+	qrupdate/zqrinc.f, qrupdate/zqrinr.f, qrupdate/zqrqhv.f:
+	New files.
+	* Makefile.in (CRUFT_DIRS): Add qrupdate to the list.
+
+2008-02-14  John W. Eaton  <jwe@octave.org>
+
+	* misc/f77-fcn.h (F77_XFCN): Call octave_rethrow_exception here
+	instead of checking octave_allocation_error.
+	* misc/quit.cc (octave_execution_exception): New function.
+	(octave_rethrow_exception): New function.
+	(octave_handle_signal): Call octave_rethrow_exception instead of
+	octave_throw_interrupt_exception.
+	* misc/quit.h (octave_execution_error): New variable.
+	(END_INTERRUPT_WITH_EXCEPTIONS): Catch octave_execution_exception.
+	(octave_execution_exception): New class.
+	(octave_exception): New enum.
+	(octave_exception_state): Rename from octave_allocation_error.
+	Change all uses.
+
+2008-02-12  John W. Eaton  <jwe@octave.org>
+
+	* lapack-xtra/xilaenv.f: New wrapper for Fortran function ilaenv.
+	* lapack-xtra/Makefile.in (FSRC): Add it to the list.
+
+2008-02-06  John W. Eaton  <jwe@octave.org>
+
+	* Makerules.in (%.def : %.f): Use mv instead of move-if-change.
+
+2008-02-05  John W. Eaton  <jwe@octave.org>
+
+	* misc/Makefile.in: Unconditionally include $(MAKEDEPS).
+	Mark $(MAKEDEPS) as .PHONY targets if omit_deps is true.
+
+2007-12-21  John W. Eaton  <jwe@octave.org>
+
+	Version 3.0.0 released.
+
+2007-11-01  John W. Eaton  <jwe@octave.org>
+
+	* lapack-xtra/xzlange.f: Include complete implementation of ZLANGE
+	function here.
+
+	* blas-xtra/xzdotu.f: Include complete implementation of ZDOTU
+	function here.
+
+2007-10-26  John W. Eaton  <jwe@octave.org>
+
+	* lapack/dlals0.f: New file.
+	* lapack/Makefile.in (FSRC): Add it to the list.
+
+2007-10-26  David Bateman  <dbateman@free.fr>
+
+	* lapack/dgelsd.f, lapack/dlalsd.f, lapack/dlalsa.f,
+	lapack/dlasda.f, lapack/dlasdt.f, lapack/dlasdq.f
+	lapack/dlamrg.f, lapack/dlasd0.f, lapack/dlasd1.f,
+	lapack/dlasd2.f, lapack/dlasd3.f, lapack/dlasd4.f,
+	lapack/dlasd5.f, lapack/dlasd6.f, lapack/dlasd7.f,
+	lapack/dlasd8.f, lapack/dlaed6.f, lapack/zgelsd.f,
+	lapack/zlalsd.f , lapack/zlalsa.f, lapack/zlals0.f: New files.
+	* lapack/Makefile.in (FSRC): Include them here.
+
+2007-10-23  John W. Eaton  <jwe@octave.org>
+
+	* lapack/dgtts2.f, lapack/zgtts2.f: New files.
+	* lapack/Makefile.in (FSRC): Add them to the list.
+
+2007-10-16  John W. Eaton  <jwe@octave.org>
+
+	* lapack/dlacn2.f, lapack/dlacn2.f, lapack/dlahr2.f,
+	lapack/dlahr2.f, lapack/dlaqr0.f, lapack/dlazq3.f,
+	lapack/dlazq3.f, lapack/dormr3.f, lapack/dormrz.f,
+	lapack/iparmq.f, lapack/iparmq.f, lapack/zlacn2.f,
+	lapack/zlahr2.f, lapack/zlaqr0.f: New files.
+	* lapack/Makefile.in (FSRC): Add them to the list.
+
+	* lapack: Update all files to current versions from Lapack 3.1.1.
+
+2007-10-12  John W. Eaton  <jwe@octave.org>
+
+	* Change copyright notices in all files that are part of Octave to
+	GPLv3 or any later version.
+
+2007-10-03  John W. Eaton  <jwe@octave.org>
+
+	* mkf77def.in: Combine sed expressions.
+
+2007-09-26  David Bateman  <dbateman@free.fr>
+
+	* lapack/dgelsy.f,  lapack/dlatrz.f,  lapack/zlarz.f,
+	lapack/dgeqp3.f,  lapack/dtzrzf.f,  lapack/zlarzt.f,
+	lapack/dlaic1.f,  lapack/zgelsy.f,  lapack/zlatrz.f,
+	lapack/dlaqp2.f,  lapack/zgeqp3.f,  lapack/ztzrzf.f,
+	lapack/dlaqps.f,  lapack/zlaic1.f,  lapack/zunmr3.f,
+	lapack/dlarzb.f,  lapack/zlaqp2.f,  lapack/zunmrz.f,
+	lapack/dlarz.f,   lapack/zlaqps.f, lapack/dlarzt.f,
+	lapack/zlarzb.f: New files
+	* lapack/Makefile.in (FSRC): Add the new files.
+
+2007-07-25  David Bateman  <dbateman@free.fr>
+
+	* Makefile.in, Makerules.in, fftpack/Makefile.in,
+	randlib/Makefile.in: Adjust DISTFILES to allow out of tree "make dist"
+	to work.
+
+2007-04-23  John W. Eaton  <jwe@octave.org>
+
+	* ranlib/phrtsd.f (phrtsd): Store result of call to index
+	instrinsic in an INTEGER variable to ensure that the types of the
+	arguments passed to mod really are the same even on 64-bit systems.
+
+2007-04-18  Michael Goffioul  <michael.goffioul@swing.be>
+
+	* blas-xtra/xdnrm2.f, blas-xtra/xdznrm2.f:
+	Delete spurious semicolons.
+
+2007-04-06  John W. Eaton  <jwe@octave.org>
+
+	* blas-xtra/xdnrm2.f, blas-xtra/xdznrm2.f: New functions.
+	* blas-xtra/Makefile.in (FSRC): Add them to the list.
+
+	* ranlib/phrtsd.f (phrtsd): Ensure that the types of the arguments
+	passed to mod are the same even on 64-bit systems.
+
+2007-04-04  John W. Eaton  <jwe@octave.org>
+
+	* Makefules.in: Handle Fortran, C, and C++ sources with separate
+	variables.
+	* misc/Makefile.in: Use new variables for Fortran, C, and C++ files.
+	* Makefile.in (clean mostlyclean distclean): No need to remove
+	$(CRUFT_OBJ) here.
+
+2007-04-04  Rafael Laboissiere  <rafael@debian.org>
+
+	* Makefile.in (clean): Remove mkf77def.
+
+2007-03-27  John W. Eaton  <jwe@octave.org>
+
+	* Makerules.in, Makefile.in (dist): Use ln instead of $(LN_S).
+
+2007-02-26  John W. Eaton  <jwe@octave.org>
+
+	* misc/Makefile.in (CPICDEP): Also set if CPICFLAG is not defined.
+	(CXXPICDEP): Also set if CXXPICFLAG is not defined.
+
+2007-02-26  Michael Goffioul  <michael.goffioul@swing.be>
+
+	* Makefile.in, Makerules.in: Use $(LN_S) instead of ln or ln -s.
+
+2007-02-07  John W. Eaton  <jwe@octave.org>
+
+	* Makerules.in: Don't use wildcard function to generate source
+	efile list.
+	* amos/Makefile.in, blas-xtra/Makefile.in, blas/Makefile.in,
+	daspk/Makefile.in, dasrt/Makefile.in, dassl/Makefile.in,
+	fftpack/Makefile.in, lapack-xtra/Makefile.in, lapack/Makefile.in,
+	minpack/Makefile.in, misc/Makefile.in, odepack/Makefile.in,
+	ordered-qz/Makefile.in, quadpack/Makefile.in, ranlib/Makefile.in,
+	slatec-err/Makefile.in, slatec-fn/Makefile.in, villad/Makefile.in:
+	Explicitly list source files.
+
+2007-01-24  Alexander Barth  <abarth@marine.usf.edu>
+
+	* misc/f77-fcn.h (F77_CSTRING): Call OCTAVE_LOCAL_BUFFER with cs,
+	not F77_CHAR_ARG_USE (s).
+
+2006-11-11  John W. Eaton  <jwe@octave.org>
+
+	* Makerules.in (%.def : %.f): Use $(simple-move-if-change-rule) here.
+
+2006-11-03  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in (DLL_CXXDEFS): Rename from XTRA_CXXDEFS.
+	(DLL_CDEFS): Rename from XTRA_CDEFS.
+	Substitute CRUFT_DLL_DEFS, not XTRA_CRUFT_DEFS.
+	(XTRA_CRUFT_SH_LDFLAGS): Rename from XTRA_CRUFT_LINK_DEPS.
+	Add $(XTRA_CRUFT_SH_LDFLAGS) to SH_LDFLAGS instead of to LINK_DEPS.
+
+2006-10-31  John W. Eaton  <jwe@octave.org>
+
+	* misc/Makefile.in (INCLUDES): Add oct-dlldefs.h to the list.
+
+2006-10-29  John W. Eaton  <jwe@octave.org>
+
+	* misc/Makefile.in (SPECIAL_INCLUDE): Add oct-dlldefs.h to the list.
+
+2006-10-28  Michael Goffioul  <michael.goffioul@swing.be>
+
+	* misc/quit.h: Undefine min and max after including windows.h.
+
+2006-10-27  John W. Eaton  <jwe@octave.org>
+
+	* misc/oct-dlldefs.h: New file.
+
+	* mkf77def.in: Downcase all input to simplify matching.
+	Match only lines beginning with whitespace.
+	Match function return types.
+	Use literal TAB characters instead of \t in sed patterns.
+	From Michael Goffioul <michael.goffioul@swing.be>.
+
+2006-10-26  Michael Goffioul  <michael.goffioul@swing.be>
+
+	* Makefile.in (XTRA_CRUFT_LINK_DEPS): Substitute.
+	(CRUFT_DEFS): New variable.
+	(LINK_DEPS): Include $(XTRA_CRUFT_LINK_DEPS) in the list.
+	(clean, mostlyclean, distclean): Delete cruft.def.
+	(cruft.def): New target.
+	(libraries): Depend on cruft.def.
+
+	* misc/f77-fcn.h (f77_exception_encountered, xstopx):
+	Tag with CRUFT_API.
+	* misc/lo-error.h (current_liboctave_error_handler,
+	current_liboctave_warning_handler,
+	current_liboctave_warning_with_id_handler,
+	set_liboctave_error_handler, set_liboctave_warning_handler,
+	set_liboctave_warning_with_id_handler): Likewise.
+	* misc/quit.h (w32_sigint_init, w32_raise_final,
+	w32_raise, w32_in_main_thread, current_context,
+	octave_save_current_context, octave_restore_current_context,
+	octave_jump_to_enclosing_context, octave_save_signal_mask,
+	octave_restore_signal_mask, octave_interrupt_immediately,
+	octave_interrupt_state, octave_allocation_error,
+	octave_signal_caught, octave_handle_signal,
+	octave_throw_interrupt_exception, octave_throw_bad_alloc,
+	octave_signal_hook, octave_interrupt_hook, octave_bad_alloc_hook):
+	Likewise.
+
+2006-10-26  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in ($(CRUFT_DEFS)): Depend on $(SUBDIRS).
+	(cruft.def): Depend on $(CRUFT_DEFS).
+	(libraries): Depend on cruft.def only.
+
+	* mk77def.in: New script template
+	* Makefile.in (DISTFILES): Include mk77def.in in the list.
+	($(SUBDIRS)): Depend on mk77def.
+	(mk77def): New target.
+	(CRUFT_DEFS): New variable.
+	* Makerules.in (CRUFT_FSRC, CRUFT_CSRC, CRUFT_CXXSRC): New variables.
+	(CRUFT_SRC): Define using $(CRUFT_FSRC), $(CRUFT_CSRC), and
+	$(CRUFT_CXXSRC).
+	(CRUFT_DEFS): New variable.
+	($(CRUFT_DEFS)): Depend on $(TOPDIR)/libcruft/mkf77def.
+	(%.def : %.f): New pattern rule.  Use mkf77def script to do
+	Fortran name mangling.
+	(clean, mostlyclean, distclean): Delete $(CRUFT_DEFS).
+	(all): Depend on $(CRUFT_DEFS)
+	Partially from Michael Goffioul  <michael.goffioul@swing.be>.
+
+2006-10-25  John W. Eaton  <jwe@octave.org>
+
+	* Makerules.in (XTRA_CDEFS, XTRA_CXXDEFS): Substitute here.
+
+2006-10-23  Paul Kienzle  <pkienzle@users.sf.net>
+
+	* misc/f77-fcn.h (F77_CHAR_ARG_DEF, F77_CONST_CHAR_ARG_DEF,
+	F77_CHAR_ARG_LEN_DEF, F77_CHAR_ARG_USE, F77_CHAR_ARG_LEN_USE,
+	F77_CSTRING): New macros to handle passing C character strings to
+	Fortran.
+
+2006-10-17  Michael Goffioul  <michael.goffioul@swing.be>
+
+	* lapack-xtra/xdlamch.f: Begin lines with spaces, not tabs.
+
+	* misc/Makefile.in (machar.o, pic/machar.o): Specify output file
+	name in compile command.
+
+2006-10-13  Michael Goffioul  <michael.goffioul@swing.be>
+
+	* Makefile.in: Adapt rules to use $(LIBPRE).
+
+2006-09-11  John W. Eaton  <jwe@octave.org>
+
+	* blas-xtra/xddot.f, blas-xtra/xzdotu.f: New files.
+
+2006-06-01  David Bateman  <dbateman@free.fr>
+
+	* slatec-fn/dpchim.f, slatec-fn/dpchst.f: New files.
+
+2006-05-22  John W. Eaton  <jwe@octave.org>
+
+	* lapack/dlantr.f, lapack/zlantr.f: New files.
+
+2006-05-03  David Bateman  <dbateman@free.fr>
+
+	* lapack/dpocon.f, lapack/zpocon.f, lapack/dpotrs.f,
+	lapack/zpotrs.f, lapack/dtrcon.f, lapack/ztrcon.f,
+	lapack/dtrtrs.f, lapack/ztrtrs.f: New files.
+
+2006-04-29  John W. Eaton  <jwe@octave.org>
+
+	* misc/lo-error.c (set_liboctave_warning_with_id_handler,
+	liboctave_warning_with_id): New functions.
+	(current_liboctave_warning_with_id_handler): New variable.
+	* misc/lo-error.h (liboctave_warning_with_id_handler): New typedef.
+	(current_liboctave_warning_with_id_handler, liboctave_warning_with_id
+	set_liboctave_warning_with_id_handler): Provide decls.
+
+2006-04-18  John W. Eaton  <jwe@octave.org>
+
+	* misc/f77-fcn.h (F77_XFCN): Move decls to beginning of blocks for C.
+
+2006-04-13  John W. Eaton  <jwe@octave.org>
+
+	* misc/quit.h BEGIN_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE_1,
+	END_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE): Omit unnecessary casts.
+	* misc/f77-fcn.h (F77_XFCN, F77_CHAR_ARG_LEN): Likewise.
+
+2006-04-03  David Bateman  <dbateman@free.fr>
+
+	* ranlib/wrap.f (dgenexp, dgengam, dignpoi): New functions.
+
+2006-03-21  John W. Eaton  <jwe@octave.org>
+
+	* misc/f77-fcn.h (F77_XFCN): Save octave_interrupt_immediately and
+	restore it if an exception occurs that causes a longjmp.
+
+2005-11-01  John W. Eaton  <jwe@octave.org>
+
+	* ranlib/ignbin.f, ranlib/ignpoi.f: Avoid arithmetic IF statements.
+
+2005-10-17  John W. Eaton  <jwe@octave.org>
+
+	* lapack/Makefile.in (dlamc1.o pic/dlamc1.o):
+	Add $(F77_FLOAT_STORE_FLAG) to FFLAGS.
+
+2005-09-23  John W. Eaton  <jwe@octave.org>
+
+	* misc/machar.c: Restore test code.
+
+2005-09-15  John W. Eaton  <jwe@octave.org>
+
+	* misc/quit.h Rename all win32_ symbols to w32.  Change all uses.
+
+2005-09-15  David Bateman  <dbateman@free.fr>
+
+	* Makefile.in (LN_S): Change to DESTDIR before LN_S to avoid
+	lack of symlinks under mingw.
+	* misc/cquit.c (w32_thread_setjmp_mutex, win32_signal_context,
+	win32_signal_to_raise, win32_main_thread_id, win32_main_thread,
+	win32_restore_thread): New static variables.
+	(win32_in_main_thread): Returns 1 if in main thread for win32.
+	(win32_reset_context): Reset context (longjmp style) for win32.
+	(win32_raise_in_main): Raise signal in main thread for win32.
+	(win32_raise): Raise signal for win32.
+	(win32_raise_final): Clean up win32 signalling.
+	(win32_sigint_init): Initialize win32 signalling.
+	* quit.h (win32_sigint_init, win32_raise_final, win32_raise,
+	win32_in_main_thread): Declaration.
+
+2005-09-14  Daniel  <durbano@shbano.com>
+
+	* lapack/zbdsqr.f: Fix typo in docs.
+	From Jorge Barros de Abreu <ficmatin01@solar.com.br>.
+
+2005-05-06  John W. Eaton  <jwe@octave.org>
+
+	* lapack/dpotri.f, lapack/dlauum.f, lapack/dlauu2.f,
+	lapack/zpotri.f, lapack/zlauum.f, lapack/zlauu2.f: New files.
+
+2005-04-08  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in, Makerules.in (clean, distclean, maintainer-clean):
+	Avoid duplication in rules.
+
+2005-03-17  Andy Adler  <adler@site.uottawa.ca>
+
+	* Makerules.in (install-strip): Include double-colon target here too.
+
+2005-03-09  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in (bin-dist): Delete target.
+	(BINDISTLIBS, BINDISTFILES): Delete variables.
+
+2005-03-01  John W. Eaton  <jwe@octave.org>
+
+	* Makefile.in (CRUFT_DIRS): Remove it from the list.
+	* odessa: Delete directory.
+
+	* misc/machar.c (rmachar): Declare local REAL variables volatile.
+
+2005-02-25  John W. Eaton  <jwe@octave.org>
+
+	* blas/zher.f: New file.
+
+	Sparse merge.
+
+	2005-01-13 David Bateman  <dbateman@free.fr>
+
+	* lapack/dgttrf.f lapack/dgttrs.f lapacl/zgttrf.f lapack/zgttrs.f:
+	new files
+
+	2005-01-23  David Bateman  <dbateman@free.fr>
+
+	* lapack/dgtsv.f lapack/dpbcon.f lapack/dpbtf2.f lapack/dpbtrf.f
+	lapack/dpbtrs.f lapack/dptsv.f lapack/dpttrf.f lapack/dpttrs.f
+	lapack/dptts2.f lapack/zgtsv.f lapack/zpbcon.f lapack/zpbtf2.f
+	lapack/zpbtrf.f lapack/zpbtrs.f lapack/zptsv.f lapack/zpttrf.f
+	lapack/zpttrs.f lapck/zptts2.f: New files.
+
+	2004-12-29  John W. Eaton  <jwe@octave.org>
+
+	* blas/zbtsv.f: New file.
+	* lapack/dgbcon.f, lapack/dgbtrf.f, lapack/dgbtrs.f,
+	lapack/dlatbs.f, lapack/zgbcon.f, lapack/zgbtf2.f,
+	lapack/zgbtrf.f, lapack/zgbtrs.f, lapack/zlatbs.f: New files.
+
+2005-02-10  John W. Eaton  <jwe@octave.org>
+
+	* misc/cquit.c (octave_signal_caught): New global variable.
+	* misc/quit.cc (occtave_handle_signal): New function.
+	(octave_signal_hook): New global pointer.
+	* misc/quit.h: Provide decls.
+	(OCTAVE_QUIT): Check octave_signal_caught, not
+	octave_interrupt_state, and call octave_handle_signal, not
+	octave_throw_interrupt_exception.
+
+2005-02-08  John W. Eaton  <jwe@octave.org>
+
+	* misc/quit.h: Use C-style comments.
+
+2004-09-08  John W. Eaton  <jwe@octave.org>
+
+	* misc/machar.c (rmachar): Use modern C declaration.
+
+2004-02-24  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/f77-fcn.c: Handle Cray, CVF, and f2c calling conventions.
+
+	* misc/f77-fcn.h (xstopx): Use F77_CHAR_ARG_DECL and
+	F77_CHAR_ARG_LEN_DECL in declaration.
+
+2004-02-20  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/quit.h (OCTAVE_QUIT): Set octave_interrupt_state to -1
+	while we are handling interrupts.
+
+2004-02-14  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (LINK_DEPS): Always define.
+
+2003-11-12  John Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/machar.c (machar) [CRAY]: Kluge to make it work.
+
+2003-10-31  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* odepack/dlsode.f: Rename from odepack/lsode.f.
+	* odepack/dlsode.f (DLSODE): Rename from LSODE to avoid name
+	conflict with LSODE class constructors on systems that upcase
+	Fortran names.
+
+	* odessa/dodessa.f: Rename from odessa/odessa.f.
+	* odessa/dodessa.f (DODESSA): Rename from ODESSA to avoid name
+	conflict with ODESSA class constructors on systems that upcase
+	Fortran names.
+
+2003-10-30  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (MISC_OBJ): Add misc/cquit.o to the list.
+
+	* misc/Makefile.in (SPECIAL_SRC): Add cquit.c to the list.
+	* misc/cquit.c: New file.
+	* misc/quit.cc: Move everything except octave_interrupt_hook,
+	octave_bad_alloc_hook, octave_throw_interrupt_exception, and
+	octave_throw_bad_alloc to cquit.c.
+
+2003-10-28  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/quit.h (octave_interrupt_hook, octave_bad_alloc_hook):
+	Move declarations outside of extern "C" block.
+
+2003-10-27  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/f77-fcn.h: Only use inline if this is C++.
+
+	* misc/f77-fcn.c (xstopx): Return type is now F77_RET_T.
+	Use F77_RETURN.
+	* misc/machar.c (machar): Likewise.
+
+	* misc/f77-fcn.h (F77_CHAR_ARG, F77_CONST_CHAR_ARG, F77_CHAR_ARG2,
+	F77_CONST_CHAR_ARG2, F77_CXX_STRING_ARG, F77_CHAR_ARG_LEN,
+	F77_CHAR_ARG_DECL, F77_CONST_CHAR_ARG_DECL, F77_CHAR_ARG_LEN_DECL,
+	F77_RET_T, F77_RETURN): New macros.
+	[F77_USES_CRAY_CALLING_CONVENTION]: New data conversion functions.
+
+	* misc/quit.h (octave_interrupt_hook, octave_bad_alloc_hook):
+	Move function pointer declarations inside __cplusplus section.
+
+2003-07-29  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (install-lib): Use $(INSTALL), not
+	$(INSTALL_PROGRAM) for $(SHLLIB) files.
+
+2003-07-02  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (CLEAN_SUBDIRS): New variable.
+	(clean mostlyclean distclean maintainer-clean): Use it to ensure
+	cleaning in all subdirs, not just those we build in.
+
+	* Makerules.in (maintainer-clean, distclean): Don't use
+	dependencies on double colon rules.
+	(distclean): Also remove *.d, *.a, *.o, pic/*.o, pic, and stmp-pic.
+	(maintainer-clean): Also remove *.d, *.a, *.o, pic/*.o, pic, and
+	stmp-pic, and Makefile.
+
+	* Makefile.in (maintainer-clean, distclean): Also remove *.$(SHLEXT).
+
+2003-06-16  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* dasrt/ddasrt.f (DDASRT): Print correct message for invalid MXSTP.
+
+	* dassl/ddassl.f (DDASSL): Handle MXSTP as in DASRT.
+
+	* dassl/ddajac.f (DDAJAC): LIPVT is now 22.
+	* dassl/ddassl.f (DDASSL): Likewise.
+	* dassl/ddaslv.f (DDASLV): Likewise.
+
+	* misc/quit.h (octave_interrupt_hook, octave_bad_alloc_hook):
+	New function pointers.
+	* misc/quit.cc: Initialize them.
+	(octave_throw_interrupt_exception): If octave_interrupt_hook is
+	set, call it.
+	(octave_throw_bad_alloc): Likewise, for octave_bad_alloc_hook.
+
+	* dasrt/ddasrt.f (DDASRT): Set LMXSTP to 21 and LIPVT to 22 to
+	avoid conflict with LLAST in DRCHECK.  Change docs for INFO(12)
+	and LIW.
+
+2003-05-14  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in, misc/Makefile.in: Handle DESTDIR.
+
+2003-02-20  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* blas/sgemm.f, blas/strsm.f, blas/ssyrk.f, blas/sscal.f,
+	blas/sgemv.f, blas/sdot.f: New files.
+
+2003-02-20  Paul Kienzle  <pkienzle@users.sf.net>
+
+	* dassl/ddaslv.f: Fortran doesn't use ; in statements.
+
+2003-02-18  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* blas/dtbsv.f: New file.
+	* lapack/dlatrs.f, lapack/dtrti2.f, lapack/dtrtri.f, lapack/ztrti2.f,
+	lapack/ztrtri.f: New files.
+
+2003-02-04  David Bateman  <dbateman@free.fr>
+
+	* Makefile.in (CRUFT_DIRS): Remove linpack from list.
+
+	* linpackdgbfa.f, linpackdgbsl.f, linpackdgeco.f, linpackdgedi.f,
+	linpackdgefa.f, linpackdgesl.f, linpackspofa.f, linpackzgeco.f,
+	linpackzgedi.f, linpackzgefa.f, linpackzgesl.f: Delete.
+
+	* dassl/ddajac.f, dassl/ddaslv.f:  Use DGxTRF and
+	DGxTRS instead of DGxFA and DGxSL.
+	* daspk/ddaspk.f, daspk/dmatd.f, daspk/dslvd.f: Likewise.
+	* odepack/lsode.f, odepack/prepj.f, odepack/solsy.f: Likewise.
+	* odessa/odessa.f, odessa/odessa_prepj.f, odessa/odessa_solsy.f:
+	Likewise.
+	* libcrudt/ranlib/setgmn.f: Use SPOTRF instead of SPOFA.
+
+	* lapack/dgbtf2.f, lapack/dgbtrf.f, lapack/dgbtrs.f,
+	lapack/dgecon.f, lapack/dgetri.f, lapack/spotf2.f,
+	lapack/spotrf.f, lapack/zgecon.f, lapack/zgetri.f: New files.
+
+2003-01-22  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/quit.h (BEGIN_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE_1,
+	BEGIN_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE_2): New macros.
+
+2003-01-03  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* odessa/odessa_rscom.f (ODESSA_RSCOM): Fix apparent typo (LODE2
+	should probably be LIODE2).
+
+	* Makerules.in (clean, mostlyclean): Also remove *.d.
+
+	* misc/quit.cc: Add std:: qualifiers to memcpy calls.
+
+2003-01-03  Paul Kienzle  <pkienzle@users.sf.net>
+
+	* misc/quit.h: Move #include <new> outside extern "C" block.
+	* misc/f77-fcn.h: Move #include "quit.h" outside extern "C" block.
+
+2002-11-20  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/quit.h (BEGIN_INTERRUPT_WITH_EXCEPTIONS,
+	END_INTERRUPT_WITH_EXCEPTIONS): Only define for C++ source.
+	Include <new> for C++ source.
+
+2002-11-15  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/quit.h, misc/quit.cc [! USE_EXCEPTIONS_FOR_INTERRUPTS]):
+	Always use exceptions for handling interrupts.
+	(BEGIN_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE):
+
+	* misc/quit.h (OCTAVE_TRY_WITH_INTERRUPTS, OCTAVE_THROW_BAD_ALLOC,
+	OCTAVE_CATCH_INTERRUPTS, SAVE_OCTAVE_INTERRUPT_IMMEDIATELY,
+	INCREMENT_OCTAVE_INTERRUPT_IMMEDIATELY, OCTAVE_THROW_TO_TOP_LEVEL,
+	DECREMENT_OCTAVE_INTERRUPT_IMMEDIATELY, OCTAVE_JUMP_TO_TOP_LEVEL,
+	SET_OCTAVE_INTERRUPT_IMMEDIATELY): Replace all uses with
+	definitions, delete macros.
+
+2002-11-14  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/quit.cc (octave_allocation_error): New variable.
+	(octave_throw_bad_alloc): New function.
+	* misc/quit.h: Provide decls.
+	(OCTAVE_THROW_BAD_ALLOC): New macro.
+	(END_INTERRUPT_WITH_EXCEPTIONS): Also catch bad_alloc.
+	* misc/f77-fcn.h (F77_XFCN): Handle allocation errors.
+
+	* misc/quit.h (octave_jmp_buf): New typedef.
+	(current_context): Type is now octave_jmp_buf.
+	(octave_set_current_context): Use sigsetjmp if we have it.
+	(octave_interrupt_immediately, octave_interrupt_state): Type is
+	now sig_atomic_t.
+	(BEGIN_INTERRUPT_WITH_EXCEPTIONS, END_INTERRUPT_WITH_EXCEPTIONS):
+	New macros.
+
+	* misc/quit.cc (octave_jump_to_enclosing_context): Use siglongjmp
+	if we have it.
+	(octave_save_current_context, octave_restore_current_context): Use
+	octave_jmp_buf type here.
+
+2002-11-07  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/Makefile.in: Handle automatic dependency generation for
+	C/C++ source files.
+
+	* misc/quit.h (INCREMENT_OCTAVE_INTERRUPT_IMMEDIATELY,
+	DECREMENT_OCTAVE_INTERRUPT_IMMEDIATELY,
+	SET_OCTAVE_INTERRUPT_IMMEDIATELY): New macros.
+	(BEGIN_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE,
+	BEGIN_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE): Use them.
+	* f77-fcn.h (F77_XFCN): Likewise.
+
+	* misc/quit.cc: Include <cstring> for memcpy decl.
+
+2002-11-06  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/f77-fcn.h (F77_XFCN): Adapt to new signal/exception
+	handling scheme.
+	(f77_context): Delete decl.
+	(copy_f77_context): Likewise.
+	* misc/f77-fcn.cn (copy_f77_context): Delete.
+	(Fxstopx): Set f77_exception_encountered.
+	Use octave_jump_to_enclosing_context, not longjmp.
+
+	* misc/f77-extern.cc (f77_context): Delete definition.
+
+	* misc/quit.h, misc/quit.cc: New files.
+	* misc/Makefile: Add them to the appropriate lists.
+
+	* Makefile (MISC_OBJ): Add misc/quit.o
+
+2002-10-31  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* odessa/odessa.f (ODESSA): Second arg of xerrwd is string length.
+	* odessa/odessa_intdy.f (ODESSA_INTDY): Likewise.
+
+2002-10-29  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* dasrt/ddasrt.f (DDASRT): Fix computation of LENRW.
+
+2002-10-16  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (install): Don't bother with versions for $(SHLBIN)
+	files.
+
+	* slatec-err/xerrwd.f (XERRWD): Print msg(1:nmes), not just msg.
+
+2002-10-14  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (install): No need to use cd to create links.
+
+2002-10-14  Paul Kienzle  <pkienzle@users.sf.net>
+
+	* Makefile.in: Use link dependencies for shared libs if
+	INCLUDE_LINK_DEPS.
+	(LIBRARIES): If doing shared libs, include versioned library in	list.
+	(libcruft.$(SHLEXT), libcruft.$(SHLEXT_VER)): Reverse actions --
+	build unversioned library, symbolic link adds version info.
+	(install, uninstall): Handle link and load forms of the library
+	separately.
+
+2002-09-30  Paul Kienzle  <pkienzle@users.sf.net>
+
+	* slatec-fn/xdacosh.f: Mark external functions as external.
+	* slatec-fn/xdasinh.f: Ditto.
+	* slatec-fn/xdatanh.f: Ditto.
+	* slatec-fn/xdbetai.f: Ditto.
+	* slatec-fn/xderf.f: Ditto.
+	* slatec-fn/xderfc.f: Ditto.
+	* slatec-fn/xdgami.f: Ditto.
+	* slatec-fn/xdgamit.f: Ditto.
+	* slatec-fn/xdgamma.f: Ditto.
+	* slatec-fn/xgmainc.f: Ditto.
+
+2002-08-14  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* odessa/odessa.f (ODESSA): Use XERRWD instead of XERR.
+	* odessa/intdy.f (ODESSA_INTDY): Likewise.
+	* odessa_rscom.f (ODESSA_RSCOM): Delete unused common block EH0001.
+	* odessa_svcom.f (ODESSA_SVCOM): Likewise.
+
+	* dasrt/xerrwv.f, odepack/xerrwv.f: Delete.
+	* slatec-err/xerrwd.f (XERRWD): Call XSTOPX instead of using STOP.
+
+	* quadpack/dqagi.f (DQAGI): Replace Hollerith constants with
+	character string constants.
+	* quadpack/dqagp.f (DQAGP): Likewise.
+	* odepack/lsode.f (LSODE): Likewise.
+
+	* odepack/lsode.f (LSODE): Use XERRWD instead of XERRWV.
+	* odepack/intdy.f (INTDY): Likewise.
+	* dasrt/ddasrt.f (DDASRT): Likewise.
+	* quadpack/xerror.f (XERROR): Likewise.
+
+2002-07-25  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* slatec-fn/xgmainc.f: New file.
+
+2002-07-12  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* dasrt: New subdirectory.
+	* Makefile.in (CRUFT_DIRS): Add it to the list.
+
+2002-07-10  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* odessa: New subdirectory.
+	* Makefile.in (CRUFT_DIRS): Add it to the list.
+
+2002-06-27  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* slatec-err/xermsg.f (XERMSG): If MAXMES .LT. 0, messages may be
+	printed an unlimited number of times.
+	* slatec-err/j4save.f (J4SAVE) Default for MAXMES is now -1.
+
+	* misc/f77-fcn.c (xstopx): Pass args in proper order.
+
+2002-05-22  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* ordered-qz/dsubsp.f (DSUBSP): Delete decl for unused variable J.
+
+	* misc/f77-fcn.c (xstopx): Return type is void, not volatile void.
+	* misc/f77-fcn.h (xstopx): Provide decl.  Add special gcc noreturn
+	attribute here.
+
+2002-05-16  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/f77-fcn.h: Define F77_FCN for backward compatibility.
+
+2002-04-27  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* slatec-err/ixsav.f, slatec-err/xerrwd.f: New files.
+
+	* daspk: New directory.
+	* Makefile.in (CRUFT_DIRS): Add it to the list
+
+2002-04-03  Steven G. Johnson  <stevenj@alum.mit.edu>
+
+	* misc/machar.c: Use F77_FUNC instead of checking
+	F77_APPEND_UNDERSCORE.
+	* misc/f77-fcn.h: Don't define F77_FCN.
+	(xSTRINGIZE, STRINGIZE): New macros.
+	(F77_XFCN_ERROR): Simplify by using STRINGIZE and F77_FUNC.
+	(F77_XFCN): Use F77_FUNC instead of F77_FCN.
+	* misc/f77-fcn.c: Use F77_FUNC instead of F77_FCN.
+
+2001-11-01  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (DISTSUBDIRS): Add fftpack.
+
+2001-08-13  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* lapack/dlasq3.f: Update from netlib.
+	* lapack/dlasq5.f: Ditto.
+
+2001-05-02  Mumit Khan  <khan@nanotech.wisc.edu>
+
+	* Makefile.in (CRUFT_DIRS): Substitute @FFT_DIR@.
+
+2001-04-25  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (install): Don't use mk-libdir-link.
+
+2001-04-19  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/Makefile.in (CPICDEP): Remove pic/dostop.o from the list.
+
+2001-03-27  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/xstopx.f: Delete.
+	* misc/dostop.c: Delete.
+	* misc/Makefile.in (SPECIAL, SPECIAL_DEPEND): Delete dostop.c and
+	dostop.o from lists.
+	* Makefile.in (MISC_OBJ): Delete misc/dostop.o from the list.
+
+	* misc/dostop.c (dostop): Use F77_FCN macro for function definition.
+	Specify length in error format to avoid need for copying string.
+	From Paul Kienzle  <pkienzle@kienzle.powernet.co.uk>.
+
+2000-12-14  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* lapack/dgelss.f (DGELSS): Use correct leading dimension for
+	workspace array passed to dgemm and dlacpy.
+	(ZGELSS): Likewise, for calls to zgemm and zlacpy.
+
+2000-07-18  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (DISTSUBDIRS): New macro.
+	(dist): Use it instead of SUBDIRS.
+
+2000-06-30  Steven G. Johnson  <stevenj@alum.mit.edu>
+
+	* blas-xtra, lapack-xtra: New directories.
+	* Makefile.in (CRUFT_DIRS): Add them to the list.
+	Substitute @BLAS_DIR@ and @LAPACK_DIR@ here.
+	* blas-xtra/xerbla.f: Move here from blas subdirectory.
+	* blas-xtra/Makefile.in: New file.
+	* lapack-xtra/xdlamch.f, lapack-xtra/xdlange.f,
+	lapack-xtra/xzlange.f: Move here from lapack subdirectory.
+	* lapack-xtra/Makefile.in: New file.
+
+2000-04-25  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/Makefile.in (install, uninstall): Include files go in
+	$(octincludedir)/octave, not just $(octincludedir).
+
+2000-03-25  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (LIBRARIES): Conditionally define.
+	(libraries): Depend on $(SUBDIRS) only.
+	Make $(LIBRARIES) using a recursive invocation of make once
+	$(SUBDIRS) are up to date.
+	(.NOTPARALLEL): New target, for GNU Make 3.79.
+
+2000-03-21  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (libcruft.$(LIBEXT)): New target.
+	(all): Depend on `libraries', not `$(SUBDIRS) shared-lib'.
+	Conditionally construct `libraries' target.
+	(libcruft.$(SHLEXT_VER)): Delete target before rebuilding.
+	* Makerules.in (LIBCRUFT): Delete variable.
+	(LIBCRUFT_DEPEND): Conditionally define to $(LIBCRUFT_OBJS) only.
+	(all): Print warning if anything is done.
+	(stmp-pic): New target.
+	($CRUFT_PICOBJ): Depend on stmp-pic.
+	(clean, mostlyclean): Remove pic and stmp-pic.
+
+2000-02-10  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* lapack/dbdsqr.f, lapack/dgeesv.f, lapack/dgelss.f,
+	lapack/dgesvd.f, lapack/dlasq1.f, lapack/dlasq2.f,
+	lapack/dlasq3.f, lapack/dlasq3.f, lapack/dlasq4.f,
+	lapack/dlasq5.f, lapack/dlasq6.f, lapack/zbdsqr.f,
+	lapack/zgelss.f, lapack/zgesvd.f, lapack/zhetd2.f:
+	Update from netlib.
+
+1999-11-03  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Update to Lapack version 3.0.
+	* lapack/ieeeck.f, lapack/dlasq2.f, lapack/dlasq3.f,
+	lapack/dlasq5.f, lapack/dlasq6.f: New files.
+
+1999-10-29  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/lo-error.cc (current_liboctave_warning_handler): Define	here.
+	(set_liboctave_warning_handler): New function.
+	(liboctave_warning): Ditto.
+	* misc/lo-error.h: Provide declararations for them here.
+
+1999-10-19  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (dist): Use `$(MAKE) -C dir' instead of `cd dir;
+	$(MAKE); cd ..'.
+
+1999-10-01  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* dassl/dpotrf.f, dassl/dpotf2.f: Move to lapack subdirectory.
+
+Fri Mar 26 01:19:04 1999  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makerules.in (all): Don't try to use a special rule for making
+	the archive.  The default rules may be slower, but they are also
+	correct.
+
+Wed Nov 11 17:27:35 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (CRUFT_DIRS): Add amos.  Delete specfun.
+	* specfun: Delete directory.
+	* amos: New directory
+
+Thu Oct 15 00:43:13 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* ranlib: Update to newer version of randlib.
+	* ranlib/Makefile.in (SPECIAL): Update list.
+
+Thu Sep 24 11:59:02 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* balgen, eispack: Delete directories and unnecesary files.
+	* Makefile.in (CRUFT_DIRS): Delete eispack and balgen from the list.
+
+	* lapack/xdlamch.f: New file.
+
+	* ordered-qz: New directory.
+	* Makefile.in (CRUFT_DIRS): Add it to the list.
+
+	* lapack/dggbak.f, lapack/dtgevc.f, lapack/zggbal.f: New files.
+
+Tue Jun  2 09:57:52 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* specfun/rybesl.f (rybesl): Don't access by(2) unless nb .gt. 1.
+
+Mon May 11 12:33:42 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* fftpack/passb3.f, fftpack/passb5.f, fftpack/passf3.f,
+	fftpack/passf5.f: Use double precision constants in data
+	statements.
+
+Tue Apr 14 14:01:22 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* slatec-fn/xdgamit.f (xdgamit): New file.
+
+Mon Apr  6 00:26:35 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* slatec-fn/xdgami.f (xdgami): Reorder args to match dgami.
+
+Thu Feb 19 21:00:00 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* specfun/ribesl.f, specfun/rjbesl.f: Compute NSIG correctly.
+	Add missing comma in declaration statement.
+
+Sun Feb  1 12:39:10 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (install, uninstall): Use $(octlibdir), not $(libdir).
+	Use $(mk-libdir-link).
+
+	* quadpack/dqagi.f, quadpack/dqagie.f, quadpack/dqagp.f,
+	quadpack/dqagpe.f, quadpack/dqk15i.f, quadpack/dqk21.f:
+	Make user-supplied code a subroutine instead of a function.
+
+Mon Jan 19 23:11:21 1998  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* lapack/xdlange.f, lapack/xzlange.f: New files.
+
+Mon Dec  1 00:51:03 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* dassl/xerhlt.f, dassl/xermsg.f, dassl/xerprn.f, dassl/xgetua.f,
+	dassl/xsetua.f: Delete.
+
+	* slatec-err: New directory.
+	* Makefile.in: Add it to the list.
+
+Sun Nov 30 17:55:20 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* slatec-fn/xdgami.f, slatec-fn/xdbetai.f, slatec-fn/xderfc.f,
+	slatec-fn/xderf.f, slatec-fn/xdatanh.f, slatec-fn/xdasinh.f,
+	slatec-fn/xdacosh.f: New files.
+
+Sat Nov 29 13:02:14 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* specfun/ribesl.f (ribesl): Use d1mach to get machine parameters.
+	SAVE static data between calls.  Use PARAMETERS where possible.
+	* specfun/rjbesl.f (rjbesl): Likewise.
+	* specfun/rkbesl.f (rkbesl): Likewise.
+	* specfun/rybesl.f (rybesl): Likewise.
+
+Fri Nov 28 14:05:12 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* specfun: New subdirectory.
+	* specfun/Makefile.in, specfun/ribesl.f, specfun/rjbesl.f,
+	specfun/rkbesl.f, specfun/rybesl.f: New files.
+	* Makefile.in (CRUFT_DIRS): Add specfun.
+
+Wed Nov 26 01:49:47 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* slatec-fn/d9gmit.f, slatec-fn/d9lgic.f, slatec-fn/d9lgit.f,
+	slatec-fn/dbetai.f, slatec-fn/dgami.f, slatec-fn/dgamit.f,
+	slatec-fn/dgamr.f, slatec-fn/dlbeta.f, slatec-fn/dlnrel.f:
+	New files for incomplete beta and incomplete gamma functions.
+
+Thu Jul 17 13:18:57 1997  Klaus Gebhardt  <gebhardt@crunch.ikp.physik.th-darmstadt.de>
+
+	* blas/xerbla.f (xerbla): Call XSTOPX instead of using STOP.
+
+Fri Jun  6 16:49:22 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* slatec-fn/xdgamma.f: New file.
+
+	* fsqp, npsol, qpsol: Delete directories.
+	* Makefile.in (CRUFT_DIRS): Delete fsqp, npsol, and qpsol from list.
+
+Thu Jun  5 01:40:36 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in, Makerules.in: Make building of static library optional.
+	(liboctave.$(SHLEXT_VER)): Add $(SONAME_FLAGS) to command.
+
+	* Makerules.in (stamp-picdir): Delete.
+	(pic): New target.  Don't worry so much about creating pic
+	directory only when it is really needed.
+
+	* Makefile.in (stamp-shared): Delete.
+	(shared-lib): New target.  Depend on shared libraries directly.
+
+Wed May 21 16:29:42 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/Makefile.in (install): Ensure include directory link is made.
+	(uninstall): Delete all installed files.
+
+Thu Mar 13 22:31:35 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* blas, lapack: Add new files for symmetric eigenvalue
+	computation.
+
+Wed Mar 12 16:59:59 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/Makefile.in (install-strip): New target.
+
+	* Makefile.in (install-strip): New target.
+
+Mon Mar  3 15:38:39 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* ranlib/Makefile.in (EXTERNAL_DISTFILES): Add Basegen.doc.
+
+	* fftpack/Makefile.in (EXTERNAL_DISTFILES): Add fftpack.doc.
+
+	* Makefile.in (DISTFILES): Add configure.in.
+
+Sat Mar  1 15:23:14 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 2.0.5 released.
+
+Wed Feb 26 12:08:39 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (maintainer-clean): Also remove configure.
+
+Thu Feb 20 02:58:05 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 2.0.4 released.
+
+Tue Feb 18 09:22:04 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 2.0.3 released.
+
+Fri Feb 14 16:23:42 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (bin-dist): Don't write empty strings to LIBRARIES.
+
+Thu Feb 13 17:33:41 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (stamp-shared): Use $(SH_LD) $(SH_LDFLAGS) instead
+	of $(CXX) -shared.
+
+	* Makerules.in (stamp-picdir): Silence noise about making pic.
+
+Mon Jan 27 15:52:29 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 2.0.2 released.
+
+Sat Jan 25 22:34:10 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in, balgen/Makefile.in, blas/Makefile.in,
+	cfsqp/Makefile.in, dassl/Makefile.in, eispack/Makefile.in,
+	fftpack/Makefile.in, fsqp/Makefile.in, lapack/Makefile.in,
+	linpack/Makefile.in, minpack/Makefile.in, misc/Makefile.in,
+	npsol/Makefile.in, odepack/Makefile.in, qpsol/Makefile.in,
+	quadpack/Makefile.in, ranlib/Makefile.in, slatec-fn/Makefile.in,
+	villad/Makefile.in (bin-dist): New target.
+
+Wed Jan 22 15:03:33 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/Makefile.in (pic/machar.o): Add $(CPICFLAG) for this target.
+
+	* misc/d1mach.f (d1mach): Move SAVE statement ahead of DATA statment.
+
+Wed Jan 15 21:04:29 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* blas/*.f: Update to latest version from Netlib.
+
+Tue Jan  7 00:17:17 1997  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 2.0.1 released.
+
+Tue Dec 17 11:02:02 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/lo-error.c: Convert C++-style comments to C-style comments.
+
+Wed Dec 11 01:50:31 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/Makefile.in (SPECIAL_DEPEND): Delete d1mach.o from the list.
+
+Tue Dec 10 01:43:10 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 2.0 released.
+
+Fri Dec  6 15:23:50 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 1.94.
+
+Wed Nov 20 01:00:43 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/Makefile.in (install): Also install lo-error.h.
+
+	* Makefile.in (MISC_OBJ): Add misc/f77-fcn.o.
+
+	* misc/lo-error.h: New file, moved here from liboctave.
+	* misc/lo-error.c: Rename from lo-error.cc.  Make this a C-file
+	instead of C++.
+
+	* Version 1.93.
+
+Tue Nov 19 23:04:24 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/Makefile.in: Add variables for installing things.
+
+	* Makerules.in (install, uninstall): Make these double colon rules.
+
+	* f77-fcn.c, f77-fcn.h: New files, from liboctave.
+
+	* misc/Makefile.in (SPECIAL_DEPEND): Add f77-fcn.o.
+	(SPECIAL): Add f77-fcn.c and f77-fcn.h.
+	(CPICDEP): Add pic/f77-fcn.o.
+	(install): Install f77-fcn.h in $(octincludedir).
+	(uninstall): Delete f77-fcn.h from $(octincludedir).
+
+	* Makerules.in (CRUFT_CSRC): Delete unsed variable.
+
+Thu Nov 14 00:07:00 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 1.92.
+
+Fri Nov  8 09:55:40 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (libcruft.a): Delete target.
+	* Makerules.in, Makefile.in: Use real archive rules to build
+	libcruft.a in parts.
+
+	* Makefile.in (install): Use $(INSTALL_PROGRAM) for installing
+	shared library.
+
+Thu Nov  7 12:43:17 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in: Add -lm when building shared library.
+
+	* Version 1.91.
+
+Mon Nov  4 10:09:00 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* lapack/dlag2.f, lapack/dggbal.f, lapack/dgghrd.f, lapack/dhgeqz.f:
+	New files.
+
+	* Makefile.in (install): Use INSTALL_PROGRAM for shared version of
+	libcruft.
+
+Sun Nov  3 19:37:37 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/Makefile.in (distclean): Delete target, since there is
+	nothing special to do.
+
+Wed Oct 30 17:20:14 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Version 1.90.
+
+	* Makefile.in (DISTFILES): Add ChangeLog.
+
+	* misc/Makefile.in: Make pic/machar.o using special rule.
+	Use CPPFLAGS, not CPP_FLAGS.
+
+Thu Oct 24 20:22:47 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (CRUFT_OBJ): No special treatment for d1mach.o.
+
+	* misc/machar.c, misc/d1mach.f: New files
+	* misc/Makefile.in: Fix to not generate d1mach.f.
+
+Mon Oct 14 11:07:25 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (distclean): Remove stamp-shared too.
+
+Sat Oct 12 00:20:41 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (maintainer-clean): Don't depend on distclean.
+	* Makerules.in (maintainer-clean): Ditto.
+
+Tue Aug 20 22:09:08 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makerules.in (stamp-picdir): Only create a pic subdirectory if
+	SHARED_LIBS is true AND FPICFLAG is not empty.
+
+Wed May 22 15:07:00 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (stamp-shared): Use CC, not CXX to create shared
+	library.  Also use SHARED_FLIBS here instead of FLIBS.
+
+Sat Apr  6 21:28:47 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makerules.in (clean, mostlyclean): Also remove pic/*.o.
+	(maintainer-clean, distclean): Also remove stamp-picdir and pic
+	directory.
+
+Wed Apr  3 01:01:31 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/Makefile.in: Set SPECIAL_PICDEPEND after including Makeconf
+	and before including Makerules.
+
+Fri Mar 29 13:45:06 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (distclean): Delete so_locations, which is created
+	on DEC Alpha systems.
+	(distclean, maintainer-clean): Don't depend on clean.
+
+Wed Mar 27 05:59:02 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makerules.in: Add rules for making PIC code here.
+	* Makefile.in (libcruft.a): Depend on $(CRUFT_PICOBJ)
+	* misc/Makefile.in: Add rules for making PIC code from C and C++
+	files.
+
+Fri Feb  9 21:04:45 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/f77-extern.cc, misc/lo-error.cc: New files.
+	* misc/Makefile.in (SPECIAL, SPECIAL_DEPEND): Add them to the lists.
+	* Makefile.in (CRUFT_OBJ): Add it f77-extern.o and lo-error.o here
+	too.
+
+Sat Feb  3 07:57:39 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/dostop.c (dostop): Call error handler if we have a message.
+	Call longjmp on f77_context, not jump_to_top_level().
+	* misc/xstopx.f (xstopx): Pass non-blank strings on to dostop.
+
+Mon Jan  8 22:55:26 1996  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in (clean): If $(SHARED_LIBS), remove shared libs.
+	(mostlyclean): Ditto.
+
+Fri Dec 29 21:43:24 1995  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makefile.in, Makerules.in: Handle creating position independent
+	code and shared libraries for Octave.
+
+Tue Dec 26 00:15:31 1995  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* Makerules.in (stamp-picdir): New target.
+	(all): Depend on it.
+
+	* Makefile.in: Delete references to configure stuff.
+	* configure.in, mkinstalldirs: Delete.
+
+Sun Dec 24 02:42:29 1995  John W. Eaton  <jwe@bevo.che.wisc.edu>
+
+	* linpack/spofa.f: New file.
+	* blas/level-1/sdot.f: New file.
+	* blas/level-2/dsyr.f: New file.
+
+Thu Dec 14 02:34:19 1995  Rick Niles  <niles@axp745.gsfc.nasa.gov>
+
+	* fftpack/cfftb1.f, fftpack/cfftf1.f, fftpack/cffti1.f,
+	odepack/prepj.f, odepack/solsy.f, odepack/stode.f:
+	Avoid warnings for nonstandard dimension statements of the form
+	`real foo(1)' by using `real foo(*)' instead.
+
+Mon Nov  6 07:24:03 1995  John Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/dostop.c: Only call jump_to_top_level() if OCTAVE_SOURCE.
+
+Fri Nov  3 11:08:31 1995  John Eaton  <jwe@bevo.che.wisc.edu>
+
+	* misc/dostop.c: Just call jump_to_top_level() directly here.
+
+Wed Sep 20 00:01:03 1995  John Eaton  <jwe@bevo.che.wisc.edu>
+
+	* mkinstalldirs: New file.
+	* Makefile.in (DISTFILES): Add it to the list.
+
+	* Makerules.in: Fix cleaning rules.  Use double colon so we can
+	add things in the makefiles in the subdirectories.
+
+	* Makefile.in (DISTFILES): Distribute configure.in and configure.
+	(distclean): Also remove Makerules, config.log, and config.status.
+	(maintainer-clean): Depend on distclean.
+
+Mon Apr 10 09:55:13 1995  John Eaton  <jwe@schoch.che.utexas.edu>
+
+	* configure.in: New file.
+
+Fri Mar 10 10:38:29 1995  John Eaton  <jwe@schoch.che.utexas.edu>
+
+	* Makefile.in (install uninstall clean mostlyclean distclean
+	realclean): Use SUBDIR_FOR_COMMAND.  Combine actions.
+
+See ChangeLog.1 in the top level directory for earlier changes.

@@ -1,0 +1,454 @@
+@c DO NOT EDIT!  Generated automatically by genpropdoc.m.
+
+@c Copyright (C) 2014-2015 Pantxo Diribarne
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@table @asis
+
+@anchor{XREFfigure__modified__}
+@cindex figure __modified__
+@item @code{__modified__}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFfigurealphamap}
+@cindex figure alphamap
+@item @code{alphamap}: def. 64-by-1 double
+Transparency is not yet implemented for figure objects.  @code{alphamap} is unused.
+
+
+@anchor{XREFfigurebeingdeleted}
+@cindex figure beingdeleted
+@item @code{beingdeleted}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFfigurebusyaction}
+@cindex figure busyaction
+@item @code{busyaction}: @qcode{"cancel"} | @{@qcode{"queue"}@}
+
+
+
+@anchor{XREFfigurebuttondownfcn}
+@cindex figure buttondownfcn
+@item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
+
+
+
+@anchor{XREFfigurechildren}
+@cindex figure children
+@item @code{children} (read-only): vector of graphics handles, def. @code{[](0x1)}
+Graphics handles of the figure's children.
+
+
+@anchor{XREFfigureclipping}
+@cindex figure clipping
+@item @code{clipping}: @qcode{"off"} | @{@qcode{"on"}@}
+@code{clipping} is unused.
+
+
+@anchor{XREFfigurecloserequestfcn}
+@cindex figure closerequestfcn
+@item @code{closerequestfcn}: string | function handle, def. @qcode{"closereq"}
+
+
+
+@anchor{XREFfigurecolor}
+@cindex figure color
+@item @code{color}: colorspec, def. @code{[1   1   1]}
+Color of the figure background.  @xref{Colors, , colorspec}.
+
+
+@anchor{XREFfigurecolormap}
+@cindex figure colormap
+@item @code{colormap}: N-by-3 matrix, def. 64-by-3 double
+A matrix containing the RGB color map for the current axes.
+
+
+@anchor{XREFfigurecreatefcn}
+@cindex figure createfcn
+@item @code{createfcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately after figure has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultfigurecreatefcn", 'disp ("figure created!")')}.
+
+
+@anchor{XREFfigurecurrentaxes}
+@cindex figure currentaxes
+@item @code{currentaxes}: graphics handle, def. @code{[](0x0)}
+Handle to the graphics object of the current axes.
+
+
+@anchor{XREFfigurecurrentcharacter}
+@cindex figure currentcharacter
+@item @code{currentcharacter} (read-only): def. @qcode{""}
+@code{currentcharacter} is unused.
+
+
+@anchor{XREFfigurecurrentobject}
+@cindex figure currentobject
+@item @code{currentobject} (read-only): graphics handle, def. @code{[](0x0)}
+
+
+
+@anchor{XREFfigurecurrentpoint}
+@cindex figure currentpoint
+@item @code{currentpoint} (read-only): two-element vector, def. @code{[0;    0]}
+A 1-by-2 matrix which holds the coordinates of the point over which the mouse pointer was when a mouse event occurred.  The X and Y coordinates are in units defined by the figure's @code{units} property and their origin is the lower left corner of the plotting area.
+
+Events which set @code{currentpoint} are
+@table @asis
+@item A mouse button was pressed
+always
+@item A mouse button was released
+only if the figure's callback @code{windowbuttonupfcn} is defined
+@item The pointer was moved while pressing the mouse button (drag)
+only if the figure's callback @code{windowbuttonmotionfcn} is defined
+@end table
+
+
+@anchor{XREFfiguredeletefcn}
+@cindex figure deletefcn
+@item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately before figure is deleted.
+
+
+@anchor{XREFfiguredockcontrols}
+@cindex figure dockcontrols
+@item @code{dockcontrols}: @{@qcode{"off"}@} | @qcode{"on"}
+@code{dockcontrols} is unused.
+
+
+@anchor{XREFfiguredoublebuffer}
+@cindex figure doublebuffer
+@item @code{doublebuffer}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFfigurefilename}
+@cindex figure filename
+@item @code{filename}: string, def. @qcode{""}
+The filename used when saving the plot figure
+
+
+@anchor{XREFfigurehandlevisibility}
+@cindex figure handlevisibility
+@item @code{handlevisibility}: @qcode{"callback"} | @qcode{"off"} | @{@qcode{"on"}@}
+If @code{handlevisibility} is @qcode{"off"}, the figure's handle is not visible in its parent's "children" property.
+
+
+@anchor{XREFfigurehittest}
+@cindex figure hittest
+@item @code{hittest}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFfigureintegerhandle}
+@cindex figure integerhandle
+@item @code{integerhandle}: @qcode{"off"} | @{@qcode{"on"}@}
+Assign the next lowest unused integer as the Figure number.
+
+
+@anchor{XREFfigureinterruptible}
+@cindex figure interruptible
+@item @code{interruptible}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFfigureinverthardcopy}
+@cindex figure inverthardcopy
+@item @code{inverthardcopy}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFfigurekeypressfcn}
+@cindex figure keypressfcn
+@item @code{keypressfcn}: string | function handle, def. @code{[](0x0)}
+
+
+
+@anchor{XREFfigurekeyreleasefcn}
+@cindex figure keyreleasefcn
+@item @code{keyreleasefcn}: string | function handle, def. @code{[](0x0)}
+With @code{keypressfcn}, the keyboard callback functions.  These callback functions are called when a key is pressed/released respectively.  The functions are called with two input arguments.  The first argument holds the handle of the calling figure.  The second argument holds an event structure which has the following members:
+@table @code
+@item Character:
+The ASCII value of the key
+@item Key:
+Lowercase value of the key
+@item Modifier:
+A cell array containing strings representing the modifiers pressed with the key.
+@end table
+
+
+@anchor{XREFfiguremenubar}
+@cindex figure menubar
+@item @code{menubar}: @{@qcode{"figure"}@} | @qcode{"none"}
+Control the display of the figure menu bar in the upper left of the figure.
+
+
+@anchor{XREFfiguremincolormap}
+@cindex figure mincolormap
+@item @code{mincolormap}: def. @code{64}
+
+
+
+@anchor{XREFfigurename}
+@cindex figure name
+@item @code{name}: string, def. @qcode{""}
+Name to be displayed in the figure title bar.  The name is displayed to the right of any title determined by the @code{numbertitle} property.
+
+
+@anchor{XREFfigurenextplot}
+@cindex figure nextplot
+@item @code{nextplot}: @{@qcode{"add"}@} | @qcode{"new"} | @qcode{"replace"} | @qcode{"replacechildren"}
+
+
+
+@anchor{XREFfigurenumbertitle}
+@cindex figure numbertitle
+@item @code{numbertitle}: @qcode{"off"} | @{@qcode{"on"}@}
+Display "Figure" followed by the numerical figure handle value in the figure title bar.
+
+
+@anchor{XREFfigureouterposition}
+@cindex figure outerposition
+@item @code{outerposition}: four-element vector, def. @code{[-1  -1  -1  -1]}
+
+
+
+@anchor{XREFfigurepaperorientation}
+@cindex figure paperorientation
+@item @code{paperorientation}: @qcode{"landscape"} | @{@qcode{"portrait"}@} | @qcode{"rotated"}
+
+
+
+@anchor{XREFfigurepaperposition}
+@cindex figure paperposition
+@item @code{paperposition}: four-element vector, def. @code{[0.25000   2.50000   8.00000   6.00000]}
+Vector @code{[x0 y0 width height]} defining the position of the figure (in @code{paperunits} units) on the printed page.  Setting @code{paperposition} also forces the @code{paperpositionmode} property to be set to @qcode{"manual"}.
+
+
+@anchor{XREFfigurepaperpositionmode}
+@cindex figure paperpositionmode
+@item @code{paperpositionmode}: @qcode{"auto"} | @{@qcode{"manual"}@}
+If @code{paperpositionmode} is set to @qcode{"auto"}, the @code{paperposition} property is automatically computed: the printed figure will have the same size as the on-screen figure and will be centered on the output page.
+
+
+@anchor{XREFfigurepapersize}
+@cindex figure papersize
+@item @code{papersize}: two-element vector, def. @code{[8.5000   11.0000]}
+Vector @code{[width height]} defining the size of the paper for printing.  Setting this property forces the @code{papertype} property to be set to @qcode{"<custom>"}.
+
+
+@anchor{XREFfigurepapertype}
+@cindex figure papertype
+@item @code{papertype}: @qcode{"<custom>"} | @qcode{"a"} | @qcode{"a0"} | @qcode{"a1"} | @qcode{"a2"} | @qcode{"a3"} | @qcode{"a4"} | @qcode{"a5"} | @qcode{"arch-a"} | @qcode{"arch-b"} | @qcode{"arch-c"} | @qcode{"arch-d"} | @qcode{"arch-e"} | @qcode{"b"} | @qcode{"b0"} | @qcode{"b1"} | @qcode{"b2"} | @qcode{"b3"} | @qcode{"b4"} | @qcode{"b5"} | @qcode{"c"} | @qcode{"d"} | @qcode{"e"} | @qcode{"tabloid"} | @qcode{"uslegal"} | @{@qcode{"usletter"}@}
+Name of the paper used for printed output.  Setting @code{papertype} also changes @code{papersize} accordingly.
+
+
+@anchor{XREFfigurepaperunits}
+@cindex figure paperunits
+@item @code{paperunits}: @qcode{"centimeters"} | @{@qcode{"inches"}@} | @qcode{"normalized"} | @qcode{"points"}
+The unit used to compute the @code{paperposition} property.
+
+
+@anchor{XREFfigureparent}
+@cindex figure parent
+@item @code{parent}: graphics handle, def. @code{0}
+Handle of the parent graphics object.
+
+
+@anchor{XREFfigurepointer}
+@cindex figure pointer
+@item @code{pointer}: @{@qcode{"arrow"}@} | @qcode{"botl"} | @qcode{"botr"} | @qcode{"bottom"} | @qcode{"circle"} | @qcode{"cross"} | @qcode{"crosshair"} | @qcode{"custom"} | @qcode{"fleur"} | @qcode{"fullcrosshair"} | @qcode{"hand"} | @qcode{"ibeam"} | @qcode{"left"} | @qcode{"right"} | @qcode{"top"} | @qcode{"topl"} | @qcode{"topr"} | @qcode{"watch"}
+@code{pointer} is unused.
+
+
+@anchor{XREFfigurepointershapecdata}
+@cindex figure pointershapecdata
+@item @code{pointershapecdata}: def. 16-by-16 double
+@code{pointershapecdata} is unused.
+
+
+@anchor{XREFfigurepointershapehotspot}
+@cindex figure pointershapehotspot
+@item @code{pointershapehotspot}: def. @code{[0   0]}
+@code{pointershapehotspot} is unused.
+
+
+@anchor{XREFfigureposition}
+@cindex figure position
+@item @code{position}: four-element vector, def. @code{[300   200   560   420]}
+
+
+
+@anchor{XREFfigurerenderer}
+@cindex figure renderer
+@item @code{renderer}: @qcode{"none"} | @qcode{"opengl"} | @{@qcode{"painters"}@} | @qcode{"zbuffer"}
+
+
+
+@anchor{XREFfigurerenderermode}
+@cindex figure renderermode
+@item @code{renderermode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+
+
+
+@anchor{XREFfigureresize}
+@cindex figure resize
+@item @code{resize}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFfigureresizefcn}
+@cindex figure resizefcn
+@item @code{resizefcn}: string | function handle, def. @code{[](0x0)}
+
+
+
+@anchor{XREFfigureselected}
+@cindex figure selected
+@item @code{selected}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFfigureselectionhighlight}
+@cindex figure selectionhighlight
+@item @code{selectionhighlight}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFfigureselectiontype}
+@cindex figure selectiontype
+@item @code{selectiontype}: @qcode{"alt"} | @qcode{"extend"} | @{@qcode{"normal"}@} | @qcode{"open"}
+@code{selectiontype} is unused.
+
+
+@anchor{XREFfiguretag}
+@cindex figure tag
+@item @code{tag}: string, def. @qcode{""}
+A user-defined string to label the graphics object.
+
+
+@anchor{XREFfiguretoolbar}
+@cindex figure toolbar
+@item @code{toolbar}: @{@qcode{"auto"}@} | @qcode{"figure"} | @qcode{"none"}
+@code{toolbar} is unused.
+
+
+@anchor{XREFfiguretype}
+@cindex figure type
+@item @code{type} (read-only): string
+Class name of the graphics object.  @code{type} is always @qcode{"figure"}
+
+
+@anchor{XREFfigureuicontextmenu}
+@cindex figure uicontextmenu
+@item @code{uicontextmenu}: graphics handle, def. @code{[](0x0)}
+Graphics handle of the uicontextmenu object that is currently associated to this figure object.
+
+
+@anchor{XREFfigureunits}
+@cindex figure units
+@item @code{units}: @qcode{"centimeters"} | @qcode{"characters"} | @qcode{"inches"} | @qcode{"normalized"} | @{@qcode{"pixels"}@} | @qcode{"points"}
+The unit used to compute the @code{position} and @code{outerposition} properties.
+
+
+@anchor{XREFfigureuserdata}
+@cindex figure userdata
+@item @code{userdata}: Any Octave data, def. @code{[](0x0)}
+User-defined data to associate with the graphics object.
+
+
+@anchor{XREFfigurevisible}
+@cindex figure visible
+@item @code{visible}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{visible} is @qcode{"off"}, the figure is not rendered on screen.
+
+
+@anchor{XREFfigurewindowbuttondownfcn}
+@cindex figure windowbuttondownfcn
+@item @code{windowbuttondownfcn}: string | function handle, def. @code{[](0x0)}
+@xref{XREFfigurewindowbuttonupfcn, , @w{windowbuttonupfcn property}}.
+
+
+@anchor{XREFfigurewindowbuttonmotionfcn}
+@cindex figure windowbuttonmotionfcn
+@item @code{windowbuttonmotionfcn}: string | function handle, def. @code{[](0x0)}
+@xref{XREFfigurewindowbuttonupfcn, , @w{windowbuttonupfcn property}}.
+
+
+@anchor{XREFfigurewindowbuttonupfcn}
+@cindex figure windowbuttonupfcn
+@item @code{windowbuttonupfcn}: string | function handle, def. @code{[](0x0)}
+With @code{windowbuttondownfcn} and @code{windowbuttonmotionfcn}, the mouse callback functions.  These callback functions are called when a mouse button is pressed, dragged, or released respectively.  When these callback functions are executed, the @code{currentpoint} property holds the current coordinates of the cursor.
+
+
+@anchor{XREFfigurewindowkeypressfcn}
+@cindex figure windowkeypressfcn
+@item @code{windowkeypressfcn}: string | function handle, def. @code{[](0x0)}
+
+
+
+@anchor{XREFfigurewindowkeyreleasefcn}
+@cindex figure windowkeyreleasefcn
+@item @code{windowkeyreleasefcn}: string | function handle, def. @code{[](0x0)}
+
+
+
+@anchor{XREFfigurewindowscrollwheelfcn}
+@cindex figure windowscrollwheelfcn
+@item @code{windowscrollwheelfcn}: string | function handle, def. @code{[](0x0)}
+
+
+
+@anchor{XREFfigurewindowstyle}
+@cindex figure windowstyle
+@item @code{windowstyle}: @qcode{"docked"} | @qcode{"modal"} | @{@qcode{"normal"}@}
+
+
+
+@anchor{XREFfigurewvisual}
+@cindex figure wvisual
+@item @code{wvisual}: def. @qcode{""}
+
+
+
+@anchor{XREFfigurewvisualmode}
+@cindex figure wvisualmode
+@item @code{wvisualmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+
+
+
+@anchor{XREFfigurexdisplay}
+@cindex figure xdisplay
+@item @code{xdisplay}: def. @qcode{""}
+
+
+
+@anchor{XREFfigurexvisual}
+@cindex figure xvisual
+@item @code{xvisual}: def. @qcode{""}
+
+
+
+@anchor{XREFfigurexvisualmode}
+@cindex figure xvisualmode
+@item @code{xvisualmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+
+
+@end table

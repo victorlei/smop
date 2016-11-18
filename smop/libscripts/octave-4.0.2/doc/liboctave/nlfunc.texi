@@ -1,0 +1,42 @@
+@c Copyright (C) 1997-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Nonlinear Functions, Nonlinear Equations, Ranges, Top
+@chapter Nonlinear Functions
+@cindex nonlinear functions
+
+@deftypefn  {} {} NLFunc (void)
+@deftypefnx  {} {} NLFunc (const @var{nonlinear_fcn})
+@deftypefnx  {} {} NLFunc (const @var{nonlinear_fcn}, const @var{jacobian_fcn})
+@deftypefnx  {} {} NLFunc (const NLFunc &@var{a})
+@end deftypefn
+
+@deftypefn {} NLFunc& {operator =} (const NLFunc &@var{a})
+@end deftypefn
+
+@deftypefn {} nonlinear_fcn function (void) const;
+@end deftypefn
+
+@deftypefn {} NLFunc& set_function (const nonlinear_fcn @var{f})
+@end deftypefn
+
+@deftypefn {} jacobian_fcn jacobian_function (void) const;
+@end deftypefn
+
+@deftypefn {} NLFunc& set_jacobian_function (const jacobian_fcn @var{j})
+@end deftypefn

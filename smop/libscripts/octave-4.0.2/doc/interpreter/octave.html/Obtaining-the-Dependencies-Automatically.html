@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Obtaining the Dependencies Automatically</title>
+
+<meta name="description" content="GNU Octave: Obtaining the Dependencies Automatically">
+<meta name="keywords" content="GNU Octave: Obtaining the Dependencies Automatically">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Build-Dependencies.html#Build-Dependencies" rel="up" title="Build Dependencies">
+<link href="Build-Tools.html#Build-Tools" rel="next" title="Build Tools">
+<link href="Build-Dependencies.html#Build-Dependencies" rel="prev" title="Build Dependencies">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Obtaining-the-Dependencies-Automatically"></a>
+<div class="header">
+<p>
+Next: <a href="Build-Tools.html#Build-Tools" accesskey="n" rel="next">Build Tools</a>, Up: <a href="Build-Dependencies.html#Build-Dependencies" accesskey="u" rel="up">Build Dependencies</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Obtaining-the-Dependencies-Automatically-1"></a>
+<h4 class="subsection">G.1.1 Obtaining the Dependencies Automatically</h4>
+
+<p>On some systems you can obtain many of Octave&rsquo;s build dependencies
+automatically.  The commands for doing this vary by system.  Similarly,
+the names of pre-compiled packages vary by system and do not always
+match exactly the names listed in <a href="Build-Tools.html#Build-Tools">Build Tools</a> and <a href="External-Packages.html#External-Packages">External Packages</a>.
+</p>
+<p>You will usually need the development version of an external dependency
+so that you get the libraries and header files for building software,
+not just for running already compiled programs.  These packages
+typically have names that end with the suffix <code>-dev</code> or <code>-devel</code>.
+</p>
+<p>On systems with <code>apt-get</code> (Debian, Ubuntu, etc.), you may be able
+to install most of the tools and external packages using a command
+similar to
+</p>
+<div class="example">
+<pre class="example">apt-get build-dep octave
+</pre></div>
+
+<p>The specific package name may be <code>octave3.2</code> or <code>octave3.4</code>.
+The set of required tools and external dependencies does not change
+frequently, so it is not important that the version match exactly, but
+you should use the most recent one available.
+</p>
+<p>On systems with <code>yum</code> (Fedora, Red Hat, etc.), you may be able to
+install most of the tools and external packages using a command similar to
+</p>
+<div class="example">
+<pre class="example">yum-builddep octave
+</pre></div>
+
+<p>The <code>yum-builddep</code> utility is part of the <code>yum-utils</code> package.
+</p>
+<p>For either type of system, the package name may include a version
+number.  The set of required tools and external dependencies does not
+change frequently, so it is not important that the version exactly match
+the version you are installing, but you should use the most recent one
+available.
+</p>
+
+
+
+</body>
+</html>

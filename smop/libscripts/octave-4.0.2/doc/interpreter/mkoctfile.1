@@ -1,0 +1,150 @@
+.\" Copyright (C) 2000-2015 Dirk Eddelbuettel
+.\"
+.\" This file is part of Octave.
+.\"
+.\" Octave is free software; you can redistribute it and/or modify it
+.\" under the terms of the GNU General Public License as published by the
+.\" Free Software Foundation; either version 3 of the License, or (at
+.\" your option) any later version.
+.\"
+.\" Octave is distributed in the hope that it will be useful, but WITHOUT
+.\" ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+.\" FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+.\" for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with Octave; see the file COPYING.  If not, see
+.\" <http://www.gnu.org/licenses/>.
+.\"
+.\" This page was contributed by Dirk Eddelbuettel <edd@debian.org>
+.\" This page was completely re-written by Rik <octave@nomad.inbox5.com>
+.\" --------------------------------------------------------------------
+.de Vb \" (V)erbatim (b)egin.  Use fixed width font and no justification
+.ft CW
+.nf
+..
+.de Ve \" (V)erbatim (e)nd.  Return to regular font and justification
+.ft R
+.fi
+..
+.\" --------------------------------------------------------------------
+.TH MKOCTFILE 1 "3 January 2014" "GNU Octave"
+.SH NAME
+mkoctfile \- Compile dynamic-load modules for GNU Octave
+.SH SYNOPSIS
+\fBmkoctfile\fP [\fIOPTION\fP]... file...
+.SH DESCRIPTION
+\fBmkoctfile\fP is used to compile C, C++, or Fortran source code in
+to a dynamically loadable \fI.oct\fP file for
+.BR octave (1).
+.SH OPTIONS
+.TP 8
+\fB\-h\fP, \fB\-?\fP, \fB\-\-help\fP
+Print help message.
+.TP
+.B \-I\fIdir\fP
+Add include directory \fIdir\fP to compile commands.
+.TP
+.B \-idirafter\fIdir\fP
+Add include directory to second include search path after '\fB\-I\fP'.
+.TP
+.B \-D\fIdef\fP
+Add definition \fIdef\fP to compiler command.
+.TP
+.B \-l\fIlib\fP
+Add library \fIlib\fP to link command.
+.TP
+.B \-L\fIdir\fP
+Add library directory \fIdir\fP to link command.
+.TP
+.B \-R\fIdir\fP
+Pass \fB\-R\fP\fIdir\fP to link command.
+.TP
+.B \-g
+Enable debugging option for all compilers.
+.TP
+.B \-pthread
+Add \fB\-pthread\fP to link command.
+.TP
+.B \-W...
+Pass flags to the compiler such as \fB\-Wa,\fP\fIOPTION\fP.
+.TP
+.B \-Wl,...
+Pass flags to the linker such as \fB\-Wl,-rpath=...\fP
+.TP
+.B \-M\fR,\fB \-\-depend
+Generate dependency files (.d) for C and C++ source files.
+.TP
+.B \-c
+Compile but do not link.
+.TP
+.B \-\-link-stand-alone
+Link a stand-alone executable file.
+.TP
+.B \-s\fR,\fB --strip
+Strip the output file.
+.TP
+.B \-\-mex
+Create a MEX file.  Set the default output extension to \fB.mex\fP.
+.TP
+.B \-o \fIfile\fP\fR,\fB \-\-output \fIfile\fP
+Output file name.  Default extension is \fB.oct\fP (or \fB.mex\fP if \-\-mex is
+specified) unless linking a stand-alone executable.
+.TP
+.B \-p \fIVAR\fP\fR,\fB \-\-print \fIVAR\fP
+Print configuration variable \fIVAR\fP.  Recognized variables are:
+.RS
+.Vb
+    ALL_CFLAGS                FFTW3F_LDFLAGS
+    ALL_CXXFLAGS              FFTW3F_LIBS
+    ALL_FFLAGS                FLIBS
+    ALL_LDFLAGS               FPICFLAG
+    AR                        INCFLAGS
+    BLAS_LIBS                 LAPACK_LIBS
+    CC                        LDFLAGS
+    CFLAGS                    LD_CXX
+    CPICFLAG                  LD_STATIC_FLAG
+    CPPFLAGS                  LFLAGS
+    CXX                       LIBOCTAVE
+    CXXFLAGS                  LIBOCTINTERP
+    CXXPICFLAG                LIBS
+    DEPEND_EXTRA_SED_PATTERN  OCTAVE_LIBS
+    DEPEND_FLAGS              OCTAVE_LINK_DEPS
+    DL_LD                     OCT_LINK_DEPS
+    DL_LDFLAGS                RANLIB
+    EXEEXT                    RDYNAMIC_FLAG
+    F77                       READLINE_LIBS
+    F77_INTEGER_8_FLAG        SED
+    FFLAGS                    XTRA_CFLAGS
+    FFTW3_LDFLAGS             XTRA_CXXFLAGS
+    FFTW3_LIBS
+.Ve
+.RE
+.TP
+.B \-v\fR,\fB --verbose
+Echo commands as they are executed.
+.TP
+.B file
+Compile or link file.  Recognized file types are
+.RS
+.Vb
+   .c    C source
+   .cc   C++ source
+   .C    C++ source
+   .cpp  C++ source
+   .f    Fortran source (fixed form)
+   .F    Fortran source (fixed form)
+   .f90  Fortran source (free form)
+   .F90  Fortran source (free form)
+   .o    object file
+   .a    library file
+.Ve
+.RE
+.SH AUTHOR
+John W. Eaton <jwe@octave.org>
+
+This manual page was contributed by Dirk Eddelbuettel
+<edd@debian.org> for the Debian GNU/Linux distribution but
+may be used by others.
+.SH "SEE ALSO"
+octave (1).

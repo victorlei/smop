@@ -1,0 +1,449 @@
+@c Copyright (C) 2007-2015 John W. Eaton and David Bateman
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Geometry
+@chapter Geometry
+
+Much of the geometry code in Octave is based on the Qhull
+library@footnote{@nospell{Barber, C.B., Dobkin, D.P., and Huhdanpaa, H.T.},
+@cite{The Quickhull Algorithm for Convex Hulls}, ACM Trans. on Mathematical
+Software, 22(4):469--483, Dec 1996, @url{http://www.qhull.org}}.
+Some of the documentation for Qhull, particularly for the options that
+can be passed to @code{delaunay}, @code{voronoi} and @code{convhull},
+etc., is relevant to Octave users.
+
+@menu
+* Delaunay Triangulation::
+* Voronoi Diagrams::
+* Convex Hull::
+* Interpolation on Scattered Data::
+@end menu
+
+@node Delaunay Triangulation
+@section Delaunay Triangulation
+
+The Delaunay triangulation is constructed from a set of
+circum-circles.  These circum-circles are chosen so that there are at
+least three of the points in the set to triangulation on the
+circumference of the circum-circle.  None of the points in the set of
+points falls within any of the circum-circles.
+
+In general there are only three points on the circumference of any
+circum-circle.  However, in some cases, and in particular for the
+case of a regular grid, 4 or more points can be on a single
+circum-circle.  In this case the Delaunay triangulation is not unique.
+
+@DOCSTRING(delaunay)
+
+For 3-D inputs @code{delaunay} returns a set of tetrahedra that satisfy the
+Delaunay circum-circle criteria.  Similarly, @code{delaunayn} returns the
+N-dimensional simplex satisfying the Delaunay circum-circle criteria.
+The N-dimensional extension of a triangulation is called a tessellation.
+
+@DOCSTRING(delaunayn)
+
+An example of a Delaunay triangulation of a set of points is
+
+@example
+@group
+rand ("state", 2);
+x = rand (10, 1);
+y = rand (10, 1);
+T = delaunay (x, y);
+X = [ x(T(:,1)); x(T(:,2)); x(T(:,3)); x(T(:,1)) ];
+Y = [ y(T(:,1)); y(T(:,2)); y(T(:,3)); y(T(:,1)) ];
+axis ([0, 1, 0, 1]);
+plot (X, Y, "b", x, y, "r*");
+@end group
+@end example
+
+@ifnotinfo
+@noindent
+The result of which can be seen in @ref{fig:delaunay}.
+
+@float Figure,fig:delaunay
+@center @image{delaunay,4in}
+@caption{Delaunay triangulation of a random set of points}
+@end float
+@end ifnotinfo
+
+@menu
+* Plotting the Triangulation::
+* Identifying Points in Triangulation::
+@end menu
+
+@node Plotting the Triangulation
+@subsection Plotting the Triangulation
+
+Octave has the functions @code{triplot}, @code{trimesh}, and @code{trisurf}
+to plot the Delaunay triangulation of a 2-dimensional set of points.
+@code{tetramesh} will plot the triangulation of a 3-dimensional set of points.
+
+@DOCSTRING(triplot)
+
+@DOCSTRING(trimesh)
+
+@DOCSTRING(trisurf)
+
+@DOCSTRING(tetramesh)
+
+The difference between @code{triplot}, and @code{trimesh} or @code{triplot},
+is that the former only plots the 2-dimensional triangulation itself, whereas
+the second two plot the value of a function @code{f (@var{x}, @var{y})}.  An
+example of the use of the @code{triplot} function is
+
+@example
+@group
+rand ("state", 2)
+x = rand (20, 1);
+y = rand (20, 1);
+tri = delaunay (x, y);
+triplot (tri, x, y);
+@end group
+@end example
+
+@noindent
+which plots the Delaunay triangulation of a set of random points in
+2-dimensions.
+@ifnotinfo
+The output of the above can be seen in @ref{fig:triplot}.
+
+@float Figure,fig:triplot
+@center @image{triplot,4in}
+@caption{Delaunay triangulation of a random set of points}
+@end float
+@end ifnotinfo
+
+@node Identifying Points in Triangulation
+@subsection Identifying Points in Triangulation
+
+It is often necessary to identify whether a particular point in the
+N-dimensional space is within the Delaunay tessellation of a set of
+points in this N-dimensional space, and if so which N-simplex contains
+the point and which point in the tessellation is closest to the desired
+point.  The functions @code{tsearch} and @code{dsearch} perform this
+function in a triangulation, and @code{tsearchn} and @code{dsearchn} in
+an N-dimensional tessellation.
+
+To identify whether a particular point represented by a vector @var{p}
+falls within one of the simplices of an N-simplex, we can write the
+Cartesian coordinates of the point in a parametric form with respect to
+the N-simplex.  This parametric form is called the Barycentric
+Coordinates of the point.  If the points defining the N-simplex are given
+by @code{@var{N} + 1} vectors @var{t}(@var{i},:), then the Barycentric
+coordinates defining the point @var{p} are given by
+
+@example
+@var{p} = sum (@var{beta}(1:@var{N}+1) * @var{t}(1:@var{N}+1),:)
+@end example
+
+@noindent
+where there are @code{@var{N} + 1} values @code{@var{beta}(@var{i})}
+that together as a vector represent the Barycentric coordinates of the
+point @var{p}.  To ensure a unique solution for the values of
+@code{@var{beta}(@var{i})} an additional criteria of
+
+@example
+sum (@var{beta}(1:@var{N}+1)) == 1
+@end example
+
+@noindent
+is imposed, and we can therefore write the above as
+
+@example
+@group
+@var{p} - @var{t}(end, :) = @var{beta}(1:end-1) * (@var{t}(1:end-1, :)
+      - ones (@var{N}, 1) * @var{t}(end, :)
+@end group
+@end example
+
+@noindent
+Solving for @var{beta} we can then write
+
+@example
+@group
+@var{beta}(1:end-1) = (@var{p} - @var{t}(end, :)) / (@var{t}(1:end-1, :)
+      - ones (@var{N}, 1) * @var{t}(end, :))
+@var{beta}(end) = sum (@var{beta}(1:end-1))
+@end group
+@end example
+
+@noindent
+which gives the formula for the conversion of the Cartesian coordinates
+of the point @var{p} to the Barycentric coordinates @var{beta}.  An
+important property of the Barycentric coordinates is that for all points
+in the N-simplex
+
+@example
+0 <= @var{beta}(@var{i}) <= 1
+@end example
+
+@noindent
+Therefore, the test in @code{tsearch} and @code{tsearchn} essentially
+only needs to express each point in terms of the Barycentric coordinates
+of each of the simplices of the N-simplex and test the values of
+@var{beta}.  This is exactly the implementation used in
+@code{tsearchn}.  @code{tsearch} is optimized for 2-dimensions and the
+Barycentric coordinates are not explicitly formed.
+
+@DOCSTRING(tsearch)
+
+@DOCSTRING(tsearchn)
+
+An example of the use of @code{tsearch} can be seen with the simple
+triangulation
+
+@example
+@group
+@var{x} = [-1; -1; 1; 1];
+@var{y} = [-1; 1; -1; 1];
+@var{tri} = [1, 2, 3; 2, 3, 1];
+@end group
+@end example
+
+@noindent
+consisting of two triangles defined by @var{tri}.  We can then identify
+which triangle a point falls in like
+
+@example
+@group
+tsearch (@var{x}, @var{y}, @var{tri}, -0.5, -0.5)
+@result{} 1
+tsearch (@var{x}, @var{y}, @var{tri}, 0.5, 0.5)
+@result{} 2
+@end group
+@end example
+
+@noindent
+and we can confirm that a point doesn't lie within one of the triangles like
+
+@example
+@group
+tsearch (@var{x}, @var{y}, @var{tri}, 2, 2)
+@result{} NaN
+@end group
+@end example
+
+The @code{dsearch} and @code{dsearchn} find the closest point in a
+tessellation to the desired point.  The desired point does not
+necessarily have to be in the tessellation, and even if it the returned
+point of the tessellation does not have to be one of the vertexes of the
+N-simplex within which the desired point is found.
+
+@DOCSTRING(dsearch)
+
+@DOCSTRING(dsearchn)
+
+An example of the use of @code{dsearch}, using the above values of
+@var{x}, @var{y} and @var{tri} is
+
+@example
+@group
+dsearch (@var{x}, @var{y}, @var{tri}, -2, -2)
+@result{} 1
+@end group
+@end example
+
+If you wish the points that are outside the tessellation to be flagged,
+then @code{dsearchn} can be used as
+
+@example
+@group
+dsearchn ([@var{x}, @var{y}], @var{tri}, [-2, -2], NaN)
+@result{} NaN
+dsearchn ([@var{x}, @var{y}], @var{tri}, [-0.5, -0.5], NaN)
+@result{} 1
+@end group
+@end example
+
+@noindent
+where the point outside the tessellation are then flagged with @code{NaN}.
+
+@node Voronoi Diagrams
+@section Voronoi Diagrams
+
+A Voronoi diagram or Voronoi tessellation of a set of points @var{s} in
+an N-dimensional space, is the tessellation of the N-dimensional space
+such that all points in @code{@var{v}(@var{p})}, a partitions of the
+tessellation where @var{p} is a member of @var{s}, are closer to @var{p}
+than any other point in @var{s}.  The Voronoi diagram is related to the
+Delaunay triangulation of a set of points, in that the vertexes of the
+Voronoi tessellation are the centers of the circum-circles of the
+simplices of the Delaunay tessellation.
+
+@DOCSTRING(voronoi)
+
+@DOCSTRING(voronoin)
+
+An example of the use of @code{voronoi} is
+
+@example
+@group
+rand ("state",9);
+x = rand (10,1);
+y = rand (10,1);
+tri = delaunay (x, y);
+[vx, vy] = voronoi (x, y, tri);
+triplot (tri, x, y, "b");
+hold on;
+plot (vx, vy, "r");
+@end group
+@end example
+
+@ifnotinfo
+@noindent
+The result of which can be seen in @ref{fig:voronoi}.  Note that the
+circum-circle of one of the triangles has been added to this figure, to
+make the relationship between the Delaunay tessellation and the Voronoi
+diagram clearer.
+
+@float Figure,fig:voronoi
+@center @image{voronoi,4in}
+@caption{Delaunay triangulation and Voronoi diagram of a random set of points}
+@end float
+@end ifnotinfo
+
+Additional information about the size of the facets of a Voronoi
+diagram, and which points of a set of points is in a polygon can be had
+with the @code{polyarea} and @code{inpolygon} functions respectively.
+
+@DOCSTRING(polyarea)
+
+An example of the use of @code{polyarea} might be
+
+@example
+@group
+rand ("state", 2);
+x = rand (10, 1);
+y = rand (10, 1);
+[c, f] = voronoin ([x, y]);
+af = zeros (size (f));
+for i = 1 : length (f)
+  af(i) = polyarea (c (f @{i, :@}, 1), c (f @{i, :@}, 2));
+endfor
+@end group
+@end example
+
+Facets of the Voronoi diagram with a vertex at infinity have infinity
+area.  A simplified version of @code{polyarea} for rectangles is
+available with @code{rectint}
+
+@DOCSTRING(rectint)
+
+@DOCSTRING(inpolygon)
+
+An example of the use of @code{inpolygon} might be
+
+@example
+@group
+randn ("state", 2);
+x = randn (100, 1);
+y = randn (100, 1);
+vx = cos (pi * [-1 : 0.1: 1]);
+vy = sin (pi * [-1 : 0.1 : 1]);
+in = inpolygon (x, y, vx, vy);
+plot (vx, vy, x(in), y(in), "r+", x(!in), y(!in), "bo");
+axis ([-2, 2, -2, 2]);
+@end group
+@end example
+
+@ifnotinfo
+@noindent
+The result of which can be seen in @ref{fig:inpolygon}.
+
+@float Figure,fig:inpolygon
+@center @image{inpolygon,4in}
+@caption{Demonstration of the @code{inpolygon} function to determine the
+points inside a polygon}
+@end float
+@end ifnotinfo
+
+@node Convex Hull
+@section Convex Hull
+
+The convex hull of a set of points is the minimum convex envelope
+containing all of the points.  Octave has the functions @code{convhull}
+and @code{convhulln} to calculate the convex hull of 2-dimensional and
+N-dimensional sets of points.
+
+@DOCSTRING(convhull)
+
+@DOCSTRING(convhulln)
+
+An example of the use of @code{convhull} is
+
+@example
+@group
+x = -3:0.05:3;
+y = abs (sin (x));
+k = convhull (x, y);
+plot (x(k), y(k), "r-", x, y, "b+");
+axis ([-3.05, 3.05, -0.05, 1.05]);
+@end group
+@end example
+
+@ifnotinfo
+@noindent
+The output of the above can be seen in @ref{fig:convhull}.
+
+@float Figure,fig:convhull
+@center @image{convhull,4in}
+@caption{The convex hull of a simple set of points}
+@end float
+@end ifnotinfo
+
+@node Interpolation on Scattered Data
+@section Interpolation on Scattered Data
+
+An important use of the Delaunay tessellation is that it can be used to
+interpolate from scattered data to an arbitrary set of points.  To do
+this the N-simplex of the known set of points is calculated with
+@code{delaunay} or @code{delaunayn}.  Then the simplices in to which the
+desired points are found are identified.  Finally the vertices of the simplices
+are used to interpolate to the desired points.  The functions that perform this
+interpolation are @code{griddata}, @code{griddata3} and @code{griddatan}.
+
+@DOCSTRING(griddata)
+
+@DOCSTRING(griddata3)
+
+@DOCSTRING(griddatan)
+
+An example of the use of the @code{griddata} function is
+
+@example
+@group
+rand ("state", 1);
+x = 2*rand (1000,1) - 1;
+y = 2*rand (size (x)) - 1;
+z = sin (2*(x.^2+y.^2));
+[xx,yy] = meshgrid (linspace (-1,1,32));
+griddata (x,y,z,xx,yy);
+@end group
+@end example
+
+@noindent
+that interpolates from a random scattering of points, to a uniform grid.
+@ifnotinfo
+The output of the above can be seen in @ref{fig:griddata}.
+
+@float Figure,fig:griddata
+@center @image{griddata,4in}
+@caption{Interpolation from a scattered data to a regular grid}
+@end float
+@end ifnotinfo

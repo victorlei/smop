@@ -1,0 +1,674 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Graphics Objects</title>
+
+<meta name="description" content="GNU Octave: Graphics Objects">
+<meta name="keywords" content="GNU Octave: Graphics Objects">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Graphics-Data-Structures.html#Graphics-Data-Structures" rel="up" title="Graphics Data Structures">
+<link href="Graphics-Object-Properties.html#Graphics-Object-Properties" rel="next" title="Graphics Object Properties">
+<link href="Introduction-to-Graphics-Structures.html#Introduction-to-Graphics-Structures" rel="prev" title="Introduction to Graphics Structures">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Graphics-Objects"></a>
+<div class="header">
+<p>
+Next: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="n" rel="next">Graphics Object Properties</a>, Previous: <a href="Introduction-to-Graphics-Structures.html#Introduction-to-Graphics-Structures" accesskey="p" rel="prev">Introduction to Graphics Structures</a>, Up: <a href="Graphics-Data-Structures.html#Graphics-Data-Structures" accesskey="u" rel="up">Graphics Data Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Graphics-Objects-1"></a>
+<h4 class="subsection">15.3.2 Graphics Objects</h4>
+<a name="index-graphics-objects"></a>
+
+<p>The hierarchy of graphics objects was explained above.
+See <a href="Introduction-to-Graphics-Structures.html#Introduction-to-Graphics-Structures">Introduction to Graphics Structures</a>.  Here the
+specific objects are described, and the properties contained in
+these objects are discussed.  Keep in mind that
+graphics objects are always referenced by <em>handle</em>.
+</p>
+<dl compact="compact">
+<dt>root figure</dt>
+<dd><a name="index-root-figure-graphics-object"></a>
+<a name="index-graphics-object_002c-root-figure"></a>
+<p>the top level of the hierarchy and the parent of all figure objects.
+The handle index of the root figure is 0.
+</p>
+</dd>
+<dt>figure</dt>
+<dd><a name="index-figure-graphics-object"></a>
+<a name="index-graphics-object_002c-figure"></a>
+<p>A figure window.
+</p>
+</dd>
+<dt>axes</dt>
+<dd><a name="index-axes-graphics-object"></a>
+<a name="index-graphics-object_002c-axes"></a>
+<p>A set of axes.  This object is a child of a figure object and may be a
+parent of line, text, image, patch, or surface objects.
+</p>
+</dd>
+<dt>line</dt>
+<dd><a name="index-line-graphics-object"></a>
+<a name="index-graphics-object_002c-line"></a>
+<p>A line in two or three dimensions.
+</p>
+</dd>
+<dt>text</dt>
+<dd><a name="index-text-graphics-object"></a>
+<a name="index-graphics-object_002c-text"></a>
+<p>Text annotations.
+</p>
+</dd>
+<dt>image</dt>
+<dd><a name="index-image-graphics-object"></a>
+<a name="index-graphics-object_002c-image"></a>
+<p>A bitmap image.
+</p>
+</dd>
+<dt>patch</dt>
+<dd><a name="index-patch-graphics-object"></a>
+<a name="index-graphics-object_002c-patch"></a>
+<p>A filled polygon, currently limited to two dimensions.
+</p>
+</dd>
+<dt>surface</dt>
+<dd><a name="index-surface-graphics-object"></a>
+<a name="index-graphics-object_002c-surface"></a>
+<p>A three-dimensional surface.
+</p></dd>
+</dl>
+
+<a name="Creating-Graphics-Objects"></a>
+<h4 class="subsubsection">15.3.2.1 Creating Graphics Objects</h4>
+<a name="index-creating-graphics-objects"></a>
+
+<p>You can create any graphics object primitive by calling the function of the
+same name as the object; In other words, <code>figure</code>, <code>axes</code>,
+<code>line</code>, <code>text</code>, <code>image</code>, <code>patch</code>, and <code>surface</code>
+functions.  These fundamental graphic objects automatically become children
+of the current axes object as if <code>hold on</code> was in place.  Seperately, axes
+will automatically become children of the current figure object and figures
+will become children of the root object 0.
+</p>
+<p>If this auto-joining feature is not desired then it is important to call
+<code>newplot</code> first to prepare a new figure and axes for plotting.
+Alternatively, the easier way is to call a high-level graphics routine which
+will both create the plot and then populate it with low-level graphics objects.
+Instead of calling <code>line</code>, use <code>plot</code>.  Or use <code>surf</code> instead of
+<code>surface</code>.  Or use <code>fill</code> instead of <code>patch</code>.
+</p>
+<a name="XREFaxes"></a><dl>
+<dt><a name="index-axes"></a>Function File: <em></em> <strong>axes</strong> <em>()</em></dt>
+<dt><a name="index-axes-1"></a>Function File: <em></em> <strong>axes</strong> <em>(<var>property</var>, <var>value</var>, &hellip;)</em></dt>
+<dt><a name="index-axes-2"></a>Function File: <em></em> <strong>axes</strong> <em>(<var>hax</var>)</em></dt>
+<dt><a name="index-axes-3"></a>Function File: <em><var>h</var> =</em> <strong>axes</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create an axes object and return a handle to it, or set the current axes
+to <var>hax</var>.
+</p>
+<p>Called without any arguments, or with <var>property</var>/<var>value</var> pairs,
+construct a new axes.  For accepted properties and corresponding
+values, see <a href="#XREFset">set</a>.
+</p>
+<p>Called with a single axes handle argument <var>hax</var>, the function makes
+<var>hax</var> the current axis.  It also restacks the axes in the
+corresponding figure so that <var>hax</var> is the first entry in the list
+of children.  This causes <var>hax</var> to be displayed on top of any other
+axes objects (Z-order stacking).
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFgca">gca</a>, <a href="#XREFset">set</a>, <a href="#XREFget">get</a>.
+</p></dd></dl>
+
+
+<a name="XREFline"></a><dl>
+<dt><a name="index-line"></a>Function File: <em></em> <strong>line</strong> <em>()</em></dt>
+<dt><a name="index-line-1"></a>Function File: <em></em> <strong>line</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-line-2"></a>Function File: <em></em> <strong>line</strong> <em>(<var>x</var>, <var>y</var>, <var>property</var>, <var>value</var>, &hellip;)</em></dt>
+<dt><a name="index-line-3"></a>Function File: <em></em> <strong>line</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-line-4"></a>Function File: <em></em> <strong>line</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>property</var>, <var>value</var>, &hellip;)</em></dt>
+<dt><a name="index-line-5"></a>Function File: <em></em> <strong>line</strong> <em>(<var>property</var>, <var>value</var>, &hellip;)</em></dt>
+<dt><a name="index-line-6"></a>Function File: <em></em> <strong>line</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-line-7"></a>Function File: <em><var>h</var> =</em> <strong>line</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create line object from <var>x</var> and <var>y</var> (and possibly <var>z</var>) and
+insert in the current axes.
+</p>
+<p>Multiple property-value pairs may be specified for the line object, but they
+must appear in pairs.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle (or vector of handles)
+to the line objects created.
+</p>
+
+<p><strong>See also:</strong> <a href="Displaying-Images.html#XREFimage">image</a>, <a href="#XREFpatch">patch</a>, <a href="Two_002ddimensional-Geometric-Shapes.html#XREFrectangle">rectangle</a>, <a href="#XREFsurface">surface</a>, <a href="Plot-Annotations.html#XREFtext">text</a>.
+</p></dd></dl>
+
+
+<a name="XREFpatch"></a><dl>
+<dt><a name="index-patch"></a>Function File: <em></em> <strong>patch</strong> <em>()</em></dt>
+<dt><a name="index-patch-1"></a>Function File: <em></em> <strong>patch</strong> <em>(<var>x</var>, <var>y</var>, <var>c</var>)</em></dt>
+<dt><a name="index-patch-2"></a>Function File: <em></em> <strong>patch</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>c</var>)</em></dt>
+<dt><a name="index-patch-3"></a>Function File: <em></em> <strong>patch</strong> <em>(<var>fv</var>)</em></dt>
+<dt><a name="index-patch-4"></a>Function File: <em></em> <strong>patch</strong> <em>(&quot;Faces&quot;, <var>faces</var>, &quot;Vertices&quot;, <var>verts</var>, &hellip;)</em></dt>
+<dt><a name="index-patch-5"></a>Function File: <em></em> <strong>patch</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-patch-6"></a>Function File: <em></em> <strong>patch</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-patch-7"></a>Function File: <em><var>h</var> =</em> <strong>patch</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create patch object in the current axes with vertices at locations
+(<var>x</var>, <var>y</var>) and of color <var>c</var>.
+</p>
+<p>If the vertices are matrices of size MxN then each polygon patch
+has M vertices and a total of N polygons will be created.  If some polygons
+do not have M vertices use NaN to represent &quot;no vertex&quot;.  If the <var>z</var>
+input is present then 3-D patches will be created.
+</p>
+<p>The color argument <var>c</var> can take many forms.  To create polygons
+which all share a single color use a string value (e.g., <code>&quot;r&quot;</code> for
+red), a scalar value which is scaled by <code>caxis</code> and indexed into the
+current colormap, or a 3-element RGB vector with the precise TrueColor.
+</p>
+<p>If <var>c</var> is a vector of length N then the ith polygon will have a color
+determined by scaling entry <var>c</var>(i) according to <code>caxis</code> and then
+indexing into the current colormap.  More complicated coloring situations
+require directly manipulating patch property/value pairs.
+</p>
+<p>Instead of specifying polygons by matrices <var>x</var> and <var>y</var>, it is
+possible to present a unique list of vertices and then a list of polygon
+faces created from those vertices.  In this case the
+<code>&quot;Vertices&quot;</code> matrix will be an Nx2 (2-D patch) or
+Nx3 (3-D patch).  The MxN <code>&quot;Faces&quot;</code> matrix
+describes M polygons having N vertices&mdash;each row describes a
+single polygon and each column entry is an index into the
+<code>&quot;Vertices&quot;</code> matrix to identify a vertex.  The patch object
+can be created by directly passing the property/value pairs
+<code>&quot;Vertices&quot;</code>/<var>verts</var>, <code>&quot;Faces&quot;</code>/<var>faces</var> as
+inputs.
+</p>
+<p>A third input form is to create a structure <var>fv</var> with the fields
+<code>&quot;vertices&quot;</code>, <code>&quot;faces&quot;</code>, and optionally
+<code>&quot;facevertexcdata&quot;</code>.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created patch
+object.
+</p>
+<p>Implementation Note: Patches are highly configurable objects.  To truly
+customize them requires setting patch properties directly.  Useful patch
+properties are: <code>&quot;cdata&quot;</code>, <code>&quot;edgecolor&quot;</code>,
+<code>&quot;facecolor&quot;</code>, <code>&quot;faces&quot;</code>, <code>&quot;facevertexcdata&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="Two_002dDimensional-Plots.html#XREFfill">fill</a>, <a href="#XREFget">get</a>, <a href="#XREFset">set</a>.
+</p></dd></dl>
+
+
+<a name="XREFsurface"></a><dl>
+<dt><a name="index-surface"></a>Function File: <em></em> <strong>surface</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>c</var>)</em></dt>
+<dt><a name="index-surface-1"></a>Function File: <em></em> <strong>surface</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-surface-2"></a>Function File: <em></em> <strong>surface</strong> <em>(<var>z</var>, <var>c</var>)</em></dt>
+<dt><a name="index-surface-3"></a>Function File: <em></em> <strong>surface</strong> <em>(<var>z</var>)</em></dt>
+<dt><a name="index-surface-4"></a>Function File: <em></em> <strong>surface</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-surface-5"></a>Function File: <em></em> <strong>surface</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-surface-6"></a>Function File: <em><var>h</var> =</em> <strong>surface</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create a surface graphic object given matrices <var>x</var> and <var>y</var> from
+<code>meshgrid</code> and a matrix of values <var>z</var> corresponding to the
+<var>x</var> and <var>y</var> coordinates of the surface.
+</p>
+<p>If <var>x</var> and <var>y</var> are vectors, then a typical vertex is
+(<var>x</var>(j), <var>y</var>(i), <var>z</var>(i,j)).  Thus, columns of <var>z</var> correspond
+to different <var>x</var> values and rows of <var>z</var> correspond to different
+<var>y</var> values.  If only a single input <var>z</var> is given then <var>x</var> is
+taken to be <code>1:rows (<var>z</var>)</code> and <var>y</var> is
+<code>1:columns (<var>z</var>)</code>.
+</p>
+<p>Any property/value input pairs are assigned to the surface object.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created
+surface object.
+</p>
+<p><strong>See also:</strong> <a href="Three_002dDimensional-Plots.html#XREFsurf">surf</a>, <a href="Three_002dDimensional-Plots.html#XREFmesh">mesh</a>, <a href="#XREFpatch">patch</a>, <a href="#XREFline">line</a>.
+</p></dd></dl>
+
+
+<a name="Handle-Functions"></a>
+<h4 class="subsubsection">15.3.2.2 Handle Functions</h4>
+<a name="index-handle-functions"></a>
+
+<p>To determine whether a variable is a graphics object index, or an index
+to an axes or figure, use the functions <code>ishandle</code>, <code>isaxes</code>, and
+<code>isfigure</code>.
+</p>
+<a name="XREFishandle"></a><dl>
+<dt><a name="index-ishandle"></a>Built-in Function: <em></em> <strong>ishandle</strong> <em>(<var>h</var>)</em></dt>
+<dd><p>Return true if <var>h</var> is a graphics handle and false otherwise.
+</p>
+<p><var>h</var> may also be a matrix of handles in which case a logical array is
+returned that is true where the elements of <var>h</var> are graphics handles and
+false where they are not.
+</p>
+<p><strong>See also:</strong> <a href="#XREFisaxes">isaxes</a>, <a href="#XREFisfigure">isfigure</a>.
+</p></dd></dl>
+
+
+<a name="XREFishghandle"></a><dl>
+<dt><a name="index-ishghandle"></a>Function File: <em></em> <strong>ishghandle</strong> <em>(<var>h</var>)</em></dt>
+<dd><p>Return true if <var>h</var> is a graphics handle and false otherwise.
+</p>
+<p>This function is equivalent to <code>ishandle</code> and is provided for
+compatibility with <small>MATLAB</small>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFishandle">ishandle</a>.
+</p></dd></dl>
+
+
+<a name="XREFisaxes"></a><dl>
+<dt><a name="index-isaxes"></a>Function File: <em></em> <strong>isaxes</strong> <em>(<var>h</var>)</em></dt>
+<dd><p>Return true if <var>h</var> is an axes graphics handle and false otherwise.
+</p>
+<p>If <var>h</var> is a matrix then return a logical array which is true where the
+elements of <var>h</var> are axes graphics handles and false where they are not.
+</p>
+<p><strong>See also:</strong> <a href="#XREFisaxes">isaxes</a>, <a href="#XREFishandle">ishandle</a>.
+</p></dd></dl>
+
+
+<a name="XREFisfigure"></a><dl>
+<dt><a name="index-isfigure"></a>Function File: <em></em> <strong>isfigure</strong> <em>(<var>h</var>)</em></dt>
+<dd><p>Return true if <var>h</var> is a figure graphics handle and false otherwise.
+</p>
+<p>If <var>h</var> is a matrix then return a logical array which is true where the
+elements of <var>h</var> are figure graphics handles and false where they are not.
+</p>
+<p><strong>See also:</strong> <a href="#XREFisaxes">isaxes</a>, <a href="#XREFishandle">ishandle</a>.
+</p></dd></dl>
+
+
+<p>The function <code>gcf</code> returns an index to the current figure object,
+or creates one if none exists.  Similarly, <code>gca</code> returns the
+current axes object, or creates one (and its parent figure object) if
+none exists.
+</p>
+<a name="XREFgcf"></a><dl>
+<dt><a name="index-gcf"></a>Function File: <em><var>h</var> =</em> <strong>gcf</strong> <em>()</em></dt>
+<dd><p>Return a handle to the current figure.
+</p>
+<p>The current figure is the default target for graphics output.  If multiple
+figures exist, <code>gcf</code> returns the last created figure or the last figure
+that was clicked on with the mouse.
+</p>
+<p>If a current figure does not exist, create one and return its handle.  The
+handle may then be used to examine or set properties of the figure.  For
+example,
+</p>
+<div class="example">
+<pre class="example">fplot (@sin, [-10, 10]);
+fig = gcf ();
+set (fig, &quot;numbertitle&quot;, &quot;off&quot;, &quot;name&quot;, &quot;sin plot&quot;)
+</pre></div>
+
+<p>plots a sine wave, finds the handle of the current figure, and then
+renames the figure window to describe the contents.
+</p>
+<p>Note: To find the current figure without creating a new one if it does not
+exist, query the <code>&quot;CurrentFigure&quot;</code> property of the root graphics
+object.
+</p>
+<div class="example">
+<pre class="example">get (0, &quot;currentfigure&quot;);
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFgca">gca</a>, <a href="#XREFgco">gco</a>, <a href="Callbacks.html#XREFgcbf">gcbf</a>, <a href="Callbacks.html#XREFgcbo">gcbo</a>, <a href="#XREFget">get</a>, <a href="#XREFset">set</a>.
+</p></dd></dl>
+
+
+<a name="XREFgca"></a><dl>
+<dt><a name="index-gca"></a>Function File: <em><var>h</var> =</em> <strong>gca</strong> <em>()</em></dt>
+<dd><p>Return a handle to the current axis object.
+</p>
+<p>The current axis is the default target for graphics output.  In the case
+of a figure with multiple axes, <code>gca</code> returns the last created axes
+or the last axes that was clicked on with the mouse.
+</p>
+<p>If no current axes object exists, create one and return its handle.  The
+handle may then be used to examine or set properties of the axes.  For
+example,
+</p>
+<div class="example">
+<pre class="example">ax = gca ();
+set (ax, &quot;position&quot;, [0.5, 0.5, 0.5, 0.5]);
+</pre></div>
+
+<p>creates an empty axes object and then changes its location and size in the
+figure window.
+</p>
+<p>Note: To find the current axis without creating a new axes object if it
+does not exist, query the <code>&quot;CurrentAxes&quot;</code> property of a figure.
+</p>
+<div class="example">
+<pre class="example">get (gcf, &quot;currentaxes&quot;);
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFgcf">gcf</a>, <a href="#XREFgco">gco</a>, <a href="Callbacks.html#XREFgcbf">gcbf</a>, <a href="Callbacks.html#XREFgcbo">gcbo</a>, <a href="#XREFget">get</a>, <a href="#XREFset">set</a>.
+</p></dd></dl>
+
+
+<a name="XREFgco"></a><dl>
+<dt><a name="index-gco"></a>Function File: <em><var>h</var> =</em> <strong>gco</strong> <em>()</em></dt>
+<dt><a name="index-gco-1"></a>Function File: <em><var>h</var> =</em> <strong>gco</strong> <em>(<var>fig</var>)</em></dt>
+<dd><p>Return a handle to the current object of the current figure, or a handle
+to the current object of the figure with handle <var>fig</var>.
+</p>
+<p>The current object of a figure is the object that was last clicked on.  It
+is stored in the <code>&quot;CurrentObject&quot;</code> property of the target figure.
+</p>
+<p>If the last mouse click did not occur on any child object of the figure,
+then the current object is the figure itself.
+</p>
+<p>If no mouse click occurred in the target figure, this function returns an
+empty matrix.
+</p>
+<p>Programming Note: The value returned by this function is not necessarily the
+same as the one returned by <code>gcbo</code> during callback execution.  An
+executing callback can be interrupted by another callback and the current
+object may be changed.
+</p>
+
+<p><strong>See also:</strong> <a href="Callbacks.html#XREFgcbo">gcbo</a>, <a href="#XREFgca">gca</a>, <a href="#XREFgcf">gcf</a>, <a href="Callbacks.html#XREFgcbf">gcbf</a>, <a href="#XREFget">get</a>, <a href="#XREFset">set</a>.
+</p></dd></dl>
+
+
+<p>The <code>get</code> and <code>set</code> functions may be used to examine and set
+properties for graphics objects.  For example,
+</p>
+<div class="example">
+<pre class="example">get (0)
+    &rArr; ans =
+       {
+         type = root
+         currentfigure = [](0x0)
+         children = [](0x0)
+         visible = on
+         &hellip;
+       }
+</pre></div>
+
+<p>returns a structure containing all the properties of the root figure.
+As with all functions in Octave, the structure is returned by value, so
+modifying it will not modify the internal root figure plot object.  To
+do that, you must use the <code>set</code> function.  Also, note that in this
+case, the <code>currentfigure</code> property is empty, which indicates that
+there is no current figure window.
+</p>
+<p>The <code>get</code> function may also be used to find the value of a single
+property.  For example,
+</p>
+<div class="example">
+<pre class="example">get (gca (), &quot;xlim&quot;)
+    &rArr; [ 0 1 ]
+</pre></div>
+
+<p>returns the range of the x-axis for the current axes object in the
+current figure.
+</p>
+<p>To set graphics object properties, use the set function.  For example,
+</p>
+<div class="example">
+<pre class="example">set (gca (), &quot;xlim&quot;, [-10, 10]);
+</pre></div>
+
+<p>sets the range of the x-axis for the current axes object in the current
+figure to &lsquo;<samp>[-10, 10]</samp>&rsquo;.
+</p>
+<p>Default property values can also be queried if the <code>set</code> function is
+called without a value argument.  When only one argument is given (a graphic
+handle) then a structure with defaults for all properties of the given object
+type is returned.  For example,
+</p>
+<div class="example">
+<pre class="example">set (gca ())
+</pre></div>
+
+<p>returns a structure containing the default property values for axes objects.
+If <code>set</code> is called with two arguments (a graphic handle and a property
+name) then only the defaults for the requested property are returned.
+</p>
+<a name="XREFget"></a><dl>
+<dt><a name="index-get"></a>Built-in Function: <em><var>val</var> =</em> <strong>get</strong> <em>(<var>h</var>)</em></dt>
+<dt><a name="index-get-1"></a>Built-in Function: <em><var>val</var> =</em> <strong>get</strong> <em>(<var>h</var>, <var>p</var>)</em></dt>
+<dd><p>Return the value of the named property <var>p</var> from the graphics handle
+<var>h</var>.
+</p>
+<p>If <var>p</var> is omitted, return the complete property list for <var>h</var>.
+</p>
+<p>If <var>h</var> is a vector, return a cell array including the property values or
+lists respectively.
+</p>
+<p><strong>See also:</strong> <a href="#XREFset">set</a>.
+</p></dd></dl>
+
+
+<a name="XREFset"></a><dl>
+<dt><a name="index-set"></a>Built-in Function: <em></em> <strong>set</strong> <em>(<var>h</var>, <var>property</var>, <var>value</var>, &hellip;)</em></dt>
+<dt><a name="index-set-1"></a>Built-in Function: <em></em> <strong>set</strong> <em>(<var>h</var>, <var>properties</var>, <var>values</var>)</em></dt>
+<dt><a name="index-set-2"></a>Built-in Function: <em></em> <strong>set</strong> <em>(<var>h</var>, <var>pv</var>)</em></dt>
+<dt><a name="index-set-3"></a>Built-in Function: <em><var>value_list</var> =</em> <strong>set</strong> <em>(<var>h</var>, <var>property</var>)</em></dt>
+<dt><a name="index-set-4"></a>Built-in Function: <em><var>all_value_list</var> =</em> <strong>set</strong> <em>(<var>h</var>)</em></dt>
+<dd><p>Set named property values for the graphics handle (or vector of graphics
+handles) <var>h</var>.
+</p>
+<p>There are three ways to give the property names and values:
+</p>
+<ul>
+<li> as a comma separated list of <var>property</var>, <var>value</var> pairs
+
+<p>Here, each <var>property</var> is a string containing the property name, each
+<var>value</var> is a value of the appropriate type for the property.
+</p>
+</li><li> as a cell array of strings <var>properties</var> containing property names
+and a cell array <var>values</var> containing property values.
+
+<p>In this case, the number of columns of <var>values</var> must match the number of
+elements in <var>properties</var>.  The first column of <var>values</var> contains
+values for the first entry in <var>properties</var>, etc.  The number of rows of
+<var>values</var> must be 1 or match the number of elements of <var>h</var>.  In the
+first case, each handle in <var>h</var> will be assigned the same values.  In the
+latter case, the first handle in <var>h</var> will be assigned the values from
+the first row of <var>values</var> and so on.
+</p>
+</li><li> as a structure array <var>pv</var>
+
+<p>Here, the field names of <var>pv</var> represent the property names, and the field
+values give the property values.  In contrast to the previous case, all
+elements of <var>pv</var> will be set in all handles in <var>h</var> independent of
+the dimensions of <var>pv</var>.
+</p></li></ul>
+
+<p><code>set</code> is also used to query the list of values a named property will
+take.  <code><var>clist</var> = set (<var>h</var>, &quot;property&quot;)</code> will return the list
+of possible values for <code>&quot;property&quot;</code> in the cell list <var>clist</var>.
+If no output variable is used then the list is formatted and printed to the
+screen.
+</p>
+<p>If no property is specified (<code><var>slist</var> = set (<var>h</var>)</code>) then a
+structure <var>slist</var> is returned where the fieldnames are the properties of
+the object <var>h</var> and the fields are the list of possible values for each
+property.  If no output variable is used then the list is formatted and
+printed to the screen.
+</p>
+<p>For example,
+</p>
+<div class="example">
+<pre class="example">hf = figure ();
+set (hf, &quot;paperorientation&quot;)
+&rArr;  paperorientation:  [ landscape | {portrait} | rotated ]
+</pre></div>
+
+<p>shows the paperorientation property can take three values with the default
+being <code>&quot;portrait&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFget">get</a>.
+</p></dd></dl>
+
+
+<a name="XREFancestor"></a><dl>
+<dt><a name="index-ancestor"></a>Function File: <em><var>parent</var> =</em> <strong>ancestor</strong> <em>(<var>h</var>, <var>type</var>)</em></dt>
+<dt><a name="index-ancestor-1"></a>Function File: <em><var>parent</var> =</em> <strong>ancestor</strong> <em>(<var>h</var>, <var>type</var>, &quot;toplevel&quot;)</em></dt>
+<dd><p>Return the first ancestor of handle object <var>h</var> whose type matches
+<var>type</var>, where <var>type</var> is a character string.
+</p>
+<p>If <var>type</var> is a cell array of strings, return the first parent whose
+type matches any of the given type strings.
+</p>
+<p>If the handle object <var>h</var> itself is of type <var>type</var>, return <var>h</var>.
+</p>
+<p>If <code>&quot;toplevel&quot;</code> is given as a third argument, return the highest
+parent in the object hierarchy that matches the condition, instead
+of the first (nearest) one.
+</p>
+<p><strong>See also:</strong> <a href="Searching-Properties.html#XREFfindobj">findobj</a>, <a href="Searching-Properties.html#XREFfindall">findall</a>, <a href="#XREFallchild">allchild</a>.
+</p></dd></dl>
+
+
+<a name="XREFallchild"></a><dl>
+<dt><a name="index-allchild"></a>Function File: <em><var>h</var> =</em> <strong>allchild</strong> <em>(<var>handles</var>)</em></dt>
+<dd><p>Find all children, including hidden children, of a graphics object.
+</p>
+<p>This function is similar to <code>get (h, &quot;children&quot;)</code>, but also returns
+hidden objects (HandleVisibility = <code>&quot;off&quot;</code>).
+</p>
+<p>If <var>handles</var> is a scalar, <var>h</var> will be a vector.  Otherwise,
+<var>h</var> will be a cell matrix of the same size as <var>handles</var> and each
+cell will contain a vector of handles.
+</p>
+<p><strong>See also:</strong> <a href="Searching-Properties.html#XREFfindall">findall</a>, <a href="Searching-Properties.html#XREFfindobj">findobj</a>, <a href="#XREFget">get</a>, <a href="#XREFset">set</a>.
+</p></dd></dl>
+
+
+<a name="XREFfindfigs"></a><dl>
+<dt><a name="index-findfigs"></a>Function File: <em></em> <strong>findfigs</strong> <em>()</em></dt>
+<dd><p>Find all visible figures that are currently off the screen and move them
+onto the screen.
+</p>
+<p><strong>See also:</strong> <a href="#XREFallchild">allchild</a>, <a href="Multiple-Plot-Windows.html#XREFfigure">figure</a>, <a href="#XREFget">get</a>, <a href="#XREFset">set</a>.
+</p></dd></dl>
+
+
+<a name="index-saving-graphics-objects"></a>
+<a name="index-graphics-objects_002c-saving"></a>
+
+<p>Figures can be printed or saved in many graphics formats with <code>print</code> and
+<code>saveas</code>.  Occasionally, however, it may be useful to save the original
+Octave handle graphic directly so that further modifications can be made such
+as modifying a title or legend.
+</p>
+<p>This can be accomplished with the following functions by
+</p>
+<div class="example">
+<pre class="example">fig_struct = hdl2struct (gcf);
+save myplot.fig -struct fig_struct;
+&hellip;
+fig_struct = load (&quot;myplot.fig&quot;);
+struct2hdl (fig_struct);
+</pre></div>
+
+<a name="XREFhdl2struct"></a><dl>
+<dt><a name="index-hdl2struct"></a>Function File: <em><var>s</var> =</em> <strong>hdl2struct</strong> <em>(<var>h</var>)</em></dt>
+<dd><p>Return a structure, <var>s</var>, whose fields describe the properties
+of the object, and its children, associated with the handle, <var>h</var>.
+</p>
+<p>The fields of the structure <var>s</var> are <code>&quot;type&quot;</code>, <code>&quot;handle&quot;</code>,
+<code>&quot;properties&quot;</code>, <code>&quot;children&quot;</code>, and <code>&quot;special&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstruct2hdl">struct2hdl</a>, <a href="Printing-and-Saving-Plots.html#XREFhgsave">hgsave</a>, <a href="Searching-Properties.html#XREFfindobj">findobj</a>.
+</p></dd></dl>
+
+
+<a name="XREFstruct2hdl"></a><dl>
+<dt><a name="index-struct2hdl"></a>Function File: <em><var>h</var> =</em> <strong>struct2hdl</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-struct2hdl-1"></a>Function File: <em><var>h</var> =</em> <strong>struct2hdl</strong> <em>(<var>s</var>, <var>p</var>)</em></dt>
+<dt><a name="index-struct2hdl-2"></a>Function File: <em><var>h</var> =</em> <strong>struct2hdl</strong> <em>(<var>s</var>, <var>p</var>, <var>hilev</var>)</em></dt>
+<dd><p>Construct a graphics handle object <var>h</var> from the structure <var>s</var>.
+</p>
+<p>The structure must contain the fields <code>&quot;handle&quot;</code>, <code>&quot;type&quot;</code>,
+<code>&quot;children&quot;</code>, <code>&quot;properties&quot;</code>, and <code>&quot;special&quot;</code>.
+</p>
+<p>If the handle of an existing figure or axes is specified, <var>p</var>, the new
+object will be created as a child of that object.  If no parent handle is
+provided then a new figure and the necessary children will be constructed
+using the default values from the root figure.
+</p>
+<p>A third boolean argument <var>hilev</var> can be passed to specify whether the
+function should preserve listeners/callbacks, e.g., for legends or
+hggroups.  The default is false.
+</p>
+<p><strong>See also:</strong> <a href="#XREFhdl2struct">hdl2struct</a>, <a href="Printing-and-Saving-Plots.html#XREFhgload">hgload</a>, <a href="Searching-Properties.html#XREFfindobj">findobj</a>.
+</p></dd></dl>
+
+
+<a name="XREFcopyobj"></a><dl>
+<dt><a name="index-copyobj"></a>Function File: <em><var>hnew</var> =</em> <strong>copyobj</strong> <em>(<var>horig</var>)</em></dt>
+<dt><a name="index-copyobj-1"></a>Function File: <em><var>hnew</var> =</em> <strong>copyobj</strong> <em>(<var>horig</var>, <var>hparent</var>)</em></dt>
+<dd><p>Construct a copy of the graphic object associated with handle <var>horig</var>
+and return a handle <var>hnew</var> to the new object.
+</p>
+<p>If a parent handle <var>hparent</var> (root, figure, axes, or hggroup) is
+specified, the copied object will be created as a child of <var>hparent</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstruct2hdl">struct2hdl</a>, <a href="#XREFhdl2struct">hdl2struct</a>, <a href="Searching-Properties.html#XREFfindobj">findobj</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="n" rel="next">Graphics Object Properties</a>, Previous: <a href="Introduction-to-Graphics-Structures.html#Introduction-to-Graphics-Structures" accesskey="p" rel="prev">Introduction to Graphics Structures</a>, Up: <a href="Graphics-Data-Structures.html#Graphics-Data-Structures" accesskey="u" rel="up">Graphics Data Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Orthogonal Collocation</title>
+
+<meta name="description" content="GNU Octave: Orthogonal Collocation">
+<meta name="keywords" content="GNU Octave: Orthogonal Collocation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Numerical-Integration.html#Numerical-Integration" rel="up" title="Numerical Integration">
+<link href="Functions-of-Multiple-Variables.html#Functions-of-Multiple-Variables" rel="next" title="Functions of Multiple Variables">
+<link href="Functions-of-One-Variable.html#Functions-of-One-Variable" rel="prev" title="Functions of One Variable">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Orthogonal-Collocation"></a>
+<div class="header">
+<p>
+Next: <a href="Functions-of-Multiple-Variables.html#Functions-of-Multiple-Variables" accesskey="n" rel="next">Functions of Multiple Variables</a>, Previous: <a href="Functions-of-One-Variable.html#Functions-of-One-Variable" accesskey="p" rel="prev">Functions of One Variable</a>, Up: <a href="Numerical-Integration.html#Numerical-Integration" accesskey="u" rel="up">Numerical Integration</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Orthogonal-Collocation-1"></a>
+<h3 class="section">23.2 Orthogonal Collocation</h3>
+
+<a name="XREFcolloc"></a><dl>
+<dt><a name="index-colloc"></a>Built-in Function: <em>[<var>r</var>, <var>amat</var>, <var>bmat</var>, <var>q</var>] =</em> <strong>colloc</strong> <em>(<var>n</var>, &quot;left&quot;, &quot;right&quot;)</em></dt>
+<dd><p>Compute derivative and integral weight matrices for orthogonal collocation.
+</p>
+<p>Reference: J. Villadsen, M. L. Michelsen,
+<cite>Solution of Differential Equation Models by Polynomial Approximation</cite>.
+</p></dd></dl>
+
+
+<p>Here is an example of using <code>colloc</code> to generate weight matrices
+for solving the second order differential equation
+<var>u</var>&rsquo; - <var>alpha</var> * <var>u</var>&rdquo; = 0 with the boundary conditions
+<var>u</var>(0) = 0 and <var>u</var>(1) = 1.
+</p>
+<p>First, we can generate the weight matrices for <var>n</var> points (including
+the endpoints of the interval), and incorporate the boundary conditions
+in the right hand side (for a specific value of
+<var>alpha</var>).
+</p>
+<div class="example">
+<pre class="example">n = 7;
+alpha = 0.1;
+[r, a, b] = colloc (n-2, &quot;left&quot;, &quot;right&quot;);
+at = a(2:n-1,2:n-1);
+bt = b(2:n-1,2:n-1);
+rhs = alpha * b(2:n-1,n) - a(2:n-1,n);
+</pre></div>
+
+<p>Then the solution at the roots <var>r</var> is
+</p>
+<div class="example">
+<pre class="example">u = [ 0; (at - alpha * bt) \ rhs; 1]
+     &rArr; [ 0.00; 0.004; 0.01 0.00; 0.12; 0.62; 1.00 ]
+</pre></div>
+
+
+
+
+</body>
+</html>

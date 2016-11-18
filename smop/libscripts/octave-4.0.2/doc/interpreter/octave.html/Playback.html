@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Playback</title>
+
+<meta name="description" content="GNU Octave: Playback">
+<meta name="keywords" content="GNU Octave: Playback">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Audio-Player.html#Audio-Player" rel="up" title="Audio Player">
+<link href="Player-Properties.html#Player-Properties" rel="next" title="Player Properties">
+<link href="Audio-Player.html#Audio-Player" rel="prev" title="Audio Player">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Playback"></a>
+<div class="header">
+<p>
+Next: <a href="Player-Properties.html#Player-Properties" accesskey="n" rel="next">Player Properties</a>, Up: <a href="Audio-Player.html#Audio-Player" accesskey="u" rel="up">Audio Player</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Playback-1"></a>
+<h4 class="subsection">33.3.1 Playback</h4>
+
+<p>The following methods are used to control player playback.
+</p>
+<a name="XREF_0040audioplayer_002fplay"></a><dl>
+<dt><a name="index-play"></a>Function File: <em></em> <strong>play</strong> <em>(<var>player</var>)</em></dt>
+<dt><a name="index-play-1"></a>Function File: <em></em> <strong>play</strong> <em>(<var>player</var>, <var>start</var>)</em></dt>
+<dt><a name="index-play-2"></a>Function File: <em></em> <strong>play</strong> <em>(<var>player</var>, <var>limits</var>)</em></dt>
+<dd><p>Play audio stored in the audioplayer object <var>player</var> without blocking.
+</p>
+<p>Given optional argument start, begin playing at <var>start</var> seconds in the
+recording.  Given a two-element vector <var>limits</var>, begin and end playing
+at the number of seconds specified by the elements of the vector.
+</p></dd></dl>
+
+
+<a name="XREF_0040audioplayer_002fplayblocking"></a><dl>
+<dt><a name="index-playblocking"></a>Function File: <em></em> <strong>playblocking</strong> <em>(<var>player</var>)</em></dt>
+<dt><a name="index-playblocking-1"></a>Function File: <em></em> <strong>playblocking</strong> <em>(<var>player</var>, <var>start</var>)</em></dt>
+<dt><a name="index-playblocking-2"></a>Function File: <em></em> <strong>playblocking</strong> <em>(<var>player</var>, <var>limits</var>)</em></dt>
+<dd><p>Play audio stored in the audioplayer object <var>player</var> with blocking.
+</p>
+<p>Given optional argument start, begin playing at <var>start</var> seconds in the
+recording.  Given a two-element vector <var>limits</var>, begin and end playing
+at the number of seconds specified by the elements of the vector.
+</p></dd></dl>
+
+
+<a name="XREF_0040audioplayer_002fpause"></a><dl>
+<dt><a name="index-pause"></a>Function File: <em></em> <strong>pause</strong> <em>(<var>player</var>)</em></dt>
+<dd><p>Pause the audioplayer <var>player</var>.
+</p></dd></dl>
+
+
+<a name="XREF_0040audioplayer_002fresume"></a><dl>
+<dt><a name="index-resume"></a>Function File: <em></em> <strong>resume</strong> <em>(<var>player</var>)</em></dt>
+<dd><p>Resume playback for the paused audioplayer object <var>player</var>.
+</p></dd></dl>
+
+
+<a name="XREF_0040audioplayer_002fstop"></a><dl>
+<dt><a name="index-stop"></a>Function File: <em></em> <strong>stop</strong> <em>(<var>player</var>)</em></dt>
+<dd><p>Stop the playback for the audioplayer <var>player</var> and reset the
+relevant variables to their starting values.
+</p></dd></dl>
+
+
+<a name="XREF_0040audioplayer_002fisplaying"></a><dl>
+<dt><a name="index-isplaying"></a>Function File: <em></em> <strong>isplaying</strong> <em>(<var>player</var>)</em></dt>
+<dd><p>Return true if the audioplayer object <var>player</var> is currently playing back
+audio and false otherwise.
+</p></dd></dl>
+
+
+
+
+
+</body>
+</html>

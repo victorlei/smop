@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: URL Manipulation</title>
+
+<meta name="description" content="GNU Octave: URL Manipulation">
+<meta name="keywords" content="GNU Octave: URL Manipulation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Networking-Utilities.html#Networking-Utilities" rel="up" title="Networking Utilities">
+<link href="Base64-and-Binary-Data-Transmission.html#Base64-and-Binary-Data-Transmission" rel="next" title="Base64 and Binary Data Transmission">
+<link href="FTP-Objects.html#FTP-Objects" rel="prev" title="FTP Objects">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="URL-Manipulation"></a>
+<div class="header">
+<p>
+Next: <a href="Base64-and-Binary-Data-Transmission.html#Base64-and-Binary-Data-Transmission" accesskey="n" rel="next">Base64 and Binary Data Transmission</a>, Previous: <a href="FTP-Objects.html#FTP-Objects" accesskey="p" rel="prev">FTP Objects</a>, Up: <a href="Networking-Utilities.html#Networking-Utilities" accesskey="u" rel="up">Networking Utilities</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="URL-Manipulation-1"></a>
+<h4 class="subsection">36.4.2 URL Manipulation</h4>
+
+<a name="XREFurlread"></a><dl>
+<dt><a name="index-urlread"></a>Loadable Function: <em><var>s</var> =</em> <strong>urlread</strong> <em>(<var>url</var>)</em></dt>
+<dt><a name="index-urlread-1"></a>Loadable Function: <em>[<var>s</var>, <var>success</var>] =</em> <strong>urlread</strong> <em>(<var>url</var>)</em></dt>
+<dt><a name="index-urlread-2"></a>Loadable Function: <em>[<var>s</var>, <var>success</var>, <var>message</var>] =</em> <strong>urlread</strong> <em>(<var>url</var>)</em></dt>
+<dt><a name="index-urlread-3"></a>Loadable Function: <em>[&hellip;] =</em> <strong>urlread</strong> <em>(<var>url</var>, <var>method</var>, <var>param</var>)</em></dt>
+<dd><p>Download a remote file specified by its <var>url</var> and return its content
+in string <var>s</var>.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">s = urlread (&quot;ftp://ftp.octave.org/pub/README&quot;);
+</pre></div>
+
+<p>The variable <var>success</var> is 1 if the download was successful,
+otherwise it is 0 in which case <var>message</var> contains an error
+message.
+</p>
+<p>If no output argument is specified and an error occurs, then the error is
+signaled through Octave&rsquo;s error handling mechanism.
+</p>
+<p>This function uses libcurl.  Curl supports, among others, the HTTP, FTP and
+FILE protocols.  Username and password may be specified in the URL.  For
+example:
+</p>
+<div class="example">
+<pre class="example">s = urlread (&quot;http://user:password@example.com/file.txt&quot;);
+</pre></div>
+
+<p>GET and POST requests can be specified by <var>method</var> and <var>param</var>.
+The parameter <var>method</var> is either &lsquo;<samp>get</samp>&rsquo; or &lsquo;<samp>post</samp>&rsquo; and
+<var>param</var> is a cell array of parameter and value pairs.
+For example:
+</p>
+<div class="example">
+<pre class="example">s = urlread (&quot;http://www.google.com/search&quot;, &quot;get&quot;,
+            {&quot;query&quot;, &quot;octave&quot;});
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFurlwrite">urlwrite</a>.
+</p></dd></dl>
+
+
+<a name="XREFurlwrite"></a><dl>
+<dt><a name="index-urlwrite"></a>Loadable Function: <em></em> <strong>urlwrite</strong> <em>(<var>url</var>, <var>localfile</var>)</em></dt>
+<dt><a name="index-urlwrite-1"></a>Loadable Function: <em><var>f</var> =</em> <strong>urlwrite</strong> <em>(<var>url</var>, <var>localfile</var>)</em></dt>
+<dt><a name="index-urlwrite-2"></a>Loadable Function: <em>[<var>f</var>, <var>success</var>] =</em> <strong>urlwrite</strong> <em>(<var>url</var>, <var>localfile</var>)</em></dt>
+<dt><a name="index-urlwrite-3"></a>Loadable Function: <em>[<var>f</var>, <var>success</var>, <var>message</var>] =</em> <strong>urlwrite</strong> <em>(<var>url</var>, <var>localfile</var>)</em></dt>
+<dd><p>Download a remote file specified by its <var>url</var> and save it as
+<var>localfile</var>.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">urlwrite (&quot;ftp://ftp.octave.org/pub/README&quot;,
+          &quot;README.txt&quot;);
+</pre></div>
+
+<p>The full path of the downloaded file is returned in <var>f</var>.
+</p>
+<p>The variable <var>success</var> is 1 if the download was successful,
+otherwise it is 0 in which case <var>message</var> contains an error message.
+</p>
+<p>If no output argument is specified and an error occurs, then the error is
+signaled through Octave&rsquo;s error handling mechanism.
+</p>
+<p>This function uses libcurl.  Curl supports, among others, the HTTP, FTP and
+FILE protocols.  Username and password may be specified in the URL, for
+example:
+</p>
+<div class="example">
+<pre class="example">urlwrite (&quot;http://username:password@example.com/file.txt&quot;,
+          &quot;file.txt&quot;);
+</pre></div>
+
+<p>GET and POST requests can be specified by <var>method</var> and <var>param</var>.
+The parameter <var>method</var> is either &lsquo;<samp>get</samp>&rsquo; or &lsquo;<samp>post</samp>&rsquo; and
+<var>param</var> is a cell array of parameter and value pairs.
+For example:
+</p>
+<div class="example">
+<pre class="example">urlwrite (&quot;http://www.google.com/search&quot;, &quot;search.html&quot;,
+          &quot;get&quot;, {&quot;query&quot;, &quot;octave&quot;});
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFurlread">urlread</a>.
+</p></dd></dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Base64-and-Binary-Data-Transmission.html#Base64-and-Binary-Data-Transmission" accesskey="n" rel="next">Base64 and Binary Data Transmission</a>, Previous: <a href="FTP-Objects.html#FTP-Objects" accesskey="p" rel="prev">FTP Objects</a>, Up: <a href="Networking-Utilities.html#Networking-Utilities" accesskey="u" rel="up">Networking Utilities</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

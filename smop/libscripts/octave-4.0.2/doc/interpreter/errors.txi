@@ -1,0 +1,389 @@
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Errors and Warnings
+@chapter Errors and Warnings
+
+Octave includes several functions for printing error and warning
+messages.  When you write functions that need to take special action
+when they encounter abnormal conditions, you should print the error
+messages using the functions described in this chapter.
+
+Since many of Octave's functions use these functions, it is also useful
+to understand them, so that errors and warnings can be handled.
+
+@menu
+* Handling Errors::
+* Handling Warnings::
+@end menu
+
+@node Handling Errors
+@section Handling Errors
+
+An error is something that occurs when a program is in a state where
+it doesn't make sense to continue.  An example is when a function is
+called with too few input arguments.  In this situation the function
+should abort with an error message informing the user of the lacking
+input arguments.
+
+Since an error can occur during the evaluation of a program, it is
+very convenient to be able to detect that an error occurred, so that
+the error can be fixed.  This is possible with the @code{try} statement
+described in @ref{The try Statement}.
+
+@menu
+* Raising Errors::
+* Catching Errors::
+* Recovering From Errors::
+@end menu
+
+@node Raising Errors
+@subsection Raising Errors
+
+The most common use of errors is for checking input arguments to
+functions.  The following example calls the @code{error} function if
+the function @code{f} is called without any input arguments.
+
+@example
+@group
+function f (arg1)
+  if (nargin == 0)
+    error ("not enough input arguments");
+  endif
+endfunction
+@end group
+@end example
+
+When the @code{error} function is called, it prints the given message
+and returns to the Octave prompt.  This means that no code following
+a call to @code{error} will be executed.
+
+@DOCSTRING(error)
+
+Since it is common to use errors when there is something wrong with
+the input to a function, Octave supports functions to simplify such code.
+When the @code{print_usage} function is called, it reads the help text
+of the function calling @code{print_usage}, and presents a useful error.
+If the help text is written in Texinfo it is possible to present an
+error message that only contains the function prototypes as described
+by the @code{@@deftypefn} parts of the help text.  When the help text
+isn't written in Texinfo, the error message contains the entire help
+message.
+
+Consider the following function.
+
+@example
+@group
+## -*- texinfo -*-
+## @@deftypefn @{Function File@} f (@@var@{arg1@})
+## Function help text goes here@dots{}
+## @@end deftypefn
+function f (arg1)
+  if (nargin == 0)
+    print_usage ();
+  endif
+endfunction
+@end group
+@end example
+
+@noindent
+When it is called with no input arguments it produces the following
+error.
+
+@example
+@group
+f ()
+
+@print{}  error: Invalid call to f.  Correct usage is:
+@print{}
+@print{}   -- Function File: f (ARG1)
+@print{}
+@print{}
+@print{}  Additional help for built-in functions and operators is
+@print{}  available in the online version of the manual.  Use the command
+@print{}  `doc <topic>' to search the manual index.
+@print{}
+@print{}  Help and information about Octave is also available on the WWW
+@print{}  at http://www.octave.org and via the help@@octave.org
+@print{}  mailing list.
+@end group
+@end example
+
+@DOCSTRING(print_usage)
+
+@DOCSTRING(beep)
+
+@DOCSTRING(beep_on_error)
+
+@node Catching Errors
+@subsection Catching Errors
+
+When an error occurs, it can be detected and handled using the
+@code{try} statement as described in @ref{The try Statement}.
+As an example, the following piece of code counts the number of errors
+that occurs during a @code{for} loop.
+
+@example
+@group
+number_of_errors = 0;
+for n = 1:100
+  try
+    @dots{}
+  catch
+    number_of_errors++;
+  end_try_catch
+endfor
+@end group
+@end example
+
+The above example treats all errors the same.  In many situations it
+can however be necessary to discriminate between errors, and take
+different actions depending on the error.  The @code{lasterror}
+function returns a structure containing information about the last
+error that occurred.  As an example, the code above could be changed
+to count the number of errors related to the @samp{*} operator.
+
+@example
+@group
+number_of_errors = 0;
+for n = 1:100
+  try
+    @dots{}
+  catch
+    msg = lasterror.message;
+    if (strfind (msg, "operator *"))
+      number_of_errors++;
+    endif
+  end_try_catch
+endfor
+@end group
+@end example
+
+@noindent
+Alternatively, the output of the @code{lasterror} function can be found
+in a variable indicated immediately after the @code{catch} keyword, as
+in the example below showing how to redirect an error as a warning:
+
+@example
+@group
+try
+  @dots{}
+catch err
+  warning(err.identifier, err.message);
+  @dots{}
+end_try_catch
+@end group
+@end example
+
+@DOCSTRING(lasterror)
+
+@DOCSTRING(lasterr)
+
+It is also possible to assign an identification string to an error.
+If an error has such an ID the user can catch this error
+as will be shown in the next example.  To assign an ID to an error,
+simply call @code{error} with two string arguments, where the first
+is the identification string, and the second is the actual error.  Note
+that error IDs are in the format @qcode{"NAMESPACE:ERROR-NAME"}.  The namespace
+@qcode{"Octave"} is used for Octave's own errors.  Any other string is available
+as a namespace for user's own errors.
+
+The next example counts indexing errors.  The errors are caught using the
+field identifier of the structure returned by the function @code{lasterror}.
+
+@example
+@group
+number_of_errors = 0;
+for n = 1:100
+  try
+    @dots{}
+  catch
+    id = lasterror.identifier;
+    if (strcmp (id, "Octave:invalid-indexing"))
+      number_of_errors++;
+    endif
+  end_try_catch
+endfor
+@end group
+@end example
+
+The functions distributed with Octave can issue one of the following
+errors.
+
+@DOCSTRING(error_ids)
+
+When an error has been handled it is possible to raise it again.  This
+can be useful when an error needs to be detected, but the program should
+still abort.  This is possible using the @code{rethrow} function.  The
+previous example can now be changed to count the number of errors
+related to the @samp{*} operator, but still abort if another kind of
+error occurs.
+
+@example
+@group
+number_of_errors = 0;
+for n = 1:100
+  try
+    @dots{}
+  catch
+    msg = lasterror.message;
+    if (strfind (msg, "operator *"))
+      number_of_errors++;
+    else
+      rethrow (lasterror);
+    endif
+  end_try_catch
+endfor
+@end group
+@end example
+
+@DOCSTRING(rethrow)
+
+@c FIXME: I have no idea what the rest of the functions are used for...
+
+@DOCSTRING(errno)
+
+@DOCSTRING(errno_list)
+
+@node Recovering From Errors
+@subsection Recovering From Errors
+
+Octave provides several ways of recovering from errors.  There are
+@code{try}/@code{catch} blocks,
+@code{unwind_protect}/@code{unwind_protect_cleanup} blocks,
+and finally the @code{onCleanup} command.
+
+The @code{onCleanup} command associates an ordinary Octave variable (the
+trigger) with an arbitrary function (the action).  Whenever the Octave variable
+ceases to exist---whether due to a function return, an error, or simply because
+the variable has been removed with @code{clear}---then the assigned function
+is executed.
+
+The function can do anything necessary for cleanup such as closing open file
+handles, printing an error message, or restoring global variables to their
+initial values.  The last example is a very convenient idiom for Octave code.
+For example:
+
+@example
+@group
+function rand42
+  old_state = rand ("state");
+  restore_state = onCleanup (@@() rand ("state", old_state));
+  rand ("state", 42);
+  @dots{}
+endfunction  # rand generator state restored by onCleanup
+@end group
+@end example
+
+@DOCSTRING(onCleanup)
+
+@node Handling Warnings
+@section Handling Warnings
+
+Like an error, a warning is issued when something unexpected happens.
+Unlike an error, a warning doesn't abort the currently running program.
+A simple example of a warning is when a number is divided by zero.  In
+this case Octave will issue a warning and assign the value @code{Inf}
+to the result.
+
+@example
+@group
+a = 1/0
+     @print{} warning: division by zero
+     @result{} a = Inf
+@end group
+@end example
+
+@menu
+* Issuing Warnings::
+* Enabling and Disabling Warnings::
+@end menu
+
+@node Issuing Warnings
+@subsection Issuing Warnings
+
+It is possible to issue warnings from any code using the @code{warning}
+function.  In its most simple form, the @code{warning} function takes a
+string describing the warning as its input argument.  As an example,
+the following code controls if the variable @samp{a} is non-negative,
+and if not issues a warning and sets @samp{a} to zero.
+
+@example
+@group
+a = -1;
+if (a < 0)
+  warning ("'a' must be non-negative.  Setting 'a' to zero.");
+  a = 0;
+endif
+     @print{} 'a' must be non-negative.  Setting 'a' to zero.
+@end group
+@end example
+
+Since warnings aren't fatal to a running program, it is not possible
+to catch a warning using the @code{try} statement or something similar.
+It is however possible to access the last warning as a string using the
+@code{lastwarn} function.
+
+It is also possible to assign an identification string to a warning.
+If a warning has such an ID the user can enable and disable this warning
+as will be described in the next section.  To assign an ID to a warning,
+simply call @code{warning} with two string arguments, where the first
+is the identification string, and the second is the actual warning.  Note
+that warning IDs are in the format @qcode{"NAMESPACE:WARNING-NAME"}.  The
+namespace @qcode{"Octave"} is used for Octave's own warnings.  Any other string
+is available as a namespace for user's own warnings.
+
+@DOCSTRING(warning)
+
+@DOCSTRING(lastwarn)
+
+The functions distributed with Octave can issue one of the following
+warnings.
+
+@DOCSTRING(warning_ids)
+
+@node Enabling and Disabling Warnings
+@subsection Enabling and Disabling Warnings
+
+The @code{warning} function also allows you to control which warnings
+are actually printed to the screen.  If the @code{warning} function
+is called with a string argument that is either @qcode{"on"} or @qcode{"off"}
+all warnings will be enabled or disabled.
+
+It is also possible to enable and disable individual warnings through
+their string identifications.  The following code will issue a warning
+
+@example
+@group
+warning ("example:non-negative-variable",
+         "'a' must be non-negative.  Setting 'a' to zero.");
+@end group
+@end example
+
+@noindent
+while the following won't issue a warning
+
+@example
+@group
+warning ("off", "example:non-negative-variable");
+warning ("example:non-negative-variable",
+         "'a' must be non-negative.  Setting 'a' to zero.");
+@end group
+@end example
+
+

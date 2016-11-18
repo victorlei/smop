@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Octave: Formatted Output</title>
+
+<meta name="description" content="GNU Octave: Formatted Output">
+<meta name="keywords" content="GNU Octave: Formatted Output">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" rel="up" title="C-Style I/O Functions">
+<link href="Output-Conversion-for-Matrices.html#Output-Conversion-for-Matrices" rel="next" title="Output Conversion for Matrices">
+<link href="Line_002dOriented-Input.html#Line_002dOriented-Input" rel="prev" title="Line-Oriented Input">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Formatted-Output"></a>
+<div class="header">
+<p>
+Next: <a href="Output-Conversion-for-Matrices.html#Output-Conversion-for-Matrices" accesskey="n" rel="next">Output Conversion for Matrices</a>, Previous: <a href="Line_002dOriented-Input.html#Line_002dOriented-Input" accesskey="p" rel="prev">Line-Oriented Input</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Formatted-Output-1"></a>
+<h4 class="subsection">14.2.4 Formatted Output</h4>
+
+<p>This section describes how to call <code>printf</code> and related functions.
+</p>
+<p>The following functions are available for formatted output.  They are
+modeled after the C language functions of the same name, but they
+interpret the format template differently in order to improve the
+performance of printing vector and matrix values.
+</p>
+<p>Implementation Note: For compatibility with <small>MATLAB</small>, escape sequences in
+the template string (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are
+expanded even when the template string is defined with single quotes.
+</p>
+<a name="XREFprintf"></a><dl>
+<dt><a name="index-printf"></a>Built-in Function: <em></em> <strong>printf</strong> <em>(<var>template</var>, &hellip;)</em></dt>
+<dd><p>Print optional arguments under the control of the template string
+<var>template</var> to the stream <code>stdout</code> and return the number of
+characters printed.
+</p>
+<p>See the Formatted Output section of the GNU Octave manual for a
+complete description of the syntax of the template string.
+</p>
+<p>Implementation Note: For compatibility with <small>MATLAB</small>, escape sequences in
+the template string (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are
+expanded even when the template string is defined with single quotes.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfprintf">fprintf</a>, <a href="#XREFsprintf">sprintf</a>, <a href="Formatted-Input.html#XREFscanf">scanf</a>.
+</p></dd></dl>
+
+
+<a name="XREFfprintf"></a><dl>
+<dt><a name="index-fprintf"></a>Built-in Function: <em></em> <strong>fprintf</strong> <em>(<var>fid</var>, <var>template</var>, &hellip;)</em></dt>
+<dt><a name="index-fprintf-1"></a>Built-in Function: <em></em> <strong>fprintf</strong> <em>(<var>template</var>, &hellip;)</em></dt>
+<dt><a name="index-fprintf-2"></a>Built-in Function: <em><var>numbytes</var> =</em> <strong>fprintf</strong> <em>(&hellip;)</em></dt>
+<dd><p>This function is equivalent to <code>printf</code>, except that the output is
+written to the file descriptor <var>fid</var> instead of <code>stdout</code>.
+</p>
+<p>If <var>fid</var> is omitted, the output is written to <code>stdout</code> making the
+function exactly equivalent to <code>printf</code>.
+</p>
+<p>The optional output returns the number of bytes written to the file.
+</p>
+<p>Implementation Note: For compatibility with <small>MATLAB</small>, escape sequences in
+the template string (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are
+expanded even when the template string is defined with single quotes.
+</p>
+<p><strong>See also:</strong> <a href="Simple-Output.html#XREFfputs">fputs</a>, <a href="Simple-File-I_002fO.html#XREFfdisp">fdisp</a>, <a href="Binary-I_002fO.html#XREFfwrite">fwrite</a>, <a href="Formatted-Input.html#XREFfscanf">fscanf</a>, <a href="#XREFprintf">printf</a>, <a href="#XREFsprintf">sprintf</a>, <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>.
+</p></dd></dl>
+
+
+<a name="XREFsprintf"></a><dl>
+<dt><a name="index-sprintf"></a>Built-in Function: <em></em> <strong>sprintf</strong> <em>(<var>template</var>, &hellip;)</em></dt>
+<dd><p>This is like <code>printf</code>, except that the output is returned as a
+string.
+</p>
+<p>Unlike the C library function, which requires you to provide a suitably
+sized string as an argument, Octave&rsquo;s <code>sprintf</code> function returns the
+string, automatically sized to hold all of the items converted.
+</p>
+<p>Implementation Note: For compatibility with <small>MATLAB</small>, escape sequences in
+the template string (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are
+expanded even when the template string is defined with single quotes.
+</p>
+<p><strong>See also:</strong> <a href="#XREFprintf">printf</a>, <a href="#XREFfprintf">fprintf</a>, <a href="Formatted-Input.html#XREFsscanf">sscanf</a>.
+</p></dd></dl>
+
+
+<p>The <code>printf</code> function can be used to print any number of arguments.
+The template string argument you supply in a call provides
+information not only about the number of additional arguments, but also
+about their types and what style should be used for printing them.
+</p>
+<p>Ordinary characters in the template string are simply written to the
+output stream as-is, while <em>conversion specifications</em> introduced by
+a &lsquo;<samp>%</samp>&rsquo; character in the template cause subsequent arguments to be
+formatted and written to the output stream.  For example,
+<a name="index-conversion-specifications-_0028printf_0029"></a>
+</p>
+<div class="example">
+<pre class="example">pct = 37;
+filename = &quot;foo.txt&quot;;
+printf (&quot;Processed %d%% of '%s'.\nPlease be patient.\n&quot;,
+        pct, filename);
+</pre></div>
+
+<p>produces output like
+</p>
+<div class="example">
+<pre class="example">Processed 37% of 'foo.txt'.
+Please be patient.
+</pre></div>
+
+<p>This example shows the use of the &lsquo;<samp>%d</samp>&rsquo; conversion to specify that a
+scalar argument should be printed in decimal notation, the &lsquo;<samp>%s</samp>&rsquo;
+conversion to specify printing of a string argument, and the &lsquo;<samp>%%</samp>&rsquo;
+conversion to print a literal &lsquo;<samp>%</samp>&rsquo; character.
+</p>
+<p>There are also conversions for printing an integer argument as an
+unsigned value in octal, decimal, or hexadecimal radix (&lsquo;<samp>%o</samp>&rsquo;,
+&lsquo;<samp>%u</samp>&rsquo;, or &lsquo;<samp>%x</samp>&rsquo;, respectively); or as a character value
+(&lsquo;<samp>%c</samp>&rsquo;).
+</p>
+<p>Floating-point numbers can be printed in normal, fixed-point notation
+using the &lsquo;<samp>%f</samp>&rsquo; conversion or in exponential notation using the
+&lsquo;<samp>%e</samp>&rsquo; conversion.  The &lsquo;<samp>%g</samp>&rsquo; conversion uses either &lsquo;<samp>%e</samp>&rsquo;
+or &lsquo;<samp>%f</samp>&rsquo; format, depending on what is more appropriate for the
+magnitude of the particular number.
+</p>
+<p>You can control formatting more precisely by writing <em>modifiers</em>
+between the &lsquo;<samp>%</samp>&rsquo; and the character that indicates which conversion
+to apply.  These slightly alter the ordinary behavior of the conversion.
+For example, most conversion specifications permit you to specify a
+minimum field width and a flag indicating whether you want the result
+left- or right-justified within the field.
+</p>
+<p>The specific flags and modifiers that are permitted and their
+interpretation vary depending on the particular conversion.  They&rsquo;re all
+described in more detail in the following sections.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Output-Conversion-for-Matrices.html#Output-Conversion-for-Matrices" accesskey="n" rel="next">Output Conversion for Matrices</a>, Previous: <a href="Line_002dOriented-Input.html#Line_002dOriented-Input" accesskey="p" rel="prev">Line-Oriented Input</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

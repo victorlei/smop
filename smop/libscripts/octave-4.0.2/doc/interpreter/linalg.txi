@@ -1,0 +1,221 @@
+@c Copyright (C) 1996-2015 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Linear Algebra
+@chapter Linear Algebra
+@cindex linear algebra
+
+This chapter documents the linear algebra functions provided in Octave.
+Reference material for many of these functions may be found in
+@nospell{Golub and Van Loan}, @cite{Matrix Computations, 2nd Ed.},
+Johns Hopkins, 1989, and in the @cite{@sc{lapack} Users' Guide}, SIAM, 1992.
+The @cite{@sc{lapack} Users' Guide} is available at:
+@cite{http://www.netlib.org/lapack/lug/}
+
+A common text for engineering courses is @nospell{G. Strang},
+@cite{Linear Algebra and Its Applications, 4th Edition}. It has become a
+widespread reference for linear algebra.  An alternative is P. Lax
+@cite{Linear Algebra and Its Applications}, and also is a good choice.  It
+claims to be suitable for high school students with substantial mathematical
+interests as well as first-year undergraduates.
+
+@menu
+* Techniques Used for Linear Algebra::
+* Basic Matrix Functions::
+* Matrix Factorizations::
+* Functions of a Matrix::
+* Specialized Solvers::
+@end menu
+
+@node Techniques Used for Linear Algebra
+@section Techniques Used for Linear Algebra
+@cindex linear algebra, techniques
+
+Octave includes a polymorphic solver that selects an appropriate matrix
+factorization depending on the properties of the matrix itself.
+Generally, the cost of determining the matrix type is small relative to
+the cost of factorizing the matrix itself.  In any case the matrix type
+is cached once it is calculated so that it is not re-determined each
+time it is used in a linear equation.
+
+The selection tree for how the linear equation is solved or a matrix
+inverse is formed is given by:
+
+@enumerate 1
+@item If the matrix is upper or lower triangular sparse use a forward or
+backward substitution using the @sc{lapack} xTRTRS function, and goto 4.
+
+@c Permuted triangular matrices currently disabled in the code
+@c
+@c @item If the matrix is a upper triangular matrix with column permutations
+@c or lower triangular matrix with row permutations, perform a forward or
+@c backward substitution, and goto 5.
+
+@item If the matrix is square, Hermitian with a real positive diagonal,
+attempt Cholesky@tie{}factorization using the @sc{lapack} xPOTRF function.
+
+@item If the Cholesky@tie{}factorization failed or the matrix is not
+Hermitian with a real positive diagonal, and the matrix is square, factorize
+using the @sc{lapack} xGETRF function.
+
+@item If the matrix is not square, or any of the previous solvers flags
+a singular or near singular matrix, find a least squares solution using
+the @sc{lapack} xGELSD function.
+@end enumerate
+
+The user can force the type of the matrix with the @code{matrix_type}
+function.  This overcomes the cost of discovering the type of the matrix.
+However, it should be noted that identifying the type of the matrix incorrectly
+will lead to unpredictable results, and so @code{matrix_type} should be
+used with care.
+
+It should be noted that the test for whether a matrix is a candidate for
+Cholesky@tie{}factorization, performed above, and by the @code{matrix_type}
+function, does not make certain that the matrix is
+Hermitian.  However, the attempt to factorize the matrix will quickly
+detect a non-Hermitian matrix.
+
+@node Basic Matrix Functions
+@section Basic Matrix Functions
+@cindex matrix functions, basic
+
+@DOCSTRING(balance)
+
+@DOCSTRING(bandwidth)
+
+@DOCSTRING(cond)
+
+@DOCSTRING(det)
+
+@DOCSTRING(eig)
+
+@DOCSTRING(givens)
+
+@DOCSTRING(planerot)
+
+@DOCSTRING(inv)
+
+@DOCSTRING(linsolve)
+
+@DOCSTRING(matrix_type)
+
+@DOCSTRING(norm)
+
+@DOCSTRING(null)
+
+@DOCSTRING(orth)
+
+@DOCSTRING(mgorth)
+
+@DOCSTRING(pinv)
+@cindex pseudoinverse
+
+@DOCSTRING(rank)
+
+@DOCSTRING(rcond)
+
+@DOCSTRING(trace)
+
+@DOCSTRING(rref)
+
+@node Matrix Factorizations
+@section Matrix Factorizations
+@cindex matrix factorizations
+
+@DOCSTRING(chol)
+
+@DOCSTRING(cholinv)
+
+@DOCSTRING(chol2inv)
+
+@DOCSTRING(cholupdate)
+
+@DOCSTRING(cholinsert)
+
+@DOCSTRING(choldelete)
+
+@DOCSTRING(cholshift)
+
+@DOCSTRING(hess)
+
+@DOCSTRING(lu)
+
+@DOCSTRING(luupdate)
+
+@DOCSTRING(qr)
+
+@DOCSTRING(qrupdate)
+
+@DOCSTRING(qrinsert)
+
+@DOCSTRING(qrdelete)
+
+@DOCSTRING(qrshift)
+
+@DOCSTRING(qz)
+
+@DOCSTRING(qzhess)
+
+@DOCSTRING(schur)
+
+@DOCSTRING(rsf2csf)
+
+@DOCSTRING(ordschur)
+
+@DOCSTRING(subspace)
+
+@DOCSTRING(svd)
+
+@DOCSTRING(svd_driver)
+
+@c FIXME -- should there be a new section here?
+
+@DOCSTRING(housh)
+
+@DOCSTRING(krylov)
+
+@node Functions of a Matrix
+@section Functions of a Matrix
+@cindex matrix, functions of
+
+@DOCSTRING(expm)
+
+@DOCSTRING(logm)
+
+@DOCSTRING(sqrtm)
+
+@DOCSTRING(kron)
+
+@DOCSTRING(blkmm)
+
+@DOCSTRING(sylvester)
+
+@node Specialized Solvers
+@section Specialized Solvers
+@cindex matrix, specialized solvers
+
+@DOCSTRING(bicg)
+
+@DOCSTRING(bicgstab)
+
+@DOCSTRING(cgs)
+
+@DOCSTRING(gmres)
+
+@DOCSTRING(qmr)
+

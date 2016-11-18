@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (C) 2013-2015 Carnë Draug
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<application>
+  <id type="desktop">%OCTAVE_DESKTOP_FILE%</id>
+  <licence>GPLv3+</licence>
+  <name>GNU Octave</name>
+  <summary>Interactive programming environment for numerical computations</summary>
+  <description>
+    <p>
+      GNU Octave is a high-level interpreted language, primarily intended for
+      numerical computations. It provides capabilities for the numerical
+      solution of linear and nonlinear problems, and for performing other
+      numerical experiments. It also provides extensive graphics capabilities
+      for data visualization and manipulation. Octave is normally used through
+      its interactive command line interface, but it can also be used to write
+      non-interactive programs. The Octave language is quite similar to
+      Matlab so that most programs are easily portable.
+    </p>
+    <p>
+      Octave has extensive tools for solving common numerical linear algebra
+      problems, finding the roots of nonlinear equations, integrating ordinary
+      functions, manipulating polynomials, and integrating ordinary
+      differential and differential-algebraic equations. It is easily
+      extensible and customizable via user-defined functions written in
+      Octave's own language, or using dynamically loaded modules written in
+      C++, C, Fortran, or other languages.
+    </p>
+  </description>
+  <screenshots>
+    <!--
+      From: http://people.freedesktop.org/~hughsient/appdata/
+      All screenshots should have a 16:9 aspect ratio, and should have
+      a width that is no smaller than 620px. Screenshots should be in PNG
+      or JPEG format. PNG is the preferred format.
+    -->
+    <screenshot type="default">http://www.gnu.org/software/octave/images/screenshot.png</screenshot>
+  </screenshots>
+  <url type="homepage">http://www.octave.org</url>
+  <updatecontact>maintainers@octave.org</updatecontact>
+  <project_group>GNU</project_group>
+</application>
