@@ -8,7 +8,7 @@ CYTHON = cython
 PYTHON = python
 CAT    = cat
 XFILES = -x white.m,summer.m,spring.m,rainbow.m,prism.m,pink.m,ocean.m,lines.m,jet.m,__gnuplot_open_stream__.m
-FLAGS  = -v -E-1
+FLAGS  = -v
 SMOP   = $(PYTHON) ../main.py
 
 V = 2.7

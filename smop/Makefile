@@ -12,12 +12,13 @@ XFILES = -x inputParser
 #quadgk.m,quadl.m,triplequad.m,dblquad.m
 #installed_packages.m,stft.m,legend.m,__plt_get_axis_arg__.m,rotate.m,print.m,__ghostscript__.m,__gnuplot_print__.m,set.m,edit.m,what.m,usejava.m,javachk.m,__go_draw_axes__.m,interp3.m,interp2.m,interpn.m,randi.m,interp1.m,spdiags.m,importdata.m,stemleaf.m
 FLAGS  = 
-MYFLAGS=--ignore=999
+MYFLAGS=
 
 V = 2.7
 
 all:
 	make -B FLAGS=     liboctave.py | wc
+foo:
 	make -B FLAGS=-C   liboctave.py | wc
 	make -B FLAGS=-N   liboctave.py | wc
 	make -B FLAGS=-T   liboctave.py | wc
