@@ -1,7 +1,10 @@
 import os
 from setuptools import setup
 
-__VERSION__ = "0.32"
+try:
+    __VERSION__ = os.popen("git describe --tags", "r").read().strip()
+except:
+    __VERSION__ = "0.32"
 
 open("smop/version.py","w").write("__version__='%s'\n" % __VERSION__)
 
