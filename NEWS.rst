@@ -1,6 +1,22 @@
 =============
 Release notes
 =============
+
+    Version 0.33 is out
+
+    New option -c --code 
+        Quickly check how a particular statement
+        is translated. Option -c implies -o- .
+
+    Renamed option -D to -d (--debug).
+
+    New regression count:
+
+        $ cd libscripts && make regresss
+
+    Currently 14 regressions
+
+        
 November 18, 2016
     Version 0.31 is out
 

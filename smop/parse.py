@@ -838,25 +838,25 @@ parser = yacc.yacc(start="top")
 
 @exceptions
 def parse(buf):
+    if "P" in options.debug:
+        import pdb
+        pdb.set_trace()
     global new_lexer  # used in main.main()
     new_lexer = lexer.new()
     p = parser.parse(
         buf, tracking=1, debug=options.debug_parser, lexer=new_lexer)
 
-    if "1" in options.debug:
+    if "P" in options.debug:
         for i, pi in enumerate(p):
             print i, pi.__class__.__name__, pi._backend()
 
-    if "p" in options.debug:
-        import pdb
-        pdb.set_trace()
+#    for i in range(len(p)):
+#        if isinstance(p[i], node.func_stmt):
+#            break
+#    else:
+#        return None  # p[i] is a func decl
 
-    for i in range(len(p)):
-        if isinstance(p[i], node.func_stmt):
-            break
-    else:
-        return None  # p[i] is a func decl
-
+    return p
 #    for j in range(i+1,len(p)):
 #        if i < j and isinstance(p[j], node.func_stmt):
 #            p.insert(j,node.return_stmt(ret=p[i].ret))
@@ -868,4 +868,3 @@ def parse(buf):
 #        for i,pi in enumerate(p):
 #            print i,pi.__class__.__name__,str(pi)[:50]
 
-    return p

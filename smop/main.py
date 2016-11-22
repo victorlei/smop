@@ -1,6 +1,7 @@
 # SMOP -- Simple Matlab/Octave to Python compiler
 # Copyright 2011-2016 Victor Leikehman
 
+import tempfile
 import fnmatch
 import tarfile
 import sys
@@ -25,14 +26,26 @@ def print_header(fp):
 
 
 def main():
-    if not options.filelist and not options.archive:
-        options.parser.print_help()
-        return
-    if not options.filelist and options.archive:
-        tar = tarfile.open(options.archive)
-        options.filelist = tar.getnames()
-    else:
-        tar = None
+    tar = None
+    if "M" in options.debug:
+        import pdb
+        pdb.set_trace()
+    if not options.filelist:
+        if options.archive:
+            tar = tarfile.open(options.archive)
+            options.filelist = tar.getnames()
+        elif options.code:
+            tmp = tempfile.NamedTemporaryFile(suffix=".m")
+            tmp.file.write(options.code)
+            tmp.file.flush()
+            options.filelist = [tmp.name]
+            if options.output:
+                print "Conflicting options -c and -o"
+                return
+            options.output = "-"
+        else:
+            options.parser.print_help()
+            return
     if options.output == "-":
         fp = sys.stdout
     elif options.output:
@@ -54,7 +67,7 @@ def main():
                           options.filename)
                 continue
             if basename(options.filename) in options.xfiles:
-                if options.verbose and "a3" in options.debug:
+                if options.verbose:
                     print "\tExcluded: '%s'" % options.filename
                 continue
             if tar:
@@ -81,7 +94,7 @@ def main():
 
         except:
             print 40*"="
-            traceback.print_exc()
+            traceback.print_exc(file=sys.stdout)
 
 if __name__ == "__main__":
     main()

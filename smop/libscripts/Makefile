@@ -16,10 +16,14 @@ V = 2.7
 all: pyfiles
 	$(PYTHON) -m py_compile *.py
 
+regress: 
+	$(SMOP) $(FLAGS) $(MFILES) | grep Error | wc
+
 .PHONY: all pyfiles clean
 
 pyfiles: 
 	$(SMOP) $(FLAGS) $(MFILES)
+
 
 wall: $(PYFILES)
 	$(CAT) *.py > libscripts.py

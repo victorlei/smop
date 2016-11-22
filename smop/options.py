@@ -28,6 +28,7 @@ Example:
     formatter_class=argparse.RawTextHelpFormatter,
     )
 
+parser.add_argument("-c", "--code")
 
 parser.add_argument("-a", "--archive",
                     metavar="archive.tar",
@@ -92,12 +93,11 @@ parser.add_argument("-x", "--exclude",
                     type=str,
 help="""comma-separated list of files to ignore""")
 
-parser.add_argument("-D", "--debug", type=str,
+parser.add_argument("-d", "--debug",
 help="""Colon-separated codes.
-a Main
-b Lex
-c Parse
-1 After parsing
+M Main
+L Lex
+P Parse
 """)
 
 parser.add_argument("-L", "--debug-lexer",
