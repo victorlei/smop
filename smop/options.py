@@ -76,10 +76,10 @@ generates files filex.py filey.py and filez.py""")
                     
 # Option -l can be specified several times.""")
 
-# parser.add_argument("-s", "--strict",
-#                     action="store_true",
-# help="""stop after first syntax error (by
-# default compiles other .m files)""")
+parser.add_argument("-s", "--strict",
+                    action="store_true",
+help="""stop after first syntax error (by
+default compiles other .m files)""")
 
 parser.add_argument("-V", '--version',
                     action='version',

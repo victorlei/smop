@@ -57,6 +57,7 @@ def main():
     if options.glob_pattern:
         options.filelist = fnmatch.filter(options.filelist,
                                           options.glob_pattern)
+    nerrors = 0
     for i, options.filename in enumerate(options.filelist):
         try:
             if options.verbose:
@@ -91,10 +92,15 @@ def main():
                     fp.write(s)
             else:
                 fp.write(s)
-
+        except KeyboardInterrupt:
+            break
         except:
-            print 40*"="
+            nerrors += 1
             traceback.print_exc(file=sys.stdout)
+            if options.strict:
+                break
+        finally:
+            print "Errors:", nerrors
 
 if __name__ == "__main__":
     main()

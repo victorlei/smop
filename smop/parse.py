@@ -22,15 +22,6 @@ import options
 # D def    a=...  or   [a,b,c]=...
 # U update a(b)=...  or  [a(b) c(d)]=...
 
-
-class error(Exception):
-    pass
-
-
-class syntax_error(error):
-    pass
-
-
 precedence = (
     ("right", "COMMA"),
     ("right", "DOTDIVEQ", "DOTMULEQ", "EQ", "EXPEQ", "MULEQ", "MINUSEQ",
@@ -225,6 +216,7 @@ def p_elseif_stmt(p):
     elseif_stmt :
                 | ELSE stmt_list_opt
                 | ELSEIF expr sep stmt_list_opt elseif_stmt
+                | ELSEIF LPAREN expr RPAREN stmt_list_opt elseif_stmt
     """
     if len(p) == 1:
         p[0] = node.stmt_list()
@@ -232,6 +224,8 @@ def p_elseif_stmt(p):
         p[0] = p[2]
     elif len(p) == 6:
         p[0] = node.if_stmt(cond_expr=p[2], then_stmt=p[4], else_stmt=p[5])
+    elif len(p) == 7:
+        p[0] = node.if_stmt(cond_expr=p[3], then_stmt=p[5], else_stmt=p[6])
     else:
         assert 0
 
@@ -596,7 +590,12 @@ def p_if_stmt(p):
     if_stmt : IF expr sep stmt_list_opt elseif_stmt END_STMT
             | IF LPAREN expr RPAREN stmt_list_opt elseif_stmt END_STMT
     """
-    p[0] = node.if_stmt(cond_expr=p[2], then_stmt=p[4], else_stmt=p[5])
+    if len(p) == 7:
+        p[0] = node.if_stmt(cond_expr=p[2], then_stmt=p[4], else_stmt=p[5])
+    elif len(p) == 8:
+        p[0] = node.if_stmt(cond_expr=p[3], then_stmt=p[5], else_stmt=p[6])
+    else:
+        assert 0
 
 
 @exceptions
@@ -831,7 +830,7 @@ def p_error(p):
         parser.errok()
         return
     raise_exception(SyntaxError,
-                    ('Unexpected "%s"' % p.value),
+                    ('Unexpected "%s" (parser)' % p.value),
                     new_lexer)
 parser = yacc.yacc(start="top")
 

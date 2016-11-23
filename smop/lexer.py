@@ -315,7 +315,7 @@ def new():
         pass
 
     def t_error(t):
-        raise_exception(SyntaxError, ('Unexpected "%s"' % t.value), t.lexer)
+        raise_exception(SyntaxError, ('Unexpected "%s" (lexer)' % t.value), t.lexer)
 
     lexer = lex.lex(reflags=re.MULTILINE)
     lexer.brackets = 0  # count open square brackets
