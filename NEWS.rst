@@ -2,7 +2,10 @@
 Release notes
 =============
 
-    Version 0.33 is out
+December 3, 2016
+    Version 0.34 is out
+
+    Workaround: parfor is handled as plain for.
 
     New option -c --code 
         Quickly check how a particular statement

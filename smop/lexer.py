@@ -131,6 +131,8 @@ def new():
 
     @TOKEN(r"(\.%s)?%s" % (ws0, id))
     def t_IDENT(t):
+        if t.value == "parfor":
+            t.value = "for"
         if t.value == "classdef":
             raise_exception(SyntaxError,
                             "Not implemented: %s" % t.value,
