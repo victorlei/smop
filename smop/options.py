@@ -19,7 +19,7 @@ source m-file unless explicitly set with -o .""",
 
 epilog="""
 Example:
-    $ wget ftp://ftp.gnu.org/ftp/octave/octave-4.0.2.tar.gz
+    $ wget ftp://ftp.gnu.org/gnu/octave/octave-4.0.2.tar.gz
     $ smop -a octave-4.0.2.tar.gz -g '*/scripts/*.m'
     $ ls -1 *.py | wc
     $ python -m py_compile *.py
