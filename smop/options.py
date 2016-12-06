@@ -113,6 +113,30 @@ parser.add_argument("filelist", nargs="*",
 
 #parser.add_argument("--graphviz", action="store_true")
 
+parser.add_argument("-D","--delete-on-error",
+                    action="store_false",
+help="""Borrowed from gnu make option of
+the same name and functionality. After
+translation to python, the resulting
+py-files undergo two checks: (a) byte-
+compilation using the standard py_compile
+module. and (b) loading using the builtin
+evalfile function.  By default,
+broken py-files are kept alive to allow
+their examination and debugging. 
+
+    $ smop -v --delete-on-error *.m
+    $ rm -f libscripts.py
+    $ cat *.py > libscripts.py
+    $ python
+...
+    >>> from libscripts import *
+    >>> factorial(9)
+    362880.0
+    >>> primes(9)
+Oops, wrong results.
+""")
+
 parser.add_argument("-H","--no-header",
                     action="store_true",
 help="""use it if you plan to concatenate
@@ -129,6 +153,10 @@ help="""discard line-numbering information""")
 parser.add_argument("-B","--no-backend",
                     action="store_true",
 help="omit code generation")
+
+parser.add_argument("-E","--execfile",
+                    action="store_false",
+help="""UNSAFE pass the py-file to execfile""")
 
 parser.add_argument("-R","--no-resolve",
                     action="store_true",

@@ -96,8 +96,13 @@ def main():
                     fp.write(s)
                 try:
                     py_compile.compile(f,doraise=True)
-                except py_compile.PyCompileError:
-                    os.unlink(f)
+                    if options.execfile:
+                        execfile(f)
+                except:
+                    if options.delete-on-error:
+                        os.unlink(f)
+                        if options.verbose:
+                            print "Removed",f
                     raise
             else:
                 fp.write(s)

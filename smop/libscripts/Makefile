@@ -7,26 +7,21 @@ MFILES = $(shell find $(SCRIPTS) -name \*.m -type f)
 CYTHON = cython
 PYTHON = python
 CAT    = cat
-XFILES = -x white.m,summer.m,spring.m,rainbow.m,prism.m,pink.m,ocean.m,lines.m,jet.m,__gnuplot_open_stream__.m
+XFILES = -x fnmatch.m
 FLAGS  = -v
 SMOP   = $(PYTHON) ../main.py
 
 V = 2.7
 
-all: pyfiles
-	$(PYTHON) -m py_compile *.py
+all: 
+	$(SMOP) $(FLAGS) $(XFILES) $(MFILES)
+	rm -f libscripts.py
+	$(CAT) *.py > libscripts.py
 
 regress: 
 	$(SMOP) $(FLAGS) $(MFILES) | grep Error | wc
 
 .PHONY: all pyfiles clean
-
-pyfiles: 
-	$(SMOP) $(FLAGS) $(MFILES)
-
-
-wall: $(PYFILES)
-	$(CAT) *.py > libscripts.py
 
 clean:
 	rm -f libscripts.py *.pyc *.py
