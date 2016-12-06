@@ -113,6 +113,11 @@ parser.add_argument("filelist", nargs="*",
 
 #parser.add_argument("--graphviz", action="store_true")
 
+parser.add_argument("-H","--no-header",
+                    action="store_true",
+help="""use it if you plan to concatenate
+generated files.""")
+
 parser.add_argument("-C","--no-comments",
                     action="store_true",
 help="""discard multiline comments""")
