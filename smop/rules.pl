@@ -7,11 +7,11 @@
 :- op(800,xfy,=:).
 
 prog([
-   let(solver, matlab_function(ai,af,w)),
-   let(nBlocks, matlab_max(matlab_ravel(ai))),
-   let([m,n], matlab_size(ai)),
-   let(ii, [0, 1, 0,-1]),
-   let(jj, [1, 0,-1, 0]),
+%   let(solver, matlab_function(ai,af,w)),
+%   let(nBlocks, matlab_max(matlab_ravel(ai))),
+%   let([m,n], matlab_size(ai)),
+%   let(ii, [0, 1, 0,-1]),
+%   let(jj, [1, 0,-1, 0]),
    let(a,  ai),
    let(mv, [])]).
 
@@ -39,7 +39,7 @@ resolve(let(A,B)) :-
     resolve(B),
     lhs_resolve(A).
 
-resolve(А) :-
+resolve(A) :-
     compound(A),
     compound_name_arguments(A,B,C),
     resolve(B),
