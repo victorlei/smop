@@ -4,6 +4,8 @@
 :- dynamic let/2.
 :- dynamic symtab/2.
  
+:- op(800,xfy,=:).
+
 prog([
    let(solver, matlab_function(ai,af,w)),
    let(nBlocks, matlab_max(matlab_ravel(ai))),
@@ -19,39 +21,58 @@ prog([
 %let(bid, matlab_ceil(matlab_mult(matlab_rand(), nBlocks)))).
 %,    %[i,j] = find(a==bid);
 
-resolve(A,B) :-
+% resolve/2
+% resolve(Expr,Result)
+% Expr --> atom ; number
+% let(A,B) - store B in symtab with key A
+% foo([A,B...] - funcall or arrayref
+% [expr1 ... exprN]
+%
+resolve(A) :-
     atom(A),
-    symtab(A,B).
+    assertz(is_ref(A)).
 
-resolve(A,A) :-
+resolve(A) :-
     number(A).
 
-resolve(let(A,B),B) :-
-    assertz(symtab(A,B)).
+resolve(let(A,B)) :-
+    resolve(B),
+    lhs_resolve(A).
 
-resolve(А,B) :-
+resolve(А) :-
     compound(A),
-    compound_name_arguments(A,Name,Args),
-    symtab(Name,B).
+    compound_name_arguments(A,B,C),
+    resolve(B),
+    resolve(C).
 
-resolve([],[]).
-resolve([A|B],[C|D]) :-
-    resolve(A,C),
-    resolve(B,D).
+resolve([]).
+resolve([A|B]) :-
+    resolve(A),
+    resolve(B).
 
-%matlab_eval([A|B], [C|D]) :- matlab_eval(A,C) , matlab_eval(B,D).
-%pairs_keys_values
-%pairs_values
-%pairs_keys
-%group_pairs_by_key
-%transpose_pairs
-%map_list_to_pairs
-%----
-%assoc_to_list
-%assoc_to_keys
-%empty_assoc
-%is_assoc
-%matlab_eval(A,A) :- number(A) ; string(A).
+%-----
+lhs_resolve(A) :-        % A=...
+    atom(A),
+    assertz(is_def(A)).
+
+lhs_resolve(A) :-
+    number(A).
+
+%lhs_resolve(let(A,B)) :- % A=B...
+%    resolve(B),
+%    lhs_resolve(A).
+
+lhs_resolve(A) :-        % A(B)= ...
+    compound(A),
+    compound_name_arguments(A,B,C),
+    lhs_resolve(B),
+    resolve(C).
+
+lhs_resolve([]).
+lhs_resolve([A|B]) :-
+    lhs_resolve(A),
+    lhs_resolve(B).
+
 %matlab_eval([],[]).
 %matlab_eval([A|B], [C|D]) :- matlab_eval(A,C) , matlab_eval(B,D).
 %
@@ -82,6 +103,10 @@ resolve([A|B],[C|D]) :-
 %rank(matlab_mult(A,B),max(M,N)) :- rank(A,M), rank(B,N).
 %rank(matlab_mult(A,B),R) :- rank(A,M), rank(B,N), R is max(M,N).
 %rank(matlab_mult(A,B),R) :- rank(A,M), rank(B,N), R=M*N.
-rank(matlab_rand,0).
+%rank(matlab_rand,0).
+% 1. resolve (def/use, funcall/arrayref)
+% 2. rank/shape/const
+% 3. optimize/resolve
+% 4. code gen
 
 % vim : syntax=prolog
