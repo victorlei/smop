@@ -99,7 +99,7 @@ def main():
                     if options.execfile:
                         execfile(f)
                 except:
-                    if options.delete-on-error:
+                    if options.delete_on_error:
                         os.unlink(f)
                         if options.verbose:
                             print "Removed",f

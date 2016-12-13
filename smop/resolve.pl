@@ -13,11 +13,34 @@ prog([
    let(a,  ai),
    let(mv, [])]).
 
+% TODO
+% 0. Copy state of is_def/is_ref  --> resolve statements
+% 4, const rank shape
+% 6. SSA
+% 8. Macroexpand
+% 10. parser
+% 12. backend
+do_resolve(A) :-
+    retractall(is_def),
+    retractall(is_ref),
+    resolve(A).
+
+is_unused(A) :-
+    is_def(A),
+    \+ is_ref(A).
+
+is_arrayref(A) :-
+    is_def(A).
+
+is_funcall(A) :- 
+    is_ref(A), 
+    \+ is_def.
+    
 resolve(A) :-
     atom(A),
     !,
-    writeln(A).
-    %assertz(is_ref(A)).
+    writeln(A),
+    assertz(is_ref(A)).
 
 resolve(A) :-
     number(A),
@@ -50,8 +73,8 @@ resolve(A) :-
 lhs_resolve(A) :-        % A=...
     atom(A),
     !,
-    writeln(A).
-%    assertz(is_def(A)).
+    writeln(A),
+    assertz(is_def(A)).
 
 %lhs_resolve(A) :-
 %    number(A).
