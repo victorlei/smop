@@ -7,15 +7,16 @@
 :- dynamic resolve/1.
 :- dynamic do_resolve/1.
 :- dynamic lhs_resolve/1.
- 
+:- op(800,xfy, (=.)).
+
 prog([
-   let(solver, matlab_function(ai,af,w)),
-   let(nBlocks, matlab_max(matlab_ravel(ai))),
-   let([m,n], matlab_size(ai)),
-   let(ii, [0, 1, 0,-1]),
-   let(jj, [1, 0,-1, 0]),
-   let(a,  ai),
-   let(mv, [])]).
+   solver =. matlab_function(ai,af,w),
+   nBlocks =. matlab_max(matlab_ravel(ai)),
+   [m,n] =. matlab_size(ai),
+   ii =. [0, 1, 0,-1],
+   jj =. [1, 0,-1, 0],
+   a =.  ai,
+   mv =. []]).
 
 % b-code down       stack grows right
 % +             +           f      |       |
@@ -70,11 +71,11 @@ resolve(A) :-
     !,
     writeln(A).
 
-resolve(let(A,B)) :-
+resolve(A =. B) :-
     !,
     resolve(B),
     lhs_resolve(A),
-    writeln(let).
+    writeln(=.).
 
 resolve([]) :-
     !,
@@ -89,8 +90,11 @@ resolve(A) :-
     compound(A),
     !,
     compound_name_arguments(A,B,C),
+    %write("A="), writeln(A),
     resolve(B),
+    %write("B="), writeln(B),
     resolve(C),
+    %write("C="), writeln(C),
     writeln("()").
 %--------------------------------
 lhs_resolve(A) :-        % A=...
@@ -102,11 +106,11 @@ lhs_resolve(A) :-        % A=...
 %lhs_resolve(A) :-
 %    number(A).
 
-lhs_resolve(let(A,B)) :- % A=B...
+lhs_resolve(A =. B) :- % A=B...
     !,
     resolve(B),
     lhs_resolve(A),
-    writeln(let).
+    writeln(=.).
 
 lhs_resolve([]) :-
     !,
