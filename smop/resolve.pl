@@ -1,8 +1,12 @@
-:- discontiguous rank/2.
-:- discontiguous shape/2.
-:- discontiguous let/2.
-:- dynamic let/2.
-:- dynamic symtab/2.
+%:- discontiguous is_def/1.
+%:- discontiguous is_def/1.
+%:- discontiguous shape/2.
+%:- discontiguous let/2.
+:- dynamic is_def/1.
+:- dynamic is_ref/1.
+:- dynamic resolve/1.
+:- dynamic do_resolve/1.
+:- dynamic lhs_resolve/1.
  
 prog([
    let(solver, matlab_function(ai,af,w)),
@@ -13,6 +17,23 @@ prog([
    let(a,  ai),
    let(mv, [])]).
 
+% b-code down       stack grows right
+% +             +           f      |       |
+% 2             + 2         f      | x     |
+% 3             + 2 3       f      | x     | y
+% []            + [2,3]     f      | [x,y] |
+% ()            5           f(x,y) |       |
+
+% ?- do_resolve(a=b).
+% =
+% a
+% b
+% []
+% ()
+
+% () apply/2
+% [] list/_
+% =/2
 % TODO
 % 0. Copy state of is_def/is_ref  --> resolve statements
 % 4, const rank shape
@@ -21,9 +42,11 @@ prog([
 % 10. parser
 % 12. backend
 do_resolve(A) :-
-    retractall(is_def),
-    retractall(is_ref),
+    %retractall(is_def(_)),
+    %retractall(is_ref(_)),
     resolve(A).
+    %listing(is_def/1),
+    %listing(is_ref/1).
 
 is_unused(A) :-
     is_def(A),
@@ -68,7 +91,7 @@ resolve(A) :-
     compound_name_arguments(A,B,C),
     resolve(B),
     resolve(C),
-    write(B), length(C,N), writeln(N).
+    writeln("()").
 %--------------------------------
 lhs_resolve(A) :-        % A=...
     atom(A),
@@ -83,7 +106,7 @@ lhs_resolve(let(A,B)) :- % A=B...
     !,
     resolve(B),
     lhs_resolve(A),
-    writeln(letl).
+    writeln(let).
 
 lhs_resolve([]) :-
     !,
@@ -100,6 +123,6 @@ lhs_resolve(A) :-        % A(B)= ...
     compound_name_arguments(A,B,C),
     lhs_resolve(B),
     resolve(C),
-    writeln(B).
+    writeln("()").
 
 % vim : syntax=prolog
