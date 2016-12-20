@@ -1,12 +1,9 @@
-%:- discontiguous is_def/1.
-%:- discontiguous is_def/1.
-%:- discontiguous shape/2.
-%:- discontiguous let/2.
-:- dynamic is_def/1.
-:- dynamic is_ref/1.
+:- dynamic is_definition/1.
+:- dynamic is_reference/1.
 :- dynamic resolve/1.
 :- dynamic do_resolve/1.
 :- dynamic lhs_resolve/1.
+
 :- op(800,xfy, (=.)).
 
 prog([
@@ -42,29 +39,27 @@ prog([
 % 8. Macroexpand
 % 10. parser
 % 12. backend
+
+name_ident(Name,Ident) :-
+    % Given a Name, create ident(Name,Addr)
+    % having brand new Addr.
+    gensym('',Atom),
+    atom_number(Atom,Addr),
+    Ident=ident(Name,Addr),
+    writeln(Ident).
+
+cleanupall :-
+    retractall(is_reference(Ident)),
+    retractall(is_definition(Ident)).
+
 do_resolve(A) :-
-    %retractall(is_def(_)),
-    %retractall(is_ref(_)),
     resolve(A).
-    %listing(is_def/1),
-    %listing(is_ref/1).
 
-is_unused(A) :-
-    is_def(A),
-    \+ is_ref(A).
-
-is_arrayref(A) :-
-    is_def(A).
-
-is_funcall(A) :- 
-    is_ref(A), 
-    \+ is_def.
-    
-resolve(A) :-
-    atom(A),
+resolve(Name) :-
+    atom(Name),
     !,
-    writeln(A),
-    assertz(is_ref(A)).
+    name_ident(Name,Ident),
+    assertz(is_reference(Ident)).
 
 resolve(A) :-
     number(A),
@@ -90,18 +85,15 @@ resolve(A) :-
     compound(A),
     !,
     compound_name_arguments(A,B,C),
-    %write("A="), writeln(A),
     resolve(B),
-    %write("B="), writeln(B),
     resolve(C),
-    %write("C="), writeln(C),
     writeln("()").
-%--------------------------------
-lhs_resolve(A) :-        % A=...
-    atom(A),
+
+lhs_resolve(Name) :-        % A=...
+    atom(Name),
     !,
-    writeln(A),
-    assertz(is_def(A)).
+    name_ident(Name,Ident),
+    assertz(is_definition(Ident)).
 
 %lhs_resolve(A) :-
 %    number(A).
@@ -128,5 +120,8 @@ lhs_resolve(A) :-        % A(B)= ...
     lhs_resolve(B),
     resolve(C),
     writeln("()").
+
+has_definitions(Name,AddrList) :-
+    findall(Addr, is_definition(ident(Name,Addr)), AddrList).
 
 % vim : syntax=prolog

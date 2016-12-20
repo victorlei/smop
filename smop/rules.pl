@@ -28,50 +28,6 @@ prog([
 % foo([A,B...] - funcall or arrayref
 % [expr1 ... exprN]
 %
-resolve(A) :-
-    atom(A),
-    assertz(is_ref(A)).
-
-resolve(A) :-
-    number(A).
-
-resolve(let(A,B)) :-
-    resolve(B),
-    lhs_resolve(A).
-
-resolve(A) :-
-    compound(A),
-    compound_name_arguments(A,B,C),
-    resolve(B),
-    resolve(C).
-
-resolve([]).
-resolve([A|B]) :-
-    resolve(A),
-    resolve(B).
-
-%-----
-lhs_resolve(A) :-        % A=...
-    atom(A),
-    assertz(is_def(A)).
-
-lhs_resolve(A) :-
-    number(A).
-
-%lhs_resolve(let(A,B)) :- % A=B...
-%    resolve(B),
-%    lhs_resolve(A).
-
-lhs_resolve(A) :-        % A(B)= ...
-    compound(A),
-    compound_name_arguments(A,B,C),
-    lhs_resolve(B),
-    resolve(C).
-
-lhs_resolve([]).
-lhs_resolve([A|B]) :-
-    lhs_resolve(A),
-    lhs_resolve(B).
 
 %matlab_eval([],[]).
 %matlab_eval([A|B], [C|D]) :- matlab_eval(A,C) , matlab_eval(B,D).
