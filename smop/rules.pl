@@ -1,4 +1,4 @@
-:- op(800, yfx, =>).
+%:- op(800, yfx, =>).
 %:- dynamic =>/2.
 
 %N => 0 :- number(N). 
@@ -16,14 +16,14 @@ prog([
    a =  ai,
    mv = []]).
 
-matlab_max(matlab_ravel(X)) =>
-    fortran_max(X).
 
-[M,N] = matlab_size(A) => 
-    [M = fortran_size(A,1),
-     N = fortran_size(A,2)].
+rewrite(matlab_max(matlab_ravel(X)), 
+    fortran_max(X)).
 
+rewrite([M,N] = matlab_size(A), 
+    [M = fortran_size(A,1), N = fortran_size(A,2)]).
 
+/*
 len(A,1) :- atomic(A).
 len(-A,K):- len(A,N), K is N+1.
 len(A+B,K) :- len(A,M),len(B,N),K is M+N+1.
@@ -42,21 +42,21 @@ A-0 =>  A.
 
 % example
 
-sin(T)**2+cos(T)**2 => 1.
-A => A :- atomic(A),!.
+%sin(T)**2+cos(T)**2 => 1.
+*/
+rewrite(A,A) :- atomic(A),!.
 
-[A|B] => [C|D] :-
+rewrite([A|B],[C|D]) :-
     !,
-    A => C,
-    B => D.
+    rewrite(A,C),
+    rewrite(B,D).
 
-A => F :-
+rewrite(A,F) :-
     compound(A),
     !,
     compound_name_arguments(A,B,C),
-    B => D,
-    C => E, 
-    %F =.. [D|E],
+    rewrite(B,D),
+    rewrite(C,E),
     compound_name_arguments(F,D,E).
 
 
