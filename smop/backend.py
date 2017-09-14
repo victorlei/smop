@@ -34,6 +34,77 @@ optable = {
     "./=" : "/",
     }
 
+
+def is_tab_empty(tab):
+    for elem in tab:
+        if elem != "":
+            return False
+    return True
+
+
+def compute_indexing(s):
+    """
+    This function makes the correlation between matlab indexing and python indexing
+    Which specifications are listed below :
+        - Python is zero-indexed
+        - MATLAB is 1-indexed
+
+        - MATLAB slice notation includes the endpoint
+        - Python slice notation excludes the endpoint
+
+        - MATLAB start:step:stop
+        - Python start:stop:step
+
+    :param s: string containing the content between squared brackets
+    :return: returns the string being parsed and analysed
+    """
+    print 'computing : %s' % (s)
+    decomposition = s.split(",")
+    k = 0
+    for element in decomposition:
+        try:
+            check = unicode(element, 'utf-8')
+        except TypeError:
+            check = element
+        if check.isnumeric():
+            decomposition[k] = str(int(element) - 1)
+        if element.find(':') != -1:
+            tab = element.split(':')
+            if is_tab_empty(tab):
+                k += 1
+                continue
+            start = 0
+            if len(tab) == 2:
+                step = 1
+                stop = 2
+            if len(tab) == 3:
+                step = 2
+                stop = 3
+            try:
+                if unicode(tab[start], 'utf-8').isnumeric():
+                    tab[start] = str(int(tab[start]) - 1)
+                if unicode(tab[1], 'utf-8').isnumeric():
+                    tab[1] = str(int(tab[1]) + 1)
+            except TypeError:
+                if tab[start].isnumeric():
+                    tab[start] = str(int(tab[start]) - 1)
+                if tab[stop - 1].isnumeric():
+                    tab[stop - 1] = str(int(tab[stop - 1]) + 1)
+            for i in range(start, stop, step):
+                if tab[i].find("end") != -1:
+                    tab[i] = tab[i].replace('end()', "-1")
+                    tab[i] = tab[i].replace('end', "-1")
+            if len(tab) == 3:
+                tmp = tab[1]
+                tab[1] = tab[2]
+                tab[2] = tmp
+            decomposition[k] = ":".join(tab)
+            print tab
+        k += 1
+    print decomposition
+    return ",".join(decomposition)
+
+
 def backend(t,*args,**kwargs):
     return t._backend(level=1,*args,**kwargs)
 
@@ -78,9 +149,8 @@ def _backend(self,level=0):
 
 @extend(node.arrayref)
 def _backend(self,level=0):
-    fmt = "%s[%s]"
-    return fmt % (self.func_expr._backend(),
-                       self.args._backend())
+    fmt = "%s[%s]" % (self.func_expr._backend(), compute_indexing(self.args._backend()))
+    return fmt
 
 @extend(node.break_stmt)
 def _backend(self,level=0):
