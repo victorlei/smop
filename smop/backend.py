@@ -275,12 +275,7 @@ def _backend(self,level=0):
 
 @extend(node.let)
 def _backend(self,level=0):
-    if not options.no_numbers:
-        t = "\n# %s:%s" % (options.filename,
-                             self.lineno)
-                            # level*indent)
-    else:
-        t = ''
+    t = ''
 
     s = ''
     #if self.args.__class__ is node.funcall:
@@ -353,6 +348,7 @@ def _backend(self,level=0):
 
 @extend(node.stmt_list)
 def _backend(self,level=0):
+    # for each line parsed by the lexer parser
     for t in self:
         if not isinstance(t,(node.null_stmt,
                              node.comment_stmt)):
