@@ -24,10 +24,13 @@ def print_header(fp):
     if options.no_header:
         return
     print >> fp, "# -*- coding: utf-8 -*-"
-    print >> fp, "\"\"\"@package " + options.filename
+    if options.filename == "":
+        print >> fp, "\"\"\"@package " + options.output
+    else:
+        print >> fp, "\"\"\"@package " + options.filename
     print >> fp, "@date Created on " + str(datetime.now())
     print >> fp, "@author " + getpass.getuser()
-    print >> fp, '"""\n\n'
+    print >> fp, '"""'
 
 
 def main():
