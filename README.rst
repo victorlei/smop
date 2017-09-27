@@ -1,4 +1,4 @@
-``SMOP`` is Small Matlab and Octave to Python compiler.   
+``SMOP`` is Small Matlab and Octave to Python compiler.
    ``SMOP`` translates matlab to python. Despite obvious similarities
    between matlab and numeric python, there are enough differences to
    make manual translation infeasible in real life.  ``SMOP`` generates
@@ -11,15 +11,15 @@
    performance, and my interpretation is that scalar computations are
    of less interest to the octave team.
 
-======================================== ================== 
- octave-3.8.1                               190 ms     
+======================================== ==================
+ octave-3.8.1                               190 ms
 ---------------------------------------- ------------------
- smop+python-2.7                             80 ms     
+ smop+python-2.7                             80 ms
 ---------------------------------------- ------------------
- smop+python-2.7+cython-0.20.1               40 ms     
+ smop+python-2.7+cython-0.20.1               40 ms
 ---------------------------------------- ------------------
  Table 1. ``SMOP`` performance
-======================================== ================== 
+======================================== ==================
 
 News
 ====
@@ -38,7 +38,7 @@ News
     2    randn      2.26      1.04           0.46
     3    primes     0.35      0.17           0.49
     4    fft2       2.75      1.13           0.41
-    5    square     4.24      0              
+    5    square     4.24      0
     6    inv        4.38      2.26           0.53
     7    eig        17.95     9.09           0.51
     8    qr         3.06      1.83           0.60
@@ -79,6 +79,11 @@ Installation
    $ python main.py solver.m
    $ python solver.py
 
++  You can launch the GUI the following way::
+
+   $ cd smop/smop/GUI
+   $ python smop_GUI.py
+
 Working example
 ===============
 
@@ -91,8 +96,8 @@ to python.
 
 .. code:: matlab
 
-  01   function mv = solver(ai,af,w)  01 def solver_(ai,af,w,nargout=1): 
-  02   nBlocks = max(ai(:));          02     nBlocks=max_(ai[:]) 
+  01   function mv = solver(ai,af,w)  01 def solver_(ai,af,w,nargout=1):
+  02   nBlocks = max(ai(:));          02     nBlocks=max_(ai[:])
   03   [m,n] = size(ai);              03     m,n=size_(ai,nargout=2)
 
 ====  =========================================================================
@@ -110,7 +115,7 @@ to python.
 ====  =========================================================================
 
 .. code:: matlab
-                                                                                                        
+
   04   I = [0  1  0 -1];              04     I=matlabarray([0,1,0,- 1])
   05   J = [1  0 -1  0];              05     J=matlabarray([1,0,- 1,0])
   06   a = ai;                        06     a=copy_(ai)
@@ -137,7 +142,7 @@ to python.
 ====  =========================================================================
 
 .. code:: matlab
-                                                                                                        
+
   08   while ~isequal(af,a)           08     while not isequal_(af,a):
   09     bid = ceil(rand*nBlocks);    09         bid=ceil_(rand_() * nBlocks)
   10     [i,j] = find(a==bid);        10         i,j=find_(a == bid,nargout=2)
@@ -185,7 +190,7 @@ Implementation status
 
 ..  Table 3.  Not compiled
 
-..  =========================== ===================================== 
+..  =========================== =====================================
     stft.m                      missing semicolon
     datenum.m                   missing semicolon
     orderfields.m
@@ -195,7 +200,7 @@ Implementation status
     __unimplemented__.m         premature EOF
     assert.m
     optimset.m
-    =========================== ===================================== 
+    =========================== =====================================
 
 
 Random remarks
@@ -213,9 +218,9 @@ There is a price, too.
     The generated sources are
     `matlabic`, rather than `pythonic`, which means that
     library maintainers must be fluent in both languages,
-    and the old development environment must be kept around. 
+    and the old development environment must be kept around.
 
-Should the generated program be `pythonic` or `matlabic`? 
+Should the generated program be `pythonic` or `matlabic`?
     For example should array indexing start with zero
     (`pythonic`) or with one (`matlabic`)?
 
@@ -241,7 +246,7 @@ Should the generated program be `pythonic` or `matlabic`?
 .. missing standard library and toolboxes
 .. missing grapphics library
 
-Which one is faster --- python or octave?  I don't know.  
+Which one is faster --- python or octave?  I don't know.
   Doing reliable performance measurements is notoriously
   hard, and is of low priority for me now.  Instead, I wrote
   a simple driver ``go.m`` and ``go.py`` and rewrote `rand`
@@ -292,7 +297,7 @@ Command-line options
                                 information in "dot" format (see www.graphviz.org).
                                 You need an installation of graphviz to use --dot
                                 option.  Use "dot" utility to create a pdf file.
-                                For example: 
+                                For example:
                                     $ python main.py fastsolver.m -d "solver|cbest"
                                     $ dot -Tpdf -o resolve_solver.pdf resolve_solver.dot
         -h --help
