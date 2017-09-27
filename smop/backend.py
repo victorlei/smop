@@ -277,10 +277,8 @@ def _backend(self,level=0):
 
 @extend(node.for_stmt)
 def _backend(self,level=0):
-    fmt = "for %s in %s.reshape(-1):%s"
-    return fmt % (self.ident._backend(),
-                  self.expr._backend(),
-                  self.stmt_list._backend(level+1))
+    fmt = "for %s in %s.reshape(-1):%s" % (self.ident._backend(), self.expr._backend(), self.stmt_list._backend(level+1))
+    return fmt
 
 
 @extend(node.func_stmt)

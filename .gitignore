@@ -8,5 +8,3 @@ parsetab.py
 dist/
 build/
 runtime/
-.idea/*
-*plot*
