@@ -49,7 +49,7 @@ def exceptions(f):
         try:
             return f(self,*args,**kwargs)
         except:
-            print "%s.%s()" % (self.__class__.__name__, f.__name__)
+            print("%s.%s()" % (self.__class__.__name__, f.__name__))
             raise
     wrapper.__name__ = f.__name__
     wrapper.__doc__ = f.__doc__
