@@ -3,7 +3,7 @@ __all__ = ['recordtype']
 import sys
 from textwrap import dedent
 from keyword import iskeyword
-from six import exec_
+from six import exec_, string_types
 
 
 def recordtype(typename, field_names, verbose=False, **default_kwds):
@@ -36,7 +36,7 @@ def recordtype(typename, field_names, verbose=False, **default_kwds):
     '''
     # Parse and validate the field names.  Validation serves two purposes,
     # generating informative error messages and preventing template injection attacks.
-    if isinstance(field_names, basestring):
+    if isinstance(field_names, string_types):
         # names separated by whitespace and/or commas
         field_names = field_names.replace(',', ' ').split()
     field_names = tuple(map(str, field_names))
