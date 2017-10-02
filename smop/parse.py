@@ -4,7 +4,7 @@
 from __future__ import absolute_import
 from ply import yacc
 from . import lexer, node, options
-from .lexer tokens, raise_exception
+from .lexer import tokens, raise_exception
 from .node import exceptions
 
 # ident properties (set in parse.py)
