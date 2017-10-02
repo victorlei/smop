@@ -3,6 +3,7 @@ __all__ = ['recordtype']
 import sys
 from textwrap import dedent
 from keyword import iskeyword
+from six import exec_
 
 
 def recordtype(typename, field_names, verbose=False, **default_kwds):
@@ -125,7 +126,7 @@ def recordtype(typename, field_names, verbose=False, **default_kwds):
     # Execute the template string in a temporary namespace
     namespace = {}
     try:
-        exec template in namespace
+        exec_(template, namespace)
         if verbose: print template
     except SyntaxError, e:
         raise SyntaxError(e.message + ':\n' + template)
