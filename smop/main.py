@@ -1,6 +1,8 @@
 # SMOP -- Simple Matlab/Octave to Python compiler
 # Copyright 2011-2016 Victor Leikehman
 
+from __future__ import absolute_import
+
 import py_compile
 import tempfile
 import fnmatch
@@ -8,14 +10,9 @@ import tarfile
 import sys
 import os
 import traceback
-from os.path import basename, splitext
 
-import lexer
-import options
-import parse
-import resolve
-import backend
-import version
+from os.path import basename, splitext
+from . import lexer, options, parse, resolve, backend, version
 
 
 def print_header(fp):
