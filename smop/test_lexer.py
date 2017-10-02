@@ -1,5 +1,7 @@
+from __future__ import absolute_import
+
 import unittest
-import lexer
+from . import lexer
 
 class TestLexer(unittest.TestCase):
     def setUp(self):
