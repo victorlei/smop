@@ -134,7 +134,7 @@ def recordtype(typename, field_names, verbose=False, **default_kwds):
     if PY2:
         cls.__init__.im_func.func_defaults = init_defaults
     else:
-        cls.__init__.__func__.__defaults__ = init_defaults
+        cls.__init__.__defaults__ = init_defaults
     # For pickling to work, the __module__ variable needs to be set to the frame
     # where the named tuple is created.  Bypass this step in enviroments where
     # sys._getframe is not defined (Jython for example).
