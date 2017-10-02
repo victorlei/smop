@@ -2,9 +2,13 @@
 # Copyright 2014 Victor Leikehman
 
 # MIT license
+
+from __future__ import absolute_import
+
 import numpy as np
 import unittest
-from core import *
+
+from .core import *
 
 class Getitem(unittest.TestCase):
     def setUp(self):
