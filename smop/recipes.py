@@ -128,7 +128,7 @@ def recordtype(typename, field_names, verbose=False, **default_kwds):
     try:
         exec_(template, namespace)
         if verbose: print(template)
-    except SyntaxError, e:
+    except SyntaxError as e:
         raise SyntaxError(e.message + ':\n' + template)
     cls = namespace[typename]
     cls.__init__.im_func.func_defaults = init_defaults
