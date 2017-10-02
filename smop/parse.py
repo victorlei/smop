@@ -1,12 +1,11 @@
 # SMOP compiler -- Simple Matlab/Octave to Python compiler
 # Copyright 2011-2016 Victor Leikehman
 
-import ply.yacc as yacc
-import lexer
-from lexer import tokens, raise_exception
-import node
-from node import exceptions
-import options
+from __future__ import absolute_import
+from ply import yacc
+from . import lexer, node, options
+from .lexer tokens, raise_exception
+from .node import exceptions
 
 # ident properties (set in parse.py)
 # ----------------------------------
