@@ -127,7 +127,7 @@ def recordtype(typename, field_names, verbose=False, **default_kwds):
     namespace = {}
     try:
         exec_(template, namespace)
-        if verbose: print template
+        if verbose: print(template)
     except SyntaxError, e:
         raise SyntaxError(e.message + ':\n' + template)
     cls = namespace[typename]
@@ -143,4 +143,4 @@ def recordtype(typename, field_names, verbose=False, **default_kwds):
 if __name__ == '__main__':
     import doctest
     TestResults = recordtype('TestResults', 'failed, attempted')
-    print TestResults(*doctest.testmod())
+    print(TestResults(*doctest.testmod()))
