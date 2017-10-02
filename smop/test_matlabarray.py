@@ -1,5 +1,8 @@
+from __future__ import absolute_import
+
 import unittest
-from core import *
+
+from .core import *
 
 class test_matlabarray(unittest.TestCase):
     """Expanding matlabarray"""
