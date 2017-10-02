@@ -18,11 +18,13 @@ instances, which possibly define the variable.
 It is used in if_stmt, for_stmt, and while_stmt.
 """
 
-import copy
+from __future__ import absolute_import
 
-import node
-from node import extend
+import copy
 import networkx as nx
+
+from . import node
+from .node import extend
 
 
 def graphviz(t, fp, func_name):
