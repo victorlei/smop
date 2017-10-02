@@ -1,16 +1,14 @@
 language: python
 
+cache: pip
+
 python:
   - 2.7
   - 3.6
-
-cache:
-  - $HOME/.cache/pip
 
 install:
   - pip install -U pip setuptools wheel
   - pip install pytest
   - pip install -e .
 
-script:
-  - py.test
+script: py.test
