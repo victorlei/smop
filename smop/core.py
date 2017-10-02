@@ -3,7 +3,7 @@
 
 # MIT license
 
-import __builtin__
+from six.moves import builtins as __builtin__
 
 import numpy
 from numpy import sqrt,prod,exp,log,dot,multiply,inf

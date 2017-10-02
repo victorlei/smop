@@ -10,10 +10,14 @@ func decl:  nargout=1 must be declared if function may return
 return value:  return (x,y,z)[:nargout] or return x
 """
 
+from __future__ import absolute_import
+
 import logging
+
+from . import node, options
+from .node import extend, exceptions
+
 logger = logging.getLogger(__name__)
-import node,options
-from node import extend,exceptions
 
 indent = " "*4
 

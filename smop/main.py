@@ -1,6 +1,8 @@
 # SMOP -- Simple Matlab/Octave to Python compiler
 # Copyright 2011-2016 Victor Leikehman
 
+from __future__ import absolute_import
+
 import py_compile
 import tempfile
 import fnmatch
@@ -8,14 +10,9 @@ import tarfile
 import sys
 import os
 import traceback
-from os.path import basename, splitext
 
-import lexer
-import options
-import parse
-import resolve
-import backend
-import version
+from os.path import basename, splitext
+from . import lexer, options, parse, resolve, backend, version
 
 
 def print_header(fp):
@@ -44,7 +41,7 @@ def main():
             tmp.file.flush()
             options.filelist = [tmp.name]
             if options.output:
-                print "Conflicting options -c and -o"
+                print("Conflicting options -c and -o")
                 return
             options.output = "-"
         else:
@@ -65,7 +62,7 @@ def main():
     for i, options.filename in enumerate(options.filelist):
         try:
             if options.verbose:
-                print i, options.filename
+                print(i, options.filename)
             if not options.filename.endswith(".m"):
                 if options.verbose:
                     print("\tIgnored: '%s' (unexpected file type)" %
@@ -73,7 +70,7 @@ def main():
                 continue
             if basename(options.filename) in options.xfiles:
                 if options.verbose:
-                    print "\tExcluded: '%s'" % options.filename
+                    print("\tExcluded: '%s'" % options.filename)
                 continue
             if tar:
                 buf = tar.extractfile(options.filename).read()
@@ -102,7 +99,7 @@ def main():
                     if options.delete-on-error:
                         os.unlink(f)
                         if options.verbose:
-                            print "Removed",f
+                            print("Removed",f)
                     raise
             else:
                 fp.write(s)
@@ -114,7 +111,7 @@ def main():
             if options.strict:
                 break
         finally:
-            print "Errors:", nerrors
+            print("Errors:", nerrors)
 
 if __name__ == "__main__":
     main()

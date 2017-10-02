@@ -1,6 +1,8 @@
 import numpy as np
 import sys
 
+from six import iteritems
+
 class sparsearray(dict):
     def __init__(self,input_array=[[]]):
         #import pdb;pdb.set_trace()
@@ -30,7 +32,7 @@ class sparsearray(dict):
 
     def todense(self):
         a = np.zeros(self.shape,dtype=self.dtype)
-        for key,value in self.iteritems():
+        for key,value in iteritems(self):
             key = tuple([i-1 for i in key])
             a.__setitem__(key,value)
         return a

@@ -1,12 +1,11 @@
 # SMOP compiler -- Simple Matlab/Octave to Python compiler
 # Copyright 2011-2016 Victor Leikehman
 
-import ply.yacc as yacc
-import lexer
-from lexer import tokens, raise_exception
-import node
-from node import exceptions
-import options
+from __future__ import absolute_import
+from ply import yacc
+from . import lexer, node, options
+from .lexer import tokens, raise_exception
+from .node import exceptions
 
 # ident properties (set in parse.py)
 # ----------------------------------
@@ -847,7 +846,7 @@ def parse(buf):
 
     if "P" in options.debug:
         for i, pi in enumerate(p):
-            print i, pi.__class__.__name__, pi._backend()
+            print(i, pi.__class__.__name__, pi._backend())
 
 #    for i in range(len(p)):
 #        if isinstance(p[i], node.func_stmt):
