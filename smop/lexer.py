@@ -1,11 +1,13 @@
 # SMOP -- Simple Matlab/Octave to Python compiler
 # Copyright 2011-2016 Victor Leikehman
 
+from __future__ import absolute_import
+
 import sys
 import re
-import ply.lex as lex
+from ply import lex
 from ply.lex import TOKEN
-import options
+from . import options
 
 
 tokens = [
