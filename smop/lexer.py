@@ -341,11 +341,11 @@ def main():
     while 1:
         try:
             line += raw_input("=>> ").decode("string_escape")
-            print len(line), [c for c in line]
+            print(len(line), [c for c in line])
         except EOFError:
             reload(sys.modules["lexer.py"])
             lexer.input(line)
-            print list(tok for tok in lexer)
+            print(list(tok for tok in lexer))
             line = ""
 
 
@@ -356,4 +356,4 @@ if __name__ == "__main__":
     buf = open(sys.argv[1]).read()
     lexer.input(buf)
     for tok in lexer:
-        print tok
+        print(tok)
