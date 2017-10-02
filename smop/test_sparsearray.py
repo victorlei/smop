@@ -1,7 +1,10 @@
+from __future__ import absolute_import
+
 import numpy as np
 import unittest
-from core import *
-from sparsearray import sparsearray
+
+from .core import *
+from .sparsearray import sparsearray
 
 class Slice(unittest.TestCase):
      def setUp(self):
