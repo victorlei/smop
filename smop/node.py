@@ -1,10 +1,15 @@
 # SMOP compiler -- Simple Matlab/Octave to Python compiler
 # Copyright 2011-2013 Victor Leikehman
 
+from __future__ import absolute_import
+
+import copy
+import sys
+import inspect
+
 from collections import namedtuple
-from recipes import recordtype
-import copy,sys,inspect
-import options
+from .recipes import recordtype
+from . import options
 
 # def preorder(u):
 #     if isinstance(u,traversable):
