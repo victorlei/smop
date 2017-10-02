@@ -8,7 +8,7 @@ import re
 from ply import lex
 from ply.lex import TOKEN
 from . import options
-
+from six import PY2
 
 tokens = [
     "AND", "ANDAND", "ANDEQ", "BACKSLASH", "COLON", "COMMA", "DIV", "DIVEQ",
@@ -100,7 +100,10 @@ def new():
         if s[0] == "'":
             return s[1:-1].replace("''", "'")
         else:
-            return s[1:-1].decode("string_escape")
+            if PY2:
+                return s[1:-1].decode("string_escape")
+            else:
+                return bytes(s[1:-1], "utf-8").decode("unicode_escape")
 
     @TOKEN(mos)
     def t_afterkeyword_STRING(t):
