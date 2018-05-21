@@ -52,6 +52,7 @@ def as_networkx(t):
             G.add_node(uu, ident=u)
             if u.defs:
                 for v in u.defs:
+                    assert type(v) is node.ident, type(v)
                     vv = "%s_%s_%s" % (v.name, v.lineno, v.column)
                     G.add_node(vv, ident=v)
                     if u.lexpos < v.lexpos:
@@ -65,22 +66,22 @@ def resolve(t, symtab=None, fp=None, func_name=None):
     if symtab is None:
         symtab = {}
     do_resolve(t,symtab)
-    G = as_networkx(t)
+    #G = as_networkx(t)
     #import pdb;pdb.set_trace()
-    for n in G.nodes():
-        u = G.node[n]["ident"]
-        if u.props:
-            pass
-        elif G.out_edges(n) and G.in_edges(n):
-            u.props = "U" # upd
-            #print u.name, u.lineno, u.column
-        elif G.in_edges(n):
-            u.props = "D" # def
-        elif G.out_edges(n):
-            u.props = "R" # ref
-        else:
-            u.props = "F" # ???
-        G.node[n]["label"] = "%s\\n%s" % (n, u.props)
+#    for n in G.nodes():
+#        u = G.node[n]["ident"]
+#        if u.props:
+#            pass
+#        elif G.out_edges(n) and G.in_edges(n):
+#            u.props = "U" # upd
+#            #print u.name, u.lineno, u.column
+#        elif G.in_edges(n):
+#            u.props = "D" # def
+#        elif G.out_edges(n):
+#            u.props = "R" # ref
+#        else:
+#            u.props = "F" # ???
+#        G.node[n]["label"] = "%s\\n%s" % (n, u.props)
 
     for u in node.postorder(t):
         #if u.__class__ is node.func_decl:
@@ -111,20 +112,20 @@ def resolve(t, symtab=None, fp=None, func_name=None):
                 u.args = node.funcall(func_expr=node.ident("matlabarray"),
                                       args=node.expr_list([u.args]))
 
-    H = nx.connected_components(G.to_undirected())
-    for i,component in enumerate(H):
-        for nodename in component:
-            if G.node[nodename]["ident"].props == "R":
-                has_update = 1
-                break
-        else:
-            has_update = 0
-        if has_update:
-            for nodename in component:
-                G.node[nodename]["ident"].props += "S"  # sparse
-        #S = G.subgraph(nbunch)
-        #print S.edges()
-    return G
+#    H = nx.connected_components(G.to_undirected())
+#    for i,component in enumerate(H):
+#        for nodename in component:
+#            if G.node[nodename]["ident"].props == "R":
+#                has_update = 1
+#                break
+#        else:
+#            has_update = 0
+#        if has_update:
+#            for nodename in component:
+#                G.node[nodename]["ident"].props += "S"  # sparse
+#        #S = G.subgraph(nbunch)
+#        #print S.edges()
+#    return G
 
 
 def do_resolve(t,symtab):
@@ -172,7 +173,7 @@ def _resolve(self,symtab):
     self.stmt_list._resolve(symtab) # 2nd time, intentionally
     # Handle the case where FOR loop is not executed
     for k,v in symtab_copy.items():
-        symtab.setdefault(k,set()).update(v)
+        symtab.setdefault(k,[]).append(v)
 
 @extend(node.func_stmt)
 def _resolve(self,symtab):
@@ -201,7 +202,7 @@ def _resolve(self,symtab):
 
 @extend(node.ident)
 def _lhs_resolve(self,symtab):
-    symtab[self.name] = set([self])
+    symtab[self.name] = [self]
 
 @extend(node.if_stmt)
 def _resolve(self,symtab):
@@ -211,7 +212,7 @@ def _resolve(self,symtab):
     if self.else_stmt:
         self.else_stmt._resolve(symtab_copy)
     for k,v in symtab_copy.items():
-        symtab.setdefault(k,set()).update(v)
+        symtab.setdefault(k,[]).append(v)
 
 @extend(node.let)
 def _lhs_resolve(self,symtab):
@@ -243,9 +244,9 @@ def _resolve(self,symtab):
 @extend(node.ident)
 def _resolve(self,symtab):
     if self.defs is None:
-        self.defs = set()
+        self.defs = []
     try:
-        self.defs |= symtab[self.name]
+        self.defs += symtab[self.name]
     except KeyError:
         # defs == set() means name used, but not defined
         pass
@@ -302,7 +303,7 @@ def _resolve(self,symtab):
     self.stmt_list._resolve(symtab)
     # Handle the case where WHILE loop is not executed
     for k,v in symtab_copy.items():
-        symtab.setdefault(k,set()).update(v)
+        symtab.setdefault(k,[]).append(v)
 @extend(node.function)
 def _resolve(self,symtab):
     self.head._resolve(symtab)

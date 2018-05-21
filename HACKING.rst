@@ -1,3 +1,10 @@
+node.py     resolve.py
+
+class       method 
+node.ident  self.ident
+
+
+
 =========
 HACKING
 =========
@@ -8,7 +15,7 @@ HACKING
 |                                         |       |       |       |
 |   A. Base-one indexing                  |  yes  | yes   |  no   |
 +-----------------------------------------+-------+-------+-------+
-|                                         |       |       |       |
+|                                         |       |       |       | 
 |   B. Columns-first data layout          |  yes  | yes   |  no   |
 +-----------------------------------------+-------+-------+-------+
 |   C. Auto-expanding arrays              |  yes  | no *  |  yes  |

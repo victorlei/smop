@@ -1,74 +1,29 @@
 smop -- matlab to python compiler
 
-Installation with pip
-=====================
-
-Install pip
-
-    sudo apt-get install python-pip
-
-Install smop
-
-    pip install smop --user
-
-or
-
-    sudo pip install smop
-
-Done.
-
 Installation with easy_install
 ==============================
 
 This is the preferred option, because easy_install takes care of
-everything -- finding the dowinload site, and installing the
-dependences.  If you don't have easy_install, this is the perfect time
-to install it.  It is a part of setuptools package, so for linux users
+everything -- finding the dowinload site, and installing the dependences
+(numpy and networkx).  If you don't have easy_install, this is the
+perfect time to install it.  It is a part of setuptools package located
+at http://pypi.python.org/pypi/setuptools.
 
-    sudo apt-get install python-setuptools
-
-For other operating systems, see
-
-    http://pypi.python.org/pypi/setuptools
-
-Now create directory ~/.local/bin and make sure it is in your path.
-Install smop:
-
-    easy_install --user smop
-
-Alternatively, install as root
-
-    sudo easy_install smop
-
-Installing the dependences
-==========================
-
-From time to time, one of the projects that we depend on, fails to
-install using easy_install (as of Nov 6, 2016 scipy). Don't panic.
-Manually install whatever projects are missing.
-
-    sudo apt-get install python-setuptools python-ply python-numpy python-scipy
+$ easy_install smop
 
 Binary Windows installer
 ========================
 
 Download it from github then run it, but you must make sure you have
-installed the dependences.
+installed the dependences -- numpy and networkx.
 
 Installation from sources 
 =========================
 
-1. Clone git repository
+$ tar zxvf smop.tar.gz
+$ cd smop
+$ python setup.py install [--user]
 
-   git clone https://github.com/victorlei/smop.git
-   
-2. Install the dependences.  This was tested on ubuntu and linuxmint
-
-   sudo apt-get install python-setuptools python-ply python-numpy python-scipy
-
-3. Run the install script
-
-   sudo python setup.py install [--user]
-
+If you use the --user option, don't forget to put
 your .local/bin into the search path (unix only).
 

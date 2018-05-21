@@ -1,12 +1,7 @@
 import os
 from setuptools import setup
 
-try:
-    __VERSION__ = os.popen("git describe --tags", "r").read().strip()
-except:
-    __VERSION__ = "0.34"
-
-open("smop/version.py","w").write("__version__='%s'\n" % __VERSION__)
+from smop.version import __version__ as __VERSION__
 
 setup(
     author = 'Victor Leikehman',

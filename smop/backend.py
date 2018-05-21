@@ -322,7 +322,7 @@ def _backend(self,level=0):
         return " + ".join(a._backend() for a in self.args)
     else:
         #import pdb; pdb.set_trace()
-        return "cat(%s)" % self.args[0]._backend()
+        return "concat([%s])" % self.args[0]._backend()
 
 @extend(node.null_stmt)
 def _backend(self,level=0):
@@ -364,7 +364,10 @@ def _backend(self,level=0):
 
 @extend(node.string)
 def _backend(self,level=0):
-    return "'%s'" % str(self.value).encode("string_escape")
+    try:
+        return "'%s'" % str(self.value).encode("string_escape")
+    except:
+        return "'%s'" % str(self.value)
 
 @extend(node.sub)
 def _backend(self,level=0):

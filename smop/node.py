@@ -1,6 +1,7 @@
 # SMOP compiler -- Simple Matlab/Octave to Python compiler
 # Copyright 2011-2013 Victor Leikehman
-
+ 
+from __future__ import print_function
 from collections import namedtuple
 from recipes import recordtype
 import copy,sys,inspect
@@ -44,7 +45,7 @@ def exceptions(f):
         try:
             return f(self,*args,**kwargs)
         except:
-            print "%s.%s()" % (self.__class__.__name__, f.__name__)
+            print("%s.%s()" % (self.__class__.__name__, f.__name__))
             raise
     wrapper.__name__ = f.__name__
     wrapper.__doc__ = f.__doc__
