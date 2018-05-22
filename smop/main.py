@@ -12,11 +12,10 @@ import os
 import traceback
 from os.path import basename, splitext
 
-import lexer
-import options
-import parse
-import resolve
-import backend
+from . import options
+from . import parse
+from . import resolve
+from . import backend
 from version import __version__
 
 
