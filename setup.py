@@ -6,7 +6,7 @@ try:
 except OSError as e:
     __VERSION__ = ""
 
-open("version.py","w").write("smop/__version__='%s'" % __VERSION__)
+open("smop/version.py","w").write("__version__='%s'" % __VERSION__)
 #from smop.version import __version__ as __VERSION__
 
 setup(
