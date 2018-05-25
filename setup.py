@@ -6,7 +6,7 @@ from setuptools import setup
 try:
     __VERSION__ = os.popen("git describe --tags").read().strip()
 except OSError as e:
-    __VERSION__ = ""
+    __VERSION__ = "''"
 
 open("smop/version.py","w").write("__version__='%s'" % __VERSION__)
 
