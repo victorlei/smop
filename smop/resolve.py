@@ -20,9 +20,8 @@ It is used in if_stmt, for_stmt, and while_stmt.
 
 import copy
 
-import node
-from node import extend
-import networkx as nx
+from . import node
+from . node import extend
 
 
 def graphviz(t, fp, func_name):

@@ -5,7 +5,7 @@ import sys
 import re
 import ply.lex as lex
 from ply.lex import TOKEN
-import options
+from . import options
 
 
 tokens = [

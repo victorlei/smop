@@ -16,14 +16,13 @@ from . import options
 from . import parse
 from . import resolve
 from . import backend
-from version import __version__
-
+from . import version
 
 def print_header(fp):
     if options.no_header:
         return
     print("# Running Python %s" % sys.version, file=fp)
-    print("# Generated with SMOP ", __version__, file=fp)
+    print("# Generated with SMOP ", version.__version__, file=fp)
     print("from libsmop import *", file=fp)
     print("#", options.filename, file=fp)
 

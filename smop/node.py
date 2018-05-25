@@ -3,9 +3,10 @@
  
 from __future__ import print_function
 from collections import namedtuple
-from recipes import recordtype
 import copy,sys,inspect
-import options
+
+from . recipes import recordtype
+from . import options
 
 # def preorder(u):
 #     if isinstance(u,traversable):
