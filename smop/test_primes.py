@@ -1,3 +1,3 @@
-import octave
-print octave.primes(10000)
+import liboctave
+print liboctave.primes(10000)
 

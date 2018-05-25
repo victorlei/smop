@@ -2,6 +2,10 @@
 Release notes
 =============
 
+December 24, 2017
+    Version 0.38 will contain the port to
+    python3.
+
 December 3, 2016
     Version 0.34 is out
 

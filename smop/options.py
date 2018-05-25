@@ -154,6 +154,8 @@ parser.add_argument("-B","--no-backend",
                     action="store_true",
 help="omit code generation")
 
+parser.add_argument("--prolog", action="store_true")
+
 parser.add_argument("-E","--execfile",
                     action="store_false",
 help="""UNSAFE pass the py-file to execfile""")
