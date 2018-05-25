@@ -1,4 +1,4 @@
-# for py3: make PYTHON=python3 CYTHON="cython -3" V=3.4
+# for py3: make PYTHON=python3 CYTHON="cython -3" V=3
 
 OCTAVE = /home/lei/octave-4.0.2
 SCRIPTS = $(OCTAVE)/scripts/specfun
@@ -7,13 +7,27 @@ CYTHON = cython
 PYTHON = python
 XFILES = -x inputParser.m,dblquad.m,triplequad.m
 
+COVERAGE = python3 -m coverage
+
+CYTHON = cython
+PYTHON = python$V
+XFILES = -x inputParser.m,dblquad.m,triplequad.m
+
+SRCSMOP = main.py parse.py backend.py resolve.py options.py
 FLAGS  = 
 MYFLAGS=
 
-V = 2.7
+#V = 2.7
+V = 3
 
 all:
+<<<<<<< HEAD
 	make -B FLAGS=     liboctave.py
+=======
+	make -B FLAGS=     liboctave.py	
+	$(COVERAGE) run -p main.py solver.m
+	$(COVERAGE) combine 
+>>>>>>> 245d9c8989e304a637840d6bcbd87d8905a96101
 foo:
 	make -B FLAGS=-C   liboctave.py
 	make -B FLAGS=-N   liboctave.py

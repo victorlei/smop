@@ -1,12 +1,12 @@
 # SMOP compiler -- Simple Matlab/Octave to Python compiler
 # Copyright 2011-2016 Victor Leikehman
 
-import ply.yacc as yacc
-import lexer
-from lexer import tokens, raise_exception
-import node
-from node import exceptions
-import options
+from ply import yacc
+from . import lexer
+from . lexer import tokens, raise_exception
+from . import node
+from . node import exceptions
+from . import options
 
 # ident properties (set in parse.py)
 # ----------------------------------
@@ -411,8 +411,12 @@ def p_expr_ident(p):
     p[0] = node.ident(
         name=p[1],
         lineno=p.lineno(1),
+        column=p.lexpos(1) - p.lexer.lexdata.rfind("\n", 0, p.lexpos(1)),
         lexpos=p.lexpos(1),
-        column=p.lexpos(1) - p.lexer.lexdata.rfind("\n", 0, p.lexpos(1)))
+        defs=None,
+        props=None,
+        init=None)
+
 
 
 @exceptions
@@ -847,7 +851,7 @@ def parse(buf):
 
     if "P" in options.debug:
         for i, pi in enumerate(p):
-            print i, pi.__class__.__name__, pi._backend()
+            print(i, pi.__class__.__name__, pi._backend())
 
 #    for i in range(len(p)):
 #        if isinstance(p[i], node.func_stmt):

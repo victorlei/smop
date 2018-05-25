@@ -1,1 +1,1 @@
-__version__='0.38_testing'
+__version__='0.40'

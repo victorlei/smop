@@ -8,7 +8,7 @@ from keyword import iskeyword
 def recordtype(typename, field_names, verbose=False, **default_kwds):
     '''Returns a new class with named fields.
 
-    @keyword field_defaults: A mapping from (a subset of) field names to default
+    @keyword field_defaults: A mapping from (a subset of) field names to default 
         values.
     @keyword default: If provided, the default value for all fields without an
         explicit default in `field_defaults`.
@@ -35,7 +35,7 @@ def recordtype(typename, field_names, verbose=False, **default_kwds):
     '''
     # Parse and validate the field names.  Validation serves two purposes,
     # generating informative error messages and preventing template injection attacks.
-    if isinstance(field_names, basestring):
+    if isinstance(field_names, str):
         # names separated by whitespace and/or commas
         field_names = field_names.replace(',', ' ').split()
     field_names = tuple(map(str, field_names))
@@ -125,12 +125,19 @@ def recordtype(typename, field_names, verbose=False, **default_kwds):
     # Execute the template string in a temporary namespace
     namespace = {}
     try:
-        exec template in namespace
-        if verbose: print template
-    except SyntaxError, e:
+        exec(template, namespace)
+        if verbose: print(template)
+    except SyntaxError as e:
         raise SyntaxError(e.message + ':\n' + template)
     cls = namespace[typename]
-    cls.__init__.im_func.func_defaults = init_defaults
+    if sys.version_info.major == 3:
+        cls.__init__.__defaults__ = init_defaults
+    elif sys.version_info.major == 2:
+        cls.__init__.im_func.func_defaults = init_defaults
+    else:
+        #import pdb
+        #pdb.set_trace()
+        assert 0
     # For pickling to work, the __module__ variable needs to be set to the frame
     # where the named tuple is created.  Bypass this step in enviroments where
     # sys._getframe is not defined (Jython for example).
@@ -142,4 +149,4 @@ def recordtype(typename, field_names, verbose=False, **default_kwds):
 if __name__ == '__main__':
     import doctest
     TestResults = recordtype('TestResults', 'failed, attempted')
-    print TestResults(*doctest.testmod())
+    print(TestResults(*doctest.testmod()))

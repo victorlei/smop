@@ -12,8 +12,10 @@ return value:  return (x,y,z)[:nargout] or return x
 
 import logging
 logger = logging.getLogger(__name__)
-import node,options
-from node import extend,exceptions
+
+from . import node
+from . import options
+from . node import extend,exceptions
 
 indent = " "*4
 
@@ -364,7 +366,10 @@ def _backend(self,level=0):
 
 @extend(node.string)
 def _backend(self,level=0):
-    return "'%s'" % str(self.value).encode("string_escape")
+    try:
+        return "'%s'" % str(self.value).encode("string_escape")
+    except:
+        return "'%s'" % str(self.value)
 
 @extend(node.sub)
 def _backend(self,level=0):
