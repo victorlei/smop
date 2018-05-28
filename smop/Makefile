@@ -21,13 +21,8 @@ MYFLAGS=
 V = 3
 
 all:
-<<<<<<< HEAD
 	make -B FLAGS=     liboctave.py
-=======
-	make -B FLAGS=     liboctave.py	
-	$(COVERAGE) run -p main.py solver.m
-	$(COVERAGE) combine 
->>>>>>> 245d9c8989e304a637840d6bcbd87d8905a96101
+
 foo:
 	make -B FLAGS=-C   liboctave.py
 	make -B FLAGS=-N   liboctave.py
