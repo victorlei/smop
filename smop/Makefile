@@ -12,22 +12,25 @@ COVERAGE = python3 -m coverage
 CYTHON = cython
 PYTHON = python$V
 XFILES = -x inputParser.m,dblquad.m,triplequad.m
-
+SMOP   = smop
 SRCSMOP = main.py parse.py backend.py resolve.py options.py
 FLAGS  = 
 MYFLAGS=
+PYTEST = python -m pytest
 
 #V = 2.7
 V = 3
 
-all:
-<<<<<<< HEAD
-	make -B FLAGS=     liboctave.py
-=======
-	make -B FLAGS=     liboctave.py	
-	$(COVERAGE) run -p main.py solver.m
-	$(COVERAGE) combine 
->>>>>>> 245d9c8989e304a637840d6bcbd87d8905a96101
+all: solver.py
+	$(PYTEST) test_matlabarray.py
+	$(PYTEST) test_parse.py
+	$(PYTEST) test_lexer.py
+	$(PYTEST) test_solver.py
+	#$(PYTEST) test_primes.py
+
+	#make -B FLAGS=     liboctave.py	
+	#$(COVERAGE) run -p main.py solver.m
+	#$(COVERAGE) combine 
 foo:
 	make -B FLAGS=-C   liboctave.py
 	make -B FLAGS=-N   liboctave.py
@@ -53,8 +56,7 @@ regress:
 	gcc -Wno-cpp -I /usr/include/python$V -O2 -shared -o $@ $^
 
 %.py: %.m
-	$(PYTHON) main.py -o $@ $^
-	#$(PYTHON) $@
+	$(SMOP) $^
 
 %.pdf: %.dot
 	dot -Tpdf -o $@ $^

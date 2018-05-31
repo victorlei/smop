@@ -13,11 +13,10 @@ parser = argparse.ArgumentParser(
 
 """,
     description= """
-SMOP is Small Matlab and Octave to Python
-compiler, it takes MATLAB files and translates
-them to Python.  The names of the resulting
-files are derived from the names of the source
-files unless explicitly set with -o .""",
+SMOP is Small Matlab and Octave to Python compiler, it takes MATLAB
+files and translates them to Python.  The names of the resulting files
+are derived from the names of the source files unless explicitly set
+with -o .""",
 
 epilog="""
 Example:
@@ -30,129 +29,87 @@ Example:
     formatter_class=argparse.RawTextHelpFormatter,
     )
 
-parser.add_argument("-a", "--archive",
-                    metavar="archive.tar",
-help="""Read .m files from the archive.
-Accepted formats: tar either uncompressed,
-or compressed using gzip or bz2.""")
 
+parser.add_argument("filelist", nargs="*", metavar="file.m", type=str)
 
-parser.add_argument("-g", "--glob-pattern",
-                    metavar="PATTERN",
-                    type=str,
-help="""Apply unix glob pattern to the input file
-list or to the archived files. For example -g
-'octave-4.0.2/*.m'
+parser.add_argument("-A","--no-analysis", action="store_true", help="""
+skip analysis
+""")
 
-Quoted from fnmatch docs:
+parser.add_argument("-B","--no-backend", action="store_true", help="""
+omit code generation
+""")
 
-Note that the filename separator ('/' on Unix)
-is not special to this module. [...]  Similarly,
-filenames starting with a period are not special
-for this module, and are matched by the * and ?
-patterns.  """)
+parser.add_argument("-C","--no-comments", action="store_true", help="""
+discard multiline comments""")
 
-parser.add_argument("-o", "--output",
-                    metavar="file.py",
-                    type=str,
-help="""Write the results to file.py.  Use -o-
-to send the results to the standard output.
-If not specified explicitly, output file names
-are  derived from input file names by replacing
-".m" with ".py".  For example,
-
-    $ smop filex.m filey.m filez.m
-
-generates files filex.py filey.py and filez.py""") 
-
-# parser.add_argument("-l", "--link",
-#                     metavar="file.py",
-# help="""Import file.py . File core.py is
-# always imported. For example,
-                    
-#    smop test_primes.m -l octave.py
-                    
-# Option -l can be specified several times.""")
-
-parser.add_argument("-s", "--strict",
-                    action="store_true",
-help="""stop after first syntax error (by
-default compiles other .m files)""")
-
-parser.add_argument("-V", '--version',
-                    action='version',
-                    version=__version__)
-
-parser.add_argument("-v", "--verbose",
-                    action="store_true")
-
-parser.add_argument("-x", "--exclude",
-                    metavar="filex.m,filey.m,filez.m",
-                    type=str,
-help="""comma-separated list of files to ignore""")
-
-parser.add_argument("-d", "--debug",
-help="""Colon-separated codes.
+parser.add_argument("-D", "--debug", help="""
+Colon-separated codes.
 M Main
 L Lex
 P Parse
 """)
 
-parser.add_argument("-L", "--debug-lexer",
-                    action="store_true",
-help="enable built-in debugging tools-")
+parser.add_argument("-E","--delete-on-error", action="store_false", help="""
+By default, broken ".py" files are kept alive to allow their
+examination and debugging. Sometimes we want the opposite behavior""")
 
-parser.add_argument("-P", "--debug-parser",
-                    action="store_true",
-help="enable built-in debugging tools")
+parser.add_argument("-g", "--glob-pattern", metavar="PATTERN", type=str, help="""
+Apply unix glob pattern to the input file list or to files. For
+example -g 'octave-4.0.2/*.m""")
 
-parser.add_argument("filelist", nargs="*",
-                    metavar="file.m", type=str)
-
-parser.add_argument("-D","--delete-on-error",
-                    action="store_false",
-help="""By default, broken py-files are
-kept alive to allow their examination and
-debugging. Borrowed from gnu make option of
-the same name and functionality.
-
-    $ smop -v --delete-on-error *.m
-    $ rm -f libscripts.py
-    $ cat *.py > libscripts.py
-    $ python
-...
-    >>> from libscripts import *
-    >>> factorial(9)
-    362880.0
-    >>> primes(9)
-Oops, wrong results.
+parser.add_argument("-H","--no-header", action="store_true", help="""
+use it if you plan to concatenate the generated files
 """)
 
-parser.add_argument("-H","--no-header",
-                    action="store_true",
-help="""use it if you plan to concatenate
-the generated files.""")
+parser.add_argument("-L", "--debug-lexer", action="store_true", help="""
+enable built-in debugging tools
+""")
 
-parser.add_argument("-C","--no-comments",
-                    action="store_true",
-help="""discard multiline comments""")
+parser.add_argument("-N", "--no-numbers", action="store_true", help="""
+discard line-numbering information
+""")
 
-parser.add_argument("-N", "--no-numbers",
-                    action="store_true",
-help="""discard line-numbering information""")
+parser.add_argument("-o", "--output", metavar="FILE.py", type=str, help="""
+Write the results to FILE.py.  Use -o- to send the results to the
+standard output.  If not specified explicitly, output file names are
+derived from input file names by replacing ".m" with ".py".  For example,
 
-parser.add_argument("-B","--no-backend",
-                    action="store_true",
-help="omit code generation")
-parser.add_argument("-R","--no-resolve",
-                    action="store_true",
-help="omit name resolution")
+    $ smop FILE1.m FILE2.m FILE3.m
 
-parser.add_argument("-T","--testing-mode",
-                    action="store_true",
-help= """support special "testing" percent-bang
-comments used to write Octave test suite.
-When disabled, behaves like regular comments.""")
+generates files FILE1.py FILE2.py and FILE3.py
+""") 
+
+parser.add_argument("-P", "--debug-parser", action="store_true", help="""
+enable built-in debugging tools
+""")
+
+parser.add_argument("-R","--no-resolve", action="store_true", help="""
+omit name resolution
+""")
+
+parser.add_argument("-S", "--strict", action="store_true", help="""
+stop after first syntax error (by default compiles other .m files)
+""")
+
+
+parser.add_argument("-T","--testing-mode", action="store_true", help= """
+support special "testing" percent-bang comments used to write Octave
+test suite.  When disabled, behaves like regular comments
+""")
+
+parser.add_argument("-x", "--exclude", metavar="FILE1.m,FILE2.m,FILE3.m", type=str, help="""
+comma-separated list of files to ignore
+""")
+parser.add_argument("-V", '--version', action='version', version=__version__) 
+
+parser.add_argument("-v", "--verbose", action="store_true")
+
+parser.add_argument("-Z", "--archive", metavar="ARCHIVE.tar", help="""
+Read ".m" files from the archive; ignore other files.  Accepted
+format: "tar".  Accepted compression: "gzip", "bz2".
+""")
+
 
 args = parser.parse_args(namespace=sys.modules[__name__])
 

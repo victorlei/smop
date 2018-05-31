@@ -1,5 +1,5 @@
 import unittest
-from core import *
+from libsmop import *
 
 class test_matlabarray(unittest.TestCase):
     """Expanding matlabarray"""

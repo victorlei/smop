@@ -124,7 +124,7 @@ def resolve(t, symtab=None, fp=None, func_name=None):
 #                G.node[nodename]["ident"].props += "S"  # sparse
 #        #S = G.subgraph(nbunch)
 #        #print S.edges()
-#    return G
+    return G
 
 
 def do_resolve(t,symtab):

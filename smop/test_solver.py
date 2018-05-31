@@ -1,10 +1,10 @@
 import pstats,cProfile
 import numpy,time
 from solver import *
-from core import *
+from libsmop import *
 
 def main():
-    ai = matlabarray(zeros (10,10,dtype=int),dtype=int)
+    ai = matlabarray(zeros(10,10,dtype=int),dtype=int)
     af = copy(ai)
 
     ai[1,1]=2
@@ -27,8 +27,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    """
-    cProfile.runctx('main()',globals(),locals(),"Profile.prof")
-    s = pstats.Stats("Profile.prof")
-    s.strip_dirs().sort_stats("time").print_stats()
-    """
