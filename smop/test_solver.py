@@ -1,10 +1,9 @@
-import pstats,cProfile
 import numpy,time
 from solver import *
 from libsmop import *
 
 def main():
-    ai = matlabarray(zeros(10,10,dtype=int),dtype=int)
+    ai = matlabarray(zeros(10,10,dtype=int))
     af = copy(ai)
 
     ai[1,1]=2

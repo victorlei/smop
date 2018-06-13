@@ -45,7 +45,7 @@ liboctave.py:
 	#$(PYTHON) $@
 
 clean:
-	rm -f a.* *.pyc solver.so solver.py octave.so
+	rm -f a.* *.pyc solver.so solver.py octave.so *.py,cover
 
 regress:
 	make | sort -u | wc

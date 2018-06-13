@@ -1,26 +1,11 @@
-import parse,sys
-import node
-from node import extend
+import sys
+import pickle
 import networkx as nx
+
+from . import node
+from . import resolve
+from . node import extend
  
-                
-
-def resolve(t,fp,func_name):
-    fp.write("digraph %s {\n" % func_name)
-    fp.write('graph [rankdir="LR"];\n')
-    for u in node.postorder(t):
-        if u.__class__ in (node.ident,node.param):
-            fp.write("%s [label=%s_%s_%s];\n" % (u.lexpos,u.name,u.lineno,u.column))
-            if u.defs:
-                for v in u.defs:
-                    fp.write("%s -> %s" % (u.lexpos,v.lexpos))
-                    if u.lexpos < v.lexpos:
-                        fp.write('[color=red]')
-                    #else:
-                    #    fp.write('[label=%s.%s]' % (v.lineno,v.column))
-                    fp.write(';\n')
-    fp.write("}\n")
-
 @extend(node.node)
 def _graphviz(self,fp):
     if getattr(self,"__slots__",False):
@@ -58,6 +43,3 @@ def graphviz(tree,fp):
     for u in node.postorder(tree):
         u._graphviz(fp)
     fp.write("}\n")
-
-if __name__ == '__main__':
-    main()

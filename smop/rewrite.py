@@ -1,70 +1,92 @@
 # smop -- Matlab to Python compiler
-# Copyright 2011-2013 Victor Leikehman
-"""
-if i.defs:
-    i is defined, possibly more than once.
-    Typical for vairable references.
-
-if i.defs is None:
-    i is a definition (lhs)
-
-if i.defs == set():
-    i is used but not defined.
-    Typical for function calls.
-
-symtab is a temporary variable, which maps
-variable names (strings) to sets of ident
-instances, which possibly define the variable.
-It is used in if_stmt, for_stmt, and while_stmt.
-"""
+# Copyright 2018 Victor Leikehman
 
 import copy
-import networkx as nx
 
 from . import node
 from . node import extend
 
-def as_networkx(t):
-    G = nx.DiGraph()
+def graphviz(t, fp, func_name):
+    fp.write("digraph %s {\n" % func_name)
+    fp.write('graph [rankdir="LR"];\n')
     for u in node.postorder(t):
         if u.__class__ in (node.ident, node.param):
-            uu = "%s_%s_%s" % (u.name, u.lineno, u.column)
-            # label = "%s\\n%s" % (uu, u.props if u.props else "")
-            G.add_node(uu, ident=u)
+            fp.write("%s [label=%s_%s_%s];\n" %
+                     (u.lexpos, u.name, u.lineno, u.column))
             if u.defs:
                 for v in u.defs:
-                    if v.__class__ is node.ident:
-                        vv = "%s_%s_%s" % (v.name, v.lineno, v.column)
-                        G.add_node(vv, ident=v)
-                        if u.lexpos < v.lexpos:
-                            G.add_edge(uu, vv, color="red")
-                        else:
-                            G.add_edge(uu, vv, color="black")
-    return G
+                    fp.write("%s -> %s" % (u.lexpos, v.lexpos))
+                    if u.lexpos < v.lexpos:
+                        fp.write('[color=red]')
+                    # else:
+                    #    fp.write('[label=%s.%s]' % (v.lineno,v.column))
+                    fp.write(';\n')
+    fp.write("}\n")
 
 
+def peep(parsetree):
+    for u in parsetree:
+        to_arrayref(u)
+        colon_indices_and_expressions(u)
+        end_expressions(u)
+        let_statement(u)
 
-def resolve(t, symtab=None, fp=None, func_name=None):
-    if symtab is None:
-        symtab = {}
-    do_resolve(t,symtab)
-    G = as_networkx(t)
-    for n in G.nodes():
-        print(n.__class__.__name__)
-        u = G.node[n]["ident"]
-        if u.props:
-            pass
-        elif G.out_edges(n) and G.in_edges(n):
-            u.props = "U" # upd
-            #print u.name, u.lineno, u.column
-        elif G.in_edges(n):
-            u.props = "D" # def
-        elif G.out_edges(n):
-            u.props = "R" # ref
-        else:
-            u.props = "F" # ???
-        G.node[n]["label"] = "%s\\n%s" % (n, u.props)
-    return G
+def to_arrayref(u):
+    """
+    To the parser, funcall is indistinguishable
+    from rhs array reference.  But LHS references
+    can be converted to arrayref nodes.
+    """
+    if u.__class__ is node.funcall:
+        try:
+            if u.func_expr.props in "UR": # upd,ref
+                u.__class__ = node.arrayref
+        except:
+            pass # FIXME
+
+def colon_subscripts(u):
+    """
+    Array colon subscripts foo(1:10) and colon expressions 1:10 look
+    too similar to each other.  Now is the time to find out who is who.
+    """
+    if u.__class__ in (node.arrayref,node.cellarrayref):
+        for w in u.args:
+            if w.__class__ is node.expr and w.op == ":":
+                w._replace(op="::")
+
+def end_expressions(u):
+    if u.__class__ in (node.arrayref,node.cellarrayref):
+        if w.__class__ is node.expr and w.op == "end":
+            w.args[0] = u.func_expr
+            w.args[1] = node.number(i)  # FIXME
+
+def let_statement(u):
+    """
+    If LHS is a plain variable, and RHS is a matrix
+    enclosed in square brackets, replace the matrix
+    expr with a funcall.
+    """
+    if u.__class__ is node.let:
+        if (u.ret.__class__ is node.ident and
+            u.args.__class__ is node.matrix):
+            u.args = node.funcall(func_expr=node.ident("matlabarray"),
+                                  args=node.expr_list([u.args]))
+
+#    H = nx.connected_components(G.to_undirected())
+#    for i,component in enumerate(H):
+#        for nodename in component:
+#            if G.node[nodename]["ident"].props == "R":
+#                has_update = 1
+#                break
+#        else:
+#            has_update = 0
+#        if has_update:
+#            for nodename in component:
+#                G.node[nodename]["ident"].props += "S"  # sparse
+#        #S = G.subgraph(nbunch)
+#        #print S.edges()
+#    return G
+
 
 def do_resolve(t,symtab):
     t._resolve(symtab)
@@ -225,12 +247,12 @@ def _resolve(self,symtab):
 def _resolve(self,symtab):
     self.ret._resolve(symtab)
         #symtab.clear()
-
+
 @extend(node.stmt_list)
 def _resolve(self,symtab):
     for stmt in self:
         stmt._resolve(symtab)
-
+
 @extend(node.where_stmt) # FIXME where_stmt ???
 @extend(node.while_stmt)
 def _resolve(self,symtab):
@@ -242,8 +264,7 @@ def _resolve(self,symtab):
     # Handle the case where WHILE loop is not executed
     for k,v in symtab_copy.items():
         symtab.setdefault(k,[]).append(v)
-
-@extend(node.function)
+@extend(node.function)
 def _resolve(self,symtab):
     self.head._resolve(symtab)
     self.body._resolve(symtab)
