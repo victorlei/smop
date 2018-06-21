@@ -17,7 +17,7 @@ setup(
     license = 'MIT',
     keywords = 'convert translate matlab octave python',
     url = 'https://github.com/victorlei/smop',
-    download_url = 'https://github.com/victorlei/smop/archive/master.zip',
+    download_url = 'https://github.com/victorlei/smop', #/archive/master.zip',
     name = 'smop',
     version = __VERSION__,
     entry_points = { 'console_scripts': [ 'smop = smop.main:main', ], },
@@ -26,5 +26,5 @@ setup(
     #test_suite = "smop.testsuite.test_lexer",
     #include_package_data = True,
     #package_data = { 'smop': ['*.m', 'Makefile'], },
-    install_requires = ['ply', 'numpy', 'scipy', 'networkx'],
+    install_requires = ['pytest', 'ply', 'numpy', 'scipy', 'networkx'],
 )
