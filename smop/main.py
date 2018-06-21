@@ -21,7 +21,7 @@ from . import version
 def print_header(fp):
     if options.no_header:
         return
-    print("# Running Python %s" % sys.version, file=fp)
+    #print("# Running Python %s" % sys.version, file=fp)
     print("# Generated with SMOP ", version.__version__, file=fp)
     print("from libsmop import *", file=fp)
     print("#", options.filename, file=fp)
@@ -84,6 +84,3 @@ def main():
             pass
     if nerrors:
         print("Errors:", nerrors)
-
-if __name__ == "__main__":
-    main()

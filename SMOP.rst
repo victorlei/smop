@@ -105,9 +105,13 @@ b. A quote, immediately following any of: (1) an alphanumeric
 Keyword ``end`` -- expression and statement 
 -------------------------------------------
 
-Any of: ``endwhile``, etc. are ``END_STMT``.  Otherwise,
-if ``end`` appears inside parentheses of any kind,
-it's ``END_EXPR``. Otherwise, ``end`` is illegal.
+Any of: ``endwhile``, etc. are ``END_STMT``.  Otherwise, lonely ``end``
+is a keyword ``END_EXPR``.  It is not allowed to be used as a variable,
+except if appears inside subscripts, in which case it keeps the upper
+bound of the corresponding dimension.  It is frequently used with
+the auto-expanding array idiom::
+
+    a(end+1) = b
 
 Optional ``end`` statement as function terminator
 -------------------------------------------------
@@ -137,26 +141,26 @@ if it was ``[1,2,3]``.  Handle with care: ``[x + y]`` vs ``[x +y]``
 
 Term T is::
 
-  #. a name or a number
-  #. literal string enclosed in single or double quotes
-  #. (T) or [T] or {T} or T' or +T or -T
+  1. a name or a number
+  2. literal string enclosed in single or double quotes
+  3. (T) or [T] or {T} or T' or +T or -T
 
 Terms end with::
 
-  #. an alphanumeric charater \w
-  #. single quote (in octave also double-quote)
-  #. right parenthesis, bracket, or brace
-  #. a dot (after a number, such as 3. 
+  1. an alphanumeric charater \w
+  2. single quote (in octave also double-quote)
+  3. right parenthesis, bracket, or brace
+  4. a dot (after a number, such as 3. 
 
 The pattern for whitespace accounts for ellipsis as a whitespace, and
 for the trailing junk.
 
 Terms start with::
 
-  #. an alphanumeric character
-  #. a single or double quote,
-  #. left paren, bracket, or brace and finally
-  #. a dot before a digit, such as .3  .
+  1. an alphanumeric character
+  2. a single or double quote,
+  3. left paren, bracket, or brace and finally
+  4. a dot before a digit, such as .3  .
 
 TODO: what about curly brackets ???
 TODO: what about dot followed by a letter, as in field
@@ -499,4 +503,29 @@ instance).
 
 ----------------------------------------------------------------------
 
+
+Git hacks
+---------
+::
+
+  git difftool --tool <tool>
+
+where ``tool`` is ``meld`` or ``kdiff3``
+
+Vim hacks
+---------
+::
+
+    http://learnvimscriptthehardway.stevelosh.com
+    https://www.ibm.com/developerworks/library/l-vim-script-1/index.html
+    https://devhints.io/vimscript
+    http://andrewscala.com/vimscript/                                                                                                                            
+
+Pdf hacks
+---------
+::
+
+   https://www.geeksforgeeks.org/working-with-pdf-files-in-python/
+
+   
 .. vim: tw=70:sw=2
