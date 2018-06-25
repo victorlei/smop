@@ -50,7 +50,7 @@ def resolve(t, symtab=None, fp=None, func_name=None):
     do_resolve(t,symtab)
     G = as_networkx(t)
     for n in G.nodes():
-        print(n.__class__.__name__)
+        #print(n.__class__.__name__)
         u = G.node[n]["ident"]
         if u.props:
             pass
