@@ -341,7 +341,7 @@ def main():
     line = ""
     while 1:
         try:
-            line += raw_input("=>> ").decode("string_escape")
+            line += input("=>> ").decode("string_escape")
             print(len(line), [c for c in line])
         except EOFError:
             reload(sys.modules["lexer.py"])
@@ -354,7 +354,7 @@ if __name__ == "__main__":
     options.testing_mode = 0
     options.debug_lexer = 0
     lexer = new()
-    buf = open(sys.argv[1]).read()
+    buf = open(input("Enter file to be read: ")).read()
     lexer.input(buf)
     for tok in lexer:
         print(tok)
