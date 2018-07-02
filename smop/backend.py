@@ -13,9 +13,9 @@ return value:  return (x,y,z)[:nargout] or return x
 import logging
 logger = logging.getLogger(__name__)
 
-from . import node
-from . import options
-from . node import extend,exceptions
+import node
+import options
+from node import extend,exceptions
 
 indent = " "*4
 

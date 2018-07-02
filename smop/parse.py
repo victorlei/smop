@@ -2,11 +2,11 @@
 # Copyright 2011-2016 Victor Leikehman
 
 from ply import yacc
-from . import lexer
-from . lexer import tokens, raise_exception
-from . import node
-from . node import exceptions
-from . import options
+import lexer
+from lexer import tokens, raise_exception
+import node
+from node import exceptions
+import options
 
 # ident properties (set in parse.py)
 # ----------------------------------

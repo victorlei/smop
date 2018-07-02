@@ -12,11 +12,11 @@ import os
 import traceback
 from os.path import basename, splitext
 
-from . import options
-from . import parse
-from . import resolve
-from . import backend
-from . import version
+import options
+import parse
+import resolve
+import backend
+import version
 
 def print_header(fp):
     if options.no_header:
@@ -57,7 +57,7 @@ def main():
                 continue
             buf = open(options.filename).read()
             buf = buf.replace("\r\n", "\n")
-            # FIXME buf = buf.decode("ascii", errors="ignore")
+            #FIXME buf = buf.decode("ascii", errors="ignore")
             stmt_list = parse.parse(buf if buf[-1] == '\n' else buf + '\n')
 
             if not stmt_list:
@@ -84,3 +84,5 @@ def main():
             pass
     if nerrors:
         print("Errors:", nerrors)
+
+main()

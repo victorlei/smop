@@ -21,8 +21,8 @@ It is used in if_stmt, for_stmt, and while_stmt.
 import copy
 import networkx as nx
 
-from . import node
-from . node import extend
+import node
+from node import extend
 
 def as_networkx(t):
     G = nx.DiGraph()
