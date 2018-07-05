@@ -65,7 +65,6 @@ def p_end_function(p):
     """
     p[0] = p[1]
     p[0].append(node.return_stmt(ret=ret_expr))
-    p[0].append(node.comment_stmt("\nif __name__ == '__main__':\n    pass"))
 
 
 @exceptions
