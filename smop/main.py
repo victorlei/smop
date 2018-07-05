@@ -12,6 +12,12 @@ import os
 import traceback
 from os.path import basename, splitext
 
+sys.argv.append('temp/stripcell.m')
+sys.argv.append('-o')
+sys.argv.append('temp/stripcell.py')
+#sys.argv.append('-H')
+#sys.argv.append('-P')
+
 import options
 import parse
 import resolve
@@ -21,10 +27,7 @@ import version
 def print_header(fp):
     if options.no_header:
         return
-    #print("# Running Python %s" % sys.version, file=fp)
-    print("# Generated with SMOP ", version.__version__, file=fp)
-    print("from libsmop import *", file=fp)
-    print("#", options.filename, file=fp)
+    print("import numpy as np", file=fp)
 
 def main():
     if "M" in options.debug:
@@ -59,13 +62,16 @@ def main():
             buf = buf.replace("\r\n", "\n")
             #FIXME buf = buf.decode("ascii", errors="ignore")
             stmt_list = parse.parse(buf if buf[-1] == '\n' else buf + '\n')
+            for i in stmt_list:
+                print(i)
+                print(type(i))
 
             if not stmt_list:
                 continue
             if not options.no_resolve:
                 G = resolve.resolve(stmt_list)
             if not options.no_backend:
-                s = backend.backend(stmt_list)
+                s = backend.backend(stmt_list).strip()
             if not options.output:
                 f = splitext(basename(options.filename))[0] + ".py"
                 with open(f, "w") as fp:
