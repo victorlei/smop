@@ -36,6 +36,11 @@ optable = {
     "./=" : "/",
     }
 
+#list of functions handled with func_convert
+func_conversions = [
+    "textscan"
+    ]
+
 def backend(t,*args,**kwargs):
     return t._backend(level=1,*args,**kwargs)
 
@@ -67,7 +72,71 @@ reserved = set(
     #exp   fabs floor log log10
     #pi    sin  sqrt  tan
     
-
+def is_tab_empty(tab):
+    for elem in tab:
+        if elem != "":
+            return False
+    return True
+
+def compute_indexing(s):
+    """
+    This function makes the correlation between matlab indexing and python indexing
+    Which specifications are listed below :
+        - Python is zero-indexed
+        - MATLAB is 1-indexed
+        - MATLAB slice notation includes the endpoint
+        - Python slice notation excludes the endpoint
+        - MATLAB start:step:stop
+        - Python start:stop:step
+    :param s: string containing the content between squared brackets
+    :return: returns the string being parsed and analysed
+    """
+    print 'computing : %s' % (s)
+    decomposition = s.split(",")
+    k = 0
+    for element in decomposition:
+        try:
+            check = unicode(element, 'utf-8')
+        except TypeError:
+            check = element
+        if check.isnumeric():
+            decomposition[k] = str(int(element) - 1)
+        if element.find(':') != -1:
+            tab = element.split(':')
+            if is_tab_empty(tab):
+                k += 1
+                continue
+            start = 0
+            if len(tab) == 2:
+                step = 1
+                stop = 2
+            if len(tab) == 3:
+                step = 2
+                stop = 3
+            try:
+                if unicode(tab[start], 'utf-8').isnumeric():
+                    tab[start] = str(int(tab[start]) - 1)
+                if unicode(tab[1], 'utf-8').isnumeric():
+                    tab[1] = str(int(tab[1]) + 1)
+            except TypeError:
+                if tab[start].isnumeric():
+                    tab[start] = str(int(tab[start]) - 1)
+                if tab[stop - 1].isnumeric():
+                    tab[stop - 1] = str(int(tab[stop - 1]) + 1)
+            for i in range(start, stop, step):
+                if tab[i].find("end") != -1:
+                    tab[i] = tab[i].replace('end()', "-1")
+                    tab[i] = tab[i].replace('end', "-1")
+            if len(tab) == 3:
+                tmp = tab[1]
+                tab[1] = tab[2]
+                tab[2] = tmp
+            decomposition[k] = ":".join(tab)
+            print tab
+        k += 1
+    print decomposition
+    return ",".join(decomposition)
+
 @extend(node.add)
 def _backend(self,level=0):
     if (self.args[0].__class__ is node.number and
@@ -77,32 +146,31 @@ def _backend(self,level=0):
     else:
         return "(%s+%s)" % (self.args[0]._backend(),
                             self.args[1]._backend())
-
+
 @extend(node.arrayref)
 def _backend(self,level=0):
-    fmt = "%s[%s]"
-    return fmt % (self.func_expr._backend(),
-                       self.args._backend())
-
+    return "%s[%s]" % (self.func_expr._backend(),
+                       compute_indexing(self.args._backend()))
+
 @extend(node.break_stmt)
 def _backend(self,level=0):
     return "break"
-
+
 @extend(node.builtins)
 def _backend(self,level=0):
     #if not self.ret:
         return "%s(%s)" % (self.__class__.__name__,
                            self.args._backend())
-
+
 @extend(node.cellarray)
 def _backend(self,level=0):
     return "cellarray([%s])" % self.args._backend()
-
+
 @extend(node.cellarrayref)
 def _backend(self,level=0):
     return "%s[%s]" % (self.func_expr._backend(),
-                       self.args._backend())
-
+                       compute_indexing(self.args._backend()))
+
 @extend(node.comment_stmt)
 def _backend(self,level=0):
     s = self.value.strip() 
@@ -111,16 +179,16 @@ def _backend(self,level=0):
     if s[0] in "%#":
         return s.replace("%","#")
     return self.value
-
+
 @extend(node.concat_list)
 def _backend(self,level=0):
     #import pdb; pdb.set_trace()
     return ",".join(["[%s]"%t._backend() for t in self])
-
+
 @extend(node.continue_stmt)
 def _backend(self,level=0):
     return "continue"
-
+
 @extend(node.expr)
 def _backend(self,level=0):
     if self.op in ("!","~"): 
@@ -156,7 +224,10 @@ def _backend(self,level=0):
                                  self.args[2]._backend(),
                                  self.args[1]._backend())
     if self.op == ":":
-        return "arange(%s)" % self.args._backend()
+        temp = self.args._backend().replace(",",":")
+        if temp == "":
+            temp = ":"
+        return "%s" % temp
     
     if self.op == "end":
 #        if self.args:
@@ -198,15 +269,15 @@ def _backend(self,level=0):
     return ret+"%s(%s)" % (self.op,
                            ",".join([t._backend() for t in self.args]))
 
-
+
 @extend(node.expr_list)
 def _backend(self,level=0):
     return ",".join([t._backend() for t in self])
-
+
 @extend(node.expr_stmt)
 def _backend(self,level=0):
     return self.expr._backend()
-
+
 @extend(node.for_stmt)
 def _backend(self,level=0):
     fmt = "for %s in %s.reshape(-1):%s"
@@ -214,25 +285,20 @@ def _backend(self,level=0):
                   self.expr._backend(),
                   self.stmt_list._backend(level+1))
 
-
+
 @extend(node.func_stmt)
 def _backend(self,level=0):
-    self.args.append(node.ident("*args"))
-    self.args.append(node.ident("**kwargs"))
     s = """
-@function
 def %s(%s):
-    varargin = %s.varargin
-    nargin = %s.nargin
 """ % (self.ident._backend(),
-       self.args._backend(),
-       self.ident._backend(),
-       self.ident._backend())
+       self.args._backend())
     return s
-
+
 @extend(node.funcall)
 def _backend(self,level=0):
     #import pdb; pdb.set_trace()
+    if self.func_expr._backend() in func_conversions:
+        return func_convert(self,level)
     if not self.nargout or self.nargout == 1:
         return "%s(%s)" % (self.func_expr._backend(),
                            self.args._backend())
@@ -244,11 +310,11 @@ def _backend(self,level=0):
                                       self.args._backend(),
                                       self.nargout)
 
-
+
 @extend(node.global_list)
 def _backend(self,level=0):
     return ",".join([t._backend() for t in self])
-
+
 @extend(node.ident)
 def _backend(self,level=0):
     if self.name in reserved:
@@ -257,7 +323,7 @@ def _backend(self,level=0):
         return "%s=%s" % (self.name,
                           self.init._backend())
     return self.name
-
+
 @extend(node.if_stmt)
 def _backend(self,level=0):
     s = "if %s:%s" % (self.cond_expr._backend(),
@@ -269,12 +335,12 @@ def _backend(self,level=0):
         s += "\n"+indent*level
         s += "else:%s" % self.else_stmt._backend(level+1)
     return s
-
+
 @extend(node.lambda_expr)
 def _backend(self,level=0):
     return 'lambda %s: %s' % (self.args._backend(),
                               self.ret._backend())
-
+
 @extend(node.let)
 def _backend(self,level=0):
     if not options.no_numbers:
@@ -305,14 +371,14 @@ def _backend(self,level=0):
         s += "%s=%s" % (self.ret._backend(), 
                        self.args._backend())
     return s+t
-
+
 @extend(node.logical)
 def _backend(self,level=0):
     if self.value == 0:
         return "false"
     else:
         return "true"
-
+
 @extend(node.matrix)
 def _backend(self,level=0):
     # TODO empty array has shape of 0 0 in matlab
@@ -325,11 +391,11 @@ def _backend(self,level=0):
     else:
         #import pdb; pdb.set_trace()
         return "concat([%s])" % self.args[0]._backend()
-
+
 @extend(node.null_stmt)
 def _backend(self,level=0):
     return ""
-
+
 @extend(node.number)
 def _backend(self,level=0):
     #if type(self.value) == int:
@@ -339,12 +405,12 @@ def _backend(self,level=0):
 @extend(node.pass_stmt)
 def _backend(self,level=0):
     return "pass"
-
+
 @extend(node.persistent_stmt) #FIXME
 @extend(node.global_stmt)
 def _backend(self,level=0):
     return "global %s" % self.global_list._backend()
-
+
 @extend(node.return_stmt)
 def _backend(self,level=0):
     if not self.ret:
@@ -352,7 +418,7 @@ def _backend(self,level=0):
     else:
         return "return %s" % self.ret._backend()
 
-
+
 @extend(node.stmt_list)
 def _backend(self,level=0):
     for t in self:
@@ -363,23 +429,23 @@ def _backend(self,level=0):
         self.append(node.pass_stmt())
     sep = "\n"+indent*level
     return sep+sep.join([t._backend(level) for t in self])
-
+
 @extend(node.string)
 def _backend(self,level=0):
     try:
         return "'%s'" % str(self.value).encode("string_escape")
     except:
         return "'%s'" % str(self.value)
-
+
 @extend(node.sub)
 def _backend(self,level=0):
     return "(%s-%s)" %  (self.args[0]._backend(),
                          self.args[1]._backend())
-
+
 @extend(node.transpose)
 def _backend(self,level=0):
     return "%s.T" % self.args[0]._backend()
-
+
 @extend(node.try_catch)
 def _backend(self,level=0):
     fmt = "try:%s\n%sfinally:%s"
@@ -387,10 +453,20 @@ def _backend(self,level=0):
                   indent*level,
                   self.finally_stmt._backend(level+1))
 
-
+
 @extend(node.while_stmt)
 def _backend(self,level=0):
     fmt = "while %s:\n%s\n"
     return fmt % (self.cond_expr._backend(),
                   self.stmt_list._backend(level+1))
 
+def func_convert(funcall,level):
+    funname = funcall.func_expr._backend()
+    args = funcall.args._backend().split(',')
+    if funname == "textscan":
+        if not (args[1] == "'%s'" and args[2] == "'delimiter'"):
+            raise Exception("no defined behavior for textscan with arguments "+str(args))
+        args[0] = args[0].replace('char(','str(')
+        return "np.asarray(["+args[0]+".split("+args[3]+")],dtype='object').T"
+    else:
+        raise Exception("func_convert called with unexpected function name '"+funname+"'")
