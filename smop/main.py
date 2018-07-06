@@ -28,6 +28,7 @@ def print_header(fp):
     if options.no_header:
         return
     print("import numpy as np", file=fp)
+    print("import re", file=fp)
 
 def main():
     if "M" in options.debug:

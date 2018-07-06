@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 import node
 import options
 from node import extend,exceptions
+import re
 
 indent = " "*4
 
@@ -38,7 +39,9 @@ optable = {
 
 #list of functions handled with func_convert
 func_conversions = [
-    "textscan"
+    "textscan",
+    "iscellstr",
+    "length"
     ]
 
 def backend(t,*args,**kwargs):
@@ -91,15 +94,10 @@ def compute_indexing(s):
     :param s: string containing the content between squared brackets
     :return: returns the string being parsed and analysed
     """
-    print 'computing : %s' % (s)
     decomposition = s.split(",")
     k = 0
     for element in decomposition:
-        try:
-            check = unicode(element, 'utf-8')
-        except TypeError:
-            check = element
-        if check.isnumeric():
+        if element.isnumeric():
             decomposition[k] = str(int(element) - 1)
         if element.find(':') != -1:
             tab = element.split(':')
@@ -114,9 +112,9 @@ def compute_indexing(s):
                 step = 2
                 stop = 3
             try:
-                if unicode(tab[start], 'utf-8').isnumeric():
+                if tab[start].isnumeric():
                     tab[start] = str(int(tab[start]) - 1)
-                if unicode(tab[1], 'utf-8').isnumeric():
+                if tab[1].isnumeric():
                     tab[1] = str(int(tab[1]) + 1)
             except TypeError:
                 if tab[start].isnumeric():
@@ -132,9 +130,7 @@ def compute_indexing(s):
                 tab[1] = tab[2]
                 tab[2] = tmp
             decomposition[k] = ":".join(tab)
-            print tab
         k += 1
-    print decomposition
     return ",".join(decomposition)
 
 @extend(node.add)
@@ -224,10 +220,11 @@ def _backend(self,level=0):
                                  self.args[2]._backend(),
                                  self.args[1]._backend())
     if self.op == ":":
-        temp = self.args._backend().replace(",",":")
+        #regular expression to replace comma not inside brackets or parentheses
+        temp = re.sub(r',\s*(?![^()[\]]*[\])])', ':', self.args._backend())
         if temp == "":
             temp = ":"
-        return "%s" % temp
+        return temp
     
     if self.op == "end":
 #        if self.args:
@@ -280,11 +277,7 @@ def _backend(self,level=0):
 
 @extend(node.for_stmt)
 def _backend(self,level=0):
-    fmt = "for %s in %s.reshape(-1):%s"
-    return fmt % (self.ident._backend(),
-                  self.expr._backend(),
-                  self.stmt_list._backend(level+1))
-
+    return "for "+self.ident._backend()+" in range("+compute_indexing(self.expr._backend()).replace(':',',')+"):"+self.stmt_list._backend(level+1)
 
 @extend(node.func_stmt)
 def _backend(self,level=0):
@@ -460,6 +453,7 @@ def _backend(self,level=0):
     return fmt % (self.cond_expr._backend(),
                   self.stmt_list._backend(level+1))
 
+#add entries to list of function names to be converted declared at top of file
 def func_convert(funcall,level):
     funname = funcall.func_expr._backend()
     args = funcall.args._backend().split(',')
@@ -468,5 +462,9 @@ def func_convert(funcall,level):
             raise Exception("no defined behavior for textscan with arguments "+str(args))
         args[0] = args[0].replace('char(','str(')
         return "np.asarray(["+args[0]+".split("+args[3]+")],dtype='object').T"
+    elif funname == "iscellstr":
+        return "isinstance("+args[0]+", str)"
+    elif funname == "length":
+        return args[0]+".size"
     else:
         raise Exception("func_convert called with unexpected function name '"+funname+"'")

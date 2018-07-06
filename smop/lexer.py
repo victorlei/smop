@@ -354,7 +354,7 @@ if __name__ == "__main__":
     options.testing_mode = 0
     options.debug_lexer = 0
     lexer = new()
-    buf = open(input("Enter file to be read: ")).read()
+    buf = open('temp/stripcell.m').read()
     lexer.input(buf)
     for tok in lexer:
         print(tok)
