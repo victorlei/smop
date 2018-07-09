@@ -44,6 +44,21 @@ def print_list(l):
     finally:
         print("End of "+str(type(l)))
 
+def resolve_array_refs(l,graph_list):
+    try:
+        print(type(l))
+        if type(l) == node.funcall:
+            for elem in graph_list:
+                if str(l.func_expr) == elem[0] and "F" != elem[3]:
+                    l.__class__ = node.arrayref
+                    print(l)
+                    break
+        if type(l) != str and type(l) != node.ident:
+            for i in l:
+                resolve_array_refs(i,graph_list)
+    except Exception as e:
+        pass
+
 def main():
     if "M" in options.debug:
         import pdb
@@ -83,6 +98,14 @@ def main():
                 continue
             if not options.no_resolve:
                 G = resolve.resolve(stmt_list)
+                graph_list = []
+                for n in G.nodes():
+                    temp = str.split(n,'_')
+                    while len(temp) > 3:
+                        temp[0] += '_' + temp.pop(1)
+                    graph_list.append(temp+[G.node[n]["ident"].props])
+                resolve_array_refs(stmt_list,graph_list)
+                print(graph_list)
             if not options.no_backend:
                 s = backend.backend(stmt_list).strip()
             if not options.output:
