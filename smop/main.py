@@ -23,12 +23,26 @@ import parse
 import resolve
 import backend
 import version
+import node
 
 def print_header(fp):
     if options.no_header:
         return
+    print("import math as m", file=fp)
     print("import numpy as np", file=fp)
     print("import re", file=fp)
+    
+def print_list(l):
+    print(l)
+    print(type(l))
+    try:
+        if type(l) != str:
+            for i in l:
+                print_list(i)
+    except:
+        pass
+    finally:
+        print("End of "+str(type(l)))
 
 def main():
     if "M" in options.debug:
@@ -63,9 +77,7 @@ def main():
             buf = buf.replace("\r\n", "\n")
             #FIXME buf = buf.decode("ascii", errors="ignore")
             stmt_list = parse.parse(buf if buf[-1] == '\n' else buf + '\n')
-            for i in stmt_list:
-                print(i)
-                print(type(i))
+            print_list(stmt_list)
 
             if not stmt_list:
                 continue
