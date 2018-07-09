@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 import node
 import options
 from node import extend,exceptions
-import re
 
 indent = " "*4
 
@@ -39,10 +38,76 @@ optable = {
 
 #list of functions handled with func_convert
 func_conversions = [
-    "textscan",
+    "dot",
+    "erf",
     "iscellstr",
-    "length"
+    "length",
+    "log",
+    "mean",
+    "multiply",
+    "numel",
+    "sqrt",
+    "std",
+    "sum",
+    "textscan"
     ]
+
+#add entries to list of function names to be converted (func_conversions)
+def func_convert(funcall,level):
+    funname = funcall.func_expr._backend()
+    args = commasplit(funcall.args._backend())
+    if funname == "dot":
+        return "np.dot("+args[0]+","+args[1]+")"
+    elif funname == "erf":
+        return "m.erf("+args[0]+")"
+    elif funname == "iscellstr":
+        return "isinstance("+args[0]+", str)"
+    elif funname == "length":
+        return args[0]+".size"
+    elif funname == "log":
+        return "np.log("+args[0]+")"
+    elif funname == "mean":
+        return "np.mean("+args[0]+")"
+    elif funname == "multiply":
+        return "np.multiply("+args[0]+","+args[1]+")"
+    elif funname == "numel":
+        return args[0]+".size"
+    elif funname == "sqrt":
+        return "m.sqrt("+args[0]+")"
+    elif funname == "std":
+        return "np.std("+args[0]+", ddof = 1)"
+    elif funname == "sum":
+        return "np.sum("+args[0]+")"
+    elif funname == "textscan":
+        if not (args[1] == "'%s'" and args[2] == "'delimiter'"):
+            raise Exception("no defined behavior for textscan with arguments "+str(args))
+        args[0] = args[0].replace('char(','str(')
+        return "np.asarray(["+args[0]+".split("+args[3]+")],dtype='object').T"
+    else:
+        raise Exception("func_convert called with unexpected function name '"+funname+"'")
+    
+#returns a string split by commas not enclosed by brackets or parentheses    
+def commasplit(s):
+    split = ['']
+    brackets = 0
+    parens = 0
+    index = 0
+    for char in s:
+        if char == '[':
+            brackets += 1
+        elif char == ']':
+            brackets -= 1
+        elif char == '(':
+            parens += 1
+        elif char == ')':
+            parens -= 1
+        
+        if char == ',' and parens == 0 and brackets == 0:
+            split.append('')
+            index+=1
+        else:
+            split[index] += char
+    return split
 
 def backend(t,*args,**kwargs):
     return t._backend(level=1,*args,**kwargs)
@@ -221,7 +286,7 @@ def _backend(self,level=0):
                                  self.args[1]._backend())
     if self.op == ":":
         #regular expression to replace comma not inside brackets or parentheses
-        temp = re.sub(r',\s*(?![^()[\]]*[\])])', ':', self.args._backend())
+        temp = str.join(':', commasplit(self.args._backend()))
         if temp == "":
             temp = ":"
         return temp
@@ -378,7 +443,7 @@ def _backend(self,level=0):
     # size([])
     # 0 0
     if not self.args:
-        return "[]"
+        return "np.matrix([])"
     elif any(a.__class__ is node.string for a in self.args):
         return " + ".join(a._backend() for a in self.args)
     else:
@@ -452,19 +517,3 @@ def _backend(self,level=0):
     fmt = "while %s:\n%s\n"
     return fmt % (self.cond_expr._backend(),
                   self.stmt_list._backend(level+1))
-
-#add entries to list of function names to be converted declared at top of file
-def func_convert(funcall,level):
-    funname = funcall.func_expr._backend()
-    args = funcall.args._backend().split(',')
-    if funname == "textscan":
-        if not (args[1] == "'%s'" and args[2] == "'delimiter'"):
-            raise Exception("no defined behavior for textscan with arguments "+str(args))
-        args[0] = args[0].replace('char(','str(')
-        return "np.asarray(["+args[0]+".split("+args[3]+")],dtype='object').T"
-    elif funname == "iscellstr":
-        return "isinstance("+args[0]+", str)"
-    elif funname == "length":
-        return args[0]+".size"
-    else:
-        raise Exception("func_convert called with unexpected function name '"+funname+"'")
