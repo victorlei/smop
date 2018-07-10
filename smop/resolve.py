@@ -50,8 +50,8 @@ def resolve(t, symtab=None, fp=None, func_name=None):
     do_resolve(t,symtab)
     G = as_networkx(t)
     for n in G.nodes():
-        print(n)
-        print(n.__class__.__name__)
+        #print(n)
+        #print(n.__class__.__name__)
         u = G.node[n]["ident"]
         if u.props:
             pass
@@ -65,7 +65,7 @@ def resolve(t, symtab=None, fp=None, func_name=None):
         else:
             u.props = "F" # function call
         G.node[n]["label"] = "%s\\n%s" % (n, u.props)
-        print(u.props)
+        #print(u.props)
     return G
 
 def do_resolve(t,symtab):

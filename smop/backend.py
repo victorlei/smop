@@ -40,6 +40,7 @@ optable = {
 func_conversions = [
     "dot",
     "erf",
+    "exp",
     "iscellstr",
     "length",
     "log",
@@ -60,6 +61,8 @@ def func_convert(funcall,level):
         return "np.dot("+args[0]+","+args[1]+")"
     elif funname == "erf":
         return "m.erf("+args[0]+")"
+    elif funname == "exp":
+        return "m.exp("+args[0]+")"
     elif funname == "iscellstr":
         return "isinstance("+args[0]+", str)"
     elif funname == "length":
@@ -164,7 +167,7 @@ def compute_indexing(s):
     for element in decomposition:
         if element.isnumeric():
             decomposition[k] = str(int(element) - 1)
-        if element.find(':') != -1:
+        elif element.find(':') != -1:
             tab = element.split(':')
             if is_tab_empty(tab):
                 k += 1
@@ -179,13 +182,13 @@ def compute_indexing(s):
             try:
                 if tab[start].isnumeric():
                     tab[start] = str(int(tab[start]) - 1)
-                if tab[1].isnumeric():
-                    tab[1] = str(int(tab[1]) + 1)
+                else:
+                    tab[start] = str(tab[start]) + "-1"
             except TypeError:
                 if tab[start].isnumeric():
                     tab[start] = str(int(tab[start]) - 1)
-                if tab[stop - 1].isnumeric():
-                    tab[stop - 1] = str(int(tab[stop - 1]) + 1)
+                else:
+                    tab[start] = str(tab[start]) + "-1"
             for i in range(start, stop, step):
                 if tab[i].find("end") != -1:
                     tab[i] = tab[i].replace('end()', "-1")
@@ -195,6 +198,8 @@ def compute_indexing(s):
                 tab[1] = tab[2]
                 tab[2] = tmp
             decomposition[k] = ":".join(tab)
+        else:
+            decomposition[k] += "-1"
         k += 1
     return ",".join(decomposition)
 
@@ -342,7 +347,11 @@ def _backend(self,level=0):
 
 @extend(node.for_stmt)
 def _backend(self,level=0):
-    return "for "+self.ident._backend()+" in range("+compute_indexing(self.expr._backend()).replace(':',',')+"):"+self.stmt_list._backend(level+1)
+    temp = self.expr._backend().split(':')
+    if len(temp) == 3:
+        temp[1], temp[2] = temp[2], temp[1]
+    temp[1] = str(temp[1])+'+1'
+    return "for "+self.ident._backend()+" in range("+','.join(temp)+"):"+self.stmt_list._backend(level+1)
 
 @extend(node.func_stmt)
 def _backend(self,level=0):
@@ -425,6 +434,9 @@ def _backend(self,level=0):
         self.args.__class__ is node.ident):
         s += "%s=copy(%s)" % (self.ret._backend(),
                               self.args._backend())
+    elif self.ret.__class__ is node.arrayref:
+        temp = self.ret._backend()
+        s += temp[:temp.index('[')]+" = smop_util.safe_set("+temp[:temp.index('[')]+",("+temp[temp.index('[')+1:temp.rindex(']')]+",),"+self.args._backend()+")"
     else:
         s += "%s=%s" % (self.ret._backend(), 
                        self.args._backend())
@@ -443,7 +455,7 @@ def _backend(self,level=0):
     # size([])
     # 0 0
     if not self.args:
-        return "np.matrix([])"
+        return "np.asarray([], dtype='object')"
     elif any(a.__class__ is node.string for a in self.args):
         return " + ".join(a._backend() for a in self.args)
     else:

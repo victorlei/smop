@@ -12,9 +12,9 @@ import os
 import traceback
 from os.path import basename, splitext
 
-sys.argv.append('temp/stripcell.m')
+sys.argv.append('temp/EDC_species.m')
 sys.argv.append('-o')
-sys.argv.append('temp/stripcell.py')
+sys.argv.append('temp/EDC_species.py')
 #sys.argv.append('-H')
 #sys.argv.append('-P')
 
@@ -31,10 +31,11 @@ def print_header(fp):
     print("import math as m", file=fp)
     print("import numpy as np", file=fp)
     print("import re", file=fp)
+    print("import smop_util", file=fp)
     
 def print_list(l):
-    print(l)
-    print(type(l))
+    #print(l)
+    #print(type(l))
     try:
         if type(l) != str:
             for i in l:
@@ -42,16 +43,15 @@ def print_list(l):
     except:
         pass
     finally:
-        print("End of "+str(type(l)))
+        #print("End of "+str(type(l)))
+        pass
 
 def resolve_array_refs(l,graph_list):
     try:
-        print(type(l))
         if type(l) == node.funcall:
             for elem in graph_list:
                 if str(l.func_expr) == elem[0] and "F" != elem[3]:
                     l.__class__ = node.arrayref
-                    print(l)
                     break
         if type(l) != str and type(l) != node.ident:
             for i in l:
@@ -105,7 +105,6 @@ def main():
                         temp[0] += '_' + temp.pop(1)
                     graph_list.append(temp+[G.node[n]["ident"].props])
                 resolve_array_refs(stmt_list,graph_list)
-                print(graph_list)
             if not options.no_backend:
                 s = backend.backend(stmt_list).strip()
             if not options.output:
