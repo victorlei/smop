@@ -38,6 +38,8 @@ optable = {
 
 #list of functions handled with func_convert
 func_conversions = [
+    "clear",
+    "close_",
     "dot",
     "erf",
     "exp",
@@ -57,7 +59,11 @@ func_conversions = [
 def func_convert(funcall,level):
     funname = funcall.func_expr._backend()
     args = commasplit(funcall.args._backend())
-    if funname == "dot":
+    if funname == "clear":
+        return ""
+    elif funname == "close_":
+        return "plt.close("+args[0]+")"
+    elif funname == "dot":
         return "np.dot("+args[0]+","+args[1]+")"
     elif funname == "erf":
         return "m.erf("+args[0]+")"
@@ -113,7 +119,7 @@ def commasplit(s):
     return split
 
 def backend(t,*args,**kwargs):
-    return t._backend(level=1,*args,**kwargs)
+    return t._backend(level=0,*args,**kwargs)
 
 
 # Sometimes user's variable names in the matlab code collide with Python
@@ -498,7 +504,17 @@ def _backend(self,level=0):
     else:
         self.append(node.pass_stmt())
     sep = "\n"+indent*level
-    return sep+sep.join([t._backend(level) for t in self])
+    out = ''
+    for t in self:
+        out += sep
+        if isinstance(t, node.func_stmt):
+            level += 1
+            sep = "\n"+indent*level
+        elif isinstance(t, node.return_stmt):
+            level -= 1
+            sep = "\n"+indent*level
+        out += t._backend(level)
+    return out
 
 @extend(node.string)
 def _backend(self,level=0):

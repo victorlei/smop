@@ -32,10 +32,11 @@ def print_header(fp):
     print("import numpy as np", file=fp)
     print("import re", file=fp)
     print("import smop_util", file=fp)
+    print("import matplotlib.pyplot as plt", file=fp)
     
 def print_list(l):
-    #print(l)
-    #print(type(l))
+    print(l)
+    print(type(l))
     try:
         if type(l) != str:
             for i in l:
@@ -43,7 +44,7 @@ def print_list(l):
     except:
         pass
     finally:
-        #print("End of "+str(type(l)))
+        print("End of "+str(type(l)))
         pass
 
 def resolve_array_refs(l,graph_list):
@@ -92,7 +93,6 @@ def main():
             buf = buf.replace("\r\n", "\n")
             #FIXME buf = buf.decode("ascii", errors="ignore")
             stmt_list = parse.parse(buf if buf[-1] == '\n' else buf + '\n')
-            print_list(stmt_list)
 
             if not stmt_list:
                 continue
@@ -105,6 +105,7 @@ def main():
                         temp[0] += '_' + temp.pop(1)
                     graph_list.append(temp+[G.node[n]["ident"].props])
                 resolve_array_refs(stmt_list,graph_list)
+            print_list(stmt_list)
             if not options.no_backend:
                 s = backend.backend(stmt_list).strip()
             if not options.output:
