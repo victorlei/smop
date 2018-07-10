@@ -12,9 +12,9 @@ import os
 import traceback
 from os.path import basename, splitext
 
-sys.argv.append('temp/EDC_species.m')
+sys.argv.append('temp/reaction_rate.m')
 sys.argv.append('-o')
-sys.argv.append('temp/EDC_species.py')
+sys.argv.append('temp/reaction_rate.py')
 #sys.argv.append('-H')
 #sys.argv.append('-P')
 
@@ -25,14 +25,19 @@ import backend
 import version
 import node
 
-def print_header(fp):
+def print_header(fp,s):
     if options.no_header:
         return
-    print("import math as m", file=fp)
-    print("import numpy as np", file=fp)
-    print("import re", file=fp)
-    print("import smop_util", file=fp)
-    print("import matplotlib.pyplot as plt", file=fp)
+    if 'm.' in s:
+        print("import math as m", file=fp)
+    if 'np.' in s:
+        print("import numpy as np", file=fp)
+    if 're.' in s:
+        print("import re", file=fp)
+    if 'smop_util.' in s:
+        print("import smop_util", file=fp)
+    if 'plt.' in s:
+        print("import matplotlib.pyplot as plt", file=fp)
     
 def print_list(l):
     print(l)
@@ -73,8 +78,6 @@ def main():
         fp = open(options.output, "w")
     else:
         fp = None
-    if fp:
-        print_header(fp)
 
     nerrors = 0
     for i, options.filename in enumerate(options.filelist):
@@ -105,15 +108,16 @@ def main():
                         temp[0] += '_' + temp.pop(1)
                     graph_list.append(temp+[G.node[n]["ident"].props])
                 resolve_array_refs(stmt_list,graph_list)
-            print_list(stmt_list)
+            #print_list(stmt_list)
             if not options.no_backend:
                 s = backend.backend(stmt_list).strip()
             if not options.output:
                 f = splitext(basename(options.filename))[0] + ".py"
                 with open(f, "w") as fp:
-                    print_header(fp)
+                    print_header(fp,s)
                     fp.write(s)
             else:
+                print_header(fp,s)
                 fp.write(s)
         except KeyboardInterrupt:
             break

@@ -349,6 +349,9 @@ def _backend(self,level=0):
 
 @extend(node.expr_stmt)
 def _backend(self,level=0):
+    if isinstance(self.expr, node.expr_list):
+        if len(self.expr) == 1 and isinstance(self.expr[0], node.ident):
+            return "import "+str(self.expr[0])
     return self.expr._backend()
 
 @extend(node.for_stmt)
