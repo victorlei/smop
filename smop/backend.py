@@ -40,15 +40,20 @@ optable = {
 func_conversions = [
     "clear",
     "close_",
+    "csvread",
     "dot",
     "erf",
     "exp",
+    "figure",
     "iscellstr",
     "length",
     "log",
     "mean",
     "multiply",
+    "num2str",
     "numel",
+    "plot",
+    "size",
     "sqrt",
     "std",
     "sum",
@@ -63,12 +68,24 @@ def func_convert(funcall,level):
         return ""
     elif funname == "close_":
         return "plt.close("+args[0]+")"
+    elif funname == "csvread":
+        if len(args) == 1:
+            return "np.nan_to_num(np.genfromtxt("+args[0]+", delimiter = ','), copy = False)"
+        elif len(args) < 4:
+            if len(args) == 2:
+                args.append('')
+            return "np.nan_to_num(np.genfromtxt("+args[0]+", delimiter = ',')["+args[1]+":,"+args[2]+":], copy = False)"
+        else:
+            indices = args[3][1:len(args[3])-1].split(',')
+            return "np.nan_to_num(np.genfromtxt("+args[0]+", delimiter = ',')["+args[1]+":"+indices[2]+","+args[2]+":"+indices[3]+"], copy = False)"
     elif funname == "dot":
         return "np.dot("+args[0]+","+args[1]+")"
     elif funname == "erf":
         return "m.erf("+args[0]+")"
     elif funname == "exp":
         return "m.exp("+args[0]+")"
+    elif funname == "figure":
+        return "plt.figure("+args[0]+")"
     elif funname == "iscellstr":
         return "isinstance("+args[0]+", str)"
     elif funname == "length":
@@ -79,8 +96,14 @@ def func_convert(funcall,level):
         return "np.mean("+args[0]+")"
     elif funname == "multiply":
         return "np.multiply("+args[0]+","+args[1]+")"
+    elif funname == "num2str":
+        return "str("+args[0]+")"
     elif funname == "numel":
         return args[0]+".size"
+    elif funname == "plot":
+        return "plt.plot("+funcall.args._backend()+")"
+    elif funname == "size":
+        return args[0]+".shape["+args[1]+"-1]"
     elif funname == "sqrt":
         return "m.sqrt("+args[0]+")"
     elif funname == "std":
@@ -443,7 +466,7 @@ def _backend(self,level=0):
         self.args.__class__ is node.ident):
         s += "%s=copy(%s)" % (self.ret._backend(),
                               self.args._backend())
-    elif self.ret.__class__ is node.arrayref:
+    elif self.ret.__class__ in [node.arrayref, node.cellarrayref]:
         temp = self.ret._backend()
         s += temp[:temp.index('[')]+" = smop_util.safe_set("+temp[:temp.index('[')]+",("+temp[temp.index('[')+1:temp.rindex(']')]+",),"+self.args._backend()+")"
     else:
@@ -465,11 +488,11 @@ def _backend(self,level=0):
     # 0 0
     if not self.args:
         return "np.asarray([], dtype='object')"
-    elif any(a.__class__ is node.string for a in self.args):
-        return " + ".join(a._backend() for a in self.args)
+    elif any(a.__class__ is node.string for a in self.args[0]):
+        return " + ".join(a._backend() for a in self.args[0])
     else:
         #import pdb; pdb.set_trace()
-        return "concat([%s])" % self.args[0]._backend()
+        return "np.asarray([%s], dtype='object')" % self.args[0]._backend()
 
 @extend(node.null_stmt)
 def _backend(self,level=0):
