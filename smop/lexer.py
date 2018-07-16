@@ -60,10 +60,10 @@ def new():
     t_EQEQ        = r"=="
     t_EXP         = r"\^"
     t_EXPEQ       = r"\^="
-    t_GE          = r">="
+    t_GE          = r"\>="
     t_GT          = r"\>"
     t_HANDLE      = r"\@"
-    t_LE          = r"<="
+    t_LE          = r"\<="
     t_LT          = r"\<"
     t_MINUS       = r"\-"
     t_MINUSEQ     = r"\-="
@@ -354,7 +354,7 @@ if __name__ == "__main__":
     options.testing_mode = 0
     options.debug_lexer = 0
     lexer = new()
-    buf = open('temp/stripcell.m').read()
+    buf = open(input('Enter filename:')).read()
     lexer.input(buf)
     for tok in lexer:
         print(tok)
