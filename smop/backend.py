@@ -43,6 +43,7 @@ func_conversions = [
     "csvread",
     "dot",
     "erf",
+    "exist",
     "exp",
     "figure",
     "iscellstr",
@@ -56,6 +57,7 @@ func_conversions = [
     "size",
     "sqrt",
     "std",
+    "strcmp",
     "sum",
     "textscan"
     ]
@@ -82,6 +84,10 @@ def func_convert(funcall,level):
         return "np.dot("+args[0]+","+args[1]+")"
     elif funname == "erf":
         return "m.erf("+args[0]+")"
+    elif funname == "exist":
+        if args[1] == "'file'":
+            return "os.path.isfile("+args[0]+")"
+        raise Exception("no defined behavior for exist with arguments "+str(args))
     elif funname == "exp":
         return "m.exp("+args[0]+")"
     elif funname == "figure":
@@ -108,13 +114,15 @@ def func_convert(funcall,level):
         return "m.sqrt("+args[0]+")"
     elif funname == "std":
         return "np.std("+args[0]+", ddof = 1)"
+    elif funname == "strcmp":
+        return "("+args[0]+" == "+args[1]+")"
     elif funname == "sum":
         return "np.sum("+args[0]+")"
     elif funname == "textscan":
-        if not (args[1] == "'%s'" and args[2] == "'delimiter'"):
-            raise Exception("no defined behavior for textscan with arguments "+str(args))
-        args[0] = args[0].replace('char(','str(')
-        return "np.asarray(["+args[0]+".split("+args[3]+")],dtype='object').T"
+        if args[1] == "'%s'" and args[2] == "'delimiter'":
+            args[0] = args[0].replace('char(','str(')
+            return "np.asarray(["+args[0]+".split("+args[3]+")],dtype='object').T"
+        raise Exception("no defined behavior for textscan with arguments "+str(args))
     else:
         raise Exception("func_convert called with unexpected function name '"+funname+"'")
     
@@ -374,7 +382,7 @@ def _backend(self,level=0):
 def _backend(self,level=0):
     if isinstance(self.expr, node.expr_list):
         if len(self.expr) == 1 and isinstance(self.expr[0], node.ident):
-            return "import "+str(self.expr[0])
+            return "from "+str(self.expr[0])+" import *"
     return self.expr._backend()
 
 @extend(node.for_stmt)
