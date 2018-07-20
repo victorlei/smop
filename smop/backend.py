@@ -54,6 +54,7 @@ func_conversions = [
     "num2str",
     "numel",
     "plot",
+    "set",
     "size",
     "sqrt",
     "std",
@@ -108,6 +109,12 @@ def func_convert(funcall,level):
         return args[0]+".size"
     elif funname == "plot":
         return "plt.plot("+funcall.args._backend()+")"
+    elif funname == "set":
+        tmp = "setattr("+args[0]+","+args[1]+","+args[2]+")"
+        for i in range(3,len(args),2):
+            tmp += "\n"+indent*level
+            tmp += "setattr("+args[0]+","+args[i]+","+args[i+1]+")"
+        return tmp
     elif funname == "size":
         return args[0]+".shape["+args[1]+"-1]"
     elif funname == "sqrt":
@@ -376,14 +383,14 @@ def _backend(self,level=0):
 
 @extend(node.expr_list)
 def _backend(self,level=0):
-    return ",".join([t._backend() for t in self])
+    return ",".join([t._backend(level) for t in self])
 
 @extend(node.expr_stmt)
 def _backend(self,level=0):
     if isinstance(self.expr, node.expr_list):
         if len(self.expr) == 1 and isinstance(self.expr[0], node.ident):
             return "from "+str(self.expr[0])+" import *"
-    return self.expr._backend()
+    return self.expr._backend(level)
 
 @extend(node.for_stmt)
 def _backend(self,level=0):
