@@ -38,8 +38,13 @@ optable = {
 
 #list of functions handled with func_convert
 func_conversions = [
+    "abs",
+    "acos",
+    "asin",
+    "atan",
     "clear",
     "close_",
+    "cos",
     "csvread",
     "dot",
     "erf",
@@ -49,17 +54,20 @@ func_conversions = [
     "iscellstr",
     "length",
     "log",
+    "log10",
     "mean",
     "multiply",
     "num2str",
     "numel",
     "plot",
     "set",
+    "sin",
     "size",
     "sqrt",
     "std",
     "strcmp",
     "sum",
+    "tan",
     "textscan"
     ]
 
@@ -67,10 +75,20 @@ func_conversions = [
 def func_convert(funcall,level):
     funname = funcall.func_expr._backend()
     args = commasplit(funcall.args._backend())
-    if funname == "clear":
+    if funname == "abs":
+        return "np.fabs("+args[0]+")"
+    elif funname == "acos":
+        return "np.arccos("+args[0]+")"
+    elif funname == "asin":
+        return "np.arcsin("+args[0]+")"
+    elif funname == "atan":
+        return "np.arctan("+args[0]+")"
+    elif funname == "clear":
         return ""
     elif funname == "close_":
         return "plt.close("+args[0]+")"
+    elif funname == "cos":
+        return "np.cos("+args[0]+")"
     elif funname == "csvread":
         if len(args) == 1:
             return "np.nan_to_num(np.genfromtxt("+args[0]+", delimiter = ','), copy = False)"
@@ -90,7 +108,7 @@ def func_convert(funcall,level):
             return "os.path.isfile("+args[0]+")"
         raise Exception("no defined behavior for exist with arguments "+str(args))
     elif funname == "exp":
-        return "m.exp("+args[0]+")"
+        return "np.exp("+args[0]+")"
     elif funname == "figure":
         return "plt.figure("+args[0]+")"
     elif funname == "iscellstr":
@@ -99,6 +117,8 @@ def func_convert(funcall,level):
         return args[0]+".size"
     elif funname == "log":
         return "np.log("+args[0]+")"
+    elif funname == "log10":
+        return "np.log10("+args[0]+")"
     elif funname == "mean":
         return "np.mean("+args[0]+")"
     elif funname == "multiply":
@@ -115,16 +135,20 @@ def func_convert(funcall,level):
             tmp += "\n"+indent*level
             tmp += "setattr("+args[0]+","+args[i]+","+args[i+1]+")"
         return tmp
+    elif funname == "sin":
+        return "np.sin("+args[0]+")"
     elif funname == "size":
         return args[0]+".shape["+args[1]+"-1]"
     elif funname == "sqrt":
-        return "m.sqrt("+args[0]+")"
+        return "np.sqrt("+args[0]+")"
     elif funname == "std":
         return "np.std("+args[0]+", ddof = 1)"
     elif funname == "strcmp":
         return "("+args[0]+" == "+args[1]+")"
     elif funname == "sum":
         return "np.sum("+args[0]+")"
+    elif funname == "tan":
+        return "np.tan("+args[0]+")"
     elif funname == "textscan":
         if args[1] == "'%s'" and args[2] == "'delimiter'":
             args[0] = args[0].replace('char(','str(')
@@ -180,7 +204,7 @@ reserved = set(
     array close float int     input
     open  range type  write
 
-    len
+    iter  len
     """.split())
 
     #acos  asin atan  cos e
@@ -474,12 +498,12 @@ def _backend(self,level=0):
                                            self.ret.args[1].args[0]._backend(),
                                            self.args._backend())
         except:
-            s += "%s%s = copy(%s)" % (self.ret.args[0]._backend(),
+            s += "%s%s = np.copy(%s)" % (self.ret.args[0]._backend(),
                                        self.ret.args[1]._backend(),
                                        self.args._backend())
     elif (self.ret.__class__ is node.ident and
         self.args.__class__ is node.ident):
-        s += "%s=copy(%s)" % (self.ret._backend(),
+        s += "%s=np.copy(%s)" % (self.ret._backend(),
                               self.args._backend())
     elif self.ret.__class__ in [node.arrayref, node.cellarrayref]:
         temp = self.ret._backend()
