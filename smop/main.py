@@ -38,7 +38,9 @@ def print_header(fp,s):
         print("import smop_util", file=fp)
     if 'plt.' in s:
         print("import matplotlib.pyplot as plt", file=fp)
-    
+    if 'os.path.' in s:
+        print("import os.path", file=fp)
+
 def print_list(l):
     print(l)
     print(type(l))

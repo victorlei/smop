@@ -46,6 +46,7 @@ func_conversions = [
     "close_",
     "cos",
     "csvread",
+    "csvwrite",
     "dot",
     "erf",
     "exist",
@@ -99,6 +100,8 @@ def func_convert(funcall,level):
         else:
             indices = args[3][1:len(args[3])-1].split(',')
             return "np.nan_to_num(np.genfromtxt("+args[0]+", delimiter = ',')["+args[1]+":"+indices[2]+","+args[2]+":"+indices[3]+"], copy = False)"
+    elif funname == "csvwrite":
+        return "np.savetxt("+args[0]+","+args[1]+",delimiter=',')"
     elif funname == "dot":
         return "np.dot("+args[0]+","+args[1]+")"
     elif funname == "erf":
@@ -261,10 +264,6 @@ def compute_indexing(s):
                 if tab[i].find("end") != -1:
                     tab[i] = tab[i].replace('end()', "-1")
                     tab[i] = tab[i].replace('end', "-1")
-            if len(tab) == 3:
-                tmp = tab[1]
-                tab[1] = tab[2]
-                tab[2] = tmp
             decomposition[k] = ":".join(tab)
         else:
             decomposition[k] += "-1"
@@ -491,7 +490,7 @@ def _backend(self,level=0):
     s = ''
     #if self.args.__class__ is node.funcall:
     #    self.args.nargout = self.nargout
-    if self.ret.__class__ is node.expr and self.ret.op == "." :
+    if self.ret.__class__ is node.expr and self.ret.op == ".":
         try:
             if self.ret.args[1].op == 'parens':
                 s += "setattr(%s,%s,%s)" % (self.ret.args[0]._backend(),
@@ -507,10 +506,22 @@ def _backend(self,level=0):
                               self.args._backend())
     elif self.ret.__class__ in [node.arrayref, node.cellarrayref]:
         temp = self.ret._backend()
-        s += temp[:temp.index('[')]+" = smop_util.safe_set("+temp[:temp.index('[')]+",("+temp[temp.index('[')+1:temp.rindex(']')]+",),"+self.args._backend()+")"
+        indices = temp[temp.index('[')+1:temp.rindex(']')].split(',')
+        for i in range(len(indices)):
+            if ':' == indices[i]:
+                indices[i] = "'shape'"
+            elif ':' in indices[i]:
+                indices[i] = "slice("+str.join(',', indices[i].split(':'))+")"
+        s += temp[:temp.index('[')]+" = smop_util.safe_set("+temp[:temp.index('[')]+",("+str.join(',', indices)+",),"+self.args._backend()+")"
     else:
-        s += "%s=%s" % (self.ret._backend(), 
-                       self.args._backend())
+        s += self.ret._backend() + "=" 
+        if self.args.__class__ == node.expr and self.args.op == ":":
+            temp = commasplit(self.args.args._backend())
+            if len(temp) == 3:
+                temp[1] += "+"+temp[2]
+            s += "np.arange("+str.join(',', temp)+")"
+        else:
+            s += self.args._backend()
     return s+t
 
 @extend(node.logical)
