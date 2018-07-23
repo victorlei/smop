@@ -306,7 +306,7 @@ class expr(node,recordtype("expr","op args")):
             return "%s%s%s" % (self.args[0]._backend(),
                                self.op,
                                self.args[1]._backend())
-        ret = "%s=" % str(self.ret) if self.ret else ""
+        ret = "%s=" % str(getattr(self,'ret',""))
         return ret+"%s(%s)" % (self.op,
                                ",".join([str(t) for t in self.args]))
 
