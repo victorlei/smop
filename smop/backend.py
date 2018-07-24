@@ -42,6 +42,7 @@ func_conversions = [
     "acos",
     "asin",
     "atan",
+    "cell",
     "clear",
     "close_",
     "cos",
@@ -84,6 +85,8 @@ def func_convert(funcall,level):
         return "np.arcsin("+args[0]+")"
     elif funname == "atan":
         return "np.arctan("+args[0]+")"
+    elif funname == "cell":
+        return "np.zeros(("+funcall.args._backend()+",))"
     elif funname == "clear":
         return ""
     elif funname == "close_":
@@ -177,6 +180,29 @@ def commasplit(s):
             parens -= 1
         
         if char == ',' and parens == 0 and brackets == 0:
+            split.append('')
+            index+=1
+        else:
+            split[index] += char
+    return split
+    
+#returns a string split by colons not enclosed by brackets or parentheses    
+def colonsplit(s):
+    split = ['']
+    brackets = 0
+    parens = 0
+    index = 0
+    for char in s:
+        if char == '[':
+            brackets += 1
+        elif char == ']':
+            brackets -= 1
+        elif char == '(':
+            parens += 1
+        elif char == ')':
+            parens -= 1
+        
+        if char == ':' and parens == 0 and brackets == 0:
             split.append('')
             index+=1
         else:
@@ -297,7 +323,7 @@ def _backend(self,level=0):
 
 @extend(node.cellarray)
 def _backend(self,level=0):
-    return "cellarray([%s])" % self.args._backend()
+    return "np.asarray([%s])" % self.args._backend()
 
 @extend(node.cellarrayref)
 def _backend(self,level=0):
@@ -417,7 +443,7 @@ def _backend(self,level=0):
 
 @extend(node.for_stmt)
 def _backend(self,level=0):
-    temp = self.expr._backend().split(':')
+    temp = colonsplit(self.expr._backend())
     if len(temp) == 3:
         temp[1], temp[2] = temp[2], temp[1]
     temp[1] = str(temp[1])+'+1'
