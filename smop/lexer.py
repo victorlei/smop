@@ -13,7 +13,7 @@ tokens = [
     "DOT", "DOTDIV", "DOTDIVEQ", "DOTEXP", "DOTMUL", "DOTMULEQ", "END_EXPR",
     "END_STMT", "EQ", "EQEQ", "EXP", "EXPEQ", "FIELD", "GE", "GT", "HANDLE",
     "IDENT", "LBRACE", "LBRACKET", "LE", "LPAREN", "LT", "MINUS", "MINUSMINUS",
-    "MINUSEQ", "MUL", "MULEQ", "NE", "NEG", "NUMBER", "OR", "OREQ", "OROR",
+    "MINUSEQ", "MUL", "MULEQ", "NE", "NEG", "SYS", "NUMBER", "OR", "OREQ", "OROR",
     "PLUS", "PLUSEQ", "PLUSPLUS", "RBRACE", "RBRACKET", "RPAREN", "SEMI",
     "STRING", "TRANSPOSE", "ERROR_STMT", "COMMENT", "END_FUNCTION",
     "END_UNEXPECTED", "POW", "CLASSDEF"
@@ -72,7 +72,7 @@ def new():
     t_POW         = r"\*\*"
     t_MULEQ       = r"\*="
     t_NE          = r"(~=)|(!=)"
-    t_NEG         = r"\~|\!"
+    t_NEG         = r"\~"
     t_OR          = r"\|"
     t_OREQ        = r"\|="
     t_OROR        = r"\|\|"
@@ -221,6 +221,12 @@ def new():
                 t.lexer.braces == 0):
             t.type = "SEMI"
             return t
+        return t
+
+    @TOKEN(r"\!.*\n+")
+    def t_SYS(t):
+        t.lexer.lineno += t.value.count("\n")
+        t.value = t.value[1:]
         return t
 
     @TOKEN(r"\;" + ws0)

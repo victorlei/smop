@@ -237,6 +237,11 @@ def p_error_stmt(p):
     """
     p[0] = node.null_stmt()
 
+@exceptions
+def p_sys_stmt(p):
+    """sys_stmt : SYS
+    """
+    p[0] = node.sys_stmt(cmd=p[1])
 
 @exceptions
 def p_expr(p):
@@ -723,6 +728,7 @@ def p_stmt(p):
          | func_stmt
          | break_stmt
          | expr_stmt
+         | sys_stmt
          | global_stmt
          | persistent_stmt
          | error_stmt
@@ -797,15 +803,25 @@ def p_transpose_expr(p):
 def p_try_catch(p):
     """
     try_catch : TRY stmt_list CATCH stmt_list END_STMT
+              | TRY stmt_list CATCH ident sep stmt_list END_STMT
     """
     ## | TRY stmt_list END_STMT
     assert isinstance(p[2], node.stmt_list)
     # assert isinstance(p[4],node.stmt_list)
-    p[0] = node.try_catch(
-        try_stmt=p[2],
-        catch_stmt=p[4],
-        finally_stmt=node.stmt_list())
-
+    if len(p) == 6:
+        p[0] = node.try_catch(
+	        try_stmt=p[2],
+	        catch_stmt=p[4],
+                 catch_expr=node.null_stmt(),
+	        finally_stmt=node.stmt_list())
+    elif len(p) == 8:
+        p[0] = node.try_catch(
+	        try_stmt=p[2],
+                 catch_expr=p[4],
+	        catch_stmt=p[6],
+	        finally_stmt=node.stmt_list())
+    else:
+        assert 0
 
 @exceptions
 def p_unwind(p):

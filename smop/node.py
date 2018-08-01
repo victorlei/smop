@@ -6,7 +6,6 @@ from collections import namedtuple
 import copy,sys,inspect
 
 from . recipes import recordtype
-from . import options
 
 # def preorder(u):
 #     if isinstance(u,traversable):
@@ -232,7 +231,10 @@ class expr_stmt(stmt,node,recordtype("expr_stmt","expr")):
 class while_stmt(stmt,node,recordtype("while_stmt","cond_expr stmt_list")):
     pass
 
-class try_catch(stmt,recordtype("try_catch","try_stmt catch_stmt finally_stmt")):
+class try_catch(stmt,recordtype("try_catch","try_stmt catch_stmt catch_expr finally_stmt")):
+    pass
+
+class sys_stmt(stmt,recordtype("sys_stmt","cmd")):
     pass
 
 class allocate_stmt(stmt,recordtype("allocate_stmt",

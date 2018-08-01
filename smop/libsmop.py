@@ -3,7 +3,10 @@
 
 # MIT license
 
-import __builtin__
+try:
+    import builtins as __builtin__
+except ImportError:
+    import __builtin__
 
 import numpy
 from numpy import sqrt,prod,exp,log,dot,multiply,inf
