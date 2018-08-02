@@ -13,4 +13,4 @@ Pythonic SMOP can currently only be installed through downloads or clones of thi
 
 ## Usage
 
-Pythonic SMOP is run by calling ```main.py```. Running this without flags will list the description for all possible flags. To run a basic translation, use '''python main.py INPUT_FILE.m -o OUTPUT_FILE.py'''.
+Pythonic SMOP is run by calling ```main.py```. Running this without flags will list the description for all possible flags. To run a basic translation, use ```python main.py INPUT_FILE.m -o OUTPUT_FILE.py```.
