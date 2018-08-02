@@ -12,11 +12,11 @@ import os
 import traceback
 from os.path import basename, splitext
 
-sys.argv.append('temp/reaction_rate.m')
-sys.argv.append('-o')
-sys.argv.append('temp/reaction_rate.py')
-#sys.argv.append('-H')
-#sys.argv.append('-P')
+#Use these lines if you are using an IDE that does not allow you to add command line arguments when you run main.py
+
+#sys.argv.append('INPUT_FILE.m')
+#sys.argv.append('-o')
+#sys.argv.append('OUTPUT_FILE.py')
 
 import options
 import parse
@@ -25,6 +25,7 @@ import backend
 import version
 import node
 
+#Adds the necessary imports to the output files
 def print_header(fp,s):
     if options.no_header:
         return
@@ -41,11 +42,13 @@ def print_header(fp,s):
     if 'os.path.' in s:
         print("import os.path", file=fp)
 
+#Debugging function, needs to be improved for large files and loops
+#If working with large files, this should probably be changed to output to a file
 def print_list(l):
     print(l)
     print(type(l))
     try:
-        if type(l) != str:
+        if type(l) != str and type(l) != node.for_stmt:
             for i in l:
                 print_list(i)
     except:
@@ -54,6 +57,7 @@ def print_list(l):
         print("End of "+str(type(l)))
         pass
 
+#Fixes issue with array reference being listed as function calls
 def resolve_array_refs(l,graph_list):
     try:
         if type(l) == node.funcall:
@@ -96,7 +100,6 @@ def main():
                 continue
             buf = open(options.filename).read()
             buf = buf.replace("\r\n", "\n")
-            #FIXME buf = buf.decode("ascii", errors="ignore")
             stmt_list = parse.parse(buf if buf[-1] == '\n' else buf + '\n')
 
             if not stmt_list:
@@ -110,7 +113,7 @@ def main():
                         temp[0] += '_' + temp.pop(1)
                     graph_list.append(temp+[G.node[n]["ident"].props])
                 resolve_array_refs(stmt_list,graph_list)
-            #print_list(stmt_list)
+            print_list(stmt_list)
             if not options.no_backend:
                 s = backend.backend(stmt_list).strip()
             if not options.output:

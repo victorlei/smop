@@ -8,3 +8,4 @@ parsetab.py
 dist/
 build/
 runtime/
+smop/temp/
