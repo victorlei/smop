@@ -47,7 +47,7 @@ def main():
         try:
             if options.verbose:
                 print(i, options.filename)
-            if not options.filename.endswith(".m"):
+            if options.filename != "-" and not options.filename.endswith(".m"):
                 print("\tIgnored: '%s' (unexpected file type)" %
                       options.filename)
                 continue
@@ -55,7 +55,11 @@ def main():
                 if options.verbose:
                     print("\tExcluded: '%s'" % options.filename)
                 continue
-            buf = open(options.filename).read()
+            buf = None
+            if options.filename == "-":
+                buf = sys.stdin.read()
+            else:
+                buf = open(options.filename).read()
             buf = buf.replace("\r\n", "\n")
             # FIXME buf = buf.decode("ascii", errors="ignore")
             stmt_list = parse.parse(buf if buf[-1] == '\n' else buf + '\n')
