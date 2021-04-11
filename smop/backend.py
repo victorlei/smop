@@ -144,7 +144,11 @@ def func_convert(funcall,level):
     elif funname == "sin":
         return "np.sin("+args[0]+")"
     elif funname == "size":
-        return args[0]+".shape["+args[1]+"-1]"
+        retval = "np.shape(" + args[0]  # args[0]+".shape["+args[1]+"-1]"
+        for p in args[1:]:
+            retval += ", " + p
+        retval += ")"
+        return retval
     elif funname == "sqrt":
         return "np.sqrt("+args[0]+")"
     elif funname == "std":

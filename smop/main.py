@@ -113,7 +113,7 @@ def main():
                         temp[0] += '_' + temp.pop(1)
                     graph_list.append(temp+[G.node[n]["ident"].props])
                 resolve_array_refs(stmt_list,graph_list)
-            print_list(stmt_list)
+            #print_list(stmt_list)
             if not options.no_backend:
                 s = backend.backend(stmt_list).strip()
             if not options.output:

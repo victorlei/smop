@@ -142,7 +142,7 @@ class matlabarray(np.ndarray):
             n = max(ix)+1
         else:
             assert 0,ix
-        if not isinstance(n,int):
+        if not (isinstance(n, int) or isinstance(n, np.integer)):
             raise IndexError
         return n 
 
