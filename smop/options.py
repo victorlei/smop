@@ -2,8 +2,8 @@ import sys
 import argparse,textwrap
 from textwrap import dedent
 
-from . import version
-from . version import __version__
+import version
+from version import __version__
 
 parser = argparse.ArgumentParser(
     "smop",

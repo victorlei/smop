@@ -2,11 +2,11 @@
 # Copyright 2011-2016 Victor Leikehman
 
 from ply import yacc
-from . import lexer
-from . lexer import tokens, raise_exception
-from . import node
-from . node import exceptions
-from . import options
+import lexer
+from lexer import tokens, raise_exception
+import node
+from node import exceptions
+import options
 
 # ident properties (set in parse.py)
 # ----------------------------------
@@ -65,7 +65,6 @@ def p_end_function(p):
     """
     p[0] = p[1]
     p[0].append(node.return_stmt(ret=ret_expr))
-    p[0].append(node.comment_stmt("\nif __name__ == '__main__':\n    pass"))
 
 
 @exceptions

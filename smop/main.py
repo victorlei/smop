@@ -12,19 +12,64 @@ import os
 import traceback
 from os.path import basename, splitext
 
-from . import options
-from . import parse
-from . import resolve
-from . import backend
-from . import version
+#Use these lines if you are using an IDE that does not allow you to add command line arguments when you run main.py
 
-def print_header(fp):
+#sys.argv.append('INPUT_FILE.m')
+#sys.argv.append('-o')
+#sys.argv.append('OUTPUT_FILE.py')
+
+import options
+import parse
+import resolve
+import backend
+import version
+import node
+
+#Adds the necessary imports to the output files
+def print_header(fp,s):
     if options.no_header:
         return
-    #print("# Running Python %s" % sys.version, file=fp)
-    print("# Generated with SMOP ", version.__version__, file=fp)
-    print("from libsmop import *", file=fp)
-    print("#", options.filename, file=fp)
+    if 'm.' in s:
+        print("import math as m", file=fp)
+    if 'np.' in s:
+        print("import numpy as np", file=fp)
+    if 're.' in s:
+        print("import re", file=fp)
+    if 'smop_util.' in s:
+        print("import smop_util", file=fp)
+    if 'plt.' in s:
+        print("import matplotlib.pyplot as plt", file=fp)
+    if 'os.path.' in s:
+        print("import os.path", file=fp)
+
+#Debugging function, needs to be improved for large files and loops
+#If working with large files, this should probably be changed to output to a file
+def print_list(l):
+    print(l)
+    print(type(l))
+    try:
+        if type(l) != str and type(l) != node.for_stmt:
+            for i in l:
+                print_list(i)
+    except:
+        pass
+    finally:
+        print("End of "+str(type(l)))
+        pass
+
+#Fixes issue with array reference being listed as function calls
+def resolve_array_refs(l,graph_list):
+    try:
+        if type(l) == node.funcall:
+            for elem in graph_list:
+                if str(l.func_expr) == elem[0] and "F" != elem[3]:
+                    l.__class__ = node.arrayref
+                    break
+        if type(l) != str and type(l) != node.ident:
+            for i in l:
+                resolve_array_refs(i,graph_list)
+    except Exception as e:
+        pass
 
 def main():
     if "M" in options.debug:
@@ -39,8 +84,6 @@ def main():
         fp = open(options.output, "w")
     else:
         fp = None
-    if fp:
-        print_header(fp)
 
     nerrors = 0
     for i, options.filename in enumerate(options.filelist):
@@ -57,21 +100,29 @@ def main():
                 continue
             buf = open(options.filename).read()
             buf = buf.replace("\r\n", "\n")
-            # FIXME buf = buf.decode("ascii", errors="ignore")
             stmt_list = parse.parse(buf if buf[-1] == '\n' else buf + '\n')
 
             if not stmt_list:
                 continue
             if not options.no_resolve:
                 G = resolve.resolve(stmt_list)
+                graph_list = []
+                for n in G.nodes():
+                    temp = str.split(n,'_')
+                    while len(temp) > 3:
+                        temp[0] += '_' + temp.pop(1)
+                    graph_list.append(temp+[G.node[n]["ident"].props])
+                resolve_array_refs(stmt_list,graph_list)
+            #print_list(stmt_list)
             if not options.no_backend:
-                s = backend.backend(stmt_list)
+                s = backend.backend(stmt_list).strip()
             if not options.output:
                 f = splitext(basename(options.filename))[0] + ".py"
                 with open(f, "w") as fp:
-                    print_header(fp)
+                    print_header(fp,s)
                     fp.write(s)
             else:
+                print_header(fp,s)
                 fp.write(s)
         except KeyboardInterrupt:
             break
@@ -84,3 +135,5 @@ def main():
             pass
     if nerrors:
         print("Errors:", nerrors)
+
+main()

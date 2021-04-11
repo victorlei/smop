@@ -3,7 +3,7 @@
 
 # MIT license
 
-import __builtin__
+import builtins
 
 import numpy
 from numpy import sqrt,prod,exp,log,dot,multiply,inf
@@ -142,7 +142,7 @@ class matlabarray(np.ndarray):
             n = max(ix)+1
         else:
             assert 0,ix
-        if not isinstance(n,int):
+        if not (isinstance(n, int) or isinstance(n, np.integer)):
             raise IndexError
         return n 
 
@@ -665,7 +665,7 @@ def size_equal(a,b):
     return True
 
 from numpy import sqrt
-sort = __builtin__.sorted
+sort = builtins.sorted
 
 def strcmp(a,b):
     return str(a) == str(b)

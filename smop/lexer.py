@@ -5,7 +5,7 @@ import sys
 import re
 import ply.lex as lex
 from ply.lex import TOKEN
-from . import options
+import options
 
 
 tokens = [
@@ -60,10 +60,10 @@ def new():
     t_EQEQ        = r"=="
     t_EXP         = r"\^"
     t_EXPEQ       = r"\^="
-    t_GE          = r">="
+    t_GE          = r"\>="
     t_GT          = r"\>"
     t_HANDLE      = r"\@"
-    t_LE          = r"<="
+    t_LE          = r"\<="
     t_LT          = r"\<"
     t_MINUS       = r"\-"
     t_MINUSEQ     = r"\-="
@@ -341,7 +341,7 @@ def main():
     line = ""
     while 1:
         try:
-            line += raw_input("=>> ").decode("string_escape")
+            line += input("=>> ").decode("string_escape")
             print(len(line), [c for c in line])
         except EOFError:
             reload(sys.modules["lexer.py"])
@@ -354,7 +354,7 @@ if __name__ == "__main__":
     options.testing_mode = 0
     options.debug_lexer = 0
     lexer = new()
-    buf = open(sys.argv[1]).read()
+    buf = open(input('Enter filename:')).read()
     lexer.input(buf)
     for tok in lexer:
         print(tok)
