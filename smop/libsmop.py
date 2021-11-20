@@ -645,7 +645,7 @@ def size(a, b=0, nargout=1):
     matlabarray([[4, 4]])
     """
     s = np.asarray(a).shape
-    if == is ():
+    if s == ():
         return 1 if b else (1,)*nargout
     # a is not a scalar
     try:
