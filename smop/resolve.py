@@ -56,7 +56,7 @@ def resolve(t, symtab=None, fp=None, func_name=None):
             pass
         elif G.out_edges(n) and G.in_edges(n):
             u.props = "U" # upd
-            #print u.name, u.lineno, u.column
+            #print(u.name, u.lineno, u.column)
         elif G.in_edges(n):
             u.props = "D" # def
         elif G.out_edges(n):

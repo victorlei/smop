@@ -1,10 +1,10 @@
-# for py3: make PYTHON=python3 CYTHON="cython -3" V=3
+# for py2: make PYTHON=python CYTHON="cython" V=2
 
 OCTAVE = /home/lei/octave-4.0.2
 SCRIPTS = $(OCTAVE)/scripts/specfun
 
-CYTHON = cython
-PYTHON = python
+CYTHON = cython -3
+PYTHON = python3
 XFILES = -x inputParser.m,dblquad.m,triplequad.m
 
 COVERAGE = python3 -m coverage

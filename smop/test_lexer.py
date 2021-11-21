@@ -54,8 +54,8 @@ class TestLexer(unittest.TestCase):
     def test042(self):
         "backslash-newline continues a line"
         s = "foo \\\n bar ... hello\n bzz"
-        #print 43,`s`
-        #print '#', s.count('\n')
+        #print(43,`s`)
+        #print('#', s.count('\n'))
         self.lexer.input(s)
         # line continuation
         t = [tok.type for tok in self.lexer]

@@ -229,7 +229,7 @@ class cellarray(matlabarray):
         a : list, ndarray, matlabarray, etc.
 
         >>> a=cellarray([123,"hello"])
-        >>> print a.shape
+        >>> print(a.shape)
         (1, 2)
 
         >>> print a[1]

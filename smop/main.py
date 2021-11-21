@@ -84,3 +84,7 @@ def main():
             pass
     if nerrors:
         print("Errors:", nerrors)
+
+
+if __name__ == "__main__":
+    main()
