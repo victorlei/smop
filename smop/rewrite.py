@@ -84,7 +84,7 @@ def let_statement(u):
 #            for nodename in component:
 #                G.node[nodename]["ident"].props += "S"  # sparse
 #        #S = G.subgraph(nbunch)
-#        #print(S.edges())
+#        #print S.edges()
 #    return G
 
 

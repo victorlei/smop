@@ -31,7 +31,7 @@ class test_matlabarray(unittest.TestCase):
         a[a.shape[0]+1,1:3] = 123
         a[a.shape[0]+1,1:3] = 123
         a[a.shape[0]+1,1:3] = 123
-        #print(a.shape)
+        #print a.shape
         self.assertTrue(isequal (a, [[123,123,123],
                                      [123,123,123],
                                      [123,123,123]]))
@@ -164,7 +164,7 @@ class test_matlabarray(unittest.TestCase):
     def test110(self):
         a = zeros (4,4,dtype=int)
         a[2:3,2:3] = 1
-        #print(a)
+        #print a
         self.assertTrue(isequal (a,[[0,0,0,0],
                                     [0,1,1,0],
                                     [0,1,1,0],
