@@ -664,7 +664,7 @@ def p_persistent_stmt(p):
 #    else:
 #    assert p[2].__class__ in (node.let,node.ident), p[2].__class__
 #    p[0] = p[2]
-#    #print p[2]
+#    #print(p[2])
 
 
 @exceptions
@@ -739,7 +739,7 @@ def p_stmt(p):
     """
     # END_STMT is intentionally left out
     p[0] = p[1]
-    # print p[0]
+    # print(p[0])
 
 
 @exceptions
@@ -830,7 +830,7 @@ def p_error(p):
     if p is None:
         raise_exception(SyntaxError, "Unexpected EOF", new_lexer)
     if p.type == "COMMENT":
-        # print "Discarded comment", p.value
+        # print("Discarded comment", p.value)
         parser.errok()
         return
     raise_exception(SyntaxError,
@@ -869,5 +869,5 @@ def parse(buf):
 #
 #    if "2" in options.debug:
 #        for i,pi in enumerate(p):
-#            print i,pi.__class__.__name__,str(pi)[:50]
+#            print(i,pi.__class__.__name__,str(pi)[:50])
 

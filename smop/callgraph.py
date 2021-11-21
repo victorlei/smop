@@ -26,6 +26,6 @@ def callgraph(G, stmt_list):
     #nx.write_dot(G,"G.dot")
     #for u in G.nodes():
     #    if G.out_degree(u) == 0:
-    #        print u
+    #        print(u)
 if __name__ == '__main__':
     main()

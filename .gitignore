@@ -8,3 +8,5 @@ parsetab.py
 dist/
 build/
 runtime/
+.gitconfig
+.idea/

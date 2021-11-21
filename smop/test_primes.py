@@ -1,3 +1,3 @@
 import liboctave
-print liboctave.primes(10000)
+print(liboctave.primes(10000))
 
