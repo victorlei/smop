@@ -396,7 +396,7 @@ def deal(a,**kwargs):
     return tuple([ai for ai in a.flat])
 
 def disp(*args):
-    print (args)
+    print(args)
 
 def eig(a):
     u,v = np.linalg.eig(a)
