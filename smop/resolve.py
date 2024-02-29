@@ -51,7 +51,7 @@ def resolve(t, symtab=None, fp=None, func_name=None):
     G = as_networkx(t)
     for n in G.nodes():
         print(n.__class__.__name__)
-        u = G.node[n]["ident"]
+        u = G.nodes[n]["ident"]
         if u.props:
             pass
         elif G.out_edges(n) and G.in_edges(n):
@@ -63,7 +63,7 @@ def resolve(t, symtab=None, fp=None, func_name=None):
             u.props = "R" # ref
         else:
             u.props = "F" # ???
-        G.node[n]["label"] = "%s\\n%s" % (n, u.props)
+        G.nodes[n]["label"] = "%s\\n%s" % (n, u.props)
     return G
 
 def do_resolve(t,symtab):
